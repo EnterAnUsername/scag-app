@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Test Netlify Blobs</title>
+<style>
+  body{font-family:-apple-system,sans-serif;max-width:420px;margin:40px auto;padding:0 20px;color:#222;}
+  h1{font-size:20px;}
+  p.intro{font-size:13px;color:#666;line-height:1.5;}
+  input{width:100%;padding:10px 12px;margin-bottom:10px;border:1px solid #ccc;border-radius:8px;font-size:14px;box-sizing:border-box;}
+  button{padding:10px 16px;margin-right:8px;border:none;border-radius:8px;background:#2563eb;color:#fff;font-size:13px;font-weight:600;cursor:pointer;}
+  button.secondary{background:#666;}
+  #result{margin-top:20px;padding:14px;background:#f0f0f0;border-radius:10px;font-size:13px;min-height:20px;}
+</style>
+</head>
+<body>
+  <h1>🧪 Test Netlify Blobs</h1>
+  <p class="intro">Écris un message, clique "Enregistrer", puis ouvre cette même page sur un <b>autre appareil</b> (ou un autre navigateur) et clique "Lire" — si le message apparaît, la synchronisation cloud fonctionne.</p>
+  <input id="msg" placeholder="Ton message test">
+  <button onclick="save()">💾 Enregistrer</button>
+  <button class="secondary" onclick="load()">📥 Lire</button>
+  <p id="result">En attente…</p>
+
+<script>
+async function save() {
+  const text = document.getElementById('msg').value;
+  document.getElementById('result').textContent = '⏳ Envoi en cours…';
+  try {
+    const res = await fetch('/api/cave-test', {
+      method: 'POST',
+      body: JSON.stringify({ text }),
+    });
+    const data = await res.json();
+    document.getElementById('result').textContent = data.ok ? '✅ Enregistré ! Essaie "Lire" depuis un autre appareil.' : '❌ Erreur à l\'enregistrement';
+  } catch (e) {
+    document.getElementById('result').textContent = '❌ Erreur réseau : ' + e.message;
+  }
+}
+
+async function load() {
+  document.getElementById('result').textContent = '⏳ Lecture en cours…';
+  try {
+    const res = await fetch('/api/cave-test');
+    const data = await res.json();
+    document.getElementById('result').textContent = data
+      ? `📦 Dernier message : "${data.text}" (enregistré le ${new Date(data.savedAt).toLocaleString('fr-FR')})`
+      : 'Aucune donnée trouvée — enregistre un message d\'abord.';
+  } catch (e) {
+    document.getElementById('result').textContent = '❌ Erreur réseau : ' + e.message;
+  }
+}
+</script>
+</body>
+</html>
