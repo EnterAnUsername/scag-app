@@ -4,20 +4,266 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SCAG — Sommelier Caviste</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=VT323&family=IBM+Plex+Mono:wght@400;600;700&family=Baloo+2:wght@500;700;800&family=Space+Grotesk:wght@400;500;700&family=Archivo+Black&family=Archivo:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
+/* ══════════════════════════════════════════════════════
+   11.2 — SYSTÈME DE SKINS : contrat de variables CSS
+   Chaque thème redéfinit ce même jeu de variables ci-dessous.
+   Le reste du CSS (et du JS pour les futures migrations) ne
+   doit référencer QUE ces variables, jamais une couleur en dur,
+   pour que changer de thème = changer data-theme sur <html>.
+   Les couleurs sémantiques (correct/faux vert/rouge, couleurs
+   de région/type de vin) restent volontairement fixes : elles
+   codent une information, pas une esthétique.
+   ══════════════════════════════════════════════════════ */
+:root, :root[data-theme="classique"] {
+  --page-bg: #f5f4f0;
+  --page-text: #1a1a18;
+  --header-bg: #1a1a18;
+  --header-text: #f5f4f0;
+  --header-hover: #333333;
+  --card-bg: #ffffff;
+  --card-bg-alt: #f8f7f4;
+  --card-border: #e5e5e2;
+  --card-border-soft: #f0f0ed;
+  --text-secondary: #888888;
+  --text-muted: #999999;
+  --accent: #9333ea;
+  --accent-hover: #7e22ce;
+  --accent-bg: #faf5ff;
+  --radius-card: 16px;
+  --radius-input: 10px;
+  --border-width: 1px;
+  --shadow-card: none;
+  --accent-alt-1: #e5e5e2;
+  --accent-alt-2: #e5e5e2;
+  --accent-alt-3: #e5e5e2;
+  --scanline-opacity: 0;
+  --icon-bg: transparent;
+  --icon-radius: 10px;
+  --icon-shadow: none;
+  --icon-border: none;
+  --card-topbar-height: 0px;
+  --index-display: none;
+  --bg-texture: none;
+  --bg-texture-opacity: 1;
+  --card-shape: var(--radius-card);
+  --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-display: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+:root[data-theme="cave"] {
+  --page-bg: #160c0d;
+  --page-text: #efe6d8;
+  --header-bg: #1c0f10;
+  --header-text: #efe6d8;
+  --header-hover: #33191c;
+  --card-bg: #2b1719;
+  --card-bg-alt: #33191c;
+  --card-border: #4a2a2d;
+  --card-border-soft: #3a2225;
+  --text-secondary: #b8a99a;
+  --text-muted: #8f7f70;
+  --accent: #c9a24b;
+  --accent-hover: #b3893a;
+  --accent-bg: #3a2a12;
+  --radius-card: 6px;
+  --radius-input: 8px;
+  --border-width: 1px;
+  --shadow-card: none;
+  --accent-alt-1: #4a2a2d;
+  --accent-alt-2: #4a2a2d;
+  --accent-alt-3: #4a2a2d;
+  --scanline-opacity: 0;
+  --icon-bg: radial-gradient(circle at 35% 30%, #a8384a, #8a2332 60%, #5e1520 100%);
+  --icon-radius: 50%;
+  --icon-shadow: 0 3px 8px rgba(0,0,0,.5), inset 0 1px 2px rgba(255,255,255,.2);
+  --icon-border: 1px solid rgba(0,0,0,.3);
+  --card-topbar-height: 0px;
+  --index-display: none;
+  --bg-texture: repeating-linear-gradient(90deg, rgba(201,162,75,.04) 0px, rgba(201,162,75,.04) 1px, transparent 1px, transparent 68px),
+    radial-gradient(ellipse 700px 500px at 50% -10%, rgba(58,29,31,.7) 0%, transparent 60%),
+    radial-gradient(ellipse 900px 700px at 100% 100%, rgba(30,17,19,.7) 0%, transparent 60%);
+  --bg-texture-opacity: 1;
+  --card-shape: 28px 28px 0 0;
+  --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-display: 'Georgia', 'Times New Roman', serif;
+}
+
+:root[data-theme="minitel"] {
+  --page-bg: #0a0e1a;
+  --page-text: #ffb000;
+  --header-bg: #ffb000;
+  --header-text: #0a0e1a;
+  --header-hover: #cc8c00;
+  --card-bg: #0f1630;
+  --card-bg-alt: #16205a;
+  --card-border: #3ee6e6;
+  --card-border-soft: #2a3560;
+  --text-secondary: #a8b4d8;
+  --text-muted: #5a6690;
+  --accent: #3ee6e6;
+  --accent-hover: #2bc4c4;
+  --accent-bg: #0d2a2a;
+  --radius-card: 0px;
+  --radius-input: 0px;
+  --border-width: 3px;
+  --shadow-card: 3px 3px 0 var(--accent);
+  --accent-alt-1: #3ee6e6;
+  --accent-alt-2: #ff5fd8;
+  --accent-alt-3: #4dff88;
+  --scanline-opacity: 0.08;
+  --icon-bg: var(--accent);
+  --icon-radius: 0px;
+  --icon-shadow: inset 0 -4px 0 rgba(0,0,0,.4), 3px 3px 0 rgba(0,0,0,.5);
+  --icon-border: 3px solid var(--page-text);
+  --card-topbar-height: 12px;
+  --index-display: none;
+  --bg-texture: radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,.55) 100%);
+  --bg-texture-opacity: 1;
+  --card-shape: var(--radius-card);
+  --font-body: 'IBM Plex Mono', monospace;
+  --font-display: 'VT323', monospace;
+}
+
+:root[data-theme="memphis"] {
+  --page-bg: #f7f3ea;
+  --page-text: #1a1a1a;
+  --header-bg: #ff5fa2;
+  --header-text: #1a1a1a;
+  --header-hover: #e0488c;
+  --card-bg: #ffffff;
+  --card-bg-alt: #fff6ee;
+  --card-border: #1a1a1a;
+  --card-border-soft: #1a1a1a;
+  --text-secondary: #555555;
+  --text-muted: #888888;
+  --accent: #7c5cff;
+  --accent-hover: #6247d9;
+  --accent-bg: #eee9ff;
+  --radius-card: 20px;
+  --radius-input: 16px;
+  --border-width: 3px;
+  --shadow-card: 5px 5px 0 #1a1a1a;
+  --accent-alt-1: #1a1a1a;
+  --accent-alt-2: #1a1a1a;
+  --accent-alt-3: #1a1a1a;
+  --scanline-opacity: 0;
+  --icon-bg: #ffd23f;
+  --icon-radius: 50%;
+  --icon-shadow: 3px 3px 0 #1a1a1a;
+  --icon-border: var(--border-width) solid #1a1a1a;
+  --card-topbar-height: 0px;
+  --index-display: none;
+  --bg-texture: radial-gradient(circle 5px at 12% 10%, #00b3a4 98%, transparent),
+    radial-gradient(circle 7px at 85% 6%, #ff5fa2 98%, transparent),
+    radial-gradient(circle 4px at 92% 30%, #ffd23f 98%, transparent),
+    radial-gradient(circle 6px at 6% 55%, #7c5cff 98%, transparent),
+    radial-gradient(circle 5px at 90% 70%, #00b3a4 98%, transparent),
+    radial-gradient(circle 4px at 15% 88%, #ff5fa2 98%, transparent),
+    radial-gradient(circle 4px at 60% 92%, #ffd23f 98%, transparent),
+    radial-gradient(circle 5px at 45% 15%, #7c5cff 98%, transparent);
+  --bg-texture-opacity: .5;
+  --card-shape: var(--radius-card);
+  --font-body: 'Space Grotesk', sans-serif;
+  --font-display: 'Baloo 2', sans-serif;
+}
+
+:root[data-theme="poster"] {
+  --page-bg: #fafaf8;
+  --page-text: #111111;
+  --header-bg: #111111;
+  --header-text: #fafaf8;
+  --header-hover: #333333;
+  --card-bg: #ffffff;
+  --card-bg-alt: #f5f5f3;
+  --card-border: #111111;
+  --card-border-soft: #dddddd;
+  --text-secondary: #888888;
+  --text-muted: #aaaaaa;
+  --accent: #e0271f;
+  --accent-hover: #b81f18;
+  --accent-bg: #fdeceb;
+  --radius-card: 0px;
+  --radius-input: 0px;
+  --border-width: 2px;
+  --shadow-card: none;
+  --accent-alt-1: #111111;
+  --accent-alt-2: #111111;
+  --accent-alt-3: #111111;
+  --scanline-opacity: 0;
+  --icon-bg: var(--accent);
+  --icon-radius: 0px;
+  --icon-shadow: none;
+  --icon-border: none;
+  --card-topbar-height: 0px;
+  --index-display: block;
+  --bg-texture: none;
+  --bg-texture-opacity: 1;
+  --card-shape: var(--radius-card);
+  --font-body: 'Archivo', sans-serif;
+  --font-display: 'Archivo Black', sans-serif;
+}
+
+:root[data-theme="soft-ui"] {
+  --page-bg: #e9ecf3;
+  --page-text: #2b2f42;
+  --header-bg: #2b2f42;
+  --header-text: #e9ecf3;
+  --header-hover: #3d4258;
+  --card-bg: #e9ecf3;
+  --card-bg-alt: #e2e6ef;
+  --card-border: #d5dae6;
+  --card-border-soft: #d5dae6;
+  --text-secondary: #7d8399;
+  --text-muted: #a2a7bd;
+  --accent: #6c63ff;
+  --accent-hover: #5a52e0;
+  --accent-bg: #eeecff;
+  --radius-card: 24px;
+  --radius-input: 18px;
+  --border-width: 0px;
+  --shadow-card: 8px 8px 18px #c3c8d6, -8px -8px 18px #ffffff;
+  --accent-alt-1: #d5dae6;
+  --accent-alt-2: #d5dae6;
+  --accent-alt-3: #d5dae6;
+  --scanline-opacity: 0;
+  --icon-bg: var(--page-bg);
+  --icon-radius: 16px;
+  --icon-shadow: 5px 5px 10px rgba(0,0,0,.12), -5px -5px 10px rgba(255,255,255,.8);
+  --icon-border: none;
+  --card-topbar-height: 0px;
+  --index-display: none;
+  --bg-texture: none;
+  --bg-texture-opacity: 1;
+  --card-shape: var(--radius-card);
+  --font-body: 'Manrope', sans-serif;
+  --font-display: 'Manrope', sans-serif;
+}
+
 *{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f5f4f0;color:#1a1a18;min-height:100vh;}
+body{font-family:var(--font-body);background:var(--page-bg);color:var(--page-text);min-height:100vh;transition:background .2s,color .2s;position:relative;}
+/* Texture de fond — voûte de pierre (Cave), confettis (Memphis), vignette CRT (Minitel)...
+   'none' et invisible sur les thèmes qui n'en ont pas besoin (Classique, Poster, Soft UI). */
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:var(--bg-texture);opacity:var(--bg-texture-opacity);transition:opacity .2s;}
+.header,.screen{position:relative;z-index:1;}
+/* Scanlines CRT — invisibles par défaut (opacity 0), activées uniquement par les thèmes qui le souhaitent (Minitel) */
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;
+  background:repeating-linear-gradient(0deg,rgba(0,0,0,0) 0px,rgba(0,0,0,0) 2px,rgba(0,0,0,.6) 3px);
+  opacity:var(--scanline-opacity);transition:opacity .2s;}
 
 /* ── HEADER ── */
-.header{background:#1a1a18;color:#f5f4f0;padding:13px 16px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:200;}
-.header-back{background:none;border:none;color:#f5f4f0;cursor:pointer;font-size:20px;padding:2px 6px;border-radius:6px;display:none;transition:background .15s;}
-.header-back:hover{background:#333;}
-.header-home{background:none;border:none;color:#f5f4f0;cursor:pointer;font-size:16px;padding:2px 6px;border-radius:6px;display:none;transition:background .15s;}
-.header-home:hover{background:#333;}
-.header-stats{background:none;border:none;color:#f5f4f0;cursor:pointer;font-size:16px;padding:2px 6px;border-radius:6px;display:block;transition:background .15s;opacity:.85;}
-.header-stats:hover{background:#333;opacity:1;}
-.header-title{font-size:16px;font-weight:500;letter-spacing:.02em;flex:1;}
-.header-sub{font-size:11px;color:#888;}
+.header{background:var(--header-bg);color:var(--header-text);padding:13px 16px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:200;}
+.header-back{background:none;border:none;color:var(--header-text);cursor:pointer;font-size:20px;padding:2px 6px;border-radius:6px;display:none;transition:background .15s;}
+.header-back:hover{background:var(--header-hover);}
+.header-home{background:none;border:none;color:var(--header-text);cursor:pointer;font-size:16px;padding:2px 6px;border-radius:6px;display:none;transition:background .15s;}
+.header-home:hover{background:var(--header-hover);}
+.header-stats{background:none;border:none;color:var(--header-text);cursor:pointer;font-size:16px;padding:2px 6px;border-radius:6px;display:block;transition:background .15s;opacity:.85;}
+.header-stats:hover{background:var(--header-hover);opacity:1;}
+.header-title{font-family:var(--font-display);font-size:16px;font-weight:500;letter-spacing:.02em;flex:1;}
+.header-sub{font-size:11px;color:var(--text-muted);}
 
 /* ── SCREENS ── */
 .screen{display:none;min-height:calc(100vh - 48px);}
@@ -26,58 +272,160 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 /* ── HUB ── */
 /* ── HUB SEARCH BAR ── */
 .hub-search-wrap{position:relative;margin-bottom:1.25rem;}
-.hub-search-bar{width:100%;padding:11px 14px 11px 38px;border:1px solid #e0e0dc;border-radius:10px;background:#fff;color:#1a1a18;font-size:14px;outline:none;transition:border-color .15s;}
-.hub-search-bar:focus{border-color:#2563eb;box-shadow:0 0 0 3px rgba(37,99,235,.08);}
-.hub-search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:15px;pointer-events:none;color:#999;}
-.hub-search-results{position:absolute;top:calc(100% + 6px);left:0;right:0;background:#fff;border:1px solid #e0e0dc;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.1);z-index:300;max-height:60vh;overflow-y:auto;display:none;}
+.hub-search-bar{width:100%;padding:11px 14px 11px 38px;border:var(--border-width) solid var(--card-border);border-radius:var(--radius-input);background:var(--card-bg);color:var(--page-text);font-size:14px;outline:none;transition:border-color .15s;}
+.hub-search-bar:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-bg);}
+.hub-search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:15px;pointer-events:none;color:var(--text-muted);}
+.hub-search-results{position:absolute;top:calc(100% + 6px);left:0;right:0;background:var(--card-bg);border:var(--border-width) solid var(--card-border);border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.1);z-index:300;max-height:60vh;overflow-y:auto;display:none;}
 .hub-search-results.open{display:block;}
-.hub-search-item{padding:11px 14px;cursor:pointer;border-bottom:1px solid #f0f0ed;display:flex;align-items:flex-start;gap:10px;}
+.hub-search-item{padding:11px 14px;cursor:pointer;border-bottom:1px solid var(--card-border-soft);display:flex;align-items:flex-start;gap:10px;}
 .hub-search-item:last-child{border-bottom:none;}
-.hub-search-item:hover{background:#f8f7f4;}
+.hub-search-item:hover{background:var(--card-bg-alt);}
 .hub-search-item-name{font-size:13px;font-weight:500;margin-bottom:2px;}
-.hub-search-item-region{font-size:11px;color:#888;}
+.hub-search-item-region{font-size:11px;color:var(--text-secondary);}
 .hub-search-item-badges{display:flex;flex-wrap:wrap;gap:3px;margin-top:3px;}
-.hub-search-empty{padding:16px 14px;font-size:13px;color:#999;text-align:center;}
+.hub-search-empty{padding:16px 14px;font-size:13px;color:var(--text-muted);text-align:center;}
 
 .hub{padding:1.5rem 1rem;}
 .hub-greeting{margin-bottom:1.5rem;}
-.hub-greeting h2{font-size:22px;font-weight:600;margin-bottom:4px;}
-.hub-greeting p{font-size:13px;color:#666;}
-.hub-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-.hub-card{background:#fff;border:1px solid #e5e5e2;border-radius:16px;padding:18px 16px;cursor:pointer;transition:all .18s;text-align:left;display:flex;flex-direction:column;gap:8px;min-height:120px;}
-.hub-card:hover{border-color:#2563eb;box-shadow:0 2px 12px rgba(37,99,235,.1);transform:translateY(-1px);}
+.hub-greeting h2{font-family:var(--font-display);font-size:22px;font-weight:600;margin-bottom:4px;}
+.hub-greeting p{font-size:13px;color:var(--text-secondary);}
+.hub-grid{counter-reset:cardidx;display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.hub-card{position:relative;overflow:var(--card-overflow,hidden);background:var(--card-bg);border:var(--border-width) solid var(--card-border);border-radius:var(--card-shape);padding:calc(18px + var(--card-topbar-height)) 16px 18px;cursor:pointer;transition:all .18s;text-align:left;display:flex;flex-direction:column;gap:8px;min-height:120px;box-shadow:var(--shadow-card);}
+.hub-card::before{content:'';position:absolute;top:0;left:0;right:0;height:var(--card-topbar-height);background:var(--card-border);}
+.hub-card::after{content:counter(cardidx,decimal-leading-zero);counter-increment:cardidx;position:absolute;top:10px;right:14px;font-family:var(--font-display);font-weight:800;font-size:19px;color:var(--accent);display:var(--index-display);line-height:1;}
+.hub-card:hover{border-color:var(--accent);box-shadow:0 2px 12px rgba(0,0,0,.08);transform:translateY(-1px);}
 .hub-card:active{transform:translateY(0);}
-.hub-card-icon{font-size:26px;line-height:1;}
-.hub-card-title{font-size:15px;font-weight:600;color:#1a1a18;}
-.hub-card-desc{font-size:12px;color:#888;line-height:1.4;}
+
+/* Rotation de teinte "pages télétexte" — pilotée par accent-alt-1/2/3 : neutre (= bordure normale)
+   sur la plupart des thèmes, mais franchement colorée sur Minitel. Ne touche jamais le bord gauche
+   (réservé aux couleurs sémantiques de catégorie ci-dessous). Colore aussi le bandeau (::before). */
+.hub-grid .hub-card:nth-of-type(3n+1),
+.quiz-type-list .quiz-type-card:nth-of-type(3n+1),
+.quiz-sub-list .quiz-sub-item:nth-of-type(3n+1),
+.cave-form .bottle-card:nth-of-type(3n+1){border-top-color:var(--accent-alt-1);border-right-color:var(--accent-alt-1);border-bottom-color:var(--accent-alt-1);}
+.hub-grid .hub-card:nth-of-type(3n+1)::before{background:var(--accent-alt-1);}
+.hub-grid .hub-card:nth-of-type(3n+2),
+.quiz-type-list .quiz-type-card:nth-of-type(3n+2),
+.quiz-sub-list .quiz-sub-item:nth-of-type(3n+2),
+.cave-form .bottle-card:nth-of-type(3n+2){border-top-color:var(--accent-alt-2);border-right-color:var(--accent-alt-2);border-bottom-color:var(--accent-alt-2);}
+.hub-grid .hub-card:nth-of-type(3n+2)::before{background:var(--accent-alt-2);}
+.hub-grid .hub-card:nth-of-type(3n+3),
+.quiz-type-list .quiz-type-card:nth-of-type(3n+3),
+.quiz-sub-list .quiz-sub-item:nth-of-type(3n+3),
+.cave-form .bottle-card:nth-of-type(3n+3){border-top-color:var(--accent-alt-3);border-right-color:var(--accent-alt-3);border-bottom-color:var(--accent-alt-3);}
+.hub-grid .hub-card:nth-of-type(3n+3)::before{background:var(--accent-alt-3);}
+.hub-card-icon{font-size:22px;line-height:1;width:44px;height:44px;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;background:var(--icon-bg);border-radius:var(--icon-radius);box-shadow:var(--icon-shadow);border:var(--icon-border);}
+
+/* ── Cave Voûtée : le sceau déborde du haut de la carte (comme un vrai sceau de cire posé
+   sur un document). Cas structurel propre à ce thème — pas généralisable en simple variable,
+   donc override ciblé plutôt qu'un token de plus dans le contrat commun. ── */
+[data-theme="cave"] .hub-card{overflow:visible;padding-top:26px;}
+[data-theme="cave"] .hub-card-icon{position:absolute;top:-14px;left:16px;width:38px;height:38px;font-size:17px;}
+[data-theme="cave"] .hub-card-title{margin-top:2px;}
+/* Fine ligne d'arche sculptée — décorative, discrète, ne définit pas la forme de la carte */
+[data-theme="cave"] .hub-card::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:70%;height:14px;border-radius:0 0 60px 60px;background:rgba(201,162,75,.05);
+  border-bottom:1px solid rgba(201,162,75,.18);}
+.hub-card-title{font-family:var(--font-display);font-size:15px;font-weight:600;color:var(--page-text);}
+.hub-card-desc{font-size:12px;color:var(--text-secondary);line-height:1.4;}
 .hub-card-count{font-size:11px;font-weight:600;padding:3px 8px;border-radius:20px;align-self:flex-start;margin-top:auto;}
 
-/* couleurs par catégorie */
+/* couleurs par catégorie — sémantiques, volontairement fixes (pas themées) */
 .hub-card.cat-aoc   {border-left:3px solid #2563eb;}
 .hub-card.cat-cepages{border-left:3px solid #16a34a;}
 .hub-card.cat-amv   {border-left:3px solid #d97706;}
 .hub-card.cat-quiz  {border-left:3px solid #9333ea;}
 .hub-card.cat-carte {border-left:3px solid #0891b2;}
 .hub-card.cat-search{border-left:3px solid #64748b;}
+.hub-card.cat-wip   {border-left:3px solid var(--text-muted);}
+.hub-card.cat-dynamic{border-left:3px solid var(--cat-accent, var(--card-border));}
 
 .count-aoc   {background:#eff6ff;color:#2563eb;}
 .count-cepages{background:#f0fdf4;color:#16a34a;}
 .count-amv   {background:#fffbeb;color:#d97706;}
 .count-quiz  {background:#faf5ff;color:#9333ea;}
+.count-wip   {background:var(--card-bg-alt);color:var(--text-muted);}
+
+/* ── Poster Suisse : rangées plein-largeur séparées par de simples filets horizontaux
+   (pas de cartes en grille), numéro d'index en grand à gauche à la place de l'icône.
+   Structure de liste éditoriale — override ciblé comme pour Cave, pas généralisable
+   en simple variable. Placé après les couleurs de catégorie pour bien les neutraliser. ── */
+[data-theme="poster"] .hub-grid{grid-template-columns:1fr;gap:0;}
+[data-theme="poster"] .hub-card{
+  display:grid;grid-template-columns:40px 1fr;grid-template-rows:auto auto auto;
+  column-gap:14px;row-gap:3px;align-items:start;
+  border-left:none;border-right:none;border-radius:0;box-shadow:none;
+  border-top:var(--border-width) solid var(--card-border);border-bottom:none;
+  padding:18px 4px;min-height:0;
+}
+[data-theme="poster"] .hub-grid .hub-card:last-of-type{border-bottom:var(--border-width) solid var(--card-border);}
+[data-theme="poster"] .hub-card-icon{display:none;}
+[data-theme="poster"] .hub-card::after{position:static;grid-column:1;grid-row:1/-1;font-size:26px;text-align:left;}
+[data-theme="poster"] .hub-card-title{grid-column:2;grid-row:1;}
+[data-theme="poster"] .hub-card-desc{grid-column:2;grid-row:2;}
+[data-theme="poster"] .hub-card-count{grid-column:2;grid-row:3;justify-self:start;margin-top:2px;}
+
+/* ── Minitel : le titre est imprimé DANS le bandeau (fond cyan, texte sombre, façon vidéotex
+   inversé) — pas une simple barre décorative. Le bouton "▶" est un petit carré sombre à
+   bordure cyan, comme dans la maquette d'origine. Override ciblé, comme Cave et Poster. ── */
+[data-theme="minitel"] .hub-card{padding:0 0 14px 0;}
+[data-theme="minitel"] .hub-card::before{display:none;} /* remplacé par le titre lui-même */
+[data-theme="minitel"] .hub-card-title{
+  order:-1;margin:0;padding:6px 40px 6px 10px;
+  background:var(--accent);color:var(--page-bg);
+  font-family:var(--font-display);font-size:19px;font-weight:700;letter-spacing:.04em;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+[data-theme="minitel"] .hub-grid .hub-card:nth-of-type(3n+1) .hub-card-title{background:var(--accent-alt-1);}
+[data-theme="minitel"] .hub-grid .hub-card:nth-of-type(3n+2) .hub-card-title{background:var(--accent-alt-2);}
+[data-theme="minitel"] .hub-grid .hub-card:nth-of-type(3n+3) .hub-card-title{background:var(--accent-alt-3);}
+[data-theme="minitel"] .hub-card-icon{
+  position:absolute;top:6px;right:8px;order:-1;
+  width:26px;height:26px;font-size:13px;
+  background:var(--page-bg);color:var(--accent);
+  border:1px solid var(--page-bg);box-shadow:none;
+}
+[data-theme="minitel"] .hub-card-desc{padding:0 10px;margin-top:10px;}
+[data-theme="minitel"] .hub-card-count{margin-left:10px;}
+
+/* ── Memphis Pop : les cartes ENTIÈRES alternent blanc/rose/turquoise dans la maquette
+   (pas juste une icône jaune sur fond blanc uniforme) — override ciblé, comme les autres. ── */
+[data-theme="memphis"] .hub-grid .hub-card:nth-of-type(3n+2){background:#ff5fa2;}
+[data-theme="memphis"] .hub-grid .hub-card:nth-of-type(3n+3){background:#00b3a4;}
+[data-theme="memphis"] .hub-grid .hub-card:nth-of-type(3n+2) .hub-card-desc,
+[data-theme="memphis"] .hub-grid .hub-card:nth-of-type(3n+3) .hub-card-desc{color:#1a1a1a;}
+
+/* ── Soft UI : l'icône est À CÔTÉ du titre/description (rangée horizontale), pas au-dessus —
+   comme la maquette (row-top: icône | titre+desc empilés), badge en dessous sur toute la largeur. ── */
+[data-theme="soft-ui"] .hub-card{
+  display:grid;grid-template-columns:50px 1fr;grid-template-rows:auto auto auto;
+  column-gap:14px;row-gap:3px;align-items:start;
+}
+[data-theme="soft-ui"] .hub-card-icon{grid-column:1;grid-row:1/3;align-self:center;width:50px;height:50px;font-size:24px;}
+[data-theme="soft-ui"] .hub-card-title{grid-column:2;grid-row:1;align-self:end;}
+[data-theme="soft-ui"] .hub-card-desc{grid-column:2;grid-row:2;align-self:start;}
+[data-theme="soft-ui"] .hub-card-count{grid-column:1/-1;grid-row:3;margin-top:10px;justify-self:start;}
+
+/* ── Poster Suisse : finitions manquantes — filet épais sous le header (3px, comme la maquette),
+   titre de bienvenue en gros caractères "affiche", barre rouge décorative à côté du sous-titre. ── */
+[data-theme="poster"] .header{border-bottom:3px solid var(--card-border);}
+[data-theme="poster"] .hub-greeting h2{font-size:34px;line-height:.95;letter-spacing:-.01em;}
+[data-theme="poster"] .hub-greeting p{border-left:3px solid var(--accent);padding-left:10px;margin-top:8px;}
+[data-theme="minitel"] .hub-card::after{top:6px;right:40px;}
 
 /* ── SECTION SCREENS (AOC, Cépages, AMV) ── */
 .section-wrap{padding:1rem;}
 .region-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:7px;margin-bottom:1.25rem;}
-.region-btn{padding:9px 11px;border:1px solid #ddd;border-radius:8px;background:#fff;cursor:pointer;text-align:left;font-size:12px;font-weight:500;color:#1a1a18;transition:all .15s;}
+.region-btn{padding:9px 11px;border:var(--border-width) solid var(--card-border);border-radius:8px;background:var(--card-bg);cursor:pointer;text-align:left;font-size:12px;font-weight:500;color:var(--page-text);transition:all .15s;}
 .region-btn:hover,.region-btn.active{border-color:#2563eb;background:#eff6ff;color:#2563eb;}
 .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;}
 .aoc-list{display:flex;flex-direction:column;gap:7px;}
-.subcat-header{padding:8px 4px 4px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#999;border-bottom:1px solid #e8e8e4;margin-top:12px;margin-bottom:4px;}
+.subcat-header{padding:8px 4px 4px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-muted);border-bottom:1px solid var(--card-border-soft);margin-top:12px;margin-bottom:4px;}
 .subcat-header:first-child{margin-top:0;}
-.aoc-card{border:1px solid #e5e5e2;border-radius:12px;background:#fff;overflow:hidden;}
+.aoc-card{border:var(--border-width) solid var(--card-border);border-radius:12px;background:var(--card-bg);overflow:hidden;}
 .aoc-header{padding:11px 15px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;user-select:none;}
 .aoc-title{font-weight:500;font-size:14px;}
-.aoc-sub{font-size:11px;color:#888;margin-top:2px;}
+.aoc-sub{font-size:11px;color:var(--text-secondary);margin-top:2px;}
 .badges{display:flex;flex-wrap:wrap;gap:3px;}
 .badge{font-size:10px;padding:2px 7px;border-radius:20px;font-weight:600;white-space:nowrap;}
 .b-rouge{background:#FAECE7;color:#993C1D;}
@@ -88,70 +436,121 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .b-moelleux{background:#FFF4E6;color:#B45309;}
 .b-demisec{background:#F0FFF4;color:#276749;}
 .b-sec{background:#F0F9FF;color:#0C4A6E;}
-.aoc-body{display:none;padding:11px 15px 13px;border-top:1px solid #f0f0ed;}
+.aoc-body{display:none;padding:11px 15px 13px;border-top:1px solid var(--card-border-soft);}
 .aoc-body.open{display:block;}
 .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;}
-.info-block{background:#f8f7f4;border-radius:8px;padding:9px 11px;}
-.info-label{font-size:10px;color:#999;font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px;}
-.info-val{font-size:12px;color:#1a1a18;line-height:1.5;}
+.info-block{background:var(--card-bg-alt);border-radius:8px;padding:9px 11px;}
+.info-label{font-size:10px;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px;}
+.info-val{font-size:12px;color:var(--page-text);line-height:1.5;}
 .full{grid-column:1/-1;}
-.chevron{font-size:14px;color:#bbb;transition:transform .2s;margin-left:6px;}
+.chevron{font-size:14px;color:var(--text-muted);transition:transform .2s;margin-left:6px;}
 .chevron.open{transform:rotate(180deg);}
 
 /* ── PLACEHOLDER screens (Cépages, AMV) ── */
 .placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;gap:16px;padding:2rem;text-align:center;}
 .placeholder-icon{font-size:52px;}
-.placeholder-title{font-size:18px;font-weight:600;}
-.placeholder-desc{font-size:13px;color:#888;max-width:280px;line-height:1.6;}
-.placeholder-badge{font-size:11px;font-weight:600;padding:4px 12px;border-radius:20px;background:#f5f4f0;color:#999;}
+.placeholder-title{font-family:var(--font-display);font-size:18px;font-weight:600;}
+.placeholder-desc{font-size:13px;color:var(--text-secondary);max-width:280px;line-height:1.6;}
+.placeholder-badge{font-size:11px;font-weight:600;padding:4px 12px;border-radius:20px;background:var(--card-bg-alt);color:var(--text-muted);}
 
 /* ── CARTE ── */
-.map-wrap{background:#fff;border-radius:12px;border:1px solid #e5e5e2;padding:1rem;margin-bottom:1rem;}
+.map-wrap{background:var(--card-bg);border-radius:12px;border:var(--border-width) solid var(--card-border);padding:1rem;margin-bottom:1rem;}
 .map-svg{width:100%;max-width:520px;display:block;margin:0 auto;}
 .map-region{cursor:pointer;transition:opacity .15s;}.map-region:hover{opacity:.7;}
 .map-label{font-size:10px;font-weight:600;pointer-events:none;}
-.map-info{background:#fff;border-radius:12px;border:1px solid #e5e5e2;padding:1rem;}
+
+/* ── FORMULAIRES MA CAVE (9.x) ── */
+.cave-form{padding:1rem 1.25rem 2.5rem;}
+.form-field{margin-bottom:16px;}
+.form-field label{display:block;font-size:12px;font-weight:600;color:var(--text-secondary);margin-bottom:6px;}
+.form-field label .opt{font-weight:400;color:var(--text-muted);font-size:11px;}
+.form-field input[type="text"],
+.form-field input[type="number"],
+.form-field input[type="date"],
+.form-field select,
+.form-field textarea{
+  width:100%;padding:11px 13px;border:var(--border-width) solid var(--card-border);border-radius:var(--radius-input);
+  background:var(--card-bg);color:var(--page-text);font-size:13.5px;outline:none;font-family:inherit;
+  transition:border-color .15s;box-sizing:border-box;
+}
+.form-field input:focus, .form-field select:focus, .form-field textarea:focus{border-color:var(--accent);}
+.form-field textarea{resize:vertical;min-height:60px;}
+.form-checkrow{display:flex;flex-wrap:wrap;gap:8px;}
+.form-checkbox{display:flex;align-items:center;gap:6px;padding:8px 12px;border:var(--border-width) solid var(--card-border);border-radius:20px;font-size:12px;font-weight:500;cursor:pointer;transition:all .15s;background:var(--card-bg);}
+.form-checkbox input{accent-color:var(--accent);}
+.form-checkbox.checked{border-color:var(--accent);background:var(--accent-bg);color:var(--accent-hover);}
+.form-rating{background:var(--card-bg-alt);border-radius:12px;padding:14px 16px;margin-bottom:12px;}
+.form-rating-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.form-rating-head span.val{font-weight:700;color:var(--accent);font-size:14px;}
+.form-rating input[type="range"]{width:100%;accent-color:var(--accent);}
+.form-submit{width:100%;padding:14px;border:none;border-radius:12px;background:var(--accent);color:#fff;font-size:14px;font-weight:700;cursor:pointer;margin-top:8px;box-shadow:var(--shadow-card);}
+.form-submit:active{transform:scale(.98);}
+.form-section-title{font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.04em;margin:22px 0 10px;}
+
+/* ── Widget bouteille (remplissage spiritueux) ── */
+.bottle-widget{display:flex;flex-direction:column;align-items:center;gap:10px;padding:16px;background:var(--card-bg-alt);border-radius:14px;margin-bottom:16px;}
+.bottle-svg-wrap{position:relative;width:70px;height:150px;}
+.bottle-fill-label{font-size:13px;font-weight:700;color:var(--text-secondary);}
+.bottle-presets{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;}
+.bottle-preset-btn{padding:6px 12px;border-radius:20px;border:var(--border-width) solid var(--card-border);background:var(--card-bg);font-size:11px;font-weight:600;cursor:pointer;color:var(--text-secondary);}
+.bottle-preset-btn.active{background:var(--accent);border-color:var(--accent);color:#fff;}
+
+/* ── Cartes bouteille (listes de collection) ── */
+.bottle-card{background:var(--card-bg);border:var(--border-width) solid var(--card-border);border-radius:14px;padding:14px 16px;margin-bottom:10px;cursor:pointer;transition:transform .12s;box-shadow:var(--shadow-card);}
+.bottle-card:active{transform:scale(.98);}
+.bottle-card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;}
+.bottle-card-title{font-size:14.5px;font-weight:700;}
+.bottle-card-sub{font-size:11.5px;color:var(--text-secondary);margin-top:2px;}
+.bottle-card-notes{display:flex;gap:6px;margin-top:8px;}
+.bottle-card-note{font-size:10.5px;font-weight:700;padding:3px 9px;border-radius:20px;}
+.bottle-card-note.obj{background:#eef2ff;color:#4338ca;}
+.bottle-card-note.subj{background:#fdf2f8;color:#be185d;}
+.add-bottle-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px;border:2px dashed var(--card-border);border-radius:14px;background:none;color:var(--accent);font-size:13.5px;font-weight:700;cursor:pointer;margin-bottom:18px;}
+.insight-box{background:var(--accent-bg);border:var(--border-width) solid var(--card-border);border-radius:12px;padding:14px 16px;margin-top:10px;}
+.insight-box-title{font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.03em;margin-bottom:6px;}
+.insight-box p{font-size:12.5px;color:var(--text-secondary);line-height:1.55;margin:0 0 6px;}
+.map-info{background:var(--card-bg);border-radius:12px;border:var(--border-width) solid var(--card-border);padding:1rem;}
 
 /* ── SEARCH ── */
-.search-bar{width:100%;padding:10px 14px;border:1px solid #ddd;border-radius:8px;background:#fff;color:#1a1a18;font-size:14px;margin-bottom:1rem;outline:none;}
-.search-bar:focus{border-color:#2563eb;}
+.search-bar{width:100%;padding:10px 14px;border:var(--border-width) solid var(--card-border);border-radius:8px;background:var(--card-bg);color:var(--page-text);font-size:14px;margin-bottom:1rem;outline:none;}
+.search-bar:focus{border-color:var(--accent);}
 
 /* ── QUIZ HUB ── */
 .quiz-hub{padding:1.5rem 1rem;}
-.quiz-hub-title{font-size:20px;font-weight:700;margin-bottom:4px;}
-.quiz-hub-sub{font-size:13px;color:#888;margin-bottom:1.5rem;}
+.quiz-hub-title{font-family:var(--font-display);font-size:20px;font-weight:700;margin-bottom:4px;}
+.quiz-hub-sub{font-size:13px;color:var(--text-secondary);margin-bottom:1.5rem;}
 .quiz-type-list{display:flex;flex-direction:column;gap:10px;}
-.quiz-type-card{background:#fff;border:1px solid #e5e5e2;border-radius:14px;padding:16px;cursor:pointer;display:flex;align-items:center;gap:14px;transition:all .15s;}
-.quiz-type-card:hover{border-color:#9333ea;background:#faf5ff;}
-.quiz-type-icon{font-size:24px;width:44px;height:44px;background:#f5f4f0;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.quiz-type-card{background:var(--card-bg);border:var(--border-width) solid var(--card-border);border-radius:14px;padding:16px;cursor:pointer;display:flex;align-items:center;gap:14px;transition:all .15s;box-shadow:var(--shadow-card);}
+.quiz-type-card:hover{border-color:var(--accent);background:var(--accent-bg);}
+.quiz-type-icon{font-size:24px;width:44px;height:44px;background:var(--page-bg);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 .quiz-type-body{flex:1;}
 .quiz-type-title{font-size:14px;font-weight:600;}
-.quiz-type-desc{font-size:12px;color:#888;margin-top:2px;}
-.quiz-type-arrow{color:#bbb;font-size:16px;}
-.quiz-type-badge{font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px;background:#faf5ff;color:#9333ea;margin-top:4px;display:inline-block;}
+.quiz-type-desc{font-size:12px;color:var(--text-secondary);margin-top:2px;}
+.quiz-type-arrow{color:var(--text-muted);font-size:16px;}
+.quiz-type-badge{font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px;background:var(--accent-bg);color:var(--accent);margin-top:4px;display:inline-block;}
 
 /* ── QUIZ SOUS-MENU (ex: Régions) ── */
 .quiz-submenu{padding:1.5rem 1rem;}
 .quiz-submenu-title{font-size:17px;font-weight:600;margin-bottom:1rem;}
 .quiz-sub-list{display:flex;flex-direction:column;gap:8px;}
-.quiz-sub-item{background:#fff;border:1px solid #e5e5e2;border-radius:10px;padding:13px 16px;cursor:pointer;display:flex;align-items:center;gap:10px;font-size:13px;font-weight:500;transition:all .15s;}
-.quiz-sub-item:hover{border-color:#9333ea;background:#faf5ff;}
+.quiz-sub-item{background:var(--card-bg);border:var(--border-width) solid var(--card-border);border-radius:10px;padding:13px 16px;cursor:pointer;display:flex;align-items:center;gap:10px;font-size:13px;font-weight:500;transition:all .15s;}
+.quiz-sub-item:hover{border-color:var(--accent);background:var(--accent-bg);}
 .quiz-sub-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
-.quiz-sub-arrow{color:#bbb;margin-left:auto;}
+.quiz-sub-arrow{color:var(--text-muted);margin-left:auto;}
 
 /* ── QUIZ ACTIF (placeholder) ── */
 .quiz-active{padding:1rem;}
-.score-bar{display:flex;align-items:center;gap:12px;margin-bottom:1rem;padding:12px 16px;background:#fff;border-radius:10px;border:1px solid #e5e5e2;}
-.score-num{font-size:22px;font-weight:500;color:#9333ea;}
-.score-txt{font-size:13px;color:#666;}
-.btn{padding:8px 16px;border:1px solid #ccc;border-radius:8px;background:#fff;cursor:pointer;font-size:13px;font-weight:500;color:#1a1a18;transition:all .15s;}
-.btn:hover{background:#f5f4f0;}
-.btn-purple{background:#9333ea;color:#fff;border-color:#9333ea;}.btn-purple:hover{background:#7e22ce;}
-.quiz-q{background:#fff;border-radius:12px;padding:1.25rem;border:1px solid #e5e5e2;}
+.score-bar{display:flex;align-items:center;gap:12px;margin-bottom:1rem;padding:12px 16px;background:var(--card-bg);border-radius:10px;border:var(--border-width) solid var(--card-border);}
+.score-num{font-size:22px;font-weight:500;color:var(--accent);}
+.score-txt{font-size:13px;color:var(--text-secondary);}
+.btn{padding:8px 16px;border:var(--border-width) solid var(--card-border);border-radius:8px;background:var(--card-bg);cursor:pointer;font-size:13px;font-weight:500;color:var(--page-text);transition:all .15s;}
+.btn:hover{background:var(--card-bg-alt);}
+.btn-purple{background:var(--accent);color:#fff;border-color:var(--accent);}.btn-purple:hover{background:var(--accent-hover);}
+.quiz-q{background:var(--card-bg);border-radius:12px;padding:1.25rem;border:var(--border-width) solid var(--card-border);}
 .quiz-question{font-size:15px;font-weight:500;margin-bottom:1rem;line-height:1.6;}
 .quiz-opts{display:flex;flex-direction:column;gap:7px;}
-.quiz-opt{padding:11px 14px;border:1px solid #ddd;border-radius:8px;background:#f8f7f4;cursor:pointer;font-size:13px;text-align:left;transition:all .15s;}
-.quiz-opt:hover:not(:disabled){border-color:#9333ea;background:#faf5ff;}
+.quiz-opt{padding:11px 14px;border:var(--border-width) solid var(--card-border);border-radius:8px;background:var(--card-bg-alt);cursor:pointer;font-size:13px;text-align:left;transition:all .15s;color:var(--page-text);}
+.quiz-opt:hover:not(:disabled){border-color:var(--accent);background:var(--accent-bg);}
 .quiz-opt.correct{background:#EAF3DE;border-color:#3B6D11;color:#3B6D11;font-weight:500;}
 .quiz-opt.wrong{background:#FAECE7;border-color:#993C1D;color:#993C1D;}
 .quiz-opt:disabled{cursor:default;}
@@ -166,12 +565,21 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 }
 
 /* ── VA Engine ── */
-.btn-purple{background:#9333ea;color:#fff;border-color:#9333ea;}
-.btn-purple:hover{background:#7e22ce;}
-.va-progress{height:3px;background:#e5e5e2;position:sticky;top:96px;z-index:99;}
-.va-progress-bar{height:3px;background:#9333ea;transition:width .3s;}
+.va-progress{height:3px;background:var(--card-border);position:sticky;top:96px;z-index:99;}
+.va-progress-bar{height:3px;background:var(--accent);transition:width .3s;}
+
+/* ── 11.2 — Sélecteur de skin ── */
+.skin-option{display:flex;align-items:center;gap:14px;background:var(--card-bg);border:calc(var(--border-width) + 1px) solid var(--card-border);border-radius:16px;padding:16px;margin-bottom:12px;cursor:pointer;transition:all .15s;box-shadow:var(--shadow-card);}
+.skin-option.active{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-bg);}
+.skin-swatch{width:44px;height:44px;border-radius:12px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:20px;}
+.skin-option-body{flex:1;}
+.skin-option-title{font-size:14px;font-weight:700;color:var(--page-text);}
+.skin-option-desc{font-size:11.5px;color:var(--text-secondary);margin-top:2px;}
+.skin-check{font-size:18px;color:var(--accent);opacity:0;transition:opacity .15s;}
+.skin-option.active .skin-check{opacity:1;}
 
 </style>
+
 </head>
 <body>
 
@@ -180,17 +588,36 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   <button class="header-back" id="btnBack" onclick="goBack()" title="Retour">←</button>
   <div class="header-title" id="headerTitle">🍷 SCAG</div>
   <div class="header-sub" id="headerSub"></div>
+  <button class="header-stats" id="btnPersonalisation" onclick="goTo('personnalisation');buildPersonnalisationScreen()" title="Personnalisation">🎨</button>
   <button class="header-stats" id="btnStats" onclick="goTo('stats');buildStatsScreen()" title="Ma progression">📊</button>
   <button class="header-home" id="btnHome" onclick="goHome()" title="Accueil">🏠</button>
 </div>
 
-<!-- ═══════════════ HUB PRINCIPAL ═══════════════ -->
+<!-- ═══════════════ HUB PRINCIPAL (racine) ═══════════════ -->
 <div class="screen active" id="screen-hub">
   <div class="hub">
     <div class="hub-greeting">
       <h2>Bonjour 👋</h2>
-      <p>Que voulez-vous réviser aujourd'hui ?</p>
+      <p>Que voulez-vous faire aujourd'hui ?</p>
     </div>
+    <div class="hub-grid">
+      <div class="hub-card cat-aoc" onclick="goTo('revisions-hub')" style="grid-column:1/-1;padding:26px 20px;">
+        <div class="hub-card-icon" style="font-size:30px;">📚</div>
+        <div class="hub-card-title" style="font-size:17px;">Révisions</div>
+        <div class="hub-card-desc">Fiches AOC, cépages, accords, quiz, carte…</div>
+      </div>
+      <div class="hub-card cat-carte" onclick="goTo('cave-hub')" style="grid-column:1/-1;padding:26px 20px;">
+        <div class="hub-card-icon" style="font-size:30px;">🍷</div>
+        <div class="hub-card-title" style="font-size:17px;">Ma Cave</div>
+        <div class="hub-card-desc">Vos bouteilles, dégustations & wishlist</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ SOUS-MENU RÉVISIONS ═══════════════ -->
+<div class="screen" id="screen-revisions-hub">
+  <div class="hub">
     <div class="hub-search-wrap">
       <span class="hub-search-icon">🔍</span>
       <input class="hub-search-bar" type="text" id="hubSearchInput" placeholder="Rechercher une AOC, un cépage, un accord…" oninput="hubSearch()" onfocus="hubSearchOpen()" />
@@ -215,17 +642,17 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
         <div class="hub-card-desc">Mets & vins, fromages, recettes</div>
         <span class="hub-card-count count-amv" id="countAMV">— régions</span>
       </div>
-      <div class="hub-card" onclick="goTo('autres-boissons');buildAutresBoissonsScreen()" style="border-left:3px solid #94a3b8;">
+      <div class="hub-card cat-wip" onclick="goTo('autres-boissons');buildAutresBoissonsScreen()">
         <div class="hub-card-icon">🥃</div>
         <div class="hub-card-title">Autres boissons</div>
         <div class="hub-card-desc">Bières, spiritueux, thés, cafés…</div>
-        <span class="hub-card-count" style="background:#f1f5f9;color:#64748b;">WIP</span>
+        <span class="hub-card-count count-wip">WIP</span>
       </div>
-      <div class="hub-card" onclick="goTo('vins-monde');buildVinsMondeScreen()" style="border-left:3px solid #94a3b8;">
+      <div class="hub-card cat-wip" onclick="goTo('vins-monde');buildVinsMondeScreen()">
         <div class="hub-card-icon">🌍</div>
         <div class="hub-card-title">Vins du monde</div>
         <div class="hub-card-desc">Italie, Espagne, Nouveau Monde…</div>
-        <span class="hub-card-count" style="background:#f1f5f9;color:#64748b;">WIP</span>
+        <span class="hub-card-count count-wip">WIP</span>
       </div>
       <div class="hub-card cat-quiz" onclick="goTo('quiz-hub')">
         <div class="hub-card-icon">🧠</div>
@@ -250,11 +677,75 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   </div>
 </div>
 
+<!-- ═══════════════ SOUS-MENU MA CAVE ═══════════════ -->
+<div class="screen" id="screen-cave-hub">
+  <div class="hub">
+    <div class="hub-greeting">
+      <h2>🍷 Ma Cave</h2>
+      <p>Vos bouteilles, vos dégustations, vos envies</p>
+    </div>
+    <div class="hub-grid">
+      <div class="hub-card cat-wip" onclick="goTo('ma-collection');buildMaCollectionScreen()">
+        <div class="hub-card-icon">🍾</div>
+        <div class="hub-card-title">Ma Collection</div>
+        <div class="hub-card-desc">Vins, bières, spiritueux</div>
+        <span class="hub-card-count count-wip">WIP</span>
+      </div>
+      <div class="hub-card cat-wip" onclick="goTo('degustations');buildDegustationsScreen()">
+        <div class="hub-card-icon">🍽️</div>
+        <div class="hub-card-title">Dégustations</div>
+        <div class="hub-card-desc">Notes, avis, podiums</div>
+        <span class="hub-card-count count-wip">WIP</span>
+      </div>
+      <div class="hub-card cat-wip" onclick="goTo('wishlist');buildWishlistScreen()" style="grid-column:1/-1;">
+        <div class="hub-card-icon">📝</div>
+        <div class="hub-card-title">Wishlist</div>
+        <div class="hub-card-desc">Bouteilles à essayer, envies du moment</div>
+        <span class="hub-card-count count-wip">WIP</span>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:1.25rem;display:flex;gap:8px;justify-content:center;">
+      <button onclick="goTo('roadmap');buildRoadmapScreen()" style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border:1px solid #dbe0e6;border-radius:20px;background:#fff;color:#64748b;font-size:11px;font-weight:600;cursor:pointer;">
+        🗺️ Plan de route
+      </button>
+      <button onclick="goTo('admin');buildAdminScreen()" style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border:1px solid #f0d0d0;border-radius:20px;background:#fff;color:#dc2626;font-size:11px;font-weight:600;cursor:pointer;">
+        🛠️ Mode Admin
+      </button>
+    </div>
+  </div>
+</div>
+
 <!-- ═══════════════ PLAN DE ROUTE ═══════════════ -->
 <div class="screen" id="screen-roadmap"></div>
 <div class="screen" id="screen-admin"></div>
 <div class="screen" id="screen-endless"></div>
 <div class="screen" id="screen-stats"></div>
+<div class="screen" id="screen-personnalisation"></div>
+<div class="screen" id="screen-ma-collection"></div>
+<div class="screen" id="screen-collection-vins"></div>
+<div class="screen" id="screen-collection-vins-form"></div>
+<div class="screen" id="screen-collection-vins-detail"></div>
+<div class="screen" id="screen-collection-bieres"></div>
+<div class="screen" id="screen-collection-bieres-form"></div>
+<div class="screen" id="screen-collection-bieres-detail"></div>
+<div class="screen" id="screen-collection-spiritueux"></div>
+<div class="screen" id="screen-collection-spiritueux-form"></div>
+<div class="screen" id="screen-collection-spiritueux-detail"></div>
+<div class="screen" id="screen-degustations"></div>
+<div class="screen" id="screen-degustation-vins"></div>
+<div class="screen" id="screen-degustation-vins-form"></div>
+<div class="screen" id="screen-degustation-vins-detail"></div>
+<div class="screen" id="screen-degustation-bieres"></div>
+<div class="screen" id="screen-degustation-bieres-form"></div>
+<div class="screen" id="screen-degustation-bieres-detail"></div>
+<div class="screen" id="screen-degustation-spiritueux"></div>
+<div class="screen" id="screen-degustation-spiritueux-form"></div>
+<div class="screen" id="screen-degustation-spiritueux-detail"></div>
+<div class="screen" id="screen-degustation-autres"></div>
+<div class="screen" id="screen-degustation-autres-form"></div>
+<div class="screen" id="screen-degustation-autres-detail"></div>
+<div class="screen" id="screen-degustation-podiums"></div>
+<div class="screen" id="screen-wishlist"></div>
 <div class="screen" id="screen-autres-boissons"></div>
 <div class="screen" id="screen-vins-monde"></div>
 <div class="screen" id="screen-quiz-autres-boissons">
@@ -495,6 +986,62 @@ function cloudSet(key, value) {
     body: JSON.stringify(value),
   }).catch(e => console.warn(`Cloud (${key}) : échec de sauvegarde, restera en local pour l'instant.`, e));
 }
+
+/* ══════════════════════════════════════════════════════
+   11.2 — SYSTÈME DE SKINS : chargement & application du thème
+   Appliqué le plus tôt possible dans le script pour éviter tout
+   flash du thème par défaut au chargement de la page.
+   ══════════════════════════════════════════════════════ */
+const THEME_STORAGE_KEY = 'scag_theme_v1';
+
+const THEMES = [
+  { key: 'classique', label: 'Classique', desc: 'Le look actuel de l\'app — clair, sobre, lisible.', swatchBg: '#f5f4f0', swatchFg: '#9333ea', icon: '☀️' },
+  { key: 'cave',       label: 'Cave Voûtée', desc: 'Sombre et feutré, laiton et parchemin, ambiance cave à vin.', swatchBg: '#160c0d', swatchFg: '#c9a24b', icon: '🍷' },
+  { key: 'minitel',    label: 'Minitel', desc: 'Rétro 80s français, écran cathodique, ambre et cyan télétexte.', swatchBg: '#0a0e1a', swatchFg: '#3ee6e6', icon: '📺' },
+  { key: 'memphis',    label: 'Memphis Pop', desc: 'Coloré et ludique, contours épais, esprit 80s pop.', swatchBg: '#f7f3ea', swatchFg: '#ff5fa2', icon: '🎉' },
+  { key: 'poster',     label: 'Poster Suisse', desc: 'Moderne et éditorial, grille rouge/noir, typographie forte.', swatchBg: '#fafaf8', swatchFg: '#e0271f', icon: '📐' },
+  { key: 'soft-ui',    label: 'Soft UI', desc: 'Doux et tactile, reliefs neumorphiques, indigo pastel.', swatchBg: '#e9ecf3', swatchFg: '#6c63ff', icon: '🌥️' },
+];
+
+function loadTheme() {
+  try {
+    return localStorage.getItem(THEME_STORAGE_KEY) || 'classique';
+  } catch (e) {
+    return 'classique';
+  }
+}
+
+function saveThemeLocal(themeKey) {
+  try { localStorage.setItem(THEME_STORAGE_KEY, themeKey); } catch (e) {}
+}
+
+function applyTheme(themeKey) {
+  document.documentElement.setAttribute('data-theme', themeKey);
+}
+
+function setTheme(themeKey) {
+  applyTheme(themeKey);
+  saveThemeLocal(themeKey);
+  cloudSet('theme', themeKey);
+  if (document.getElementById('screen-personnalisation')?.classList.contains('active')) {
+    buildPersonnalisationScreen();
+  }
+}
+
+// Application immédiate au chargement (avant même le premier rendu du hub)
+applyTheme(loadTheme());
+
+async function syncThemeFromCloud() {
+  const cloudTheme = await cloudGet('theme');
+  if (cloudTheme && THEMES.some(t => t.key === cloudTheme)) {
+    applyTheme(cloudTheme);
+    saveThemeLocal(cloudTheme);
+    if (document.getElementById('screen-personnalisation')?.classList.contains('active')) {
+      buildPersonnalisationScreen();
+    }
+  }
+}
+syncThemeFromCloud();
 
 const DATA={
 bordeaux:{name:"Bordeaux",color:"#B5D4F4",subcats:[
@@ -4809,32 +5356,33 @@ const ROADMAP = [
   { id: '5.0', titre: 'WIP — Autres boissons & Vins du monde', done: true, note: 'Structure prête — contenu à venir de ta part' },
   { id: '6.0', titre: 'Mode Admin — archives des questions', done: true },
   { id: '7.0', titre: 'Mode Sans Fin (vies + high score)', done: true },
-  { id: '8.0', titre: 'Refonte du menu principal — 2 catégories', done: false,
+  { id: '8.0', titre: 'Refonte du menu principal — 2 catégories', done: true,
     note: '"Révisions" (contenu existant) et "Ma Cave" (nouveau). Plan de route + Mode Admin conservés sur tous les sous-menus.',
     sous: [
-      { id: '8.1', titre: 'Coder les placeholders "Wishlist" et "Dégustations"', done: false },
+      { id: '8.1', titre: 'Coder les placeholders "Wishlist" et "Dégustations"', done: true },
     ]
   },
   { id: '9.0', titre: 'Projet "Ma Cave" — cave personnelle', done: false,
     sous: [
-      { id: '9.1', titre: 'Trois catégories : Vins, Bières, Spiritueux', done: false },
-      { id: '9.2', titre: 'Création de bouteille (nom, millésime, domaine/brasserie/distillerie → fiche auto)', done: false },
-      { id: '9.2.1', titre: 'Menu défilant : date limite (bières) / potentiel de garde + année idéale (vins)', done: false },
-      { id: '9.2.2', titre: 'Icône bouteille avec contenu ajustable (suivi "où j\'en suis")', done: false },
-      { id: '9.2.3', titre: 'Accords & informations complémentaires sur la bouteille', done: false },
+      { id: '9.1', titre: 'Trois catégories : Vins, Bières, Spiritueux', done: true },
+      { id: '9.2', titre: 'Création de bouteille (nom, millésime, domaine/brasserie/distillerie → fiche auto)', done: true },
+      { id: '9.2.1', titre: 'Menu défilant : date limite (bières) / potentiel de garde + année idéale (vins)', done: true },
+      { id: '9.2.2', titre: 'Icône bouteille avec contenu ajustable (suivi "où j\'en suis")', done: true },
+      { id: '9.2.3', titre: 'Accords & informations complémentaires sur la bouteille', done: true },
     ]
   },
   { id: '10.0', titre: 'Menu "Dégustations"', done: false,
     sous: [
-      { id: '10.1', titre: '4 catégories (Bières/Vins/Spiritueux/Autres) + ajout bouteille, avis, note /10, date', done: false },
-      { id: '10.2', titre: 'Filtres + podiums par catégorie (+ podium brasseries pour les bières)', done: false },
+      { id: '10.1', titre: '4 catégories (Bières/Vins/Spiritueux/Autres) + ajout bouteille, avis, note /10, date', done: true },
+      { id: '10.2', titre: 'Filtres + podiums par catégorie (+ podium brasseries pour les bières)', done: true },
     ]
   },
   { id: '11.0', titre: 'Personnalisation — skins', done: false,
     sous: [
-      { id: '11.1', titre: 'Icône réglages persistante à côté des statistiques', done: false },
-      { id: '11.2', titre: 'Variables CSS + système de changement de skin à la volée', done: false },
-      { id: '11.3', titre: 'Skins additionnels (à définir)', done: false },
+      { id: '11.1', titre: 'Icône réglages persistante à côté des statistiques', done: true },
+      { id: '11.2', titre: 'Variables CSS + système de changement de skin à la volée', done: true,
+        note: 'Architecture posée : 16 variables CSS, data-theme sur <html>, persistance locale + cloud. Migré : header, hub, navigation, boutons, formulaires Ma Cave, quiz. Écrans plus profonds (fiches AOC, Admin, Stats détaillées...) encore en couleurs fixes — migration incrémentale à poursuivre.' },
+      { id: '11.3', titre: 'Skins additionnels (à définir)', done: true, note: '5/5 : Cave Voûtée, Minitel, Memphis Pop, Poster Suisse, Soft UI — tous intégrés au sélecteur.' },
     ]
   },
   { id: 'X.0', titre: 'Débogage complet', done: false, note: 'En cours — liste de corrections en cours de constitution' },
@@ -5677,6 +6225,144 @@ function saveMastery(data) {
 
 let masteryData = loadMastery();
 
+/* ══════════════════════════════════════════════════════
+   9.2 — MA CAVE : stockage de la collection (vins/bières/spiritueux)
+   Même pattern que la maîtrise : localStorage = cache instantané,
+   cloud = synchro en tâche de fond.
+   ══════════════════════════════════════════════════════ */
+const COLLECTION_STORAGE_KEY = 'scag_collection_v1';
+
+function loadCollection() {
+  try {
+    const raw = localStorage.getItem(COLLECTION_STORAGE_KEY);
+    return raw ? JSON.parse(raw) : { vins: [], bieres: [], spiritueux: [] };
+  } catch (e) {
+    console.warn('Collection: localStorage indisponible.', e);
+    return { vins: [], bieres: [], spiritueux: [] };
+  }
+}
+
+function saveCollection(data) {
+  try {
+    localStorage.setItem(COLLECTION_STORAGE_KEY, JSON.stringify(data));
+  } catch (e) {
+    console.warn('Collection: impossible de sauvegarder localement.', e);
+  }
+  cloudSet('collection', data);
+}
+
+let collectionData = loadCollection();
+
+async function syncCollectionFromCloud() {
+  const cloudData = await cloudGet('collection');
+  if (cloudData) {
+    collectionData = cloudData;
+    try { localStorage.setItem(COLLECTION_STORAGE_KEY, JSON.stringify(cloudData)); } catch (e) {}
+    ['vins', 'bieres', 'spiritueux'].forEach(cat => {
+      if (document.getElementById('screen-collection-' + cat)?.classList.contains('active')) {
+        buildCategoryListScreen('collection', cat);
+      }
+    });
+  }
+}
+syncCollectionFromCloud();
+
+/* ── Dégustations : même pattern de stockage, données séparées de la collection ── */
+const DEGUSTATION_STORAGE_KEY = 'scag_degustation_v1';
+
+function loadDegustation() {
+  try {
+    const raw = localStorage.getItem(DEGUSTATION_STORAGE_KEY);
+    const data = raw ? JSON.parse(raw) : { vins: [], bieres: [], spiritueux: [], autres: [] };
+    if (!data.autres) data.autres = []; // migration douce pour les données déjà existantes
+    return data;
+  } catch (e) {
+    console.warn('Dégustation: localStorage indisponible.', e);
+    return { vins: [], bieres: [], spiritueux: [], autres: [] };
+  }
+}
+
+function saveDegustation(data) {
+  try {
+    localStorage.setItem(DEGUSTATION_STORAGE_KEY, JSON.stringify(data));
+  } catch (e) {
+    console.warn('Dégustation: impossible de sauvegarder localement.', e);
+  }
+  cloudSet('degustation', data);
+}
+
+let degustationData = loadDegustation();
+
+async function syncDegustationFromCloud() {
+  const cloudData = await cloudGet('degustation');
+  if (cloudData) {
+    degustationData = cloudData;
+    try { localStorage.setItem(DEGUSTATION_STORAGE_KEY, JSON.stringify(cloudData)); } catch (e) {}
+    ['vins', 'bieres', 'spiritueux'].forEach(cat => {
+      if (document.getElementById('screen-degustation-' + cat)?.classList.contains('active')) {
+        buildCategoryListScreen('degustation', cat);
+      }
+    });
+  }
+}
+syncDegustationFromCloud();
+
+function addBottleTo(context, category, bottle) {
+  const store = storeRef(context);
+  bottle.id = context + '_' + category + '_' + Date.now();
+  bottle.addedAt = new Date().toISOString();
+  store.get()[category].push(bottle);
+  store.save(store.get());
+  return bottle.id;
+}
+
+function deleteBottleFrom(context, category, id) {
+  if (!confirm('Supprimer cette bouteille ?')) return;
+  const store = storeRef(context);
+  store.get()[category] = store.get()[category].filter(b => b.id !== id);
+  store.save(store.get());
+  goTo(context + '-' + category);
+  buildCategoryListScreen(context, category);
+}
+
+/* ══════════════════════════════════════════════════════
+   WISHLIST — liste simple (nom + marque), même pattern cloud
+   ══════════════════════════════════════════════════════ */
+const WISHLIST_STORAGE_KEY = 'scag_wishlist_v1';
+
+function loadWishlist() {
+  try {
+    const raw = localStorage.getItem(WISHLIST_STORAGE_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch (e) {
+    console.warn('Wishlist: localStorage indisponible.', e);
+    return [];
+  }
+}
+
+function saveWishlist(data) {
+  try {
+    localStorage.setItem(WISHLIST_STORAGE_KEY, JSON.stringify(data));
+  } catch (e) {
+    console.warn('Wishlist: impossible de sauvegarder localement.', e);
+  }
+  cloudSet('wishlist', data);
+}
+
+let wishlistData = loadWishlist();
+// Suivi de l'état de confirmation par ligne : { [id]: 'delete' | 'buy' }
+let wishlistConfirm = {};
+
+async function syncWishlistFromCloud() {
+  const cloudData = await cloudGet('wishlist');
+  if (cloudData) {
+    wishlistData = cloudData;
+    try { localStorage.setItem(WISHLIST_STORAGE_KEY, JSON.stringify(cloudData)); } catch (e) {}
+    if (document.getElementById('screen-wishlist')?.classList.contains('active')) buildWishlistScreen();
+  }
+}
+syncWishlistFromCloud();
+
 /* Au chargement de l'app : on va chercher la version la plus à jour dans le
    cloud (peut venir d'un autre appareil) et on met à jour le cache local +
    l'écran stats si jamais il est déjà affiché. */
@@ -5794,6 +6480,31 @@ function computeOralStats() {
 /* ══════════════════════════════════════════════════════
    ÉCRAN STATISTIQUES
    ══════════════════════════════════════════════════════ */
+
+/* ══════════════════════════════════════════════════════
+   11.2 — PERSONNALISATION (skins) — sélecteur fonctionnel
+   ══════════════════════════════════════════════════════ */
+function buildPersonnalisationScreen() {
+  const current = document.documentElement.getAttribute('data-theme') || 'classique';
+  document.getElementById('screen-personnalisation').innerHTML = `
+    <div class="cave-form">
+      <div class="form-section-title" style="margin-top:0;">Thème visuel</div>
+      <div style="font-size:12px;color:var(--text-secondary);margin-bottom:16px;line-height:1.5;">
+        Le thème s'applique immédiatement et se synchronise avec vos autres appareils.
+        Pour l'instant, le menu principal, la navigation, les boutons et les formulaires suivent le thème —
+        les autres écrans suivront au fil des prochaines mises à jour.
+      </div>
+      ${THEMES.map(t => `
+        <div class="skin-option ${t.key === current ? 'active' : ''}" onclick="setTheme('${t.key}')">
+          <div class="skin-swatch" style="background:${t.swatchBg};color:${t.swatchFg};">${t.icon}</div>
+          <div class="skin-option-body">
+            <div class="skin-option-title">${t.label}</div>
+            <div class="skin-option-desc">${t.desc}</div>
+          </div>
+          <div class="skin-check">✓</div>
+        </div>`).join('')}
+    </div>`;
+}
 
 function buildStatsScreen() {
   const regionStats = Object.keys(QUIZ_BY_REGION).map(key => {
@@ -5992,14 +6703,718 @@ function buildVinsMondeScreen() {
     </div>`;
 }
 
+/* ── 8.1 — Placeholders Ma Cave (Wishlist, Dégustations, Ma Collection) ── */
+/* ── 9.1 — Ma Collection : sous-menu 3 catégories (Vins/Bières/Spiritueux) ── */
+const CAVE_CATEGORIES = [
+  { key: 'vins',        label: 'Vins',        icon: '🍷', color: '#7c3aed' },
+  { key: 'bieres',      label: 'Bières',      icon: '🍺', color: '#d97706' },
+  { key: 'spiritueux',  label: 'Spiritueux',  icon: '🥃', color: '#92400e' },
+];
+
+function buildMaCollectionScreen() {
+  document.getElementById('screen-ma-collection').innerHTML = `
+    <div class="hub">
+      <div class="hub-greeting">
+        <h2>🍾 Ma Collection</h2>
+        <p>Vos bouteilles, par catégorie</p>
+      </div>
+      <div class="hub-grid">
+        ${CAVE_CATEGORIES.map(c => `
+          <div class="hub-card cat-dynamic" style="grid-column:1/-1;--cat-accent:${c.color};" onclick="goTo('collection-${c.key}');buildCategoryListScreen('collection','${c.key}')">
+            <div class="hub-card-icon">${c.icon}</div>
+            <div class="hub-card-title">${c.label}</div>
+            <div class="hub-card-desc">Vos bouteilles de ${c.label.toLowerCase()}</div>
+            <span class="hub-card-count count-wip">${collectionData[c.key]?.length || 0}</span>
+          </div>`).join('')}
+      </div>
+    </div>`;
+}
+
+/* ── Référence au bon store de données selon le contexte ── */
+/* ── 10.1 — Dégustations : 4 catégories (les 3 précédentes + Autres) ── */
+const DEGUSTATION_CATEGORIES = [
+  ...CAVE_CATEGORIES,
+  { key: 'autres', label: 'Autres', icon: '🍹', color: '#0891b2' },
+];
+
+function findCategory(key) {
+  return DEGUSTATION_CATEGORIES.find(c => c.key === key);
+}
+
+function storeRef(context) {
+  return context === 'degustation'
+    ? { get: () => degustationData, save: saveDegustation }
+    : { get: () => collectionData, save: saveCollection };
+}
+
+/* ── 10.2 — Tri des dégustations (par catégorie, mémorisé en mémoire) ── */
+let degustationSort = {};
+
+function sortBottles(bottles, mode) {
+  const arr = bottles.slice();
+  if (mode === 'subjective') return arr.sort((a, b) => (b.noteSubjective ?? -1) - (a.noteSubjective ?? -1));
+  if (mode === 'objective') return arr.sort((a, b) => (b.noteObjective ?? -1) - (a.noteObjective ?? -1));
+  if (mode === 'alpha') return arr.sort((a, b) => (a.nom || '').localeCompare(b.nom || ''));
+  return arr.reverse(); // 'recent' par défaut : dernier ajouté en premier
+}
+
+function setDegustationSort(context, key, mode) {
+  degustationSort[key] = mode;
+  buildCategoryListScreen(context, key);
+}
+
+function buildCategoryListScreen(context, key) {
+  const cat = findCategory(key);
+  const bottles = storeRef(context).get()[key] || [];
+  const addLabel = key === 'vins' ? 'un vin' : key === 'bieres' ? 'une bière' : key === 'spiritueux' ? 'un spiritueux' : 'une boisson';
+  const isDeg = context === 'degustation';
+  const sortMode = degustationSort[key] || 'recent';
+  const sortedBottles = isDeg ? sortBottles(bottles, sortMode) : bottles.slice().reverse();
+
+  document.getElementById('screen-' + context + '-' + key).innerHTML = `
+    <div class="cave-form">
+      <button class="add-bottle-btn" onclick="goTo('${context}-${key}-form');buildBottleFormScreen('${context}','${key}')">
+        ${cat.icon} + Ajouter ${addLabel}
+      </button>
+      ${isDeg && bottles.length > 0 ? `
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:16px;">
+          <label style="font-size:11px;font-weight:600;color:#888;white-space:nowrap;">Trier par</label>
+          <select onchange="setDegustationSort('${context}','${key}',this.value)" style="flex:1;padding:8px 10px;border:1px solid #e0e0dc;border-radius:8px;font-size:12px;background:#fff;">
+            <option value="recent" ${sortMode==='recent'?'selected':''}>Plus récent</option>
+            <option value="subjective" ${sortMode==='subjective'?'selected':''}>❤️ Meilleure note subjective</option>
+            <option value="objective" ${sortMode==='objective'?'selected':''}>🎯 Meilleure note objective</option>
+            <option value="alpha" ${sortMode==='alpha'?'selected':''}>A → Z</option>
+          </select>
+        </div>
+        <button class="add-bottle-btn" style="border-style:solid;border-color:#fde68a;background:#fffbeb;color:#b45309;margin-bottom:18px;" onclick="goTo('degustation-podiums');buildDegustationPodiumsScreen()">
+          🏆 Voir les podiums
+        </button>
+      ` : ''}
+      ${bottles.length === 0 ? `
+        <div class="placeholder" style="min-height:30vh;">
+          <div class="placeholder-icon">${cat.icon}</div>
+          <div class="placeholder-desc">Aucune bouteille pour l'instant. Ajoutez la première !</div>
+        </div>
+      ` : sortedBottles.map(b => bottleCardHTML(context, key, b)).join('')}
+    </div>`;
+}
+
+function bottleCardHTML(context, category, b) {
+  const title = b.nom || 'Sans nom';
+  let sub = '';
+  if (category === 'vins') sub = [b.domaine, b.millesime].filter(Boolean).join(' · ');
+  if (category === 'bieres') sub = [b.brasserie, b.type].filter(Boolean).join(' · ');
+  if (category === 'spiritueux') sub = [b.marque, b.type].filter(Boolean).join(' · ');
+  if (category === 'autres') sub = [b.type, b.origine].filter(Boolean).join(' · ');
+  return `
+    <div class="bottle-card" onclick="goTo('${context}-${category}-detail');buildBottleDetailScreen('${context}','${category}','${b.id}')">
+      <div class="bottle-card-top">
+        <div>
+          <div class="bottle-card-title">${title}</div>
+          ${sub ? `<div class="bottle-card-sub">${sub}</div>` : ''}
+        </div>
+      </div>
+      <div class="bottle-card-notes">
+        ${b.noteObjective !== undefined ? `<span class="bottle-card-note obj">🎯 ${b.noteObjective}/10</span>` : ''}
+        ${b.noteSubjective !== undefined ? `<span class="bottle-card-note subj">❤️ ${b.noteSubjective}/10</span>` : ''}
+      </div>
+    </div>`;
+}
+
+/* Petits helpers pour cibler les champs du formulaire actuellement affiché
+   (plusieurs écrans partagent les mêmes ids f_nom, noteObjective... donc on
+   scope toujours la recherche à l'écran actif pour éviter de lire un champ
+   resté caché d'un autre contexte Collection/Dégustation). */
+function activeFormEl(selector) {
+  return document.querySelector('.screen.active .cave-form ' + selector);
+}
+function activeFormAll(selector) {
+  return document.querySelectorAll('.screen.active .cave-form ' + selector);
+}
+
+/* Champ "date de dégustation", uniquement affiché en contexte Dégustations, pré-rempli à aujourd'hui */
+function dateDegustationFieldHTML() {
+  const today = new Date().toISOString().slice(0, 10);
+  return `<div class="form-field"><label>Date de dégustation</label><input type="date" id="f_dateDegustation" value="${today}"></div>`;
+}
+
+/* Convertit une date ISO (YYYY-MM-DD) en format français lisible (JJ/MM/AAAA) */
+function formatDateFr(isoDate) {
+  if (!isoDate) return null;
+  const [y, m, d] = isoDate.split('-');
+  if (!y || !m || !d) return isoDate;
+  return `${d}/${m}/${y}`;
+}
+
+/* ── Composant réutilisable : double curseur de note (objectif/subjectif) ── */
+function ratingSlidersHTML() {
+  return `
+    <div class="form-section-title">Vos notes</div>
+    <div class="form-rating">
+      <div class="form-rating-head"><label style="margin:0;">🎯 Note objective (technique)</label><span class="val" id="valObj">5</span></div>
+      <input type="range" min="0" max="10" step="0.5" value="5" id="noteObjective" oninput="this.closest('.cave-form').querySelector('#valObj').textContent=this.value">
+    </div>
+    <div class="form-rating">
+      <div class="form-rating-head"><label style="margin:0;">❤️ Note subjective (coup de cœur)</label><span class="val" id="valSubj">5</span></div>
+      <input type="range" min="0" max="10" step="0.5" value="5" id="noteSubjective" oninput="this.closest('.cave-form').querySelector('#valSubj').textContent=this.value">
+    </div>`;
+}
+
+/* ── Aiguillage vers le bon formulaire selon la catégorie ── */
+function buildBottleFormScreen(context, category) {
+  if (category === 'bieres') return buildBiereFormScreen(context);
+  if (category === 'spiritueux') return buildSpiritueuxFormScreen(context);
+  if (category === 'vins') return buildVinFormScreen(context);
+  if (category === 'autres') return buildAutresFormScreen(context);
+}
+
+/* ── FORMULAIRE BIÈRE ── */
+function buildBiereFormScreen(context) {
+  const isDeg = context === 'degustation';
+  document.getElementById('screen-' + context + '-bieres-form').innerHTML = `
+    <div class="cave-form">
+      <div class="form-field"><label>Nom de la bière</label><input type="text" id="f_nom" placeholder="Ex. Punk IPA"></div>
+      <div class="form-field"><label>Brasserie</label><input type="text" id="f_brasserie" placeholder="Ex. BrewDog"></div>
+      <div class="form-field"><label>Type de bière</label><input type="text" id="f_type" placeholder="Ex. IPA, Stout, Lager…"></div>
+      <div class="form-field"><label>Degré d'alcool <span class="opt">(%)</span></label><input type="number" id="f_degre" step="0.1" min="0" max="20" placeholder="Ex. 5.6"></div>
+      ${!isDeg ? `<div class="form-field"><label>Date de péremption</label><input type="date" id="f_datePeremption"></div>` : ''}
+      ${isDeg ? `${dateDegustationFieldHTML()}<div class="form-field"><label>Avis général</label><textarea id="f_avis" placeholder="Vos impressions générales…"></textarea></div>${ratingSlidersHTML()}` : ''}
+      <button class="form-submit" onclick="submitBiereForm('${context}')">💾 Enregistrer la bière</button>
+    </div>`;
+}
+
+function submitBiereForm(context) {
+  const nom = activeFormEl('#f_nom').value.trim();
+  if (!nom) { alert('Le nom de la bière est obligatoire.'); return; }
+  const datePeremptionEl = activeFormEl('#f_datePeremption');
+  const dateDegEl = activeFormEl('#f_dateDegustation');
+  const avisEl = activeFormEl('#f_avis');
+  const noteObjEl = activeFormEl('#noteObjective');
+  const noteSubjEl = activeFormEl('#noteSubjective');
+  const bottle = {
+    nom,
+    brasserie: activeFormEl('#f_brasserie').value.trim(),
+    type: activeFormEl('#f_type').value.trim(),
+    degre: parseFloat(activeFormEl('#f_degre').value) || null,
+    datePeremption: datePeremptionEl ? (datePeremptionEl.value || null) : null,
+    dateDegustation: dateDegEl ? (dateDegEl.value || null) : null,
+    avisGeneral: avisEl ? avisEl.value.trim() : '',
+    noteObjective: noteObjEl ? parseFloat(noteObjEl.value) : undefined,
+    noteSubjective: noteSubjEl ? parseFloat(noteSubjEl.value) : undefined,
+  };
+  const id = addBottleTo(context, 'bieres', bottle);
+  goTo(context + '-bieres-detail');
+  buildBottleDetailScreen(context, 'bieres', id);
+}
+
+/* ── FORMULAIRE SPIRITUEUX (+ widget bouteille) ── */
+function buildSpiritueuxFormScreen(context) {
+  document.getElementById('screen-' + context + '-spiritueux-form').innerHTML = `
+    <div class="cave-form">
+      <div class="form-field"><label>Nom</label><input type="text" id="f_nom" placeholder="Ex. Lagavulin 16 ans"></div>
+      <div class="form-field"><label>Type de spiritueux</label><input type="text" id="f_type" placeholder="Ex. Whisky, Rhum, Gin, Cognac…"></div>
+      <div class="form-field"><label>Localisation <span class="opt">(pays/région)</span></label><input type="text" id="f_localisation" placeholder="Ex. Islay, Écosse"></div>
+      <div class="form-field"><label>Marque / distillerie</label><input type="text" id="f_marque" placeholder="Ex. Lagavulin"></div>
+      ${bottleFillWidgetHTML()}
+      ${context === 'degustation' ? `
+        ${dateDegustationFieldHTML()}
+        <div class="form-section-title">Description</div>
+        <div class="form-field"><label>Œil</label><textarea id="f_oeil" placeholder="Couleur, robe, intensité…"></textarea></div>
+        <div class="form-field"><label>Nez</label><textarea id="f_nez" placeholder="Arômes perçus…"></textarea></div>
+        <div class="form-field"><label>Bouche</label><textarea id="f_bouche" placeholder="Attaque, corps, finale…"></textarea></div>
+        <div class="form-field"><label>Avis général</label><textarea id="f_avis" placeholder="Vos impressions générales…"></textarea></div>
+        ${ratingSlidersHTML()}
+      ` : ''}
+      <button class="form-submit" onclick="submitSpiritueuxForm('${context}')">💾 Enregistrer le spiritueux</button>
+    </div>`;
+}
+
+/* Widget de remplissage : une bouteille SVG dont le niveau se règle par présélections */
+function bottleFillWidgetHTML() {
+  const levels = [100, 75, 50, 25, 0];
+  return `
+    <div class="form-section-title">Remplissage de la bouteille</div>
+    <div class="bottle-widget">
+      <div class="bottle-svg-wrap">
+        <svg viewBox="0 0 70 150" width="70" height="150">
+          <defs>
+            <clipPath id="bottleClip"><path d="M25,5 h20 v20 c0,5 10,8 10,20 v90 c0,5 -4,9 -9,9 h-22 c-5,0 -9,-4 -9,-9 v-90 c0,-12 10,-15 10,-20 z"/></clipPath>
+          </defs>
+          <path d="M25,5 h20 v20 c0,5 10,8 10,20 v90 c0,5 -4,9 -9,9 h-22 c-5,0 -9,-4 -9,-9 v-90 c0,-12 10,-15 10,-20 z" fill="#f0f0ed" stroke="#ccc" stroke-width="2"/>
+          <rect id="bottleFillRect" x="0" y="150" width="70" height="150" fill="#92400e" clip-path="url(#bottleClip)"/>
+        </svg>
+      </div>
+      <div class="bottle-fill-label"><span id="bottleFillLabel">100</span>% plein</div>
+      <div class="bottle-presets">
+        ${levels.map(l => `<button type="button" class="bottle-preset-btn ${l===100?'active':''}" data-level="${l}" onclick="setBottleFill(${l})">${l}%</button>`).join('')}
+      </div>
+    </div>`;
+}
+
+function setBottleFill(level) {
+  const rect = activeFormEl('#bottleFillRect');
+  const h = 150 * (level / 100);
+  rect.setAttribute('y', 150 - h);
+  rect.setAttribute('height', h);
+  activeFormEl('#bottleFillLabel').textContent = level;
+  activeFormAll('.bottle-preset-btn').forEach(b => b.classList.toggle('active', Number(b.dataset.level) === level));
+  window._currentBottleFill = level;
+}
+
+function submitSpiritueuxForm(context) {
+  const nom = activeFormEl('#f_nom').value.trim();
+  if (!nom) { alert('Le nom est obligatoire.'); return; }
+  const oeilEl = activeFormEl('#f_oeil');
+  const nezEl = activeFormEl('#f_nez');
+  const boucheEl = activeFormEl('#f_bouche');
+  const avisEl = activeFormEl('#f_avis');
+  const dateDegEl = activeFormEl('#f_dateDegustation');
+  const noteObjEl = activeFormEl('#noteObjective');
+  const noteSubjEl = activeFormEl('#noteSubjective');
+  const bottle = {
+    nom,
+    type: activeFormEl('#f_type').value.trim(),
+    localisation: activeFormEl('#f_localisation').value.trim(),
+    marque: activeFormEl('#f_marque').value.trim(),
+    remplissage: window._currentBottleFill !== undefined ? window._currentBottleFill : 100,
+    oeil: oeilEl ? oeilEl.value.trim() : '',
+    nez: nezEl ? nezEl.value.trim() : '',
+    bouche: boucheEl ? boucheEl.value.trim() : '',
+    avisGeneral: avisEl ? avisEl.value.trim() : '',
+    dateDegustation: dateDegEl ? (dateDegEl.value || null) : null,
+    noteObjective: noteObjEl ? parseFloat(noteObjEl.value) : undefined,
+    noteSubjective: noteSubjEl ? parseFloat(noteSubjEl.value) : undefined,
+  };
+  window._currentBottleFill = undefined;
+  const id = addBottleTo(context, 'spiritueux', bottle);
+  goTo(context + '-spiritueux-detail');
+  buildBottleDetailScreen(context, 'spiritueux', id);
+}
+
+/* ── FORMULAIRE VIN (champs optionnels + génération auto accords/garde) ── */
+function buildVinFormScreen(context) {
+  document.getElementById('screen-' + context + '-vins-form').innerHTML = `
+    <div class="cave-form">
+      <div class="form-field"><label>Nom du vin</label><input type="text" id="f_nom" placeholder="Ex. Clos des Chênes"></div>
+      <div class="form-field"><label>Millésime <span class="opt">(facultatif)</span></label><input type="number" id="f_millesime" min="1900" max="2100" placeholder="Ex. 2019"></div>
+      <div class="form-field"><label>Cépage <span class="opt">(facultatif)</span></label><input type="text" id="f_cepage" placeholder="Ex. Pinot Noir" list="cepageList">
+        <datalist id="cepageList">${[...(CEPAGES.rouges||[]),...(CEPAGES.blancs||[]),...(CEPAGES.locaux||[])].map(c=>`<option value="${c.nom}">`).join('')}</datalist>
+      </div>
+      <div class="form-field"><label>Domaine <span class="opt">(facultatif)</span></label><input type="text" id="f_domaine" placeholder="Ex. Domaine de la Romanée-Conti"></div>
+      <div class="form-field">
+        <label>Label <span class="opt">(facultatif)</span></label>
+        <div class="form-checkrow">
+          <label class="form-checkbox"><input type="checkbox" value="Bio" onchange="this.parentElement.classList.toggle('checked',this.checked)"> Bio</label>
+          <label class="form-checkbox"><input type="checkbox" value="Demeter" onchange="this.parentElement.classList.toggle('checked',this.checked)"> Demeter</label>
+          <label class="form-checkbox"><input type="checkbox" value="Biodynamie" onchange="this.parentElement.classList.toggle('checked',this.checked)"> Biodynamie</label>
+        </div>
+      </div>
+      <div class="form-field"><label>Type de vin <span class="opt">(recommandé — utilisé pour générer accords/garde)</span></label>
+        <select id="f_typeVin">
+          <option value="">— Non précisé —</option>
+          <option value="rouge">Rouge</option>
+          <option value="blanc">Blanc</option>
+          <option value="rose">Rosé</option>
+          <option value="effervescent">Effervescent</option>
+          <option value="liquoreux">Liquoreux</option>
+        </select>
+      </div>
+      <div class="form-section-title">Description <span class="opt" style="text-transform:none;font-weight:400;">(facultatif)</span></div>
+      ${context === 'degustation' ? `
+        ${dateDegustationFieldHTML()}
+        <div class="form-field"><label>Œil</label><textarea id="f_oeil" placeholder="Couleur, robe, intensité…"></textarea></div>
+        <div class="form-field"><label>Nez</label><textarea id="f_nez" placeholder="Arômes perçus…"></textarea></div>
+        <div class="form-field"><label>Bouche</label><textarea id="f_bouche" placeholder="Attaque, corps, finale…"></textarea></div>
+        <div class="form-field"><label>Avis général</label><textarea id="f_avis" placeholder="Vos impressions générales…"></textarea></div>
+        ${ratingSlidersHTML()}
+      ` : ''}
+      <button class="form-submit" onclick="submitVinForm('${context}')">✨ Enregistrer et générer les accords</button>
+    </div>`;
+}
+
+/* Génère accords + potentiel de garde à partir du cépage (base CEPAGES) si possible,
+   sinon repli sur des règles génériques par type de vin. */
+function generateWineInsights(cepageInput, typeVin, millesime) {
+  const allCepages = [...(CEPAGES.rouges||[]), ...(CEPAGES.blancs||[]), ...(CEPAGES.locaux||[])];
+  const match = cepageInput ? allCepages.find(c => c.nom.toLowerCase() === cepageInput.trim().toLowerCase()) : null;
+
+  let garde, accords, source;
+  if (match) {
+    garde = match.garde;
+    accords = match.accords;
+    source = `basé sur le cépage ${match.nom}`;
+  } else {
+    const fallback = {
+      rouge:        { garde: '5 à 10 ans',  accords: 'Viandes rouges, gibier, fromages affinés' },
+      blanc:        { garde: '2 à 5 ans',   accords: 'Poissons, fruits de mer, volaille' },
+      rose:         { garde: '1 à 2 ans',   accords: 'Cuisine estivale, grillades légères, salades' },
+      effervescent: { garde: '3 à 5 ans',   accords: 'Apéritif, fruits de mer, desserts peu sucrés' },
+      liquoreux:    { garde: '10 à 30 ans', accords: 'Foie gras, desserts, fromages persillés' },
+    }[typeVin];
+    if (fallback) {
+      garde = fallback.garde;
+      accords = fallback.accords;
+      source = `estimation générique pour un vin ${typeVin}`;
+    }
+  }
+
+  if (!garde) return null;
+
+  // Tente d'extraire une fourchette d'années pour calculer une année idéale
+  const m = garde.match(/(\d+)\s*(?:à|-)\s*(\d+)\s*ans/);
+  let anneeIdeale = null;
+  if (m && millesime) {
+    const min = parseInt(m[1], 10), max = parseInt(m[2], 10);
+    anneeIdeale = `${millesime + Math.round(min * 0.6)} – ${millesime + Math.round(max * 0.7)}`;
+  }
+
+  return { garde, accords, source, anneeIdeale };
+}
+
+function submitVinForm(context) {
+  const nom = activeFormEl('#f_nom').value.trim();
+  if (!nom) { alert('Le nom du vin est obligatoire.'); return; }
+  const labels = [...activeFormAll('.form-checkbox input:checked')].map(cb => cb.value);
+  const cepage = activeFormEl('#f_cepage').value.trim();
+  const typeVin = activeFormEl('#f_typeVin').value;
+  const millesime = parseInt(activeFormEl('#f_millesime').value) || null;
+
+  const insights = generateWineInsights(cepage, typeVin, millesime);
+
+  const oeilEl = activeFormEl('#f_oeil');
+  const nezEl = activeFormEl('#f_nez');
+  const boucheEl = activeFormEl('#f_bouche');
+  const avisEl = activeFormEl('#f_avis');
+  const dateDegEl = activeFormEl('#f_dateDegustation');
+  const noteObjEl = activeFormEl('#noteObjective');
+  const noteSubjEl = activeFormEl('#noteSubjective');
+
+  const bottle = {
+    nom,
+    millesime,
+    cepage,
+    domaine: activeFormEl('#f_domaine').value.trim(),
+    labels,
+    typeVin,
+    oeil: oeilEl ? oeilEl.value.trim() : '',
+    nez: nezEl ? nezEl.value.trim() : '',
+    bouche: boucheEl ? boucheEl.value.trim() : '',
+    avisGeneral: avisEl ? avisEl.value.trim() : '',
+    dateDegustation: dateDegEl ? (dateDegEl.value || null) : null,
+    noteObjective: noteObjEl ? parseFloat(noteObjEl.value) : undefined,
+    noteSubjective: noteSubjEl ? parseFloat(noteSubjEl.value) : undefined,
+    insights,
+  };
+  const id = addBottleTo(context, 'vins', bottle);
+  goTo(context + '-vins-detail');
+  buildBottleDetailScreen(context, 'vins', id);
+}
+
+/* ── FORMULAIRE AUTRES (dégustation uniquement — cocktails, cidres, sakés...) ── */
+function buildAutresFormScreen(context) {
+  document.getElementById('screen-' + context + '-autres-form').innerHTML = `
+    <div class="cave-form">
+      <div class="form-field"><label>Nom</label><input type="text" id="f_nom" placeholder="Ex. Old Fashioned, Cidre brut…"></div>
+      <div class="form-field"><label>Type <span class="opt">(facultatif)</span></label><input type="text" id="f_type" placeholder="Ex. Cocktail, Cidre, Saké, Hydromel…"></div>
+      <div class="form-field"><label>Origine / marque <span class="opt">(facultatif)</span></label><input type="text" id="f_origine" placeholder="Ex. Maison, bar, marque…"></div>
+      ${dateDegustationFieldHTML()}
+      <div class="form-section-title">Description</div>
+      <div class="form-field"><label>Œil</label><textarea id="f_oeil" placeholder="Couleur, aspect…"></textarea></div>
+      <div class="form-field"><label>Nez</label><textarea id="f_nez" placeholder="Arômes perçus…"></textarea></div>
+      <div class="form-field"><label>Bouche</label><textarea id="f_bouche" placeholder="Attaque, corps, finale…"></textarea></div>
+      <div class="form-field"><label>Avis général</label><textarea id="f_avis" placeholder="Vos impressions générales…"></textarea></div>
+      ${ratingSlidersHTML()}
+      <button class="form-submit" onclick="submitAutresForm('${context}')">💾 Enregistrer</button>
+    </div>`;
+}
+
+function submitAutresForm(context) {
+  const nom = activeFormEl('#f_nom').value.trim();
+  if (!nom) { alert('Le nom est obligatoire.'); return; }
+  const dateDegEl = activeFormEl('#f_dateDegustation');
+  const bottle = {
+    nom,
+    type: activeFormEl('#f_type').value.trim(),
+    origine: activeFormEl('#f_origine').value.trim(),
+    dateDegustation: dateDegEl ? (dateDegEl.value || null) : null,
+    oeil: activeFormEl('#f_oeil').value.trim(),
+    nez: activeFormEl('#f_nez').value.trim(),
+    bouche: activeFormEl('#f_bouche').value.trim(),
+    avisGeneral: activeFormEl('#f_avis').value.trim(),
+    noteObjective: parseFloat(activeFormEl('#noteObjective').value),
+    noteSubjective: parseFloat(activeFormEl('#noteSubjective').value),
+  };
+  const id = addBottleTo(context, 'autres', bottle);
+  goTo(context + '-autres-detail');
+  buildBottleDetailScreen(context, 'autres', id);
+}
+
+/* ── FICHE DÉTAIL D'UNE BOUTEILLE ── */
+function buildBottleDetailScreen(context, category, id) {
+  const bottle = (storeRef(context).get()[category] || []).find(b => b.id === id);
+  const el = document.getElementById('screen-' + context + '-' + category + '-detail');
+  if (!bottle) { el.innerHTML = `<div class="placeholder"><div class="placeholder-desc">Bouteille introuvable.</div></div>`; return; }
+
+  let fieldsHTML = '';
+  if (category === 'bieres') {
+    fieldsHTML = `
+      ${row('Brasserie', bottle.brasserie)}
+      ${row('Type', bottle.type)}
+      ${row("Degré d'alcool", bottle.degre ? bottle.degre + '%' : null)}
+      ${row('Date de péremption', bottle.datePeremption)}
+      ${row('Date de dégustation', formatDateFr(bottle.dateDegustation))}
+      ${row('Avis général', bottle.avisGeneral)}`;
+  } else if (category === 'spiritueux') {
+    fieldsHTML = `
+      ${row('Type', bottle.type)}
+      ${row('Localisation', bottle.localisation)}
+      ${row('Marque', bottle.marque)}
+      ${row('Remplissage', bottle.remplissage + '%')}
+      ${row('Date de dégustation', formatDateFr(bottle.dateDegustation))}
+      ${row('Œil', bottle.oeil)}
+      ${row('Nez', bottle.nez)}
+      ${row('Bouche', bottle.bouche)}
+      ${row('Avis général', bottle.avisGeneral)}`;
+  } else if (category === 'autres') {
+    fieldsHTML = `
+      ${row('Type', bottle.type)}
+      ${row('Origine / marque', bottle.origine)}
+      ${row('Date de dégustation', formatDateFr(bottle.dateDegustation))}
+      ${row('Œil', bottle.oeil)}
+      ${row('Nez', bottle.nez)}
+      ${row('Bouche', bottle.bouche)}
+      ${row('Avis général', bottle.avisGeneral)}`;
+  } else if (category === 'vins') {
+    fieldsHTML = `
+      ${row('Millésime', bottle.millesime)}
+      ${row('Cépage', bottle.cepage)}
+      ${row('Domaine', bottle.domaine)}
+      ${row('Label', bottle.labels && bottle.labels.length ? bottle.labels.join(', ') : null)}
+      ${row('Type', bottle.typeVin)}
+      ${row('Date de dégustation', formatDateFr(bottle.dateDegustation))}
+      ${row('Œil', bottle.oeil)}
+      ${row('Nez', bottle.nez)}
+      ${row('Bouche', bottle.bouche)}
+      ${row('Avis général', bottle.avisGeneral)}
+      ${bottle.insights ? `
+        <div class="insight-box">
+          <div class="insight-box-title">✨ Générés automatiquement (${bottle.insights.source})</div>
+          ${context !== 'degustation' ? `
+            <p><b>Potentiel de garde :</b> ${bottle.insights.garde}</p>
+            ${bottle.insights.anneeIdeale ? `<p><b>Fenêtre idéale de consommation :</b> ${bottle.insights.anneeIdeale}</p>` : ''}
+          ` : ''}
+          <p><b>Accords conseillés :</b> ${bottle.insights.accords}</p>
+        </div>` : ''}`;
+  }
+
+  el.innerHTML = `
+    <div class="cave-form">
+      <div style="text-align:center;margin-bottom:18px;">
+        <div style="font-size:20px;font-weight:800;">${bottle.nom}</div>
+      </div>
+      <div class="bottle-card-notes" style="justify-content:center;margin-bottom:18px;">
+        ${bottle.noteObjective !== undefined ? `<span class="bottle-card-note obj">🎯 ${bottle.noteObjective}/10</span>` : ''}
+        ${bottle.noteSubjective !== undefined ? `<span class="bottle-card-note subj">❤️ ${bottle.noteSubjective}/10</span>` : ''}
+      </div>
+      ${fieldsHTML}
+      <button class="form-submit" style="background:#dc2626;margin-top:24px;" onclick="deleteBottleFrom('${context}','${category}','${bottle.id}')">🗑️ Supprimer cette bouteille</button>
+    </div>`;
+
+  function row(label, value) {
+    if (!value) return '';
+    return `<div class="form-field"><label>${label}</label><div style="font-size:13.5px;color:#333;padding:4px 0;">${value}</div></div>`;
+  }
+}
+
+/* ── 9.1 — Dégustations : même découpage 3 catégories, mêmes formulaires ── */
+function buildDegustationsScreen() {
+  document.getElementById('screen-degustations').innerHTML = `
+    <div class="hub">
+      <div class="hub-greeting">
+        <h2>🍽️ Dégustations</h2>
+        <p>Votre historique, par catégorie</p>
+      </div>
+      <div class="hub-grid">
+        ${DEGUSTATION_CATEGORIES.map(c => `
+          <div class="hub-card cat-dynamic" style="grid-column:1/-1;--cat-accent:${c.color};" onclick="goTo('degustation-${c.key}');buildCategoryListScreen('degustation','${c.key}')">
+            <div class="hub-card-icon">${c.icon}</div>
+            <div class="hub-card-title">${c.label}</div>
+            <div class="hub-card-desc">Vos dégustations de ${c.label.toLowerCase()}</div>
+            <span class="hub-card-count count-wip">${degustationData[c.key]?.length || 0}</span>
+          </div>`).join('')}
+      </div>
+      <button class="add-bottle-btn" style="border-style:solid;border-color:#fde68a;background:#fffbeb;color:#b45309;margin-top:4px;" onclick="goTo('degustation-podiums');buildDegustationPodiumsScreen()">
+        🏆 Voir mes podiums
+      </button>
+    </div>`;
+}
+
+/* ── 10.2 — Podiums : top 3 par catégorie (note ❤️ subjective) + podium brasseries ── */
+function podiumRowHTML(rank, item, sublabel) {
+  const medals = ['🥇', '🥈', '🥉'];
+  return `
+    <div class="bottle-card" style="cursor:default;display:flex;align-items:center;gap:12px;">
+      <div style="font-size:24px;">${medals[rank]}</div>
+      <div style="flex:1;">
+        <div class="bottle-card-title">${item.nom}</div>
+        ${sublabel ? `<div class="bottle-card-sub">${sublabel}</div>` : ''}
+      </div>
+      <div class="bottle-card-notes" style="margin-top:0;">
+        ${item.noteSubjective !== undefined ? `<span class="bottle-card-note subj">❤️ ${item.noteSubjective}/10</span>` : ''}
+      </div>
+    </div>`;
+}
+
+function buildDegustationPodiumsScreen() {
+  const categoryPodiums = DEGUSTATION_CATEGORIES.map(cat => {
+    const rated = (degustationData[cat.key] || []).filter(b => b.noteSubjective !== undefined);
+    const top3 = rated.slice().sort((a, b) => b.noteSubjective - a.noteSubjective).slice(0, 3);
+    return { cat, top3 };
+  });
+
+  // Podium des brasseries : moyenne de noteSubjective par brasserie, sur les bières notées
+  const beersRated = (degustationData.bieres || []).filter(b => b.noteSubjective !== undefined && b.brasserie);
+  const byBrasserie = {};
+  beersRated.forEach(b => {
+    if (!byBrasserie[b.brasserie]) byBrasserie[b.brasserie] = [];
+    byBrasserie[b.brasserie].push(b.noteSubjective);
+  });
+  const brasserieRanking = Object.entries(byBrasserie)
+    .map(([nom, notes]) => ({ nom: nom, moyenne: Math.round((notes.reduce((s, n) => s + n, 0) / notes.length) * 10) / 10, count: notes.length }))
+    .sort((a, b) => b.moyenne - a.moyenne)
+    .slice(0, 3);
+
+  document.getElementById('screen-degustation-podiums').innerHTML = `
+    <div class="cave-form">
+      ${categoryPodiums.map(({ cat, top3 }) => `
+        <div class="form-section-title">${cat.icon} ${cat.label}</div>
+        ${top3.length === 0
+          ? `<div style="font-size:12px;color:#999;padding:10px 0 4px;">Pas encore assez de dégustations notées.</div>`
+          : top3.map((item, i) => podiumRowHTML(i, item, cat.key === 'bieres' ? item.brasserie : cat.key === 'vins' ? item.domaine : cat.key === 'spiritueux' ? item.marque : item.type)).join('')}
+      `).join('')}
+
+      <div class="form-section-title">🏭 Brasseries les mieux notées</div>
+      ${brasserieRanking.length === 0
+        ? `<div style="font-size:12px;color:#999;padding:10px 0 4px;">Pas encore assez de bières notées avec une brasserie renseignée.</div>`
+        : brasserieRanking.map((b, i) => podiumRowHTML(i, { nom: b.nom, noteSubjective: b.moyenne }, `Moyenne sur ${b.count} bière${b.count > 1 ? 's' : ''}`)).join('')}
+    </div>`;
+}
+
+function buildWishlistScreen() {
+  document.getElementById('screen-wishlist').innerHTML = `
+    <div class="cave-form">
+      <div class="form-field"><label>Nom de la bouteille</label><input type="text" id="wl_nom" placeholder="Ex. Châteauneuf-du-Pape"></div>
+      <div class="form-field"><label>Marque / domaine <span class="opt">(facultatif)</span></label><input type="text" id="wl_marque" placeholder="Ex. Domaine du Vieux Télégraphe"></div>
+      <button class="form-submit" onclick="addWishlistItem()">➕ Ajouter à la wishlist</button>
+      <div class="form-section-title" style="margin-top:26px;">${wishlistData.length ? wishlistData.length + ' envie' + (wishlistData.length>1?'s':'') : 'Votre liste'}</div>
+      <div id="wishlistList">${renderWishlistList()}</div>
+    </div>`;
+}
+
+function renderWishlistList() {
+  if (!wishlistData.length) {
+    return `<div class="placeholder" style="min-height:20vh;"><div class="placeholder-icon">📝</div><div class="placeholder-desc">Aucune envie pour l'instant. Ajoutez une bouteille dont on vous a parlé !</div></div>`;
+  }
+  return wishlistData.slice().reverse().map(item => {
+    const confirmState = wishlistConfirm[item.id];
+    if (confirmState === 'delete') {
+      return `
+        <div class="bottle-card" style="cursor:default;">
+          <div style="font-size:13px;font-weight:600;margin-bottom:10px;">🗑️ Voulez-vous supprimer « ${item.nom} » de la wishlist ?</div>
+          <div style="display:flex;gap:8px;">
+            <button class="form-submit" style="margin:0;background:#dc2626;" onclick="executeWishlistDelete('${item.id}')">Oui</button>
+            <button class="form-submit" style="margin:0;background:#f1f5f9;color:#333;" onclick="cancelWishlistConfirm('${item.id}')">Non</button>
+          </div>
+        </div>`;
+    }
+    if (confirmState === 'buy') {
+      return `
+        <div class="bottle-card" style="cursor:default;">
+          <div style="font-size:13px;font-weight:600;margin-bottom:10px;">✅ Avez-vous bien acheté « ${item.nom} » ?</div>
+          <div style="display:flex;gap:8px;">
+            <button class="form-submit" style="margin:0;background:#16a34a;" onclick="executeWishlistBuy('${item.id}')">Oui</button>
+            <button class="form-submit" style="margin:0;background:#f1f5f9;color:#333;" onclick="cancelWishlistConfirm('${item.id}')">Non</button>
+          </div>
+        </div>`;
+    }
+    return `
+      <div class="bottle-card" style="cursor:default;display:flex;align-items:center;justify-content:space-between;gap:10px;">
+        <div>
+          <div class="bottle-card-title">${item.nom}</div>
+          ${item.marque ? `<div class="bottle-card-sub">${item.marque}</div>` : ''}
+        </div>
+        <div style="display:flex;gap:6px;flex-shrink:0;">
+          <button onclick="askWishlistBuy('${item.id}')" title="Marquer comme achetée" style="width:36px;height:36px;border-radius:50%;border:1px solid #bbf7d0;background:#f0fdf4;font-size:16px;cursor:pointer;">✅</button>
+          <button onclick="askWishlistDelete('${item.id}')" title="Supprimer" style="width:36px;height:36px;border-radius:50%;border:1px solid #fecaca;background:#fef2f2;font-size:16px;cursor:pointer;">🗑️</button>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function addWishlistItem() {
+  const nom = document.getElementById('wl_nom').value.trim();
+  if (!nom) { alert('Le nom de la bouteille est obligatoire.'); return; }
+  const marque = document.getElementById('wl_marque').value.trim();
+  wishlistData.push({ id: 'wl_' + Date.now(), nom, marque, addedAt: new Date().toISOString() });
+  saveWishlist(wishlistData);
+  buildWishlistScreen();
+}
+
+function askWishlistDelete(id) { wishlistConfirm[id] = 'delete'; document.getElementById('wishlistList').innerHTML = renderWishlistList(); }
+function askWishlistBuy(id) { wishlistConfirm[id] = 'buy'; document.getElementById('wishlistList').innerHTML = renderWishlistList(); }
+function cancelWishlistConfirm(id) { delete wishlistConfirm[id]; document.getElementById('wishlistList').innerHTML = renderWishlistList(); }
+
+function executeWishlistDelete(id) {
+  wishlistData = wishlistData.filter(i => i.id !== id);
+  delete wishlistConfirm[id];
+  saveWishlist(wishlistData);
+  buildWishlistScreen();
+}
+
+function executeWishlistBuy(id) {
+  // "Achetée" : on la retire de la wishlist (elle rejoindra Ma Collection manuellement pour l'instant)
+  wishlistData = wishlistData.filter(i => i.id !== id);
+  delete wishlistConfirm[id];
+  saveWishlist(wishlistData);
+  buildWishlistScreen();
+}
+
 /* ──────────── NAVIGATION ──────────── */
 const SCREEN_META = {
   'hub':                  {title:'🍷 SCAG', sub:'', back:null, home:false},
+  'revisions-hub':        {title:'📚 Révisions', sub:'', back:'hub', home:true},
+  'cave-hub':             {title:'🍷 Ma Cave', sub:'', back:'hub', home:true},
+  'ma-collection':        {title:'Ma Collection', sub:'', back:'cave-hub', home:true},
+  'collection-vins':      {title:'Vins', sub:'Ma Collection', back:'ma-collection', home:true},
+  'collection-vins-form': {title:'Ajouter un vin', sub:'', back:'collection-vins', home:true},
+  'collection-vins-detail':{title:'Fiche vin', sub:'', back:'collection-vins', home:true},
+  'collection-bieres':    {title:'Bières', sub:'Ma Collection', back:'ma-collection', home:true},
+  'collection-bieres-form':{title:'Ajouter une bière', sub:'', back:'collection-bieres', home:true},
+  'collection-bieres-detail':{title:'Fiche bière', sub:'', back:'collection-bieres', home:true},
+  'collection-spiritueux':{title:'Spiritueux', sub:'Ma Collection', back:'ma-collection', home:true},
+  'collection-spiritueux-form':{title:'Ajouter un spiritueux', sub:'', back:'collection-spiritueux', home:true},
+  'collection-spiritueux-detail':{title:'Fiche spiritueux', sub:'', back:'collection-spiritueux', home:true},
+  'degustations':         {title:'Dégustations', sub:'', back:'cave-hub', home:true},
+  'degustation-vins':     {title:'Vins', sub:'Dégustations', back:'degustations', home:true},
+  'degustation-vins-form':{title:'Ajouter un vin', sub:'', back:'degustation-vins', home:true},
+  'degustation-vins-detail':{title:'Fiche dégustation', sub:'', back:'degustation-vins', home:true},
+  'degustation-bieres':   {title:'Bières', sub:'Dégustations', back:'degustations', home:true},
+  'degustation-bieres-form':{title:'Ajouter une bière', sub:'', back:'degustation-bieres', home:true},
+  'degustation-bieres-detail':{title:'Fiche dégustation', sub:'', back:'degustation-bieres', home:true},
+  'degustation-spiritueux':{title:'Spiritueux', sub:'Dégustations', back:'degustations', home:true},
+  'degustation-spiritueux-form':{title:'Ajouter un spiritueux', sub:'', back:'degustation-spiritueux', home:true},
+  'degustation-spiritueux-detail':{title:'Fiche dégustation', sub:'', back:'degustation-spiritueux', home:true},
+  'degustation-autres':   {title:'Autres', sub:'Dégustations', back:'degustations', home:true},
+  'degustation-autres-form':{title:'Ajouter une boisson', sub:'', back:'degustation-autres', home:true},
+  'degustation-autres-detail':{title:'Fiche dégustation', sub:'', back:'degustation-autres', home:true},
+  'degustation-podiums':  {title:'🏆 Podiums', sub:'Dégustations', back:'degustations', home:true},
+  'wishlist':             {title:'Wishlist', sub:'', back:'cave-hub', home:true},
   'aoc':                  {title:'Fiches AOC', sub:'', back:'hub', home:true},
   'roadmap':              {title:'Plan de route', sub:'', back:'hub', home:true},
   'admin':                {title:'Mode Admin', sub:'Archives des questions', back:'hub', home:true},
   'endless':              {title:'Mode Sans Fin', sub:'', back:'quiz-hub', home:true},
   'stats':                {title:'Ma progression', sub:'', back:'hub', home:true},
+  'personnalisation':     {title:'🎨 Personnalisation', sub:'', back:'hub', home:true},
   'autres-boissons':      {title:'Autres boissons', sub:'', back:'hub', home:true},
   'vins-monde':           {title:'Vins du monde', sub:'', back:'hub', home:true},
   'quiz-autres-boissons': {title:'Quiz Autres boissons', sub:'', back:'quiz-hub', home:true},
