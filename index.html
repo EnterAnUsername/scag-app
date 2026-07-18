@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SCAG — Sommelier Caviste</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=VT323&family=IBM+Plex+Mono:wght@400;600;700&family=Baloo+2:wght@500;700;800&family=Space+Grotesk:wght@400;500;700&family=Archivo+Black&family=Archivo:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=VT323&family=IBM+Plex+Mono:wght@400;600;700&family=Baloo+2:wght@500;700;800&family=Space+Grotesk:wght@400;500;700&family=Archivo+Black&family=Archivo:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=Orbitron:wght@600;800&family=Share+Tech+Mono&family=Cinzel:wght@600;700&family=Special+Elite&family=Permanent+Marker&family=Caveat:wght@600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Barlow+Condensed:wght@500;600;700&family=Audiowide&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 /* ══════════════════════════════════════════════════════
    11.2 — SYSTÈME DE SKINS : contrat de variables CSS
@@ -247,7 +247,7 @@ body{font-family:var(--font-body);background:var(--page-bg);color:var(--page-tex
 /* Texture de fond — voûte de pierre (Cave), confettis (Memphis), vignette CRT (Minitel)...
    'none' et invisible sur les thèmes qui n'en ont pas besoin (Classique, Poster, Soft UI). */
 body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
-  background:var(--bg-texture);opacity:var(--bg-texture-opacity);transition:opacity .2s;}
+  background-image:var(--bg-texture);background-size:var(--bg-texture-size,auto);opacity:var(--bg-texture-opacity);transition:opacity .2s;}
 .header,.screen{position:relative;z-index:1;}
 /* Scanlines CRT — invisibles par défaut (opacity 0), activées uniquement par les thèmes qui le souhaitent (Minitel) */
 body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;
@@ -731,6 +731,9 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;
 <div class="screen" id="screen-collection-spiritueux"></div>
 <div class="screen" id="screen-collection-spiritueux-form"></div>
 <div class="screen" id="screen-collection-spiritueux-detail"></div>
+<div class="screen" id="screen-collection-autres"></div>
+<div class="screen" id="screen-collection-autres-form"></div>
+<div class="screen" id="screen-collection-autres-detail"></div>
 <div class="screen" id="screen-degustations"></div>
 <div class="screen" id="screen-degustation-vins"></div>
 <div class="screen" id="screen-degustation-vins-form"></div>
@@ -6235,10 +6238,12 @@ const COLLECTION_STORAGE_KEY = 'scag_collection_v1';
 function loadCollection() {
   try {
     const raw = localStorage.getItem(COLLECTION_STORAGE_KEY);
-    return raw ? JSON.parse(raw) : { vins: [], bieres: [], spiritueux: [] };
+    const data = raw ? JSON.parse(raw) : { vins: [], bieres: [], spiritueux: [], autres: [] };
+    if (!data.autres) data.autres = []; // migration douce pour les données déjà existantes
+    return data;
   } catch (e) {
     console.warn('Collection: localStorage indisponible.', e);
-    return { vins: [], bieres: [], spiritueux: [] };
+    return { vins: [], bieres: [], spiritueux: [], autres: [] };
   }
 }
 
@@ -6256,9 +6261,10 @@ let collectionData = loadCollection();
 async function syncCollectionFromCloud() {
   const cloudData = await cloudGet('collection');
   if (cloudData) {
+    if (!cloudData.autres) cloudData.autres = []; // migration douce
     collectionData = cloudData;
     try { localStorage.setItem(COLLECTION_STORAGE_KEY, JSON.stringify(cloudData)); } catch (e) {}
-    ['vins', 'bieres', 'spiritueux'].forEach(cat => {
+    ['vins', 'bieres', 'spiritueux', 'autres'].forEach(cat => {
       if (document.getElementById('screen-collection-' + cat)?.classList.contains('active')) {
         buildCategoryListScreen('collection', cat);
       }
@@ -6719,7 +6725,7 @@ function buildMaCollectionScreen() {
         <p>Vos bouteilles, par catégorie</p>
       </div>
       <div class="hub-grid">
-        ${CAVE_CATEGORIES.map(c => `
+        ${DEGUSTATION_CATEGORIES.map(c => `
           <div class="hub-card cat-dynamic" style="grid-column:1/-1;--cat-accent:${c.color};" onclick="goTo('collection-${c.key}');buildCategoryListScreen('collection','${c.key}')">
             <div class="hub-card-icon">${c.icon}</div>
             <div class="hub-card-title">${c.label}</div>
@@ -6799,6 +6805,28 @@ function buildCategoryListScreen(context, key) {
     </div>`;
 }
 
+/* Confirmation "Bu" par bouteille — même principe que la Wishlist (Oui/Non inline, pas de popup) */
+let bottleBuConfirm = {};
+
+function askMarkAsBu(context, category, id, event) {
+  event.stopPropagation();
+  bottleBuConfirm[id] = true;
+  buildCategoryListScreen(context, category);
+}
+function cancelMarkAsBu(context, category, id, event) {
+  event.stopPropagation();
+  delete bottleBuConfirm[id];
+  buildCategoryListScreen(context, category);
+}
+function executeMarkAsBu(context, category, id, event) {
+  event.stopPropagation();
+  const store = storeRef(context);
+  store.get()[category] = store.get()[category].filter(b => b.id !== id);
+  store.save(store.get());
+  delete bottleBuConfirm[id];
+  buildCategoryListScreen(context, category);
+}
+
 function bottleCardHTML(context, category, b) {
   const title = b.nom || 'Sans nom';
   let sub = '';
@@ -6806,6 +6834,18 @@ function bottleCardHTML(context, category, b) {
   if (category === 'bieres') sub = [b.brasserie, b.type].filter(Boolean).join(' · ');
   if (category === 'spiritueux') sub = [b.marque, b.type].filter(Boolean).join(' · ');
   if (category === 'autres') sub = [b.type, b.origine].filter(Boolean).join(' · ');
+
+  if (context === 'collection' && bottleBuConfirm[b.id]) {
+    return `
+      <div class="bottle-card" style="cursor:default;">
+        <div style="font-size:13px;font-weight:600;margin-bottom:10px;">✅ Marquer « ${title} » comme bue ? Elle sera retirée de votre collection.</div>
+        <div style="display:flex;gap:8px;">
+          <button class="form-submit" style="margin:0;background:#16a34a;" onclick="executeMarkAsBu('${context}','${category}','${b.id}', event)">Oui</button>
+          <button class="form-submit" style="margin:0;background:#f1f5f9;color:#333;" onclick="cancelMarkAsBu('${context}','${category}','${b.id}', event)">Non</button>
+        </div>
+      </div>`;
+  }
+
   return `
     <div class="bottle-card" onclick="goTo('${context}-${category}-detail');buildBottleDetailScreen('${context}','${category}','${b.id}')">
       <div class="bottle-card-top">
@@ -6813,6 +6853,7 @@ function bottleCardHTML(context, category, b) {
           <div class="bottle-card-title">${title}</div>
           ${sub ? `<div class="bottle-card-sub">${sub}</div>` : ''}
         </div>
+        ${context === 'collection' ? `<button onclick="askMarkAsBu('${context}','${category}','${b.id}', event)" title="Marquer comme bue" style="width:32px;height:32px;flex-shrink:0;border-radius:50%;border:1px solid #bbf7d0;background:#f0fdf4;font-size:14px;cursor:pointer;">✅</button>` : ''}
       </div>
       <div class="bottle-card-notes">
         ${b.noteObjective !== undefined ? `<span class="bottle-card-note obj">🎯 ${b.noteObjective}/10</span>` : ''}
@@ -7117,13 +7158,15 @@ function buildAutresFormScreen(context) {
       <div class="form-field"><label>Nom</label><input type="text" id="f_nom" placeholder="Ex. Old Fashioned, Cidre brut…"></div>
       <div class="form-field"><label>Type <span class="opt">(facultatif)</span></label><input type="text" id="f_type" placeholder="Ex. Cocktail, Cidre, Saké, Hydromel…"></div>
       <div class="form-field"><label>Origine / marque <span class="opt">(facultatif)</span></label><input type="text" id="f_origine" placeholder="Ex. Maison, bar, marque…"></div>
-      ${dateDegustationFieldHTML()}
-      <div class="form-section-title">Description</div>
-      <div class="form-field"><label>Œil</label><textarea id="f_oeil" placeholder="Couleur, aspect…"></textarea></div>
-      <div class="form-field"><label>Nez</label><textarea id="f_nez" placeholder="Arômes perçus…"></textarea></div>
-      <div class="form-field"><label>Bouche</label><textarea id="f_bouche" placeholder="Attaque, corps, finale…"></textarea></div>
-      <div class="form-field"><label>Avis général</label><textarea id="f_avis" placeholder="Vos impressions générales…"></textarea></div>
-      ${ratingSlidersHTML()}
+      ${context === 'degustation' ? `
+        ${dateDegustationFieldHTML()}
+        <div class="form-section-title">Description</div>
+        <div class="form-field"><label>Œil</label><textarea id="f_oeil" placeholder="Couleur, aspect…"></textarea></div>
+        <div class="form-field"><label>Nez</label><textarea id="f_nez" placeholder="Arômes perçus…"></textarea></div>
+        <div class="form-field"><label>Bouche</label><textarea id="f_bouche" placeholder="Attaque, corps, finale…"></textarea></div>
+        <div class="form-field"><label>Avis général</label><textarea id="f_avis" placeholder="Vos impressions générales…"></textarea></div>
+        ${ratingSlidersHTML()}
+      ` : ''}
       <button class="form-submit" onclick="submitAutresForm('${context}')">💾 Enregistrer</button>
     </div>`;
 }
@@ -7132,17 +7175,23 @@ function submitAutresForm(context) {
   const nom = activeFormEl('#f_nom').value.trim();
   if (!nom) { alert('Le nom est obligatoire.'); return; }
   const dateDegEl = activeFormEl('#f_dateDegustation');
+  const oeilEl = activeFormEl('#f_oeil');
+  const nezEl = activeFormEl('#f_nez');
+  const boucheEl = activeFormEl('#f_bouche');
+  const avisEl = activeFormEl('#f_avis');
+  const noteObjEl = activeFormEl('#noteObjective');
+  const noteSubjEl = activeFormEl('#noteSubjective');
   const bottle = {
     nom,
     type: activeFormEl('#f_type').value.trim(),
     origine: activeFormEl('#f_origine').value.trim(),
     dateDegustation: dateDegEl ? (dateDegEl.value || null) : null,
-    oeil: activeFormEl('#f_oeil').value.trim(),
-    nez: activeFormEl('#f_nez').value.trim(),
-    bouche: activeFormEl('#f_bouche').value.trim(),
-    avisGeneral: activeFormEl('#f_avis').value.trim(),
-    noteObjective: parseFloat(activeFormEl('#noteObjective').value),
-    noteSubjective: parseFloat(activeFormEl('#noteSubjective').value),
+    oeil: oeilEl ? oeilEl.value.trim() : '',
+    nez: nezEl ? nezEl.value.trim() : '',
+    bouche: boucheEl ? boucheEl.value.trim() : '',
+    avisGeneral: avisEl ? avisEl.value.trim() : '',
+    noteObjective: noteObjEl ? parseFloat(noteObjEl.value) : undefined,
+    noteSubjective: noteSubjEl ? parseFloat(noteSubjEl.value) : undefined,
   };
   const id = addBottleTo(context, 'autres', bottle);
   goTo(context + '-autres-detail');
@@ -7394,6 +7443,9 @@ const SCREEN_META = {
   'collection-spiritueux':{title:'Spiritueux', sub:'Ma Collection', back:'ma-collection', home:true},
   'collection-spiritueux-form':{title:'Ajouter un spiritueux', sub:'', back:'collection-spiritueux', home:true},
   'collection-spiritueux-detail':{title:'Fiche spiritueux', sub:'', back:'collection-spiritueux', home:true},
+  'collection-autres':    {title:'Autres', sub:'Ma Collection', back:'ma-collection', home:true},
+  'collection-autres-form':{title:'Ajouter une boisson', sub:'', back:'collection-autres', home:true},
+  'collection-autres-detail':{title:'Fiche', sub:'', back:'collection-autres', home:true},
   'degustations':         {title:'Dégustations', sub:'', back:'cave-hub', home:true},
   'degustation-vins':     {title:'Vins', sub:'Dégustations', back:'degustations', home:true},
   'degustation-vins-form':{title:'Ajouter un vin', sub:'', back:'degustation-vins', home:true},
