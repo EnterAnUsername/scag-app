@@ -242,6 +242,85 @@
   --font-display: 'Manrope', sans-serif;
 }
 
+:root[data-theme="cyberpunk"] {
+  --page-bg: #05060f;
+  --page-text: #dfe6ff;
+  --header-bg: #05060f;
+  --header-text: #dfe6ff;
+  --header-hover: #131a2e;
+  --card-bg: #0c0e1c;
+  --card-bg-alt: #131a2e;
+  --card-border: rgba(255,32,121,.4);
+  --card-border-soft: rgba(0,240,255,.2);
+  --text-secondary: #8a92b2;
+  --text-muted: #5a6178;
+  --accent: #00f0ff;
+  --accent-hover: #00c4d1;
+  --accent-bg: #0a2a30;
+  --radius-card: 0px;
+  --radius-input: 0px;
+  --border-width: 1px;
+  --shadow-card: none;
+  --accent-alt-1: #00f0ff;
+  --accent-alt-2: #ff2079;
+  --accent-alt-3: #f9f002;
+  --scanline-opacity: 0.5;
+  --icon-bg: #000000;
+  --icon-radius: 0px;
+  --icon-shadow: 0 0 10px rgba(255,32,121,.6);
+  --icon-border: 1px solid #ff2079;
+  --card-topbar-height: 0px;
+  --index-display: none;
+  --bg-texture: linear-gradient(rgba(0,240,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(0,240,255,.05) 1px,transparent 1px);
+  --bg-texture-size: 24px 24px;
+  --bg-texture-opacity: 1;
+  --card-shape: 0px;
+  --font-body: 'Share Tech Mono', monospace;
+  --font-display: 'Orbitron', sans-serif;
+}
+
+:root[data-theme="steampunk"] {
+  --page-bg: #241b13;
+  --page-text: #e8dcc4;
+  --header-bg: #241b13;
+  --header-text: #e8dcc4;
+  --header-hover: #3a2c1e;
+  --card-bg: #3a2c1e;
+  --card-bg-alt: #42311f;
+  --card-border: #8a4a2b;
+  --card-border-soft: #5c4415;
+  --text-secondary: #b8a688;
+  --text-muted: #8a7a5c;
+  --accent: #c9a227;
+  --accent-hover: #b3893a;
+  --accent-bg: #3a2a12;
+  --radius-card: 3px;
+  --radius-input: 2px;
+  --border-width: 2px;
+  --shadow-card: 0 4px 14px rgba(0,0,0,.5);
+  --accent-alt-1: #8a4a2b;
+  --accent-alt-2: #8a4a2b;
+  --accent-alt-3: #8a4a2b;
+  --scanline-opacity: 0;
+  --icon-bg: radial-gradient(circle at 35% 30%,#8a6a1a,#5c4415 70%);
+  --icon-radius: 50%;
+  --icon-shadow: 0 2px 8px rgba(0,0,0,.5);
+  --icon-border: 2px solid #c9a227;
+  --card-topbar-height: 0px;
+  --index-display: none;
+  --bg-texture: radial-gradient(circle, rgba(0,0,0,.5) .6px, transparent .8px),
+    radial-gradient(ellipse 90px 60px at 12% 18%, rgba(138,74,43,.35) 0%, transparent 70%),
+    radial-gradient(ellipse 70px 50px at 88% 32%, rgba(138,74,43,.3) 0%, transparent 70%),
+    radial-gradient(ellipse 100px 70px at 25% 78%, rgba(138,74,43,.3) 0%, transparent 70%),
+    radial-gradient(ellipse 60px 90px at 92% 85%, rgba(138,74,43,.25) 0%, transparent 70%),
+    repeating-linear-gradient(115deg, rgba(0,0,0,.08) 0px, rgba(0,0,0,.08) 1px, transparent 1px, transparent 38px);
+  --bg-texture-size: 3px 3px, auto, auto, auto, auto, auto;
+  --bg-texture-opacity: 1;
+  --card-shape: var(--radius-card);
+  --font-body: 'Special Elite', monospace;
+  --font-display: 'Cinzel', serif;
+}
+
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:var(--font-body);background:var(--page-bg);color:var(--page-text);min-height:100vh;transition:background .2s,color .2s;position:relative;}
 /* Texture de fond — voûte de pierre (Cave), confettis (Memphis), vignette CRT (Minitel)...
@@ -405,6 +484,30 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;
 [data-theme="soft-ui"] .hub-card-title{grid-column:2;grid-row:1;align-self:end;}
 [data-theme="soft-ui"] .hub-card-desc{grid-column:2;grid-row:2;align-self:start;}
 [data-theme="soft-ui"] .hub-card-count{grid-column:1/-1;grid-row:3;margin-top:10px;justify-self:start;}
+
+/* ── Cyberpunk : coins coupés façon interface tech (clip-path, pas de rayon arrondi) —
+   signature structurelle de la maquette, sur les cartes ET la barre de recherche. ── */
+[data-theme="cyberpunk"] .hub-card{clip-path:polygon(14px 0,100% 0,100% calc(100% - 14px),calc(100% - 14px) 100%,0 100%,0 14px);}
+[data-theme="cyberpunk"] .hub-search-bar{clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px);}
+
+/* ── Steampunk : rivets aux coins + taches de rouille directement sur les cartes —
+   structure propre à ce thème (métal riveté), pas juste une couleur en dur. ── */
+[data-theme="steampunk"] .hub-card{
+  background:
+    radial-gradient(ellipse 70px 50px at 85% 10%, rgba(138,74,43,.35) 0%, transparent 70%),
+    radial-gradient(ellipse 60px 80px at 5% 90%, rgba(138,74,43,.3) 0%, transparent 70%),
+    linear-gradient(160deg,#42311f,var(--card-bg));
+}
+[data-theme="steampunk"] .hub-card::before{
+  top:7px;left:7px;right:auto;width:7px;height:7px;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%,#e0c060,#c9a227 60%,#6b4f14);
+  box-shadow:0 1px 2px rgba(0,0,0,.6);
+}
+[data-theme="steampunk"] .hub-card::after{
+  content:'';display:block;counter-increment:none;top:7px;right:7px;width:7px;height:7px;
+  border-radius:50%;background:radial-gradient(circle at 35% 30%,#e0c060,#c9a227 60%,#6b4f14);
+  box-shadow:0 1px 2px rgba(0,0,0,.6);font-size:0;
+}
 
 /* ── Poster Suisse : finitions manquantes — filet épais sous le header (3px, comme la maquette),
    titre de bienvenue en gros caractères "affiche", barre rouge décorative à côté du sous-titre. ── */
@@ -980,6 +1083,27 @@ async function cloudGet(key) {
   }
 }
 
+/* ══════════════════════════════════════════════════════
+   APPEL CLAUDE — via fonction Netlify /api/claude (proxy sécurisé)
+   La clé API Anthropic reste côté serveur (variable d'environnement
+   ANTHROPIC_API_KEY sur Netlify) : jamais exposée au navigateur.
+   Utilisé par : VA "développement", Partiels rédactionnels, Oral,
+   Simulation client.
+   ══════════════════════════════════════════════════════ */
+async function callClaudeAPI({ system, messages, max_tokens }) {
+  const res = await fetch('/api/claude', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ system, messages, max_tokens })
+  });
+  if (!res.ok) {
+    const err = new Error('api_error_' + res.status);
+    err.code = 'api_error';
+    throw err;
+  }
+  return res.json();
+}
+
 function cloudSet(key, value) {
   // Volontairement pas de "await" ici : on ne fait jamais attendre l'utilisateur
   // pour une sauvegarde cloud. En cas d'échec (hors ligne, Netlify indisponible…),
@@ -1004,6 +1128,8 @@ const THEMES = [
   { key: 'memphis',    label: 'Memphis Pop', desc: 'Coloré et ludique, contours épais, esprit 80s pop.', swatchBg: '#f7f3ea', swatchFg: '#ff5fa2', icon: '🎉' },
   { key: 'poster',     label: 'Poster Suisse', desc: 'Moderne et éditorial, grille rouge/noir, typographie forte.', swatchBg: '#fafaf8', swatchFg: '#e0271f', icon: '📐' },
   { key: 'soft-ui',    label: 'Soft UI', desc: 'Doux et tactile, reliefs neumorphiques, indigo pastel.', swatchBg: '#e9ecf3', swatchFg: '#6c63ff', icon: '🌥️' },
+  { key: 'cyberpunk',  label: 'Cyberpunk', desc: 'Futuriste et néon, coins coupés, grille cyan, glitch CRT.', swatchBg: '#05060f', swatchFg: '#00f0ff', icon: '🌆' },
+  { key: 'steampunk',  label: 'Steampunk', desc: 'Rouillé et industriel, cuivre et laiton, rivets métalliques.', swatchBg: '#241b13', swatchFg: '#c9a227', icon: '⚙️' },
 ];
 
 function loadTheme() {
@@ -2392,7 +2518,7 @@ function renderQuestion(q) {
       const shuffled = [...q.opts].sort(()=>Math.random()-.5);
       const correctText = String(q.a);
       html += `<div class="quiz-opts" id="vaOpts">
-        ${shuffled.map(o=>`<button class="quiz-opt" onclick="submitQCM(this,${JSON.stringify(o)},${JSON.stringify(String(q.a))},${JSON.stringify(q.expl)})">${o}</button>`).join('')}
+        ${shuffled.map(o=>`<button class="quiz-opt" onclick="submitQCM(this,${JSON.stringify(String(o))},${JSON.stringify(String(q.a))},${JSON.stringify(q.expl)})">${o}</button>`).join('')}
       </div><div id="vaFeedback"></div>`;
       break;
     }
@@ -2609,17 +2735,11 @@ Données de référence : ${context}
 Format de ta réponse : commence toujours par la note "Note : X/${q.pts}" puis donne un corrigé type structuré (2-4 paragraphes max) et termine par les points forts/à améliorer de l'étudiant. Réponds en français.`;
 
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-6',
-        max_tokens: 1000,
-        system: systemPrompt,
-        messages: [{ role:'user', content:`Question : ${q.label.replace(/<[^>]*>/g,'')}\n\nRéponse de l'étudiant : ${answer}` }]
-      })
+    const data = await callClaudeAPI({
+      system: systemPrompt,
+      max_tokens: 1000,
+      messages: [{ role:'user', content:`Question : ${q.label.replace(/<[^>]*>/g,'')}\n\nRéponse de l'étudiant : ${answer}` }]
     });
-    const data = await res.json();
     const correction = data.content?.[0]?.text || 'Erreur de correction.';
 
     // Extraire la note
@@ -3274,16 +3394,11 @@ Format : commence par "Note : X/${q.pts}" puis donne le corrigé type et les poi
   const questionText = q.id === 'degustation_multi' ? q.params.label.replace(/<[^>]*>/g,'') : q.label_rendered.replace(/<[^>]*>/g,'');
 
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        model:'claude-sonnet-4-6', max_tokens:1000,
-        system: systemPrompt,
-        messages:[{role:'user', content:`Question : ${questionText}\n\nRéponse de l'étudiant : ${answer}`}]
-      })
+    const data = await callClaudeAPI({
+      system: systemPrompt,
+      max_tokens: 1000,
+      messages:[{role:'user', content:`Question : ${questionText}\n\nRéponse de l'étudiant : ${answer}`}]
     });
-    const data = await res.json();
     const correction = data.content?.[0]?.text || 'Erreur.';
     const noteMatch = correction.match(/Note\s*:\s*(\d+(?:[.,]\d+)?)\s*\/\s*(\d+)/i);
     const earned = noteMatch ? Math.min(q.pts, Math.round(parseFloat(noteMatch[1].replace(',','.')))) : Math.round(q.pts/2);
@@ -3308,15 +3423,11 @@ async function submitAocCommunalesLibre() {
   fb.innerHTML = `<div style="padding:16px;text-align:center;color:#9333ea;font-size:13px;">✨ Correction en cours…</div>`;
 
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        model:'claude-sonnet-4-6', max_tokens:800,
-        system:`Tu es un correcteur SCAG. Note sur ${q.pts} points. Commence par "Note : X/${q.pts}". Réponds en français.`,
-        messages:[{role:'user', content:`Question : ${q.params.label.replace(/<[^>]*>/g,'')}\n\nRéponse : ${answer}`}]
-      })
+    const data = await callClaudeAPI({
+      max_tokens: 800,
+      system:`Tu es un correcteur SCAG. Note sur ${q.pts} points. Commence par "Note : X/${q.pts}". Réponds en français.`,
+      messages:[{role:'user', content:`Question : ${q.params.label.replace(/<[^>]*>/g,'')}\n\nRéponse : ${answer}`}]
     });
-    const data = await res.json();
     const correction = data.content?.[0]?.text || 'Erreur.';
     const noteMatch = correction.match(/Note\s*:\s*(\d+(?:[.,]\d+)?)\s*\/\s*(\d+)/i);
     const earned = noteMatch ? Math.min(q.pts, Math.round(parseFloat(noteMatch[1].replace(',','.')))) : Math.round(q.pts/2);
@@ -5102,17 +5213,11 @@ Réponds UNIQUEMENT avec un JSON valide, sans aucun texte autour, sous cette for
 {"plats":["Nom du plat 1 avec sa garniture/sauce","Nom du plat 2","Nom du plat 3"]}`;
 
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-6',
-        max_tokens: 400,
-        system: systemPrompt,
-        messages: [{ role:'user', content:'Génère le menu.' }]
-      })
+    const data = await callClaudeAPI({
+      system: systemPrompt,
+      max_tokens: 400,
+      messages: [{ role:'user', content:'Génère le menu.' }]
     });
-    const data = await res.json();
     let text = data.content?.[0]?.text || '{"plats":[]}';
     text = text.replace(/```json|```/g,'').trim();
     const parsed = JSON.parse(text);
@@ -5181,17 +5286,11 @@ Réponds UNIQUEMENT avec un JSON valide, sans texte autour :
 Le plat_index doit correspondre à l'index (0, 1 ou 2) du plat concerné par l'objection.`;
 
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-6',
-        max_tokens: 400,
-        system: systemPrompt,
-        messages: [{ role:'user', content: accordsText }]
-      })
+    const data = await callClaudeAPI({
+      system: systemPrompt,
+      max_tokens: 400,
+      messages: [{ role:'user', content: accordsText }]
     });
-    const data = await res.json();
     let text = data.content?.[0]?.text || '{}';
     text = text.replace(/```json|```/g,'').trim();
     const parsed = JSON.parse(text);
@@ -5265,17 +5364,11 @@ Puis 3 paragraphes courts :
 Réponds en français, ton professionnel et constructif.`;
 
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-6',
-        max_tokens: 900,
-        system: systemPrompt,
-        messages: [{ role:'user', content: contextText }]
-      })
+    const data = await callClaudeAPI({
+      system: systemPrompt,
+      max_tokens: 900,
+      messages: [{ role:'user', content: contextText }]
     });
-    const data = await res.json();
     const feedback = data.content?.[0]?.text || 'Erreur de correction.';
     renderOralFeedback(feedback);
   } catch(e) {
@@ -5982,15 +6075,11 @@ Réponds UNIQUEMENT en JSON valide, sans texte autour :
 {"plats":["plat 1","plat 2","plat 3"],"premiere_replique":"Ta réplique de client, 2-3 phrases, dans le ton de ton profil"}`;
 
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST', headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({
-        model:'claude-sonnet-4-6', max_tokens:500,
-        system: systemPrompt,
-        messages:[{role:'user', content:'Démarre la conversation.'}]
-      })
+    const data = await callClaudeAPI({
+      system: systemPrompt,
+      max_tokens: 500,
+      messages:[{role:'user', content:'Démarre la conversation.'}]
     });
-    const data = await res.json();
     let text = data.content?.[0]?.text || '{}';
     text = text.replace(/```json|```/g,'').trim();
     const parsed = JSON.parse(text);
@@ -6082,15 +6171,11 @@ Réponds UNIQUEMENT en JSON valide :
 {"reponse_client":"Ta réplique, 2-4 phrases, dans le ton de ton profil"}`;
 
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({
-        model:'claude-sonnet-4-6', max_tokens:400,
-        system: systemPrompt,
-        messages:[{role:'user', content:'Continue la conversation.'}]
-      })
+    const data = await callClaudeAPI({
+      system: systemPrompt,
+      max_tokens: 400,
+      messages:[{role:'user', content:'Continue la conversation.'}]
     });
-    const data = await res.json();
     let text = data.content?.[0]?.text || '{}';
     text = text.replace(/```json|```/g,'').trim();
     const parsed = JSON.parse(text);
@@ -6134,15 +6219,11 @@ Puis 3 paragraphes courts : Accords proposés / Gestion de la relation client et
 Réponds en français, ton professionnel et constructif.`;
 
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({
-        model:'claude-sonnet-4-6', max_tokens:900,
-        system: systemPrompt,
-        messages:[{role:'user', content:'Évalue cette prestation.'}]
-      })
+    const data = await callClaudeAPI({
+      system: systemPrompt,
+      max_tokens: 900,
+      messages:[{role:'user', content:'Évalue cette prestation.'}]
     });
-    const data = await res.json();
     const feedback = data.content?.[0]?.text || 'Erreur de correction.';
     renderSimuFeedback(feedback);
   } catch(e) {
