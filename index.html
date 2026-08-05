@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SCAG — Sommelier Caviste</title>
+<title>MyWineApp — Sommelier Caviste</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=VT323&family=IBM+Plex+Mono:wght@400;600;700&family=Baloo+2:wght@500;700;800&family=Space+Grotesk:wght@400;500;700&family=Archivo+Black&family=Archivo:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=Orbitron:wght@600;800&family=Share+Tech+Mono&family=Cinzel:wght@600;700&family=Special+Elite&family=Permanent+Marker&family=Caveat:wght@600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Barlow+Condensed:wght@500;600;700&family=Audiowide&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=VT323&family=IBM+Plex+Mono:wght@400;600;700&family=Baloo+2:wght@500;700;800&family=Space+Grotesk:wght@400;500;700&family=Archivo+Black&family=Archivo:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=Orbitron:wght@600;800&family=Share+Tech+Mono&family=Cinzel:wght@600;700&family=Cinzel+Decorative:wght@700&family=Josefin+Sans:wght@400;500;600&family=Special+Elite&family=Permanent+Marker&family=Caveat:wght@600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Barlow+Condensed:wght@500;600;700&family=Audiowide&family=Poppins:wght@400;500;600;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
 /* ══════════════════════════════════════════════════════
    11.2 — SYSTÈME DE SKINS : contrat de variables CSS
@@ -321,6 +321,264 @@
   --font-display: 'Cinzel', serif;
 }
 
+:root[data-theme="dark-soft-ui"] {
+  --page-bg: #1e1f24;
+  --page-text: #e8e9ec;
+  --header-bg: #1e1f24;
+  --header-text: #e8e9ec;
+  --header-hover: #282a31;
+  --card-bg: #1e1f24;
+  --card-bg-alt: #24252b;
+  --card-border: transparent;
+  --card-border-soft: transparent;
+  --text-secondary: #8a8d99;
+  --text-muted: #6a6d79;
+  --accent: #e8e9ec;
+  --accent-hover: #c7c9d1;
+  --accent-bg: #282a31;
+  --radius-card: 24px;
+  --radius-input: 18px;
+  --border-width: 0px;
+  --shadow-card: 8px 8px 18px #131418, -8px -8px 18px #282a31;
+  --accent-alt-1: transparent;
+  --accent-alt-2: transparent;
+  --accent-alt-3: transparent;
+  --scanline-opacity: 0;
+  --icon-bg: #1e1f24;
+  --icon-radius: 16px;
+  --icon-shadow: 5px 5px 10px #131418, -5px -5px 10px #282a31;
+  --icon-border: none;
+  --card-topbar-height: 0px;
+  --index-display: none;
+  --bg-texture: none;
+  --bg-texture-opacity: 1;
+  --card-shape: var(--radius-card);
+  --font-body: 'Manrope', sans-serif;
+  --font-display: 'Manrope', sans-serif;
+}
+
+:root[data-theme="y2k"] {
+  --page-bg: linear-gradient(180deg,#bfeaf7,#eaf9ff 60%);
+  --page-text: #164a5c;
+  --header-bg: #2fa8d8;
+  --header-text: #ffffff;
+  --header-hover: #1a7ca3;
+  --card-bg: #eafbff;
+  --card-bg-alt: #ffffff;
+  --card-border: #bfeaf7;
+  --card-border-soft: #d8f3fa;
+  --text-secondary: #4a8aa0;
+  --text-muted: #7ab0c4;
+  --accent: #2fa8d8;
+  --accent-hover: #1a7ca3;
+  --accent-bg: #eafbff;
+  --radius-card: 24px;
+  --radius-input: 22px;
+  --border-width: 1px;
+  --shadow-card: 0 8px 20px rgba(47,168,216,.22);
+  --accent-alt-1: #8fd13f;
+  --accent-alt-2: #ff9fc7;
+  --accent-alt-3: #2fa8d8;
+  --scanline-opacity: 0;
+  --icon-bg: radial-gradient(circle at 35% 25%, #fff, #8fd13f 70%);
+  --icon-radius: 50%;
+  --icon-shadow: 0 3px 8px rgba(143,209,63,.5), inset 0 2px 2px rgba(255,255,255,.9);
+  --icon-border: 1px solid rgba(255,255,255,.9);
+  --card-topbar-height: 0px;
+  --index-display: none;
+  --bg-texture: radial-gradient(circle 30px at 15% 8%, rgba(255,255,255,.9) 0%, transparent 70%),
+    radial-gradient(circle 18px at 85% 4%, rgba(255,255,255,.8) 0%, transparent 70%),
+    radial-gradient(circle 22px at 92% 20%, rgba(255,255,255,.7) 0%, transparent 70%);
+  --bg-texture-opacity: .55;
+  --card-shape: var(--radius-card);
+  --font-body: 'Quicksand', sans-serif;
+  --font-display: 'Quicksand', sans-serif;
+}
+
+:root[data-theme="vaporwave"] {
+  --page-bg: linear-gradient(180deg,#1a1035,#3a1257 55%, #6b1f7a 100%);
+  --page-text: #f1e6ff;
+  --header-bg: #1a1035;
+  --header-text: #f1e6ff;
+  --header-hover: #3a1257;
+  --card-bg: rgba(255,255,255,.08);
+  --card-bg-alt: rgba(255,255,255,.12);
+  --card-border: rgba(255,113,206,.4);
+  --card-border-soft: rgba(1,205,254,.3);
+  --text-secondary: #e4d4f5;
+  --text-muted: #b8a0d8;
+  --accent: #ff71ce;
+  --accent-hover: #e055b8;
+  --accent-bg: rgba(255,113,206,.15);
+  --radius-card: 16px;
+  --radius-input: 14px;
+  --border-width: 1px;
+  --shadow-card: 0 0 20px rgba(185,103,255,.15);
+  --accent-alt-1: #ff71ce;
+  --accent-alt-2: #01cdfe;
+  --accent-alt-3: #b967ff;
+  --scanline-opacity: 0;
+  --icon-bg: linear-gradient(160deg,#ff71ce,#b967ff);
+  --icon-radius: 12px;
+  --icon-shadow: 0 0 14px rgba(255,113,206,.6);
+  --icon-border: none;
+  --card-topbar-height: 0px;
+  --index-display: none;
+  --bg-texture: linear-gradient(rgba(255,113,206,.3) 1px,transparent 1px),linear-gradient(90deg,rgba(1,205,254,.3) 1px,transparent 1px);
+  --bg-texture-size: 100% 22px, 34px 100%;
+  --bg-texture-opacity: .4;
+  --card-shape: var(--radius-card);
+  --font-body: 'Poppins', sans-serif;
+  --font-display: 'Audiowide', sans-serif;
+}
+
+:root[data-theme="fanzine"] {
+  --page-bg: #f0efe6;
+  --page-text: #161616;
+  --header-bg: #f0efe6;
+  --header-text: #161616;
+  --header-hover: #e5e4d8;
+  --card-bg: #ffffff;
+  --card-bg-alt: #f5f4ea;
+  --card-border: #161616;
+  --card-border-soft: #161616;
+  --text-secondary: #333333;
+  --text-muted: #666666;
+  --accent: #ff4d00;
+  --accent-hover: #cc3e00;
+  --accent-bg: #ffe8dc;
+  --radius-card: 0px;
+  --radius-input: 0px;
+  --border-width: 2px;
+  --shadow-card: 4px 4px 0 #161616;
+  --accent-alt-1: #161616;
+  --accent-alt-2: #161616;
+  --accent-alt-3: #161616;
+  --scanline-opacity: 0;
+  --icon-bg: #f0efe6;
+  --icon-radius: 0px;
+  --icon-shadow: none;
+  --icon-border: 2px solid #161616;
+  --card-topbar-height: 0px;
+  --index-display: none;
+  --bg-texture: radial-gradient(circle, #000 1px, transparent 1.3px);
+  --bg-texture-size: 5px 5px;
+  --bg-texture-opacity: .06;
+  --card-shape: var(--radius-card);
+  --font-body: 'Special Elite', monospace;
+  --font-display: 'Permanent Marker', cursive;
+}
+
+:root[data-theme="art-deco"] {
+  --page-bg: #0d0d0d;
+  --page-text: #f0e6d2;
+  --header-bg: #0d0d0d;
+  --header-text: #d4af37;
+  --header-hover: #171512;
+  --card-bg: #171512;
+  --card-bg-alt: #1f1c17;
+  --card-border: #8a7328;
+  --card-border-soft: #5c4d1c;
+  --text-secondary: #b8a888;
+  --text-muted: #7a6a48;
+  --accent: #d4af37;
+  --accent-hover: #b89630;
+  --accent-bg: #2a2410;
+  --radius-card: 0px;
+  --radius-input: 0px;
+  --border-width: 1px;
+  --shadow-card: none;
+  --accent-alt-1: #8a7328;
+  --accent-alt-2: #8a7328;
+  --accent-alt-3: #8a7328;
+  --scanline-opacity: 0;
+  --icon-bg: transparent;
+  --icon-radius: 0px;
+  --icon-shadow: none;
+  --icon-border: 1px solid var(--accent);
+  --card-topbar-height: 0px;
+  --index-display: none;
+  --bg-texture: repeating-linear-gradient(45deg, rgba(212,175,55,.03) 0px, rgba(212,175,55,.03) 2px, transparent 2px, transparent 40px);
+  --bg-texture-opacity: 1;
+  --card-shape: 0px;
+  --font-body: 'Josefin Sans', sans-serif;
+  --font-display: 'Cinzel Decorative', serif;
+}
+
+:root[data-theme="herbier"] {
+  --page-bg: #e8dfc8;
+  --page-text: #5c4a37;
+  --header-bg: #e8dfc8;
+  --header-text: #5c4a37;
+  --header-hover: #ddd2b5;
+  --card-bg: #fdfbf3;
+  --card-bg-alt: #f5f0df;
+  --card-border: #d8cba8;
+  --card-border-soft: #e8dfc8;
+  --text-secondary: #8a7358;
+  --text-muted: #a3906f;
+  --accent: #7a8b6f;
+  --accent-hover: #657658;
+  --accent-bg: #eef1e9;
+  --radius-card: 4px 16px 4px 16px;
+  --radius-input: 20px;
+  --border-width: 1px;
+  --shadow-card: 2px 3px 8px rgba(92,74,55,.12);
+  --accent-alt-1: #7a8b6f;
+  --accent-alt-2: #d9a79c;
+  --accent-alt-3: #7a8b6f;
+  --scanline-opacity: 0;
+  --icon-bg: radial-gradient(circle at 35% 30%,#fff,#7a8b6f 85%);
+  --icon-radius: 50%;
+  --icon-shadow: none;
+  --icon-border: 1px solid #5c6b52;
+  --card-topbar-height: 0px;
+  --index-display: none;
+  --bg-texture: radial-gradient(ellipse 200px 140px at 90% 8%, rgba(122,139,111,.18) 0%, transparent 70%),
+    radial-gradient(ellipse 180px 130px at 8% 92%, rgba(217,167,156,.2) 0%, transparent 70%);
+  --bg-texture-opacity: 1;
+  --card-shape: 4px 16px 4px 16px;
+  --font-body: 'Crimson Text', serif;
+  --font-display: 'Caveat', cursive;
+}
+
+:root[data-theme="blueprint"] {
+  --page-bg: #0a3d62;
+  --page-text: #f2f9ff;
+  --header-bg: #0a3d62;
+  --header-text: #f2f9ff;
+  --header-hover: #0d4d7a;
+  --card-bg: rgba(191,228,255,.03);
+  --card-bg-alt: rgba(191,228,255,.06);
+  --card-border: #bfe4ff;
+  --card-border-soft: #bfe4ff;
+  --text-secondary: #8fc4e8;
+  --text-muted: #5a92b8;
+  --accent: #ff9d3d;
+  --accent-hover: #e0842a;
+  --accent-bg: rgba(255,157,61,.12);
+  --radius-card: 0px;
+  --radius-input: 0px;
+  --border-width: 1px;
+  --shadow-card: none;
+  --accent-alt-1: #bfe4ff;
+  --accent-alt-2: #bfe4ff;
+  --accent-alt-3: #bfe4ff;
+  --scanline-opacity: 0;
+  --icon-bg: transparent;
+  --icon-radius: 0px;
+  --icon-shadow: none;
+  --icon-border: 1px solid var(--accent);
+  --card-topbar-height: 0px;
+  --index-display: none;
+  --bg-texture: linear-gradient(rgba(191,228,255,.12) 1px,transparent 1px),linear-gradient(90deg,rgba(191,228,255,.12) 1px,transparent 1px);
+  --bg-texture-size: 20px 20px;
+  --bg-texture-opacity: 1;
+  --card-shape: 0px;
+  --font-body: 'Share Tech Mono', monospace;
+  --font-display: 'Barlow Condensed', sans-serif;
+}
+
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:var(--font-body);background:var(--page-bg);color:var(--page-text);min-height:100vh;transition:background .2s,color .2s;position:relative;}
 /* Texture de fond — voûte de pierre (Cave), confettis (Memphis), vignette CRT (Minitel)...
@@ -341,12 +599,28 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;
 .header-home:hover{background:var(--header-hover);}
 .header-stats{background:none;border:none;color:var(--header-text);cursor:pointer;font-size:16px;padding:2px 6px;border-radius:6px;display:block;transition:background .15s;opacity:.85;}
 .header-stats:hover{background:var(--header-hover);opacity:1;}
-.header-title{font-family:var(--font-display);font-size:16px;font-weight:500;letter-spacing:.02em;flex:1;}
-.header-sub{font-size:11px;color:var(--text-muted);}
+.header-title{font-family:var(--font-display);font-size:16px;font-weight:500;letter-spacing:.02em;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);pointer-events:none;white-space:nowrap;}
+.header-sub{font-size:11px;color:var(--text-muted);margin-left:auto;}
 
 /* ── SCREENS ── */
 .screen{display:none;min-height:calc(100vh - 48px);}
 .screen.active{display:block;}
+
+/* ── 14.2 : barre d'onglets fixe (uniquement sur les écrans de menu) ── */
+.tabbar{
+  display:none; position:fixed; left:0; right:0; bottom:0; z-index:150;
+  background:var(--page-bg); border-top:var(--border-width) solid var(--card-border);
+  padding:8px 4px calc(8px + env(safe-area-inset-bottom));
+}
+body.has-tabbar .tabbar{display:flex;}
+body.has-tabbar .screen.active{padding-bottom:56px;}
+.tab{
+  flex:1; display:flex; flex-direction:column; align-items:center; gap:3px;
+  font-size:9.5px; color:var(--text-muted); font-weight:600; cursor:pointer;
+  background:none; border:none; font-family:inherit; padding:4px 2px;
+}
+.tab .tab-icon{font-size:19px; line-height:1;}
+.tab.active{color:var(--accent);}
 
 /* ── HUB ── */
 /* ── HUB SEARCH BAR ── */
@@ -363,6 +637,18 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;
 .hub-search-item-region{font-size:11px;color:var(--text-secondary);}
 .hub-search-item-badges{display:flex;flex-wrap:wrap;gap:3px;margin-top:3px;}
 .hub-search-empty{padding:16px 14px;font-size:13px;color:var(--text-muted);text-align:center;}
+.hub-search-section-label{padding:8px 14px 4px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text-muted);}
+
+/* ── 14.5 : widget "Reprendre où j'en étais" ── */
+.resume-widget{
+  display:flex; align-items:center; gap:12px; cursor:pointer; margin-bottom:14px;
+  border-radius:16px; padding:16px; color:#fff;
+  background:linear-gradient(135deg,color-mix(in srgb,var(--accent) 80%,#000),var(--accent));
+}
+.resume-widget-icon{font-size:24px;}
+.resume-widget-label{font-size:10px; text-transform:uppercase; letter-spacing:.5px; opacity:.8; font-weight:600;}
+.resume-widget-text{font-size:13.5px; font-weight:700; margin-top:2px;}
+.resume-widget-arrow{margin-left:auto; font-size:18px; opacity:.85;}
 
 .hub{padding:1.5rem 1rem;}
 .hub-greeting{margin-bottom:1.5rem;}
@@ -484,6 +770,16 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;
 [data-theme="soft-ui"] .hub-card-title{grid-column:2;grid-row:1;align-self:end;}
 [data-theme="soft-ui"] .hub-card-desc{grid-column:2;grid-row:2;align-self:start;}
 [data-theme="soft-ui"] .hub-card-count{grid-column:1/-1;grid-row:3;margin-top:10px;justify-self:start;}
+
+/* ── Dark Soft UI : même logique que Soft UI (icône à côté, pas au-dessus) ── */
+[data-theme="dark-soft-ui"] .hub-card{
+  display:grid;grid-template-columns:50px 1fr;grid-template-rows:auto auto auto;
+  column-gap:14px;row-gap:3px;align-items:start;
+}
+[data-theme="dark-soft-ui"] .hub-card-icon{grid-column:1;grid-row:1/3;align-self:center;width:50px;height:50px;font-size:24px;filter:grayscale(1) brightness(1.3);}
+[data-theme="dark-soft-ui"] .hub-card-title{grid-column:2;grid-row:1;align-self:end;}
+[data-theme="dark-soft-ui"] .hub-card-desc{grid-column:2;grid-row:2;align-self:start;}
+[data-theme="dark-soft-ui"] .hub-card-count{grid-column:1/-1;grid-row:3;margin-top:10px;justify-self:start;}
 
 /* ── Cyberpunk : coins coupés façon interface tech (clip-path, pas de rayon arrondi) —
    signature structurelle de la maquette, sur les cartes ET la barre de recherche. ── */
@@ -681,6 +977,283 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;
 .skin-check{font-size:18px;color:var(--accent);opacity:0;transition:opacity .15s;}
 .skin-option.active .skin-check{opacity:1;}
 
+/* ══ 12.0 Sommel.IA — mascotte + suggestions ══ */
+.sommelia-avatar { width:88px; height:88px; animation: sommelia-bounce 3.2s ease-in-out infinite; }
+
+/* 14.3 — mascotte flottante (bouton d'accès rapide à Sommel.IA) */
+.sommelia-fab{
+  display:none; position:fixed; right:16px; bottom:76px; width:56px; height:56px;
+  border-radius:50%; background:var(--card-bg); border:2px solid var(--accent-bg);
+  box-shadow:0 8px 20px rgba(0,0,0,.22); cursor:pointer; z-index:140; padding:9px;
+}
+body.has-tabbar .sommelia-fab{display:block;}
+.sommelia-fab:hover{transform:scale(1.06);}
+.sommelia-avatar-svg { width:100%; height:100%; }
+@keyframes sommelia-bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+.sommelia-eye { animation: sommelia-blink 4.5s ease-in-out infinite; transform-origin: center; }
+@keyframes sommelia-blink { 0%,92%,100% { transform: scaleY(1); } 96% { transform: scaleY(0.1); } }
+.sommelia-avatar.sommelia-thinking { animation: sommelia-bounce 0.7s ease-in-out infinite; }
+.sommelia-avatar.sommelia-thinking .sommelia-wine { animation: sommelia-swirl 1.1s linear infinite; transform-origin: 60px 55px; }
+@keyframes sommelia-swirl { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+.sommelia-avatar.sommelia-thinking .sommelia-eye { animation: sommelia-blink 0.9s ease-in-out infinite; }
+.sommelia-chip {
+  background:#fff; border:1px solid #e0cdf5; color:#7c3aed; border-radius:16px;
+  padding:8px 14px; font-size:12px; text-align:left; cursor:pointer; line-height:1.4;
+  transition: background .15s, border-color .15s;
+}
+.sommelia-chip:hover { background:#faf5ff; border-color:#9333ea; }
+/* ══════════════════════════════════════════════════════
+   14.1 — STRUCTURE DES MENUS (data-structure)
+   Reprise fidèle du CSS validé dans les maquettes (structure-mockup.html
+   + hub-mockup.html), adaptée aux vraies classes de l'app (.hub-card /
+   .quiz-type-card au lieu de .item générique) et branchée sur les
+   variables de thème existantes (--accent, --card-bg...) plutôt que sur
+   des couleurs figées, pour rester cohérente avec le skin actif.
+   "liste" = comportement actuel de l'app, aucun override nécessaire.
+   Placé en toute fin de feuille de style pour primer sur les overrides
+   de thème (même logique de source-order que [data-theme="poster"]).
+
+   RESET UNIVERSEL (retours QA du 02/08) — plusieurs skins (Poster, Soft UI,
+   Minitel, Cave Voûtée...) repositionnent l'icône/le titre en grid/order/
+   position:absolute ou leur donnent un fond en dur (nth-of-type), ce qui a
+   du sens en Liste mais casse toutes les structures icône/bulles/etc.
+   On neutralise TOUT ça avec !important avant d'appliquer le style propre
+   à chaque structure, plutôt que de corriger skin par skin. ══════════════════════════════════════════════════════ */
+
+[data-structure="icone2"] .hub-card, [data-structure="icone2"] .quiz-type-card,
+[data-structure="icone3"] .hub-card, [data-structure="icone3"] .quiz-type-card,
+[data-structure="bulles"] .hub-card, [data-structure="bulles"] .quiz-type-card,
+[data-structure="carrousel"] .hub-card, [data-structure="carrousel"] .quiz-type-card,
+[data-structure="compact"] .hub-card, [data-structure="compact"] .quiz-type-card,
+[data-structure="magazine"] .hub-card, [data-structure="magazine"] .quiz-type-card,
+[data-structure="accordeon"] .hub-card, [data-structure="accordeon"] .quiz-type-card{
+  display:flex !important; clip-path:none !important;
+}
+[data-structure="icone2"] .hub-card-icon, [data-structure="icone2"] .quiz-type-icon,
+[data-structure="icone3"] .hub-card-icon, [data-structure="icone3"] .quiz-type-icon,
+[data-structure="bulles"] .hub-card-icon, [data-structure="bulles"] .quiz-type-icon,
+[data-structure="carrousel"] .hub-card-icon, [data-structure="carrousel"] .quiz-type-icon,
+[data-structure="compact"] .hub-card-icon, [data-structure="compact"] .quiz-type-icon,
+[data-structure="magazine"] .hub-card-icon, [data-structure="magazine"] .quiz-type-icon,
+[data-structure="accordeon"] .hub-card-icon, [data-structure="accordeon"] .quiz-type-icon{
+  display:flex !important; position:static !important; grid-column:unset !important; grid-row:unset !important;
+  align-self:unset !important; order:unset !important; margin:0 !important; inset:auto !important;
+  border:none !important; box-shadow:none !important; top:auto !important; left:auto !important; right:auto !important;
+}
+[data-structure="icone2"] .hub-card-title, [data-structure="icone2"] .hub-card-desc,
+[data-structure="icone3"] .hub-card-title, [data-structure="icone3"] .hub-card-desc,
+[data-structure="bulles"] .hub-card-title, [data-structure="bulles"] .hub-card-desc,
+[data-structure="carrousel"] .hub-card-title, [data-structure="carrousel"] .hub-card-desc,
+[data-structure="compact"] .hub-card-title, [data-structure="compact"] .hub-card-desc,
+[data-structure="magazine"] .hub-card-title, [data-structure="magazine"] .hub-card-desc,
+[data-structure="accordeon"] .hub-card-title, [data-structure="accordeon"] .hub-card-desc,
+[data-structure="icone2"] .quiz-type-title, [data-structure="icone2"] .quiz-type-desc,
+[data-structure="icone3"] .quiz-type-title, [data-structure="icone3"] .quiz-type-desc,
+[data-structure="bulles"] .quiz-type-title, [data-structure="bulles"] .quiz-type-desc,
+[data-structure="carrousel"] .quiz-type-title, [data-structure="carrousel"] .quiz-type-desc,
+[data-structure="compact"] .quiz-type-title, [data-structure="compact"] .quiz-type-desc,
+[data-structure="magazine"] .quiz-type-title, [data-structure="magazine"] .quiz-type-desc,
+[data-structure="accordeon"] .quiz-type-title, [data-structure="accordeon"] .quiz-type-desc{
+  grid-column:unset !important; grid-row:unset !important; align-self:unset !important; justify-self:unset !important;
+  order:unset !important; position:static !important; margin:0 !important; padding:0 !important;
+  background:none !important; color:var(--page-text) !important;
+  white-space:normal !important; overflow:visible !important; text-overflow:clip !important;
+  width:auto !important; height:auto !important; inset:auto !important;
+}
+/* Bordure/rayon/ombre par défaut, réinitialisés puis redéfinis par chaque structure ci-dessous */
+[data-structure="icone2"] .hub-card, [data-structure="icone2"] .quiz-type-card,
+[data-structure="icone3"] .hub-card, [data-structure="icone3"] .quiz-type-card,
+[data-structure="carrousel"] .hub-card, [data-structure="carrousel"] .quiz-type-card,
+[data-structure="accordeon"] .hub-card, [data-structure="accordeon"] .quiz-type-card{
+  border:var(--border-width) solid var(--card-border) !important; box-shadow:none !important;
+  border-radius:var(--radius-card) !important;
+}
+[data-structure="bulles"] .hub-card, [data-structure="bulles"] .quiz-type-card,
+[data-structure="magazine"] .hub-card, [data-structure="magazine"] .quiz-type-card{
+  border:none !important; box-shadow:none !important;
+}
+[data-structure="compact"] .hub-card, [data-structure="compact"] .quiz-type-card{
+  border:none !important; border-bottom:var(--border-width) solid var(--card-border) !important;
+  border-radius:0 !important; box-shadow:none !important;
+}
+/* Masque le compteur décoratif (::after, réutilisé par le skin Poster Suisse en Liste) sur
+   toutes les structures sauf Magazine (qui le réutilise sciemment) et Accordéon (chevron) */
+[data-structure="icone2"] .hub-card::after, [data-structure="icone2"] .quiz-type-card::after,
+[data-structure="icone3"] .hub-card::after, [data-structure="icone3"] .quiz-type-card::after,
+[data-structure="bulles"] .hub-card::after, [data-structure="bulles"] .quiz-type-card::after,
+[data-structure="carrousel"] .hub-card::after, [data-structure="carrousel"] .quiz-type-card::after,
+[data-structure="compact"] .hub-card::after, [data-structure="compact"] .quiz-type-card::after{
+  display:none !important;
+}
+
+/* ── ICÔNE 2 / ICÔNE 3 : tuiles carrées ── */
+[data-structure="icone2"] .hub-grid,
+[data-structure="icone2"] .quiz-type-list{display:grid !important;grid-template-columns:1fr 1fr !important;gap:12px !important;}
+[data-structure="icone3"] .hub-grid,
+[data-structure="icone3"] .quiz-type-list{display:grid !important;grid-template-columns:1fr 1fr 1fr !important;gap:10px !important;}
+[data-structure="icone2"] .hub-card, [data-structure="icone2"] .quiz-type-card,
+[data-structure="icone3"] .hub-card, [data-structure="icone3"] .quiz-type-card{
+  aspect-ratio:1;flex-direction:column !important;align-items:center !important;justify-content:center !important;
+  gap:8px;text-align:center !important;min-height:0 !important;padding:10px !important;
+}
+[data-structure="icone2"] .hub-card-icon, [data-structure="icone2"] .quiz-type-icon{font-size:34px !important;width:auto !important;height:auto !important;background:none !important;}
+[data-structure="icone3"] .hub-card-icon, [data-structure="icone3"] .quiz-type-icon{font-size:24px !important;width:auto !important;height:auto !important;background:none !important;}
+[data-structure="icone2"] .hub-card-title, [data-structure="icone2"] .quiz-type-title{font-size:13px !important;}
+[data-structure="icone3"] .hub-card-title, [data-structure="icone3"] .quiz-type-title{font-size:10.5px !important;line-height:1.2;}
+[data-structure="icone2"] .hub-card-desc, [data-structure="icone2"] .hub-card-count,
+[data-structure="icone3"] .hub-card-desc, [data-structure="icone3"] .hub-card-count,
+[data-structure="icone2"] .quiz-type-desc, [data-structure="icone2"] .quiz-type-badge, [data-structure="icone2"] .quiz-type-arrow,
+[data-structure="icone3"] .quiz-type-desc, [data-structure="icone3"] .quiz-type-badge, [data-structure="icone3"] .quiz-type-arrow{display:none !important;}
+[data-structure="icone2"] .quiz-type-body, [data-structure="icone3"] .quiz-type-body{flex:none;display:flex !important;flex-direction:column;align-items:center;}
+
+/* ── BULLES : dégradés adaptés au thème (accent/accent-hover), flottement, rebond ── */
+[data-structure="bulles"] .hub-grid,
+[data-structure="bulles"] .quiz-type-list{display:grid !important;grid-template-columns:1fr 1fr 1fr !important;gap:22px 10px !important;padding-top:6px;}
+[data-structure="bulles"] .hub-card, [data-structure="bulles"] .quiz-type-card{
+  flex-direction:column !important;align-items:center !important;justify-content:flex-start !important;
+  gap:8px;text-align:center !important;background:none !important;padding:0 !important;min-height:0 !important;
+}
+[data-structure="bulles"] .hub-card-icon, [data-structure="bulles"] .quiz-type-icon{
+  width:60px !important;height:60px !important;border-radius:50% !important;font-size:26px !important;
+  box-shadow:0 6px 14px rgba(0,0,0,.18) !important;
+  animation:bulle-float 3.4s ease-in-out infinite;transition:transform .25s cubic-bezier(.34,1.56,.64,1);
+  position:relative !important;z-index:2;
+}
+@keyframes bulle-float{0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);}}
+[data-structure="bulles"] .hub-grid .hub-card:nth-of-type(3n+1) .hub-card-icon,
+[data-structure="bulles"] .quiz-type-list .quiz-type-card:nth-of-type(3n+1) .quiz-type-icon{
+  background:linear-gradient(135deg,var(--accent),var(--accent-hover)) !important;animation-delay:0s;}
+[data-structure="bulles"] .hub-grid .hub-card:nth-of-type(3n+2) .hub-card-icon,
+[data-structure="bulles"] .quiz-type-list .quiz-type-card:nth-of-type(3n+2) .quiz-type-icon{
+  background:linear-gradient(135deg,var(--accent-hover),color-mix(in srgb,var(--accent) 45%,#000)) !important;animation-delay:.4s;}
+[data-structure="bulles"] .hub-grid .hub-card:nth-of-type(3n+3) .hub-card-icon,
+[data-structure="bulles"] .quiz-type-list .quiz-type-card:nth-of-type(3n+3) .quiz-type-icon{
+  background:linear-gradient(135deg,color-mix(in srgb,var(--accent) 65%,#fff),var(--accent)) !important;animation-delay:.8s;}
+[data-structure="bulles"] .hub-card:hover .hub-card-icon, [data-structure="bulles"] .quiz-type-card:hover .quiz-type-icon{
+  animation-play-state:paused;transform:scale(1.18) rotate(-4deg);
+}
+[data-structure="bulles"] .hub-card-title, [data-structure="bulles"] .quiz-type-title{font-size:11px !important;position:relative;z-index:1;}
+[data-structure="bulles"] .hub-card-desc, [data-structure="bulles"] .hub-card-count,
+[data-structure="bulles"] .quiz-type-desc, [data-structure="bulles"] .quiz-type-badge, [data-structure="bulles"] .quiz-type-arrow,
+[data-structure="bulles"] .quiz-type-body{display:none !important;}
+[data-structure="bulles"] .quiz-type-card{align-items:center !important;}
+
+/* ── CARROUSEL : défilement horizontal, effet coverflow ── */
+[data-structure="carrousel"] .hub-grid,
+[data-structure="carrousel"] .quiz-type-list{
+  display:flex !important;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;
+  padding:18px 30% 12px !important;margin:0 -16px;scroll-behavior:smooth;flex-direction:row !important;
+}
+[data-structure="carrousel"] .hub-grid::-webkit-scrollbar, [data-structure="carrousel"] .quiz-type-list::-webkit-scrollbar{display:none;}
+[data-structure="carrousel"] .hub-card, [data-structure="carrousel"] .quiz-type-card{
+  flex:0 0 118px !important;scroll-snap-align:center;aspect-ratio:0.85;flex-direction:column !important;
+  align-items:center !important;justify-content:center !important;gap:8px;text-align:center !important;
+  padding:10px !important;min-height:0 !important;
+  transition:transform .35s cubic-bezier(.22,1,.36,1),opacity .35s,box-shadow .35s;transform:scale(.82);opacity:.5;
+}
+[data-structure="carrousel"] .hub-card.carrousel-center, [data-structure="carrousel"] .quiz-type-card.carrousel-center{
+  transform:scale(1);opacity:1;border-color:var(--accent) !important;box-shadow:0 12px 24px rgba(0,0,0,.18) !important;
+}
+[data-structure="carrousel"] .hub-card-icon, [data-structure="carrousel"] .quiz-type-icon{font-size:28px !important;background:none !important;}
+[data-structure="carrousel"] .hub-card-title, [data-structure="carrousel"] .quiz-type-title{font-size:12px !important;}
+[data-structure="carrousel"] .hub-card-desc, [data-structure="carrousel"] .hub-card-count,
+[data-structure="carrousel"] .quiz-type-desc, [data-structure="carrousel"] .quiz-type-badge, [data-structure="carrousel"] .quiz-type-arrow,
+[data-structure="carrousel"] .quiz-type-body{display:none !important;}
+
+/* ── COMPACT : liste dense, icône + titre seulement, bien centrés verticalement ── */
+[data-structure="compact"] .hub-grid{display:flex !important;flex-direction:column !important;gap:0 !important;}
+[data-structure="compact"] .hub-card, [data-structure="compact"] .quiz-type-card{
+  flex-direction:row !important;align-items:center !important;gap:12px;padding:10px 4px !important;min-height:0 !important;
+}
+[data-structure="compact"] .hub-card-icon, [data-structure="compact"] .quiz-type-icon{
+  font-size:17px !important;width:24px !important;height:auto !important;background:none !important;
+  display:flex !important;align-items:center;justify-content:center;flex-shrink:0;
+}
+[data-structure="compact"] .hub-card-title, [data-structure="compact"] .quiz-type-title{font-size:12.5px !important;line-height:1.3;}
+[data-structure="compact"] .hub-card-desc, [data-structure="compact"] .hub-card-count,
+[data-structure="compact"] .quiz-type-desc, [data-structure="compact"] .quiz-type-badge, [data-structure="compact"] .quiz-type-arrow{display:none !important;}
+[data-structure="compact"] .quiz-type-body{flex:none;display:flex !important;align-items:center;}
+
+/* ── MAGAZINE : grandes cartes éditoriales, contraste renforcé et texte centré ── */
+[data-structure="magazine"] .hub-grid{display:flex !important;flex-direction:column !important;gap:14px !important;}
+[data-structure="magazine"] .hub-card, [data-structure="magazine"] .quiz-type-card{
+  flex-direction:column !important;align-items:center !important;justify-content:center !important;
+  min-height:130px !important;padding:20px !important;border-radius:16px !important;position:relative;overflow:hidden;
+  background:linear-gradient(150deg,color-mix(in srgb,var(--accent) 55%,#000),color-mix(in srgb,var(--accent) 82%,#000) 100%) !important;
+}
+[data-structure="magazine"] .hub-card::after{display:block !important;top:10px;right:14px;font-size:40px;opacity:.22;color:#fff !important;}
+[data-structure="magazine"] .hub-card-icon, [data-structure="magazine"] .quiz-type-icon{
+  position:absolute !important;top:14px !important;left:16px !important;font-size:22px !important;opacity:.9;background:none !important;color:#fff !important;
+}
+[data-structure="magazine"] .hub-card-eyebrow{display:block; font-size:10px; letter-spacing:2px; text-transform:uppercase; opacity:.75; font-weight:600; margin-bottom:4px;}
+[data-structure="magazine"] .hub-card-title, [data-structure="magazine"] .quiz-type-title{
+  font-weight:800 !important;font-size:19px !important;font-family:Georgia,serif;line-height:1.15;color:#fff !important;
+  text-align:center !important;width:100% !important;
+}
+[data-structure="magazine"] .hub-card-desc, [data-structure="magazine"] .quiz-type-desc{
+  font-size:11.5px !important;opacity:.9;color:#fff !important;text-align:center !important;width:100% !important;margin-top:4px !important;
+}
+[data-structure="magazine"] .hub-card-count, [data-structure="magazine"] .quiz-type-badge, [data-structure="magazine"] .quiz-type-arrow{display:none !important;}
+[data-structure="magazine"] .quiz-type-list{counter-reset:cardidx;display:flex !important;flex-direction:column !important;gap:14px !important;}
+[data-structure="magazine"] .quiz-type-card::after{content:counter(cardidx,decimal-leading-zero);counter-increment:cardidx;position:absolute;top:10px;right:14px;font-weight:800;font-size:40px;opacity:.22;color:#fff;font-family:Georgia,serif;}
+
+/* ── ACCORDÉON : chevron, look "en-tête dépliable" ── */
+[data-structure="accordeon"] .hub-card, [data-structure="accordeon"] .quiz-type-card{
+  flex-direction:row !important;align-items:center !important;gap:14px;padding:14px !important;border-radius:14px !important;
+}
+[data-structure="accordeon"] .hub-card-icon, [data-structure="accordeon"] .quiz-type-icon{font-size:24px !important;width:36px !important;}
+[data-structure="accordeon"] .hub-card-title, [data-structure="accordeon"] .quiz-type-title{font-size:14px !important;flex:1;}
+[data-structure="accordeon"] .hub-card-desc, [data-structure="accordeon"] .quiz-type-desc,
+[data-structure="accordeon"] .hub-card-count, [data-structure="accordeon"] .quiz-type-badge{display:none !important;}
+[data-structure="accordeon"] .hub-card::after{
+  content:'▾' !important;counter-increment:none !important;display:block !important;position:absolute !important;
+  top:50% !important;right:14px !important;left:auto !important;transform:translateY(-50%);font-size:14px;
+  color:var(--text-muted) !important;font-weight:400;opacity:1 !important;
+}
+[data-structure="accordeon"] .quiz-type-card::after{content:'▾';color:var(--text-muted);font-size:14px;margin-left:4px;}
+[data-structure="accordeon"] .quiz-type-arrow{display:none !important;}
+
+/* ── 14.4 : favoris épinglés (bandeau accueil + écran de gestion) ── */
+.favoris-row{display:none; gap:10px; margin-bottom:14px;}
+.favori-chip{
+  flex:1; display:flex; flex-direction:column; align-items:center; gap:5px;
+  background:var(--card-bg); border:var(--border-width) solid var(--card-border); border-radius:14px;
+  padding:12px 6px; cursor:pointer; transition:.15s;
+}
+.favori-chip:hover{border-color:var(--accent);}
+.favori-chip-icon{font-size:22px; width:38px; height:38px; display:flex; align-items:center; justify-content:center; border-radius:12px; background:var(--accent-bg);}
+.favori-chip-label{font-size:10px; font-weight:600; text-align:center; color:var(--page-text);}
+/* forme réactive à la Structure choisie : ronde si Bulles */
+[data-structure="bulles"] .favori-chip{background:none; border:none; padding:0;}
+[data-structure="bulles"] .favori-chip-icon{border-radius:50%; width:52px; height:52px; font-size:24px;}
+
+.pin-grid{display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px;}
+.pin-item{
+  display:flex; flex-direction:column; align-items:center; gap:6px; padding:14px 6px;
+  border:1.5px solid var(--card-border); border-radius:14px; cursor:pointer; transition:.15s; text-align:center;
+}
+.pin-item-icon{font-size:24px;}
+.pin-item-label{font-size:10.5px; font-weight:600;}
+.pin-item.selected{border-color:var(--accent); background:var(--accent); color:#fff;}
+.pin-item.disabled{opacity:.35; cursor:not-allowed;}
+[data-structure="bulles"] .pin-item{border-radius:50%; aspect-ratio:1; justify-content:center;}
+
+/* ── 15.0 v2 : émulateur QA intégré dans Mode Admin ── */
+.qa-phone{
+  width:100%; max-width:360px; margin:0 auto; background:var(--page-bg);
+  border-radius:28px; border:6px solid #1a1a1a; box-shadow:0 16px 36px rgba(0,0,0,.18); overflow:hidden;
+}
+.qa-phone-header{
+  background:var(--header-bg); color:var(--header-text); padding:12px 14px; text-align:center;
+  font-weight:600; font-size:13px; display:flex; align-items:center; justify-content:center; gap:8px;
+}
+.qa-phone-badge{font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; background:rgba(255,255,255,.2); padding:2px 7px; border-radius:10px;}
+.qa-phone-body{padding:14px; max-height:640px; overflow-y:auto;}
+.qa-phone-label{font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; color:var(--text-muted); margin:16px 0 8px;}
+.qa-phone-label:first-child{margin-top:0;}
+/* La tabbar réelle est position:fixed (pour flotter sur toute l'app) — ici on la neutralise
+   pour qu'elle reste dans le flux normal de l'aperçu, sans dupliquer la moindre règle visuelle. */
+.qa-tabbar-preview{position:static !important; border-radius:14px; overflow:hidden;}
 </style>
 
 </head>
@@ -689,12 +1262,19 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;
 <!-- HEADER -->
 <div class="header" id="header">
   <button class="header-back" id="btnBack" onclick="goBack()" title="Retour">←</button>
-  <div class="header-title" id="headerTitle">🍷 SCAG</div>
+  <div class="header-title" id="headerTitle">🍷 MyWineApp</div>
   <div class="header-sub" id="headerSub"></div>
   <button class="header-stats" id="btnPersonalisation" onclick="goTo('personnalisation');buildPersonnalisationScreen()" title="Personnalisation">🎨</button>
   <button class="header-stats" id="btnStats" onclick="goTo('stats');buildStatsScreen()" title="Ma progression">📊</button>
+  <button class="header-stats" id="btnPins" onclick="goTo('pins');buildPinsScreen()" title="Épingles">📌</button>
   <button class="header-home" id="btnHome" onclick="goHome()" title="Accueil">🏠</button>
 </div>
+
+<!-- 14.2 : barre d'onglets fixe (menus uniquement) -->
+<div class="tabbar" id="tabbar"></div>
+
+<!-- 14.3 : mascotte flottante Sommel.IA (rempli en JS avec le vrai SVG) -->
+<div class="sommelia-avatar sommelia-fab" id="sommeliaFab" onclick="goTo('sommelia');buildSommelIAScreen();" title="Sommel.IA"></div>
 
 <!-- ═══════════════ HUB PRINCIPAL (racine) ═══════════════ -->
 <div class="screen active" id="screen-hub">
@@ -703,11 +1283,23 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;
       <h2>Bonjour 👋</h2>
       <p>Que voulez-vous faire aujourd'hui ?</p>
     </div>
+    <div class="hub-search-wrap">
+      <span class="hub-search-icon">🔍</span>
+      <input class="hub-search-bar" type="text" id="hubSearchInput" placeholder="Rechercher une AOC, Sommel.IA, ID AOC…" oninput="hubSearch()" onfocus="hubSearchOpen()" />
+      <div class="hub-search-results" id="hubSearchResults"></div>
+    </div>
+    <div class="resume-widget" id="hubResumeWidget" style="display:none;"></div>
+    <div class="favoris-row" id="hubFavoris"></div>
     <div class="hub-grid">
       <div class="hub-card cat-aoc" onclick="goTo('revisions-hub')" style="grid-column:1/-1;padding:26px 20px;">
         <div class="hub-card-icon" style="font-size:30px;">📚</div>
-        <div class="hub-card-title" style="font-size:17px;">Révisions</div>
+        <div class="hub-card-title" style="font-size:17px;">SCAG</div>
         <div class="hub-card-desc">Fiches AOC, cépages, accords, quiz, carte…</div>
+      </div>
+      <div class="hub-card cat-carte" onclick="goTo('zytho-hub')" style="grid-column:1/-1;padding:26px 20px;">
+        <div class="hub-card-icon" style="font-size:30px;">🍺</div>
+        <div class="hub-card-title" style="font-size:17px;">Zytho</div>
+        <div class="hub-card-desc">Bientôt disponible</div>
       </div>
       <div class="hub-card cat-carte" onclick="goTo('cave-hub')" style="grid-column:1/-1;padding:26px 20px;">
         <div class="hub-card-icon" style="font-size:30px;">🍷</div>
@@ -715,17 +1307,20 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;
         <div class="hub-card-desc">Vos bouteilles, dégustations & wishlist</div>
       </div>
     </div>
+    <div style="text-align:center;margin-top:1.25rem;display:flex;gap:8px;justify-content:center;">
+      <button onclick="goTo('roadmap');buildRoadmapScreen()" style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border:1px solid #dbe0e6;border-radius:20px;background:#fff;color:#64748b;font-size:11px;font-weight:600;cursor:pointer;">
+        🗺️ Plan de route
+      </button>
+      <button onclick="goTo('admin');buildAdminScreen()" style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border:1px solid #f0d0d0;border-radius:20px;background:#fff;color:#dc2626;font-size:11px;font-weight:600;cursor:pointer;">
+        🛠️ Mode Admin
+      </button>
+    </div>
   </div>
 </div>
 
 <!-- ═══════════════ SOUS-MENU RÉVISIONS ═══════════════ -->
 <div class="screen" id="screen-revisions-hub">
   <div class="hub">
-    <div class="hub-search-wrap">
-      <span class="hub-search-icon">🔍</span>
-      <input class="hub-search-bar" type="text" id="hubSearchInput" placeholder="Rechercher une AOC, un cépage, un accord…" oninput="hubSearch()" onfocus="hubSearchOpen()" />
-      <div class="hub-search-results" id="hubSearchResults"></div>
-    </div>
     <div class="hub-grid">
       <div class="hub-card cat-aoc" onclick="goTo('aoc')">
         <div class="hub-card-icon">🗺️</div>
@@ -780,6 +1375,11 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;
   </div>
 </div>
 
+<!-- ═══════════════ ZYTHO (placeholder) ═══════════════ -->
+<div class="screen" id="screen-zytho-hub">
+  <div class="placeholder"><div class="placeholder-icon">🍺</div><div class="placeholder-title">Zytho</div><div class="placeholder-desc">Contenu à venir.</div><span class="placeholder-badge">Bientôt</span></div>
+</div>
+
 <!-- ═══════════════ SOUS-MENU MA CAVE ═══════════════ -->
 <div class="screen" id="screen-cave-hub">
   <div class="hub">
@@ -824,6 +1424,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;
 <div class="screen" id="screen-endless"></div>
 <div class="screen" id="screen-stats"></div>
 <div class="screen" id="screen-personnalisation"></div>
+<div class="screen" id="screen-pins"></div>
 <div class="screen" id="screen-ma-collection"></div>
 <div class="screen" id="screen-collection-vins"></div>
 <div class="screen" id="screen-collection-vins-form"></div>
@@ -985,6 +1586,16 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;
         <span class="quiz-type-arrow">›</span>
       </div>
 
+      <div class="quiz-type-card" onclick="goTo('quiz-idaoc');buildIdAocMenu()">
+        <div class="quiz-type-icon">🪪</div>
+        <div class="quiz-type-body">
+          <div class="quiz-type-title">ID AOC</div>
+          <div class="quiz-type-desc">Fiche d'identité façon Tinder — devine l'AOC ou remplis sa fiche</div>
+          <span class="quiz-type-badge">Format carte</span>
+        </div>
+        <span class="quiz-type-arrow">›</span>
+      </div>
+
       <div class="quiz-type-card" onclick="goTo('quiz-autres-boissons')">
         <div class="quiz-type-icon">🥃</div>
         <div class="quiz-type-body">
@@ -1010,6 +1621,8 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;
 </div>
 
 <div class="screen" id="screen-simu-client"></div>
+<div class="screen" id="screen-sommelia"></div>
+<div class="screen" id="screen-quiz-idaoc"></div>
 
 <!-- ═══════════════ QUIZ — SOUS-MENU RÉGIONS ═══════════════ -->
 <div class="screen" id="screen-quiz-regions-menu">
@@ -1130,6 +1743,13 @@ const THEMES = [
   { key: 'soft-ui',    label: 'Soft UI', desc: 'Doux et tactile, reliefs neumorphiques, indigo pastel.', swatchBg: '#e9ecf3', swatchFg: '#6c63ff', icon: '🌥️' },
   { key: 'cyberpunk',  label: 'Cyberpunk', desc: 'Futuriste et néon, coins coupés, grille cyan, glitch CRT.', swatchBg: '#05060f', swatchFg: '#00f0ff', icon: '🌆' },
   { key: 'steampunk',  label: 'Steampunk', desc: 'Rouillé et industriel, cuivre et laiton, rivets métalliques.', swatchBg: '#241b13', swatchFg: '#c9a227', icon: '⚙️' },
+  { key: 'dark-soft-ui', label: 'Dark Soft UI', desc: 'Neumorphisme sombre, monochrome, reliefs doux sans couleur.', swatchBg: '#1e1f24', swatchFg: '#e8e9ec', icon: '🌑' },
+  { key: 'y2k',        label: 'Y2K Frutiger Aero', desc: 'Glossy et pétillant, bulles, ciel bleu, esprit 2005.', swatchBg: '#bfeaf7', swatchFg: '#2fa8d8', icon: '💿' },
+  { key: 'vaporwave',  label: 'Vaporwave', desc: 'Soleil couchant rétro-futuriste, néon, grille horizon.', swatchBg: '#1a1035', swatchFg: '#ff71ce', icon: '🌴' },
+  { key: 'fanzine',    label: 'Fanzine', desc: 'Noir & blanc photocopié, collage, esprit DIY punk.', swatchBg: '#f0efe6', swatchFg: '#ff4d00', icon: '✂️' },
+  { key: 'art-deco',   label: 'Art Déco', desc: 'Élégance géométrique années 1920, or sur noir profond.', swatchBg: '#0d0d0d', swatchFg: '#d4af37', icon: '♠️' },
+  { key: 'herbier',    label: 'Herbier', desc: 'Carnet de botaniste, papier kraft, doux et naturel.', swatchBg: '#e8dfc8', swatchFg: '#7a8b6f', icon: '🌿' },
+  { key: 'blueprint',  label: 'Blueprint', desc: 'Dessin technique d\'ingénieur, grille millimétrée.', swatchBg: '#0a3d62', swatchFg: '#ff9d3d', icon: '✛' },
 ];
 
 function loadTheme() {
@@ -1171,6 +1791,257 @@ async function syncThemeFromCloud() {
   }
 }
 syncThemeFromCloud();
+
+/* ══════════════════════════════════════════════════════
+   14.1 — STRUCTURE DES MENUS (data-structure)
+   Même mécanique que le système de thème ci-dessus, appliquée
+   à la mise en forme des menus de navigation (hub, révisions,
+   quiz, cave) — ne touche jamais l'intérieur des quiz eux-mêmes.
+   ══════════════════════════════════════════════════════ */
+const STRUCTURE_STORAGE_KEY = 'scag_structure_v1';
+
+const STRUCTURES = [
+  { key: 'liste',     label: 'Liste',     desc: 'Le rendu actuel — une carte par ligne, description visible.', icon: '📋' },
+  { key: 'icone2',    label: 'Icône 2',   desc: '2 tuiles carrées par ligne, tout tient sans scroller.', icon: '🔲' },
+  { key: 'icone3',    label: 'Icône 3',   desc: '3 tuiles par ligne, encore plus compact.', icon: '🔳' },
+  { key: 'bulles',    label: 'Bulles',    desc: 'Icônes rondes dégradées, flottement doux, rebond au clic.', icon: '🫧' },
+  { key: 'carrousel', label: 'Carrousel', desc: 'Défilement horizontal avec effet coverflow.', icon: '🎠' },
+  { key: 'compact',   label: 'Compact',   desc: 'Liste très dense, icône + titre seulement.', icon: '📏' },
+  { key: 'magazine',  label: 'Magazine',  desc: 'Grandes cartes éditoriales, une rubrique à la fois.', icon: '📰' },
+  { key: 'accordeon', label: 'Accordéon', desc: 'Se déplie sur place plutôt que de naviguer.', icon: '📁' },
+];
+
+function loadStructure() {
+  try {
+    return localStorage.getItem(STRUCTURE_STORAGE_KEY) || 'liste';
+  } catch (e) {
+    return 'liste';
+  }
+}
+
+function saveStructureLocal(structKey) {
+  try { localStorage.setItem(STRUCTURE_STORAGE_KEY, structKey); } catch (e) {}
+}
+
+function applyStructure(structKey) {
+  document.documentElement.setAttribute('data-structure', structKey);
+}
+
+function setStructure(structKey) {
+  applyStructure(structKey);
+  saveStructureLocal(structKey);
+  cloudSet('structure', structKey);
+  if (document.getElementById('screen-personnalisation')?.classList.contains('active')) {
+    buildPersonnalisationScreen();
+  }
+}
+
+// Application immédiate au chargement (avant même le premier rendu du hub)
+applyStructure(loadStructure());
+
+async function syncStructureFromCloud() {
+  const cloudStructure = await cloudGet('structure');
+  if (cloudStructure && STRUCTURES.some(s => s.key === cloudStructure)) {
+    applyStructure(cloudStructure);
+    saveStructureLocal(cloudStructure);
+    if (document.getElementById('screen-personnalisation')?.classList.contains('active')) {
+      buildPersonnalisationScreen();
+    }
+  }
+}
+syncStructureFromCloud();
+
+/* ══════════════════════════════════════════════════════
+   14.4 — FAVORIS ÉPINGLÉS (max 3)
+   Accessible via l'icône 📌 du header. Affichés en haut de la
+   page d'accueil. Formes réactives à la Structure (rond si Bulles).
+   ══════════════════════════════════════════════════════ */
+const PINS_STORAGE_KEY = 'scag_pins_v1';
+const MAX_PINS = 3;
+
+const PINNABLE_ITEMS = [
+  { key:'idaoc',    icon:'🪪', label:'ID AOC',      go:() => { goTo('quiz-idaoc'); buildIdAocMenu(); } },
+  { key:'sommelia', icon:'💬', label:'Sommel.IA',   go:() => { goTo('sommelia'); buildSommelIAScreen(); } },
+  { key:'quiz',     icon:'🧠', label:'Quiz',        go:() => { goTo('quiz-hub'); } },
+  { key:'aoc',      icon:'🍷', label:'Fiches AOC',  go:() => { goTo('aoc'); } },
+  { key:'carte',    icon:'📍', label:'Carte',       go:() => { goTo('carte'); buildCarteScreen(); } },
+  { key:'cave',     icon:'🍾', label:'Ma Cave',     go:() => { goTo('cave-hub'); } },
+  { key:'partiels', icon:'📝', label:'Partiels',    go:() => { goTo('quiz-partiels'); buildPartielsMenu(); } },
+  { key:'oral',     icon:'🎙️', label:'Oral',        go:() => { goTo('quiz-oral'); buildOralScreen(); } },
+  { key:'stats',    icon:'📊', label:'Stats',       go:() => { goTo('stats'); buildStatsScreen(); } },
+];
+
+function loadPins() {
+  try {
+    const raw = JSON.parse(localStorage.getItem(PINS_STORAGE_KEY) || '["idaoc","sommelia","quiz"]');
+    return Array.isArray(raw) ? raw.filter(k => PINNABLE_ITEMS.some(p => p.key === k)).slice(0, MAX_PINS) : [];
+  } catch (e) { return ['idaoc','sommelia','quiz']; }
+}
+function savePinsLocal(pins) { try { localStorage.setItem(PINS_STORAGE_KEY, JSON.stringify(pins)); } catch (e) {} }
+
+let pinnedKeys = loadPins();
+
+function togglePin(key) {
+  const i = pinnedKeys.indexOf(key);
+  if (i >= 0) pinnedKeys.splice(i, 1);
+  else if (pinnedKeys.length < MAX_PINS) pinnedKeys.push(key);
+  savePinsLocal(pinnedKeys);
+  cloudSet('pins', pinnedKeys);
+  buildPinsScreen();
+  renderHubFavoris();
+}
+
+async function syncPinsFromCloud() {
+  const cloudPins = await cloudGet('pins');
+  if (Array.isArray(cloudPins)) {
+    pinnedKeys = cloudPins.filter(k => PINNABLE_ITEMS.some(p => p.key === k)).slice(0, MAX_PINS);
+    savePinsLocal(pinnedKeys);
+    if (document.getElementById('screen-pins')?.classList.contains('active')) buildPinsScreen();
+    renderHubFavoris();
+  }
+}
+syncPinsFromCloud();
+renderHubFavoris();
+
+function buildPinsScreen() {
+  document.getElementById('screen-pins').innerHTML = `
+    <div class="cave-form">
+      <div class="form-section-title" style="margin-top:0;">Favoris épinglés</div>
+      <div style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;line-height:1.5;">
+        Choisis jusqu'à ${MAX_PINS} raccourcis à épingler en haut de l'accueil.
+      </div>
+      <div style="font-size:11px;font-weight:700;color:var(--accent);margin-bottom:14px;">${pinnedKeys.length} / ${MAX_PINS} sélectionnés</div>
+      <div class="pin-grid">
+        ${PINNABLE_ITEMS.map(item => {
+          const selected = pinnedKeys.includes(item.key);
+          const disabled = !selected && pinnedKeys.length >= MAX_PINS;
+          return `<div class="pin-item ${selected ? 'selected' : ''} ${disabled ? 'disabled' : ''}"
+            onclick="${disabled ? '' : `togglePin('${item.key}')`}">
+            <div class="pin-item-icon">${item.icon}</div>
+            <div class="pin-item-label">${item.label}</div>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>`;
+}
+
+function pinNavigate(key) {
+  const item = PINNABLE_ITEMS.find(p => p.key === key);
+  if (item) item.go();
+}
+
+/* ══════════════════════════════════════════════════════
+   14.5 — WIDGET "REPRENDRE OÙ J'EN ÉTAIS"
+   Réutilise le calcul de région la plus faible déjà fait pour
+   les suggestions Sommel.IA (12.0), et lance directement la
+   question correspondante en un clic.
+   ══════════════════════════════════════════════════════ */
+function resumeWidgetGo() {
+  const weak = sommeliaWeakestRegions(1)[0];
+  goTo('sommelia');
+  buildSommelIAScreen();
+  if (weak) sommeliaAsk(`Fais-moi réviser les vins de ${weak.name}, c'est ma région la plus faible.`);
+}
+
+function renderResumeWidget() {
+  const el = document.getElementById('hubResumeWidget');
+  if (!el) return;
+  const weak = sommeliaWeakestRegions(1)[0];
+  if (!weak) { el.style.display = 'none'; return; }
+  el.style.display = 'flex';
+  el.setAttribute('onclick', 'resumeWidgetGo()');
+  el.innerHTML = `
+    <div class="resume-widget-icon">💡</div>
+    <div>
+      <div class="resume-widget-label">Reprendre où j'en étais</div>
+      <div class="resume-widget-text">${weak.name} — ta région la plus faible</div>
+    </div>
+    <div class="resume-widget-arrow">→</div>`;
+}
+
+/* Bandeau des favoris épinglés sur la page d'accueil */
+function renderHubFavoris() {
+  const el = document.getElementById('hubFavoris');
+  if (!el) return;
+  if (pinnedKeys.length === 0) { el.innerHTML = ''; el.style.display = 'none'; return; }
+  el.style.display = 'flex';
+  el.innerHTML = pinnedKeys.map(key => {
+    const item = PINNABLE_ITEMS.find(p => p.key === key);
+    if (!item) return '';
+    return `<div class="favori-chip" onclick="pinNavigate('${key}')">
+      <span class="favori-chip-icon">${item.icon}</span>
+      <span class="favori-chip-label">${item.label}</span>
+    </div>`;
+  }).join('');
+}
+
+/* Effet coverflow de la structure Carrousel : détecte, parmi les cartes visibles
+   de l'écran actif, celle la plus proche du centre du conteneur qui défile, et lui
+   ajoute .carrousel-center (taille + ombre pleines, cf CSS). Rebranché à chaque
+   navigation (goTo/goBack/goHome) puisque les menus sont reconstruits en HTML. */
+function initStructureCarrousel() {
+  if (loadStructure() !== 'carrousel') return;
+  const activeScreen = document.querySelector('.screen.active');
+  if (!activeScreen) return;
+  const grids = activeScreen.querySelectorAll('.hub-grid, .quiz-type-list');
+  grids.forEach(grid => {
+    const update = () => {
+      const cards = grid.querySelectorAll('.hub-card, .quiz-type-card');
+      const gridRect = grid.getBoundingClientRect();
+      const gridCenter = gridRect.left + gridRect.width / 2;
+      let closest = null, closestDist = Infinity;
+      cards.forEach(el => {
+        const r = el.getBoundingClientRect();
+        const dist = Math.abs((r.left + r.width / 2) - gridCenter);
+        if (dist < closestDist) { closestDist = dist; closest = el; }
+        el.classList.remove('carrousel-center');
+      });
+      if (closest) closest.classList.add('carrousel-center');
+    };
+    grid.removeEventListener('scroll', grid._carrouselUpdate || (()=>{}));
+    grid._carrouselUpdate = update;
+    grid.addEventListener('scroll', update, {passive:true});
+    requestAnimationFrame(update);
+  });
+}
+
+/* ══════════════════════════════════════════════════════
+   14.2 — BARRE D'ONGLETS FIXE (menus uniquement)
+   ══════════════════════════════════════════════════════ */
+const TABS = [
+  { key:'scag',  icon:'📚', label:'SCAG',   target:'revisions-hub' },
+  { key:'zytho', icon:'🍺', label:'Zytho',  target:'zytho-hub' },
+  { key:'cave',  icon:'🍷', label:'Ma Cave',target:'cave-hub' },
+];
+
+// Écrans où la barre d'onglets doit être visible (menus de navigation uniquement,
+// jamais à l'intérieur d'un quiz/formulaire/fiche — cf. principe 14.0)
+const TABBAR_SCREENS = new Set(['hub', 'revisions-hub', 'zytho-hub', 'cave-hub', 'quiz-hub']);
+
+// Rattache un écran donné à son onglet (pour le surlignage), au-delà des seuls écrans racines
+const CAVE_SCREEN_PREFIXES = ['ma-collection', 'collection-', 'degustation', 'wishlist', 'cave-hub'];
+
+function screenToTabKey(screenId) {
+  if (screenId === 'zytho-hub') return 'zytho';
+  if (screenId === 'cave-hub' || CAVE_SCREEN_PREFIXES.some(p => screenId.startsWith(p))) return 'cave';
+  return 'scag';
+}
+
+function tabGoTo(target) {
+  navHistory = ['hub'];
+  goTo(target);
+}
+
+function renderTabbar() {
+  const showBar = TABBAR_SCREENS.has(currentScreen);
+  document.body.classList.toggle('has-tabbar', showBar);
+  if (!showBar) return;
+  const activeKey = screenToTabKey(currentScreen);
+  document.getElementById('tabbar').innerHTML = TABS.map(t => `
+    <button class="tab ${t.key === activeKey ? 'active' : ''}" onclick="tabGoTo('${t.target}')">
+      <div class="tab-icon">${t.icon}</div>${t.label}
+    </button>`).join('');
+}
 
 const DATA={
 bordeaux:{name:"Bordeaux",color:"#B5D4F4",subcats:[
@@ -1721,6 +2592,11 @@ provence: [
 {q:"Quelle petite AOC provençale (23 ha, 2 communes) est dominée par le Château Simone ?",opts:["Bandol","Palette","Bellet","Cassis"],a:1,expl:"Palette, minuscule AOC de 23 ha, est produite à plus de la moitié par le seul Château Simone — des vins atypiques et rares, rouge, blanc et rosé."},
 {q:"Combien de temps minimum le Bandol rouge doit-il être élevé en foudres ?",opts:["6 mois","12 mois","18 mois","24 mois"],a:2,expl:"Bandol impose 18 mois d'élevage minimum en foudres pour les rouges — une durée exceptionnellement longue qui structure et assouplit les tanins du Mourvèdre."},
 {q:"Quelle AOC des Alpilles est réputée pour sa production en agriculture biologique ?",opts:["Coteaux d'Aix-en-Provence","Les Baux-de-Provence","Coteaux Varois","Bandol"],a:1,expl:"Les Baux-de-Provence, au pied des Alpilles, est une zone particulièrement favorable à l'agriculture biologique, adoptée par une large majorité des domaines."},
+{q:"Quelle cité antique, fondée vers 600 av. J.-C. par les Phocéens (Grecs), est à l'origine du plus vieux vignoble de France ?",opts:["Nikaia (Nice)","Massalia (Marseille)","Olbia (Hyères)","Antipolis (Antibes)"],a:1,expl:"Les Phocéens fondent Massalia (Marseille) vers -600 et y implantent la vigne — la Provence est historiquement le tout premier vignoble de France."},
+{q:"Quelle part de la production de Côtes de Provence est du rosé ?",opts:["50%","70%","90%","100%"],a:2,expl:"Le Côtes de Provence est un vin d'assemblage produit à 90% en rosé, avec seulement 5% de blanc et 5% de rouge."},
+{q:"La Provence est la 1ère région française productrice de quelle catégorie de vin AOC ?",opts:["Blanc liquoreux","Rosé","Effervescent","Rouge de garde"],a:1,expl:"La Provence fournit 38% de la production nationale de rosés AOC, et environ 8% des rosés produits dans le monde."},
+{q:"Combien de dénominations géographiques peuvent compléter le nom de l'AOC Côtes de Provence (Sainte-Victoire, Fréjus, La Londe...) ?",opts:["3","4","5","6"],a:2,expl:"5 dénominations géographiques : Sainte-Victoire, Fréjus, La Londe, Pierrefeu et Notre-Dame-des-Anges — ensemble environ 5% de la production de l'appellation."},
+{q:"Quel département borde la Provence à l'ouest et compose l'essentiel du vignoble des Baux-de-Provence ?",opts:["Le Var","Les Alpes-Maritimes","Les Bouches-du-Rhône","Le Vaucluse"],a:2,expl:"Les Baux-de-Provence se situent dans les Bouches-du-Rhône, au pied des Alpilles, sur des sols calcaires du crétacé."},
 ],
 sudouest: [
 {q:"Quel pourcentage minimum de Malbec (Côt) est exigé à Cahors ?",opts:["50%","60%","70%","90%"],a:2,expl:"Le Malbec, appelé aussi Côt ou Auxerrois à Cahors, doit représenter au moins 70% de l'assemblage — Cahors est considérée comme la capitale mondiale du Malbec."},
@@ -1730,6 +2606,11 @@ sudouest: [
 {q:"Quel cépage domine le Jurançon moelleux, grâce au passerillage naturel ?",opts:["Gros Manseng","Petit Manseng","Courbu","Camaralet"],a:1,expl:"Le Petit Manseng, à la peau épaisse, subit un passerillage naturel sur pied en novembre, concentrant les sucres pour les grands moelleux de Jurançon."},
 {q:"Quelle sous-appellation de Bergerac est réputée pour ses rouges tanniques ?",opts:["Monbazillac","Pécharmant","Montravel","Rosette"],a:1,expl:"Pécharmant, sous-appellation de Bergerac, est réputée pour ses rouges tanniques et structurés, sur sols argilo-calcaires et graveleux."},
 {q:"Quelle est la méthode traditionnelle des vins pétillants de Gaillac, à base de Mauzac ?",opts:["Méthode Champenoise standard","Méthode ancestrale","Méthode Charmat","Macération carbonique"],a:1,expl:"Gaillac utilise la méthode ancestrale (fermentation naturelle en bouteille, sans liqueur de tirage) pour ses pétillants à base de Mauzac, cépage local."},
+{q:"Quel cépage, exclusif et identitaire, doit représenter au moins 50% de l'assemblage à Fronton ?",opts:["Fer Servadou","Négrette","Duras","Tannat"],a:1,expl:"La Négrette est le cépage exclusif et identitaire de Fronton (min 50%), donnant des rouges fruités et délicats aux notes de violette et de réglisse."},
+{q:"Quel cépage, appelé aussi Mansois, représente environ 90% du vignoble de Marcillac ?",opts:["Duras","Négrette","Fer Servadou","Malbec"],a:2,expl:"Le Fer Servadou (Mansois) domine à 90% le petit vignoble aveyronnais de Marcillac, développé au Moyen Âge sous l'impulsion de l'abbaye de Conques."},
+{q:"Quel sol caractéristique, aux oxydes de fer, donne sa couleur au terroir de Marcillac ?",opts:["Le kimméridgien","Le rougier","Les schistes bleus","Le tuffeau"],a:1,expl:"Le 'rougier', sol argileux rougi par les oxydes de fer, est caractéristique du terroir de Marcillac — d'où sa robe sombre aux reflets violacés typique."},
+{q:"Dans quelle région culturelle se situe l'AOC Irouléguy, seule appellation viticole de la zone ?",opts:["Le Béarn","Le Pays Basque","La Bigorre","Le Comminges"],a:1,expl:"Irouléguy est la seule AOC du Pays Basque français (Basse-Navarre) — on la surnomme parfois « le plus petit vignoble de France, le plus grand du Pays Basque Nord »."},
+{q:"Face à quelle grande appellation liquoreuse bordelaise, de l'autre côté de la Dordogne, se trouve Monbazillac ?",opts:["Barsac","Sauternes","Loupiac","Cadillac"],a:1,expl:"Monbazillac fait face à Sauternes sur l'autre rive de la Dordogne, avec un botrytis favorisé par des brouillards matinaux similaires."},
 ],
 rhone: [
 {q:"Combien de cépages sont autorisés dans l'AOC Châteauneuf-du-Pape ?",opts:["9","11","13","18"],a:2,expl:"13 cépages sont autorisés à Châteauneuf-du-Pape : Grenache, Syrah, Mourvèdre, Cinsault, Clairette, Bourboulenc, Roussanne, Counoise, Muscardin, Picardan, Picpoul, Terret Noir, Camarèse."},
@@ -1779,6 +2660,10 @@ jura: [
 {q:"Combien de litres de moût obtient-on à partir de 100kg de raisins pour le Vin de Paille ?",opts:["50-60 litres","30-40 litres","15-18 litres","5-8 litres"],a:2,expl:"Le passerillage sur paille (3 mois minimum) concentre énormément les sucres : seulement 15 à 18 litres de moût pour 100kg de raisins initiaux."},
 {q:"Quelle est la première AOC de France, créée par décret en 1936 ?",opts:["Châteauneuf-du-Pape","Arbois","Cassis","Sancerre"],a:1,expl:"Arbois, dans le Jura, est la toute première AOC de France, créée par décret du 15 avril 1936 — un mois avant Châteauneuf-du-Pape."},
 {q:"Quel produit du Jura est élaboré par mutage d'un moût avec de l'eau-de-vie de marc ?",opts:["Vin de Paille","Macvin du Jura","Vin Jaune","Crémant du Jura"],a:1,expl:"Le Macvin du Jura est un vin de liqueur (VDL) élaboré par mutage d'un moût avec environ 1/3 d'eau-de-vie de marc, puis élevé 10 mois minimum en fûts."},
+{q:"Quel cépage rouge jurassien, plus tannique et coloré que le Poulsard, donne des vins de garde ?",opts:["Trousseau","Gamay","Pinot Noir","Savagnin"],a:0,expl:"Le Trousseau donne des vins plus corsés, colorés et tanniques que le Poulsard, avec des notes épicées — cépage emblématique notamment à Arbois-Pupillin."},
+{q:"D'où vient le nom de l'AOC L'Étoile, dans le Jura ?",opts:["De la forme du village vu du ciel","Des fossiles en forme d'étoile (crinoïdes) trouvés dans le sol","D'un cépage appelé Étoile","D'une légende viticole locale"],a:1,expl:"L'Étoile tire son nom des fossiles marins en forme d'étoile (crinoïdes/pentacrines) que l'on trouve abondamment dans ses sols calcaires du Jurassique."},
+{q:"Quel fromage AOP est l'accord classique et régional du Vin Jaune ?",opts:["Reblochon","Comté (vieux, affiné)","Époisses","Beaufort"],a:1,expl:"Le Comté bien affiné (18-24 mois et plus) est l'accord terroir emblématique du Vin Jaune — les notes de noix se répondent entre le vin et le fromage."},
+{q:"Quelle appellation régionale du Jura peut produire les 4 couleurs/styles (rouge, blanc, rosé et Vin Jaune) ?",opts:["Arbois seul","Côtes du Jura","L'Étoile","Château-Chalon"],a:1,expl:"Côtes du Jura est l'appellation régionale la plus large, capable de produire toutes les couleurs, y compris le Vin Jaune et le Vin de Paille."},
 ],
 savoie: [
 {q:"Quel cépage blanc domine largement le vignoble de Savoie ?",opts:["Altesse","Jacquère","Roussanne","Chardonnay"],a:1,expl:"La Jacquère est le cépage blanc le plus planté en Savoie, donnant des vins légers, frais et vivifiants comme Apremont et Abymes."},
@@ -1787,6 +2672,11 @@ savoie: [
 {q:"Quel cru savoyard est élaboré exclusivement avec la Roussanne (localement 'Bergeron') ?",opts:["Apremont","Arbin","Chignin-Bergeron","Ayze"],a:2,expl:"Chignin-Bergeron est élaboré exclusivement avec la Roussanne du Rhône, appelée localement 'Bergeron' — un lien méconnu entre les 2 vignobles."},
 {q:"Quelle méthode d'élaboration caractérise le Bugey-Cerdon, rosé pétillant demi-sec ?",opts:["Méthode traditionnelle","Méthode ancestrale","Méthode Charmat","Gazéification"],a:1,expl:"Le Bugey-Cerdon utilise la méthode ancestrale (fermentation naturelle unique en bouteille), donnant un rosé mousseux demi-sec peu alcoolisé (7-8°), très populaire."},
 {q:"Quel cépage rare, quasi exclusif à Ayze (Savoie), donne des vins très typés ?",opts:["Altesse","Gringet","Mondeuse Blanche","Persan"],a:1,expl:"Le Gringet (min 70%) est un cépage rare, quasi exclusif au cru Ayze en Haute-Savoie, donnant des vins tranquilles et effervescents très typés."},
+{q:"Combien de crus géographiques compte au total le vignoble savoyard ?",opts:["8","12","16","20"],a:2,expl:"16 crus distincts répartis sur les 3 appellations majeures (Vin de Savoie, Roussette de Savoie, Seyssel) — Apremont, Abymes, Chignin, Arbin, Frangy, Marestel... "},
+{q:"Combien d'appellations AOC majeures structurent le vignoble de Savoie ?",opts:["2","3","4","6"],a:1,expl:"3 AOC majeures : Vin de Savoie (la plus large), Roussette de Savoie (100% Altesse) et Seyssel."},
+{q:"Quels sont les 4 crus reconnus de la Roussette de Savoie ?",opts:["Apremont, Abymes, Chignin, Arbin","Frangy, Marestel, Monterminod, Monthoux","Frangy, Seyssel, Chignin, Cruet","Marestel, Chautagne, Ripaille, Crépy"],a:1,expl:"Les 4 crus de la Roussette de Savoie (100% Altesse) sont Frangy, Marestel, Monterminod et Monthoux, le long du Rhône et du lac du Bourget."},
+{q:"Quel cépage doit représenter au minimum 40% de l'assemblage du Crémant de Savoie ?",opts:["Chardonnay","Altesse","Jacquère","Chasselas"],a:2,expl:"Le Crémant de Savoie (AOC depuis 2014, le dernier crémant français reconnu) impose au moins 40% de Jacquère, le Chardonnay étant limité à 40% maximum."},
+{q:"Quel massif/paysage a façonné la minéralité typique des vins de Savoie ?",opts:["Volcans éteints","Glaciers et moraines alpines","Dunes sableuses","Marais salants"],a:1,expl:"Les terroirs savoyards ont été façonnés par les glaciers et moraines alpines, donnant aux vins leur minéralité et fraîcheur singulières."},
 ],
 languedoc: [
 {q:"Quel cépage est exclusif à l'AOC Picpoul de Pinet ?",opts:["Picpoul Blanc","Clairette","Vermentino","Grenache Blanc"],a:0,expl:"Le Picpoul Blanc, cépage méditerranéen local, est exclusif à cette petite AOC près de l'étang de Thau — vins frais et acidulés, parfaits avec les huîtres de Bouzigues."},
@@ -1795,11 +2685,22 @@ languedoc: [
 {q:"Quelle AOC est réputée pour son cru Minervois-La-Livinière, dominé par la Syrah ?",opts:["Corbières","Minervois","Saint-Chinian","Faugères"],a:1,expl:"Minervois-La-Livinière est le cru le plus qualitatif du Minervois, avec une dominante de Syrah, reconnu en AOC séparée depuis 1999."},
 {q:"Quel cru des Corbières est réputé pour ses vieilles vignes de Carignan ?",opts:["Boutenac","La Clape","Pic Saint-Loup","Terrasses du Larzac"],a:0,expl:"Boutenac, cru des Corbières, valorise particulièrement les vieilles vignes de Carignan, cépage longtemps décrié mais réhabilité sur ce terroir."},
 {q:"Depuis quand les blancs sont-ils autorisés à Saint-Chinian ?",opts:["Depuis toujours","Depuis 2005","Depuis 1985","Ils ne sont pas autorisés"],a:1,expl:"Saint-Chinian, historiquement rouge et rosé, autorise les blancs depuis 2005 seulement — une évolution récente de l'appellation."},
+{q:"Quel vin est considéré comme le plus ancien effervescent du monde, découvert en 1531 par des moines ?",opts:["Champagne","Crémant de Limoux","Blanquette de Limoux","Clairette de Die"],a:2,expl:"La Blanquette de Limoux aurait été découverte en 1531 par les moines bénédictins de l'abbaye de Saint-Hilaire (Aude) — près d'un siècle avant les expérimentations de Dom Pérignon en Champagne."},
+{q:"Quel cépage doit représenter au minimum 90% de l'assemblage de la Blanquette de Limoux ?",opts:["Chardonnay","Chenin","Mauzac","Clairette"],a:2,expl:"Le Mauzac (arômes de pomme verte) domine à au moins 90%, complété par Chardonnay et/ou Chenin. La version 'méthode ancestrale' est 100% Mauzac."},
+{q:"Quel cépage domine le Crémant de Limoux, à la différence de la Blanquette ?",opts:["Mauzac","Chardonnay","Chenin","Pinot Noir"],a:1,expl:"Le Crémant de Limoux est dominé par le Chardonnay (50 à 90%), complété par Chenin, Mauzac et Pinot Noir — profil différent de la Blanquette, dominée par le Mauzac."},
+{q:"Quels 3 cépages dominent l'appellation Pic Saint-Loup ?",opts:["Grenache, Cinsault, Carignan","Syrah, Grenache, Mourvèdre","Merlot, Cabernet, Syrah","Carignan, Mourvèdre, Cinsault"],a:1,expl:"Syrah, Grenache et Mourvèdre dominent les replantations du Pic Saint-Loup depuis une trentaine d'années — la Syrah y est le cépage le plus typé aromatiquement."},
+{q:"Combien l'appellation Languedoc compte-t-elle de « Crus », son haut de gamme reconnu en AOC à part entière ?",opts:["3","5","7","10"],a:1,expl:"5 Crus du Languedoc : Pic Saint-Loup, Corbières-Boutenac, La Clape, Minervois-La Livinière et Terrasses du Larzac."},
 ],
 lorraine: [
 {q:"Quelle est la spécialité des Côtes de Toul, en Lorraine ?",opts:["Vin de paille","Vin gris","Vin jaune","Vin liquoreux"],a:1,expl:"Le vin gris est la spécialité des Côtes de Toul : un rosé très pâle obtenu par pressurage direct de raisins rouges, sans macération."},
 {q:"Quel cépage est quasi exclusif à la région lorraine des Côtes de Toul ?",opts:["Pinot Noir","Aubin","Gamay","Auxerrois"],a:1,expl:"Le cépage Aubin est quasi exclusif à cette petite région lorraine, utilisé notamment pour les blancs, aux côtés de l'Auxerrois."},
 {q:"Quel département compose principalement l'AOC Moselle (vignoble lorrain) ?",opts:["Meurthe-et-Moselle","Moselle","Vosges","Meuse"],a:1,expl:"L'AOC Moselle, très confidentielle (35 ha), est située dans le département de la Moselle, sur les terrasses du fleuve du même nom."},
+{q:"En quelle année l'AOC Côtes de Toul a-t-elle été créée par décret ?",opts:["1936","1965","1998","2011"],a:2,expl:"Décret du 31 mars 1998, après un classement en VDQS dès 1951. Le vignoble toulois avait pourtant couvert près de 6 000 ha en 1865, avant phylloxéra et industrialisation."},
+{q:"Quel cépage compose à 100% le blanc des Côtes de Toul ?",opts:["Chardonnay","Auxerrois","Pinot Blanc","Aligoté"],a:1,expl:"L'Auxerrois entre pour 100% dans le blanc des Côtes de Toul (et jusqu'à 5% dans le Gris). Il est aussi utilisé en assemblage minoritaire dans le Gris de Toul."},
+{q:"D'où est originaire le cépage Auxerrois, malgré son nom ?",opts:["De la région d'Auxerre (Bourgogne)","De Moselle (centre viticole de Laquenexy)","D'Alsace","Du Jura"],a:1,expl:"Malgré son nom évoquant Auxerre, l'Auxerrois est un cépage créé en Moselle, au centre viticole de Laquenexy — il n'a aucun lien avec la Bourgogne."},
+{q:"Quel cépage domine l'assemblage du Gris de Toul ?",opts:["Gamay","Pinot Noir","Auxerrois","Pinot Meunier"],a:1,expl:"Le Gris de Toul est élaboré principalement à partir de Pinot Noir, avec parfois une touche de Gamay en assemblage."},
+{q:"Quelle dénomination IGP concerne un troisième secteur viticole lorrain, en renaissance, autour de Vigneulles-lès-Hattonchâtel ?",opts:["Côtes de Meuse","Côtes de Moselle","Vallée de la Meurthe","Pays du Saintois"],a:0,expl:"Les Côtes de Meuse (IGP) forment, avec Côtes de Toul et Moselle (toutes deux AOC), le troisième secteur du petit vignoble lorrain."},
+{q:"Quelle couleur de vin représente la majorité de la production lorraine ?",opts:["Blanc","Rouge","Rosé (vin gris)","Effervescent"],a:2,expl:"Le vin gris (rosé pâle) représente environ 55% de la production lorraine, devant le rouge (20%), le blanc (15%) et les mousseux (10%)."},
 ],
 };
 
@@ -2498,7 +3399,26 @@ function renderVA() {
       </div>
     </div>`;
 
+  if (q.type === 'qcm') bindQCMOptions(q);
   startVATimer();
+}
+
+/* Construit les boutons QCM en DOM pur (textContent + addEventListener) :
+   évite d'injecter des valeurs arbitraires dans un attribut HTML onclick="",
+   ce qui cassait le rendu dès que l'explication contenait des guillemets
+   ou des balises (ex: <strong>) — voir bug Q2 VA. */
+function bindQCMOptions(q) {
+  const container = document.getElementById('vaOpts');
+  if (!container || !q._qcmOpts) return;
+  const correctText = String(q.a);
+  container.innerHTML = '';
+  q._qcmOpts.forEach(o => {
+    const btn = document.createElement('button');
+    btn.className = 'quiz-opt';
+    btn.textContent = String(o);
+    btn.addEventListener('click', () => submitQCM(btn, String(o), correctText, q.expl));
+    container.appendChild(btn);
+  });
 }
 
 function renderQuestion(q) {
@@ -2516,10 +3436,8 @@ function renderQuestion(q) {
 
     case 'qcm': {
       const shuffled = [...q.opts].sort(()=>Math.random()-.5);
-      const correctText = String(q.a);
-      html += `<div class="quiz-opts" id="vaOpts">
-        ${shuffled.map(o=>`<button class="quiz-opt" onclick="submitQCM(this,${JSON.stringify(String(o))},${JSON.stringify(String(q.a))},${JSON.stringify(q.expl)})">${o}</button>`).join('')}
-      </div><div id="vaFeedback"></div>`;
+      q._qcmOpts = shuffled; // conservé pour le binding post-rendu (voir bindQCMOptions)
+      html += `<div class="quiz-opts" id="vaOpts"></div><div id="vaFeedback"></div>`;
       break;
     }
 
@@ -2855,6 +3773,8 @@ const PARTIEL_TEMPLATES = [
         {aoc:'Sancerre Blanc', autre:'Pouilly-Fumé', cepage:'Sauvignon', vignoble:'Centre-Loire — Vallée de la Loire', accord:'Crottin de Chavignol'},
         {aoc:'Pessac-Léognan Blanc', autre:'Graves Blanc', cepage:'Sauvignon / Sémillon', vignoble:'Graves — Bordeaux', accord:'Saint-Jacques aux truffes'},
         {aoc:'Alsace Grand Cru Riesling', autre:'AOC Alsace Riesling', cepage:'Riesling', vignoble:'Alsace', accord:'Homard, poisson noble'},
+        {aoc:'Côtes de Bourg Blanc', autre:'Bordeaux Blanc / Entre-Deux-Mers', cepage:'Sauvignon', vignoble:'Blayais-Bourgeais — Bordeaux', accord:'Huîtres, fruits de mer'},
+        {aoc:'Bandol Rouge', autre:'Côtes de Provence', cepage:'Mourvèdre', vignoble:'Provence', accord:'Daube provençale, gibier'},
       ];
       return [...pool].sort(()=>Math.random()-.5).slice(0,5);
     }
@@ -2936,6 +3856,32 @@ const PARTIEL_TEMPLATES = [
           note:'6 AOC de 3 régions différentes',
           autre:['Chablis (Bourgogne)','Meursault (Bourgogne)','Pouilly-Fuissé (Bourgogne)','Champagne Blanc de Blancs','Alsace (rare)','Crémant de Bourgogne']
         },
+        {
+          cepage:'Chenin',
+          nbLoire:4, nbLoireVignobles:3,
+          nbBordeaux:0, nbBordeauxVignobles:0,
+          nbAutre:1,
+          note:'4 AOC de Loire (3 vignobles différents) et 1 AOC d\'un autre vignoble où le Chenin est autorisé',
+          loire:['Vouvray','Savennières','Coteaux du Layon','Montlouis-sur-Loire','Bonnezeaux','Saumur'],
+          autre:['Crémant de Limoux (Languedoc, cépage voisin)','Jurançon Sec (Sud-Ouest)']
+        },
+        {
+          cepage:'Riesling',
+          nbLoire:0, nbLoireVignobles:0,
+          nbBordeaux:0, nbBordeauxVignobles:0,
+          nbAutre:3,
+          note:'3 AOC/dénominations, toutes d\'Alsace, en précisant leur spécificité',
+          autre:['AOC Alsace Riesling','Alsace Grand Cru Riesling','Vendanges Tardives Riesling']
+        },
+        {
+          cepage:'Merlot',
+          nbLoire:0, nbLoireVignobles:0,
+          nbBordeaux:4, nbBordeauxVignobles:4,
+          nbAutre:1,
+          note:'4 AOC de Bordeaux (4 vignobles différents) et 1 AOC d\'un autre vignoble où le Merlot est autorisé',
+          bordeaux:['Saint-Émilion','Pomerol','Fronsac','Côtes de Bourg','Médoc','Côtes de Bordeaux'],
+          autre:['Bergerac (Sud-Ouest)','Vin de Corse (Corse)']
+        },
       ];
       const chosen = configs[Math.floor(Math.random()*configs.length)];
       return chosen;
@@ -2968,6 +3914,21 @@ const PARTIEL_TEMPLATES = [
           coteBeaune: {
             rouges: ['Pommard','Volnay','Beaune Rouge','Savigny-lès-Beaune','Monthélie','Maranges','Santenay','Auxey-Duresses Rouge'],
             blancs: ['Meursault','Puligny-Montrachet','Chassagne-Montrachet Blanc','Corton-Charlemagne','Saint-Romain Blanc','Auxey-Duresses Blanc']
+          }
+        },
+        {
+          label: 'Vous organisez une dégustation <strong>Crus du Beaujolais</strong>. Proposez <strong>5 crus différents</strong>, chacun accompagné d\'une caractéristique distinctive.',
+          coteNuits: null, coteChalon: null, coteBeaune: null,
+          beaujolaisCrus: {
+            crus: ['Saint-Amour','Juliénas','Chénas','Moulin-à-Vent','Fleurie','Chiroubles','Morgon','Régnié','Brouilly','Côte de Brouilly']
+          }
+        },
+        {
+          label: 'Vous organisez une dégustation <strong>Rhône Nord</strong>. Proposez <strong>6 AOC</strong> (3 rouges, 3 blancs) en précisant leur cépage principal.',
+          coteNuits: null, coteChalon: null, coteBeaune: null,
+          rhoneNord: {
+            rouges: ['Côte-Rôtie','Hermitage Rouge','Cornas','Crozes-Hermitage Rouge','Saint-Joseph Rouge'],
+            blancs: ['Condrieu','Château-Grillet','Hermitage Blanc','Saint-Péray','Saint-Joseph Blanc']
           }
         }
       ];
@@ -3018,14 +3979,65 @@ const PARTIEL_TEMPLATES = [
       const scenarios = [
         {
           label: 'Vous organisez une dégustation sur le <strong>Sauvignon Blanc</strong>. Proposez <strong>3 AOC de Loire</strong> (2 vignobles différents), <strong>3 AOC de Bordeaux</strong> (3 vignobles différents) et <strong>1 AOC d\'un autre vignoble</strong>.',
-          corrige: 'Loire : Sancerre/Pouilly-Fumé/Reuilly/Quincy (Centre-Loire) + Touraine/Coteaux du Vendômois (Touraine). Bordeaux : Graves, Entre-Deux-Mers, Pessac-Léognan (Libournais). Autre : Saint-Bris (Bourgogne/Auxerrois).'
+          corrige: 'Loire : Sancerre/Pouilly-Fumé/Reuilly/Quincy (Centre-Loire) + Touraine/Coteaux du Vendômois (Touraine). Bordeaux : Graves, Entre-Deux-Mers, Pessac-Léognan (Libournais) — d\'autres dénominations Bordeaux blanc autorisant le Sauvignon sont également valables (ex : Côtes de Bordeaux avec ses dénominations, Côtes de Bourg blanc). Autre : Saint-Bris (Bourgogne/Auxerrois).'
         },
         {
           label: 'Vous organisez une dégustation sur le <strong>Gamay</strong>. Proposez <strong>5 AOC</strong> issues d\'au moins <strong>3 régions viticoles différentes</strong> en précisant le vignoble concerné.',
           corrige: 'Beaujolais (Morgon, Fleurie, Moulin-à-Vent...), Bourgogne (Mâcon, Bourgogne), Auvergne/Loire (Côtes du Forez, Côte Roannaise, Saint-Pourçain), Touraine.'
         },
+        {
+          label: 'Vous organisez une dégustation sur le <strong>Chardonnay</strong>. Proposez <strong>5 AOC</strong> issues d\'au moins <strong>3 régions viticoles différentes</strong> en précisant le vignoble concerné.',
+          corrige: 'Bourgogne (Chablis, Meursault, Pouilly-Fuissé, Mâcon...), Champagne (Blanc de Blancs), Jura (Côtes du Jura, Arbois), Savoie (marginal), Languedoc (Limoux/Crémant de Limoux).'
+        },
+        {
+          label: 'Vous organisez une dégustation sur le <strong>Pinot Noir</strong>. Proposez <strong>4 AOC</strong> issues d\'au moins <strong>3 régions viticoles différentes</strong> en précisant le vignoble concerné.',
+          corrige: 'Bourgogne (Gevrey-Chambertin, Volnay, Marsannay...), Alsace (Alsace Pinot Noir), Champagne (base d\'assemblage, Coteaux Champenois, Rosé des Riceys), Loire (Sancerre Rouge, Menetou-Salon Rouge).'
+        },
+        {
+          label: 'Vous organisez une dégustation sur le <strong>Merlot</strong>. Proposez <strong>4 AOC de Bordeaux</strong> (4 vignobles différents) et <strong>1 AOC d\'un autre vignoble</strong> où le Merlot est autorisé.',
+          corrige: 'Bordeaux : Saint-Émilion, Pomerol, Fronsac, Côtes de Bourg, Côtes de Bordeaux (Blaye, Castillon, Francs...). Autre : Bergerac (Sud-Ouest), Vin de Corse (Corse), IGP diverses.'
+        },
       ];
       return scenarios[Math.floor(Math.random()*scenarios.length)];
+    }
+  },
+
+  // Q type : hiérarchie des appellations (2.6.3a — nouveau template)
+  {
+    id: 'hierarchie_classification',
+    pts: 10,
+    type: 'libre_api',
+    label: (params) => `Présentez la <strong>hiérarchie des appellations</strong> (du niveau le plus large au plus précis) pour le vignoble <strong>${params.vignoble}</strong>, en donnant un exemple d'AOC concret à chaque niveau.`,
+    generate: () => {
+      const options = [
+        { vignoble: 'Bourgogne', niveaux: 'Régionale → Village → Premier Cru → Grand Cru', exemple: 'Bourgogne → Gevrey-Chambertin → Gevrey-Chambertin 1er Cru "Clos Saint-Jacques" → Chambertin (Grand Cru)' },
+        { vignoble: 'Bordeaux (Médoc)', niveaux: 'Régionale → Sous-région → Communale → Cru Classé', exemple: 'Bordeaux → Médoc/Haut-Médoc → Pauillac → Château classé 1855' },
+        { vignoble: 'Alsace', niveaux: 'AOC Alsace → AOC Alsace Grand Cru → mentions Vendanges Tardives / Sélection de Grains Nobles', exemple: 'AOC Alsace Riesling → Alsace Grand Cru Riesling "Schlossberg"' },
+        { vignoble: 'Champagne', niveaux: 'Champagne → Premier Cru → Grand Cru (échelle des crus)', exemple: 'Champagne → Champagne 1er Cru → Champagne Grand Cru (ex : Ambonnay)' },
+        { vignoble: 'Beaujolais', niveaux: 'Beaujolais → Beaujolais-Villages → Crus du Beaujolais', exemple: 'Beaujolais → Beaujolais-Villages → Morgon' },
+      ];
+      return options[Math.floor(Math.random()*options.length)];
+    }
+  },
+
+  // Q type : potentiel de garde (2.6.3a — nouveau template)
+  {
+    id: 'millesime_garde',
+    pts: 9,
+    type: 'libre_api',
+    label: (params) => `Pour l'AOC <strong>${params.aoc}</strong>, indiquez son <strong>potentiel de garde</strong> approximatif et expliquez <strong>2 facteurs</strong> qui influencent cette aptitude au vieillissement pour ce type de vin.`,
+    generate: () => {
+      const options = [
+        {aoc:'Château-Chalon (Vin Jaune)'},
+        {aoc:'Sauternes'},
+        {aoc:'Châteauneuf-du-Pape'},
+        {aoc:'Pauillac (Cru Classé)'},
+        {aoc:'Chablis Grand Cru'},
+        {aoc:'Muscadet Sèvre et Maine sur lie'},
+        {aoc:'Beaujolais Nouveau'},
+        {aoc:'Champagne Grand Cru'},
+      ];
+      return options[Math.floor(Math.random()*options.length)];
     }
   }
 ];
@@ -3387,8 +4399,16 @@ async function submitPartielAPI() {
   fb.innerHTML = `<div style="padding:16px;text-align:center;color:#9333ea;font-size:13px;">✨ Correction en cours…</div>`;
 
   const corrige = q.id === 'degustation_multi' ? q.params.corrige : '';
-  const systemPrompt = `Tu es un correcteur de l'école SCAG. Tu corriges une question de partiel sur les vignobles de France.
-Sois pédagogique et précis. Note sur ${q.pts} points. ${corrige ? 'Éléments de corrigé : ' + corrige : ''}
+  const systemPrompt = `Tu es un correcteur bienveillant mais rigoureux de l'école SCAG. Tu corriges une question de partiel sur les vignobles de France. Note sur ${q.pts} points.
+${corrige ? `Éléments de corrigé (INDICATIFS, non exhaustifs — de nombreuses autres réponses correctes existent) : ${corrige}` : ''}
+
+Consignes de correction importantes :
+- Le corrigé ci-dessus n'est qu'un repère, pas une liste fermée. Accepte toute appellation, tout cépage ou tout accord correct sur le plan réglementaire et œnologique, MÊME s'il n'y figure pas — de nombreuses AOC autorisent plusieurs cépages ou couleurs (ex : plusieurs dénominations de Bordeaux blanc, dont certaines moins connues, autorisent le Sauvignon).
+- En cas de doute sur la validité d'une appellation ou d'un accord proposé par l'étudiant, donne-lui le bénéfice du doute plutôt que de la rejeter catégoriquement — mentionne ton incertitude dans le commentaire plutôt que de sanctionner.
+- Ne retire pas de points pour des différences mineures de formulation, d'accents ou d'ordre si le fond est juste.
+- Distingue une vraie erreur factuelle (à sanctionner) d'un simple choix différent parmi plusieurs réponses valides (à ne pas sanctionner).
+- Sois généreux dans le doute : entre deux notes possibles, retiens la plus haute.
+
 Format : commence par "Note : X/${q.pts}" puis donne le corrigé type et les points forts/à améliorer. Réponds en français.`;
 
   const questionText = q.id === 'degustation_multi' ? q.params.label.replace(/<[^>]*>/g,'') : q.label_rendered.replace(/<[^>]*>/g,'');
@@ -3425,7 +4445,15 @@ async function submitAocCommunalesLibre() {
   try {
     const data = await callClaudeAPI({
       max_tokens: 800,
-      system:`Tu es un correcteur SCAG. Note sur ${q.pts} points. Commence par "Note : X/${q.pts}". Réponds en français.`,
+      system:`Tu es un correcteur bienveillant mais rigoureux de l'école SCAG. Note sur ${q.pts} points.
+
+Consignes de correction importantes :
+- Accepte toute appellation, tout cépage correct sur le plan réglementaire, même si elle est moins connue ou inattendue — de nombreuses AOC autorisent plusieurs cépages ou couleurs.
+- En cas de doute sur la validité d'une réponse, donne le bénéfice du doute plutôt que de la rejeter catégoriquement.
+- Ne retire pas de points pour des différences mineures de formulation si le fond est juste.
+- Sois généreux dans le doute : entre deux notes possibles, retiens la plus haute.
+
+Commence par "Note : X/${q.pts}". Réponds en français.`,
       messages:[{role:'user', content:`Question : ${q.params.label.replace(/<[^>]*>/g,'')}\n\nRéponse : ${answer}`}]
     });
     const correction = data.content?.[0]?.text || 'Erreur.';
@@ -5174,7 +6202,8 @@ let oralState = {
   reponses: {},      // { platIndex: "vin proposé par l'élève" }
   objection: null,   // { platIndex, texte }
   reponseFinale: '',
-  step: 'menu',       // menu -> accords -> objection -> reponse -> feedback
+  venteAdditionnelle: '',
+  step: 'menu',       // menu -> accords -> objection -> reponse -> vente -> feedback
 };
 
 function buildOralScreen() {
@@ -5189,7 +6218,8 @@ function buildOralScreen() {
           2. Vous proposez un vin (et une justification) pour chaque plat<br>
           3. Le client soulève UNE objection sur l'un de vos accords<br>
           4. Vous devez rebondir avec une réponse professionnelle<br>
-          5. Vous recevez un retour détaillé de votre prestation
+          5. Vous proposez une vente additionnelle adaptée (digestif, café gourmand, eau, etc.)<br>
+          6. Vous recevez un retour détaillé de votre prestation
         </div>
       </div>
       <button class="btn btn-purple" style="width:100%;padding:14px;font-size:14px;" onclick="startOral()">✨ Générer un nouveau menu</button>
@@ -5197,7 +6227,7 @@ function buildOralScreen() {
 }
 
 async function startOral() {
-  oralState = { menu: null, plats: [], reponses: {}, objection: null, reponseFinale: '', step: 'menu' };
+  oralState = { menu: null, plats: [], reponses: {}, objection: null, reponseFinale: '', venteAdditionnelle: '', step: 'menu' };
 
   document.getElementById('screen-quiz-oral').innerHTML = `
     <div style="padding:2rem 1rem;text-align:center;">
@@ -5333,6 +6363,27 @@ async function submitOralReponseFinale() {
   const reponse = document.getElementById('oral-reponse-finale')?.value.trim() || '';
   if (!reponse) { alert('Merci de rédiger une réponse avant de valider.'); return; }
   oralState.reponseFinale = reponse;
+  oralState.step = 'vente';
+  renderOralVenteAdditionnelle();
+}
+
+function renderOralVenteAdditionnelle() {
+  document.getElementById('screen-quiz-oral').innerHTML = `
+    <div style="padding:1.25rem 1rem;">
+      <div style="background:#faf5ff;border-radius:12px;padding:16px;margin-bottom:1.25rem;">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;color:#9333ea;margin-bottom:8px;">💰 Vente additionnelle</div>
+        <div style="font-size:13px;line-height:1.6;color:#333;">Le repas touche à sa fin. Comme à l'oral d'examen, proposez une vente additionnelle adaptée au repas et au client (digestif, café gourmand, eau plate/gazeuse, champagne à l'apéritif, coffret cadeau…). Justifiez brièvement votre proposition.</div>
+      </div>
+      <textarea id="oral-vente-additionnelle" placeholder="Votre proposition de vente additionnelle…" rows="5"
+        style="width:100%;padding:12px;border:1px solid #ddd;border-radius:10px;font-size:14px;font-family:inherit;resize:vertical;outline:none;"></textarea>
+      <button class="btn btn-purple" style="width:100%;margin-top:12px;padding:12px;" onclick="submitOralVenteAdditionnelle()">Valider & recevoir mon évaluation ✨</button>
+    </div>`;
+}
+
+async function submitOralVenteAdditionnelle() {
+  const vente = document.getElementById('oral-vente-additionnelle')?.value.trim() || '';
+  if (!vente) { alert('Merci de proposer une vente additionnelle avant de valider.'); return; }
+  oralState.venteAdditionnelle = vente;
 
   document.getElementById('screen-quiz-oral').innerHTML = `
     <div style="padding:2rem 1rem;text-align:center;">
@@ -5347,18 +6398,22 @@ OBJECTION DU CLIENT sur le plat "${oralState.plats[platIdx]}":
 "${oralState.objection.texte}"
 
 RÉPONSE DU CANDIDAT À L'OBJECTION:
-"${reponse}"`;
+"${oralState.reponseFinale}"
 
-  const systemPrompt = `Tu es un formateur/jury de sommellerie qui évalue la prestation d'un candidat à l'oral d'examen (école SCAG). Évalue sa prestation complète : la pertinence des accords initiaux proposés pour l'ensemble du menu, ET sa capacité à rebondir professionnellement face à l'objection du client.
+VENTE ADDITIONNELLE PROPOSÉE PAR LE CANDIDAT:
+"${vente}"`;
+
+  const systemPrompt = `Tu es un formateur/jury de sommellerie qui évalue la prestation d'un candidat à l'oral d'examen (école SCAG). Évalue sa prestation complète : la pertinence des accords initiaux proposés pour l'ensemble du menu, sa capacité à rebondir professionnellement face à l'objection du client, ET la pertinence de sa vente additionnelle (à l'examen réel, la vente additionnelle est un critère de notation à part entière).
 
 Sois bienveillant mais exigeant, comme un vrai jury professionnel. Donne une note sur 20.
 
 Format de ta réponse (texte structuré, PAS de JSON) :
 Note : X/20
 
-Puis 3 paragraphes courts :
+Puis 4 paragraphes courts :
 - Sur les accords initiaux (pertinence, cohérence avec les plats)
 - Sur la gestion de l'objection (écoute du client, pertinence de la réponse, posture professionnelle)
+- Sur la vente additionnelle (pertinence commerciale, à-propos par rapport au moment du repas, formulation professionnelle)
 - Conseils d'amélioration
 
 Réponds en français, ton professionnel et constructif.`;
@@ -5366,7 +6421,7 @@ Réponds en français, ton professionnel et constructif.`;
   try {
     const data = await callClaudeAPI({
       system: systemPrompt,
-      max_tokens: 900,
+      max_tokens: 1000,
       messages: [{ role:'user', content: contextText }]
     });
     const feedback = data.content?.[0]?.text || 'Erreur de correction.';
@@ -5375,7 +6430,7 @@ Réponds en français, ton professionnel et constructif.`;
     document.getElementById('screen-quiz-oral').innerHTML = `
       <div style="padding:2rem 1rem;text-align:center;">
         <div style="color:#993C1D;font-size:13px;margin-bottom:12px;">Erreur lors de l'évaluation.</div>
-        <button class="btn btn-purple" onclick="submitOralReponseFinale()">Réessayer</button>
+        <button class="btn btn-purple" onclick="submitOralVenteAdditionnelle()">Réessayer</button>
       </div>`;
   }
 }
@@ -5437,7 +6492,28 @@ const ROADMAP = [
       { id: '2.3', titre: 'Accords Mets & Vins (13 régions, 127 accords)', done: true },
       { id: '2.4', titre: 'Carte de France interactive', done: false, note: 'En pause — recherche de meilleures ressources cartographiques' },
       { id: '2.5', titre: 'GéoGuessr des AOC', done: false, note: 'Bloqué par 2.4' },
-      { id: '2.6', titre: 'Quiz (VA, Partiels, Régions, Random, AMV, Oral)', done: true },
+    ]
+  },
+  { id: '2.6', titre: 'Quiz (VA, Partiels, Régions, Random, AMV, Oral)', done: true,
+    note: 'Retours de test du 28/07 sur Oral, Simulation Client et Partiels traités (2.6.1, 2.6.2, 2.6.3).',
+    sous: [
+      { id: '2.6.1', titre: 'Oral — vente additionnelle', done: true,
+        note: "Ajout d'une étape dédiée après la gestion de l'objection : le candidat doit proposer une vente additionnelle adaptée (digestif, café gourmand, eau, champagne à l'apéritif...), évaluée par le jury IA comme critère de notation à part entière." },
+      { id: '2.6.2', titre: 'Simulation Client — questionnement libre & versatilité des contextes', done: true,
+        note: "Permettre un vrai travail de sommellerie : questionnement du sommelier sans limite de tours, mais le client doit finir par se décider à un moment donné. Diversifier les scénarios (événements, apéro, repas courants/rustiques) au lieu de systématiquement de la grande gastronomie." },
+      { id: '2.6.2a', titre: 'Limite de tours & condition de satisfaction du client', done: true,
+        note: "Le compteur d'objections figé (2-4) a été remplacé par un flag decision_prise renvoyé par le client (IA) : la conversation continue tant qu'il n'a pas ce qu'il lui faut. Garde-fou de 8 tours max pour éviter une boucle infinie, sans être une cible à atteindre." },
+      { id: '2.6.2b', titre: 'Attentes du client plus variées (pas toujours un menu)', done: true,
+        note: "Ajout de 3 types de contexte tirés aléatoirement : repas (menu classique), événement (mariage, anniversaire... conseil d'achat en quantité/budget), apéro (moment convivial simple, sans repas structuré). Affichage et évaluation finale adaptés à chaque contexte." },
+      { id: '2.6.2c', titre: "Rendre l'API plus humaine", done: true,
+        note: "Prompt de conversation retravaillé : consignes explicites de ton oral (contractions, hésitations, longueur de phrase variable), interdiction de structure répétitive, personnalité du profil renforcée, plus d'obligation de soulever une objection à chaque tour." },
+      { id: '2.6.3', titre: 'Partiels — variabilité, exhaustivité & sévérité de correction', done: true },
+      { id: '2.6.3a', titre: 'Trop peu de questions / manque de variabilité entre sessions', done: true,
+        note: "Cause identifiée : 2 des 6 templates n'avaient que 2 variantes possibles (repeat quasi garanti sur quelques sessions), et il n'y avait que 6 templates au total — donc TOUS étaient tirés à chaque partiel, sans variation structurelle. Pools élargis (aoc_communales 2→4, degustation_cepage 4→7, degustation_multi 2→5 scénarios) + 2 nouveaux templates ajoutés (hiérarchie des appellations, potentiel de garde) portant le total à 8 — les 6 questions tirées varient désormais aussi en structure d'une session à l'autre." },
+      { id: '2.6.3b', titre: "Questions manquantes : AOC demandée indisponible pour le cépage", done: true,
+        note: "Ajout d'une entrée Sauvignon/Côtes de Bourg Blanc dans le pool de substitution (AOC indisponible → autre AOC même vignoble/cépage + accord régional). Corrigé de la dégustation Sauvignon élargi pour accepter explicitement les dénominations Bordeaux blanc moins connues. À noter : la vérification faite montre que Côtes de Bourg blanc existe depuis 1941 (pas 2025) — le rejet venait bien de la sévérité de correction (2.6.3c), pas d'une lacune réglementaire." },
+      { id: '2.6.3c', titre: 'API de correction trop sévère sur certains points', done: true,
+        note: "Prompts de correction (submitPartielAPI + submitAocCommunalesLibre) retravaillés : le corrigé fourni est désormais explicitement présenté comme indicatif et non exhaustif, consigne de bénéfice du doute sur les appellations/cépages plausibles non listés, pas de pénalité sur la forme, et consigne de généreux arbitrage en cas d'hésitation entre deux notes." },
     ]
   },
   { id: '3.0', titre: 'Simulation Client (conversation multi-tours)', done: true },
@@ -5478,10 +6554,64 @@ const ROADMAP = [
       { id: '11.1', titre: 'Icône réglages persistante à côté des statistiques', done: true },
       { id: '11.2', titre: 'Variables CSS + système de changement de skin à la volée', done: true,
         note: 'Architecture posée : 16 variables CSS, data-theme sur <html>, persistance locale + cloud. Migré : header, hub, navigation, boutons, formulaires Ma Cave, quiz. Écrans plus profonds (fiches AOC, Admin, Stats détaillées...) encore en couleurs fixes — migration incrémentale à poursuivre.' },
-      { id: '11.3', titre: 'Skins additionnels (à définir)', done: true, note: '5/5 : Cave Voûtée, Minitel, Memphis Pop, Poster Suisse, Soft UI — tous intégrés au sélecteur.' },
+      { id: '11.3', titre: 'Skins additionnels', done: true, note: '14 skins au total : Cave Voûtée, Minitel, Memphis Pop, Poster Suisse, Soft UI, Cyberpunk, Steampunk, puis Dark Soft UI, Y2K Frutiger Aero, Vaporwave, Fanzine, Art Déco, Herbier, Blueprint — tous intégrés au sélecteur avec le contrat de variables CSS complet.' },
     ]
   },
-  { id: 'X.0', titre: 'Débogage complet', done: false, note: 'En cours — liste de corrections en cours de constitution' },
+  { id: '12.0', titre: 'Sommel.IA — assistant expert vin', done: true,
+    note: "Un petit Claude expert en vin, capable de répondre à des demandes plus précises et ouvertes que les Partiels ou les autres modes (conversation libre plutôt que question fermée).",
+    sous: [
+      { id: '12.1', titre: "Allocation de l'espace et création du menu", done: true,
+        note: "Carte pleine largeur ajoutée dans le hub Révisions, entre Quiz et Carte de France." },
+      { id: '12.2', titre: 'Création du chatbot Sommel.IA', done: true,
+        note: "Écran de conversation libre (sans historique conservé) : suggestions cliquables générées à partir des régions les plus faibles de la progression + un cépage transversal, question libre au clavier sinon. Mascotte SVG animée (rebond, clignement des yeux, verre qui tourne pendant la réflexion). Appel via /api/claude, system prompt dédié à la révision libre." },
+    ]
+  },
+  { id: '13.0', titre: "ID AOC — jeu de carte d'identité", done: true,
+    note: "Piocher une AOC au hasard : soit deviner l'AOC à partir de ses spécificités (cépage, région, couleurs possibles, tranquille/effervescent), soit l'inverse — retrouver les spécificités à partir du nom de l'AOC.",
+    sous: [
+      { id: '13.1', titre: 'Créer le menu dans Quiz : ID AOC', done: true },
+      { id: '13.2', titre: 'Design du jeu (2 sens : specs → AOC, ou AOC → specs)', done: true,
+        note: "Format carte façon Tinder (AOC / ==== / Bio), texte libre des deux côtés. Auto-évaluation façon flashcards après révélation du corrigé (pas de correction IA par carte, pour garder un rythme rapide et rester gratuit) — le résultat auto-déclaré alimente quand même les étoiles de maîtrise. 3 modes : Devine l'AOC, Retrouve la fiche, Mix aléatoire." },
+      { id: '13.3', titre: 'Différenciation des AOC "jumelles" (même cépage/couleur/région)', done: true,
+        note: "Problème vérifié sur les données : ex. 8 AOC rouges du Médoc — Rive Gauche partagent exactement le même profil (Cabernet-Sauvignon dominant), 10 AOC des Crus du Beaujolais (Gamay), etc. — impossible à distinguer sur cépage/couleur/région seuls. Solution : (1) la carte affiche la sous-région précise (ex. \"Médoc — Rive Gauche\") au lieu de la région générique ; (2) en mode \"Devine l'AOC\", une \"famille\" (même sous-région + mêmes couleurs) est calculée automatiquement, et toute réponse appartenant à la famille est acceptée comme bonne (avec récap du nombre d'AOC concernées), au lieu d'exiger le nom exact." },
+    ]
+  },
+  { id: '14.0', titre: 'Structure des menus — personnalisation (maquettée)', done: true,
+    note: "Reprise fidèle du code déjà validé dans les 2 maquettes interactives (structure-mockup.html + hub-mockup.html) — CSS adapté aux vraies classes de l'app (.hub-card/.quiz-type-card) et branché sur les variables de thème (--accent, --card-bg...) pour rester cohérent avec le skin actif, au lieu de couleurs figées.",
+    sous: [
+      { id: '14.1', titre: '8 styles de structure (Liste, Icône 2, Icône 3, Bulles, Carrousel, Compact, Magazine, Accordéon)', done: true,
+        note: "Onglet Structure dans Personnalisation (remplace le placeholder). Attribut data-structure sur <html>, même mécanique que data-theme. Appliqué à hub, revisions-hub, quiz-hub, cave-hub — jamais à l'intérieur des quiz. Numérotation Magazine réutilise le compteur CSS déjà existant pour le skin Poster Suisse." },
+      { id: '14.2', titre: "Barre d'onglets fixe en bas (SCAG / Zytho / Ma Cave)", done: true,
+        note: "Élément position:fixed persistant, visible uniquement sur les écrans de menu (pas dans les quiz). Surlignage intelligent de l'onglet même en navigation profonde (ex: fiche AOC → SCAG reste actif)." },
+      { id: '14.3', titre: 'Mascotte flottante Sommel.IA (FAB)', done: true,
+        note: "Reprend le vrai SVG mascotte (SOMMELIA_AVATAR_SVG), remplace la carte Sommel.IA du menu Révisions." },
+      { id: '14.4', titre: 'Favoris épinglés (icône 📌 + écran de gestion, max 3)', done: true,
+        note: "Icône dans le header à côté de Stats/Personnalisation. Grille de sélection, tuiles violettes quand sélectionnées, formes réactives à la Structure choisie (rond si Bulles). Synchronisé cloud." },
+      { id: '14.5', titre: 'Recherche globale + widget "Reprendre où j\'en étais"', done: true,
+        note: "Recherche déplacée sur le hub principal et étendue aux fonctionnalités de l'app (Sommel.IA, ID AOC...) en plus des AOC. Widget de reprise basé sur la région la plus faible (mastery), lance directement la question correspondante dans Sommel.IA en un clic." },
+    ]
+  },
+  { id: '15.0', titre: 'Outil de test visuel dans Mode Admin', done: true,
+    note: "Onglet '🎨 QA Visuelle' dans Mode Admin, avec un véritable émulateur intégré (façon zone de test d'assets d'un panel admin de jeu vidéo) plutôt qu'une simple liste de liens vers les vrais écrans.",
+    sous: [
+      { id: '15.1', titre: 'Sélecteur rapide skin + structure dans Admin', done: true,
+        note: "8 skins + 8 structures en boutons de bascule immédiate (setTheme/setStructure directement branchés), avec l'actif surligné en rouge." },
+      { id: '15.2', titre: 'Émulateur intégré (aperçu live, sans navigation)', done: true,
+        note: "Cadre \"téléphone\" directement dans l'écran Admin, avec les vraies classes de l'app (.hub-card, .hub-grid, .quiz-type-card, .favori-chip, .tabbar) et des données d'exemple représentatives (menu principal, sous-menu avec badges, clickable Quiz, favoris, barre d'onglets). Se met à jour en direct au changement de skin/structure, sans quitter l'écran Admin." },
+      { id: '15.3', titre: 'Regroupement des onglets QCM/questions sous "Quizz"', done: true,
+        note: "QCM Global, QCM Régions, VA, AMV et Partiels regroupés dans un sous-menu \"📝 Quizz\" à deux niveaux ; Cépages et QA Visuelle restent des onglets principaux séparés." },
+    ]
+  },
+  { id: 'X.0', titre: 'Débogage complet', done: false, note: 'En cours — liste de corrections en cours de constitution',
+    sous: [
+      { id: 'X.1', titre: 'VA Q2 (QCM) — mauvaise comparaison de type (nombre vs texte)', done: true,
+        note: 'Les options numériques étaient comparées à une valeur textuelle : la bonne réponse était systématiquement comptée fausse. Comparaison forcée en texte des deux côtés.' },
+      { id: 'X.2', titre: 'VA QCM — rendu HTML cassé par guillemets/balises dans les options ou l\'explication', done: true,
+        note: 'Le onclick="" généré via JSON.stringify() cassait le HTML dès que l\'explication contenait des guillemets ou des balises (ex: <strong>). Boutons reconstruits en DOM pur (textContent + addEventListener).' },
+      { id: 'X.3', titre: 'Oral / Simulation Client / Partiels — appels IA non fonctionnels hors claude.ai', done: true,
+        note: 'Les appels allaient directement à l\'API Anthropic sans clé, ce qui ne fonctionne que dans l\'environnement Artifact de claude.ai. Ajout d\'une fonction Netlify (/api/claude) qui proxifie l\'appel avec la clé API gardée côté serveur.' },
+    ]
+  },
 ];
 
 function buildRoadmapScreen() {
@@ -5537,13 +6667,20 @@ function buildRoadmapScreen() {
    MODE ADMIN — Archives des questions (debugging)
    ══════════════════════════════════════════════════════ */
 
-const ADMIN_TABS = [
+// Sous-onglets regroupés sous "Quizz" (tout ce qui traite de QCM/questions)
+const ADMIN_QUIZ_TABS = [
   { key: 'quiz-global', label: 'QCM Global' },
   { key: 'quiz-region', label: 'QCM Régions' },
   { key: 'va',          label: 'VA' },
   { key: 'amv',         label: 'AMV' },
   { key: 'partiels',    label: 'Partiels' },
+];
+const ADMIN_QUIZ_KEYS = ADMIN_QUIZ_TABS.map(t => t.key);
+
+const ADMIN_MAIN_TABS = [
+  { key: 'quizz',       label: '📝 Quizz' },
   { key: 'cepages',     label: 'Cépages' },
+  { key: 'qa-visuelle', label: '🎨 QA Visuelle' },
 ];
 
 let adminState = { tab: 'quiz-global', search: '' };
@@ -5556,7 +6693,8 @@ function buildAdminScreen() {
           oninput="setAdminSearch(this.value)"
           style="width:100%;padding:10px 14px;border:1px solid #e0e0dc;border-radius:10px;font-size:14px;outline:none;background:#fff;">
       </div>
-      <div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:10px;margin-bottom:.5rem;" id="adminTabs"></div>
+      <div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:8px;" id="adminTabs"></div>
+      <div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:10px;margin-bottom:.5rem;" id="adminSubTabs"></div>
       <div id="adminContent"></div>
     </div>`;
   buildAdminTabs();
@@ -5564,13 +6702,36 @@ function buildAdminScreen() {
 }
 
 function buildAdminTabs() {
-  document.getElementById('adminTabs').innerHTML = ADMIN_TABS.map(t => `
-    <button onclick="setAdminTab('${t.key}')" style="flex-shrink:0;padding:7px 14px;border-radius:20px;
-      border:1px solid ${adminState.tab === t.key ? '#dc2626' : '#e0e0dc'};
-      background:${adminState.tab === t.key ? '#dc2626' : '#fff'};
-      color:${adminState.tab === t.key ? '#fff' : '#333'};
-      font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;">${t.label}</button>
+  const activeMain = ADMIN_QUIZ_KEYS.includes(adminState.tab) ? 'quizz' : adminState.tab;
+
+  document.getElementById('adminTabs').innerHTML = ADMIN_MAIN_TABS.map(t => `
+    <button onclick="setAdminMainTab('${t.key}')" style="flex-shrink:0;padding:7px 14px;border-radius:20px;
+      border:1.5px solid ${activeMain === t.key ? '#dc2626' : '#e0e0dc'};
+      background:${activeMain === t.key ? '#dc2626' : '#fff'};
+      color:${activeMain === t.key ? '#fff' : '#333'};
+      font-size:12.5px;font-weight:700;cursor:pointer;white-space:nowrap;">${t.label}</button>
   `).join('');
+
+  const subWrap = document.getElementById('adminSubTabs');
+  if (activeMain === 'quizz') {
+    subWrap.style.display = 'flex';
+    subWrap.innerHTML = ADMIN_QUIZ_TABS.map(t => `
+      <button onclick="setAdminTab('${t.key}')" style="flex-shrink:0;padding:6px 12px;border-radius:16px;
+        border:1px solid ${adminState.tab === t.key ? '#dc2626' : '#e0e0dc'};
+        background:${adminState.tab === t.key ? '#fdeaea' : '#fff'};
+        color:${adminState.tab === t.key ? '#dc2626' : '#666'};
+        font-size:11.5px;font-weight:600;cursor:pointer;white-space:nowrap;">${t.label}</button>
+    `).join('');
+  } else {
+    subWrap.style.display = 'none';
+    subWrap.innerHTML = '';
+  }
+}
+
+function setAdminMainTab(key) {
+  adminState.tab = (key === 'quizz') ? 'quiz-global' : key;
+  buildAdminTabs();
+  renderAdminContent();
 }
 
 function setAdminTab(key) {
@@ -5707,6 +6868,108 @@ function renderAdminContent() {
             <div style="font-size:11px;color:#555;">AOC emblématiques : ${(c.aoc_emblematiques || []).join(', ') || '—'}</div>
           </div>`).join('');
     }).join('');
+  } else if (adminState.tab === 'qa-visuelle') {
+    const curTheme = loadTheme();
+    const curStruct = loadStructure();
+
+    html = `
+      <div style="background:#fff;border:1px solid #e5e5e2;border-radius:12px;padding:14px;margin-bottom:14px;">
+        <div style="font-size:13px;font-weight:700;margin-bottom:2px;">🎨 Skin actif : ${curTheme}</div>
+        <div style="font-size:11px;color:#999;margin-bottom:10px;">Bascule immédiate — l'aperçu ci-dessous se met à jour en direct.</div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;">
+          ${THEMES.map(t => `
+            <button onclick="setTheme('${t.key}');buildAdminScreen();initStructureCarrousel();"
+              style="padding:6px 12px;border-radius:16px;font-size:11px;font-weight:600;cursor:pointer;
+              border:1.5px solid ${t.key===curTheme?'#dc2626':'#e0e0dc'};
+              background:${t.key===curTheme?'#dc2626':'#fff'};color:${t.key===curTheme?'#fff':'#333'};">
+              ${t.icon || ''} ${t.label}
+            </button>`).join('')}
+        </div>
+        <div style="font-size:13px;font-weight:700;margin-bottom:2px;">🏗️ Structure active : ${curStruct}</div>
+        <div style="font-size:11px;color:#999;margin-bottom:10px;">S'applique aux menus (pas aux quiz).</div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;">
+          ${STRUCTURES.map(st => `
+            <button onclick="setStructure('${st.key}');buildAdminScreen();initStructureCarrousel();"
+              style="padding:6px 12px;border-radius:16px;font-size:11px;font-weight:600;cursor:pointer;
+              border:1.5px solid ${st.key===curStruct?'#dc2626':'#e0e0dc'};
+              background:${st.key===curStruct?'#dc2626':'#fff'};color:${st.key===curStruct?'#fff':'#333'};">
+              ${st.icon} ${st.label}
+            </button>`).join('')}
+        </div>
+      </div>
+
+      <div class="qa-phone">
+        <div class="qa-phone-header">🍷 MyWineApp <span class="qa-phone-badge">aperçu</span></div>
+        <div class="qa-phone-body">
+
+          <div class="qa-phone-label">Favoris épinglés (.favori-chip)</div>
+          <div class="favoris-row" style="display:flex;">
+            <div class="favori-chip"><span class="favori-chip-icon">🪪</span><span class="favori-chip-label">ID AOC</span></div>
+            <div class="favori-chip"><span class="favori-chip-icon">💬</span><span class="favori-chip-label">Sommel.IA</span></div>
+            <div class="favori-chip"><span class="favori-chip-icon">🧠</span><span class="favori-chip-label">Quiz</span></div>
+          </div>
+
+          <div class="qa-phone-label">Menu principal (.hub-grid / .hub-card)</div>
+          <div class="hub-grid">
+            <div class="hub-card cat-aoc" style="grid-column:1/-1;padding:26px 20px;">
+              <div class="hub-card-icon" style="font-size:30px;">📚</div>
+              <div class="hub-card-title" style="font-size:17px;">SCAG</div>
+              <div class="hub-card-desc">Fiches AOC, cépages, accords, quiz, carte…</div>
+            </div>
+            <div class="hub-card cat-carte" style="grid-column:1/-1;padding:26px 20px;">
+              <div class="hub-card-icon" style="font-size:30px;">🍺</div>
+              <div class="hub-card-title" style="font-size:17px;">Zytho</div>
+              <div class="hub-card-desc">Bientôt disponible</div>
+            </div>
+          </div>
+
+          <div class="qa-phone-label">Sous-menu, avec badge (.hub-card-count)</div>
+          <div class="hub-grid">
+            <div class="hub-card cat-quiz">
+              <div class="hub-card-icon">🧠</div>
+              <div class="hub-card-title">Quiz</div>
+              <div class="hub-card-desc">Entraînez-vous sur tous les sujets</div>
+              <span class="hub-card-count">1200+ questions</span>
+            </div>
+            <div class="hub-card cat-aoc">
+              <div class="hub-card-icon">🗺️</div>
+              <div class="hub-card-title">Fiches AOC</div>
+              <div class="hub-card-desc">202 appellations</div>
+              <span class="hub-card-count">202 fiches</span>
+            </div>
+          </div>
+
+          <div class="qa-phone-label">Clickable Quiz (.quiz-type-list / .quiz-type-card)</div>
+          <div class="quiz-type-list">
+            <div class="quiz-type-card">
+              <div class="quiz-type-icon">💬</div>
+              <div class="quiz-type-body">
+                <div class="quiz-type-title">Simulation Client</div>
+                <div class="quiz-type-desc">Conversation complète, objections à gérer</div>
+                <span class="quiz-type-badge">Simulation IA</span>
+              </div>
+              <span class="quiz-type-arrow">›</span>
+            </div>
+            <div class="quiz-type-card">
+              <div class="quiz-type-icon">🪪</div>
+              <div class="quiz-type-body">
+                <div class="quiz-type-title">ID AOC</div>
+                <div class="quiz-type-desc">Fiche d'identité façon Tinder</div>
+                <span class="quiz-type-badge">Format carte</span>
+              </div>
+              <span class="quiz-type-arrow">›</span>
+            </div>
+          </div>
+
+          <div class="qa-phone-label">Barre d'onglets (.tabbar)</div>
+          <div class="tabbar qa-tabbar-preview">
+            <button class="tab active"><div class="tab-icon">📚</div>SCAG</button>
+            <button class="tab"><div class="tab-icon">🍺</div>Zytho</button>
+            <button class="tab"><div class="tab-icon">🍷</div>Ma Cave</button>
+          </div>
+
+        </div>
+      </div>`;
   }
 
   el.innerHTML = html || `<div style="padding:2rem;text-align:center;color:#999;font-size:13px;">Aucun résultat.</div>`;
@@ -6000,12 +7263,17 @@ const CLIENT_PROFILES = [
     desc: 'Vient souvent, a des goûts très marqués et bien connus, n\'aime pas être surpris.' },
 ];
 
+const SIMU_CONTEXTES = ['repas', 'evenement', 'apero']; // 2.6.2b — pas toujours un menu
+
 let simuState = {
   profil: null,
-  menu: [],
+  contexteType: 'repas',   // 'repas' | 'evenement' | 'apero'
+  contexteLabel: '',       // description du contexte (plats, événement, ou moment convivial)
+  menu: [],                // conservé pour compat si contexteType === 'repas'
   historique: [],   // [{role:'client'|'sommelier', texte:'...'}]
-  objectionsRestantes: 0,
-  objectionsTotal: 0,
+  tourCount: 0,
+  maxTours: 8,             // garde-fou anti-boucle infinie (pas une cible à atteindre)
+  decisionPrise: false,
   step: 'menu',      // menu -> conversation -> feedback
 };
 
@@ -6018,8 +7286,8 @@ function buildSimuClientScreen() {
         <div style="font-size:13px;line-height:1.7;color:#555;">
           <strong>Déroulé :</strong><br>
           1. Choisissez un profil de client (ou laissez le hasard décider)<br>
-          2. Un menu et une première demande vous sont présentés<br>
-          3. Conversez avec le client — il soulèvera entre 2 et 4 objections<br>
+          2. Un contexte vous est présenté — repas, événement, ou simple moment convivial<br>
+          3. Conversez librement avec le client jusqu'à ce qu'il se décide<br>
           4. Recevez un bilan complet de votre gestion de la relation client
         </div>
       </div>
@@ -6050,29 +7318,45 @@ async function startSimuClient(profilId) {
     ? CLIENT_PROFILES[Math.floor(Math.random()*CLIENT_PROFILES.length)]
     : CLIENT_PROFILES.find(p => p.id === profilId);
 
+  const contexteType = SIMU_CONTEXTES[Math.floor(Math.random()*SIMU_CONTEXTES.length)];
+
   simuState = {
-    profil, menu: [], historique: [],
-    objectionsTotal: Math.floor(Math.random()*3) + 2, // 2 à 4
-    objectionsRestantes: 0, step: 'menu'
+    profil, contexteType, contexteLabel: '', menu: [], historique: [],
+    tourCount: 0, maxTours: 8, decisionPrise: false, step: 'menu'
   };
-  simuState.objectionsRestantes = simuState.objectionsTotal;
 
   document.getElementById('screen-simu-client').innerHTML = `
     <div style="padding:2rem 1rem;text-align:center;">
-      <div style="font-size:14px;color:#9333ea;">✨ ${profil.emoji} ${profil.nom} arrive à votre table…</div>
+      <div style="font-size:14px;color:#9333ea;">✨ ${profil.emoji} ${profil.nom} arrive…</div>
     </div>`;
 
   const regions = Object.keys(DATA);
   const randomRegions = [...regions].sort(()=>Math.random()-.5).slice(0,3);
 
-  const systemPrompt = `Tu es "${profil.nom}" (${profil.desc}) dans un restaurant gastronomique français, tu demandes conseil à un sommelier en formation.
-
+  const contextInstructions = {
+    repas: `Le client vient dîner dans un restaurant gastronomique français et demande conseil sur les vins pour accompagner son repas.
 Génère :
 1. Un menu de 2-3 plats réalistes (varié, éventuellement inspiré de ces régions viticoles : ${randomRegions.map(r=>DATA[r].name).join(', ')}, non obligatoire)
-2. Une première réplique de ta part en tant que client, dans le style de ton profil, pour engager la conversation et demander conseil sur le vin (mentionne le menu ou pose une question ouverte)
-
+2. Une première réplique du client pour engager la conversation
 Réponds UNIQUEMENT en JSON valide, sans texte autour :
-{"plats":["plat 1","plat 2","plat 3"],"premiere_replique":"Ta réplique de client, 2-3 phrases, dans le ton de ton profil"}`;
+{"type":"repas","plats":["plat 1","plat 2","plat 3"],"premiere_replique":"Ta réplique de client, 2-3 phrases, dans le ton de ton profil"}`,
+    evenement: `Le client organise ou prépare un événement (mariage, anniversaire, fête d'entreprise, baptême, pot de départ...) et vient demander conseil pour le vin/les boissons à prévoir — PAS un accord mets-vins classique, mais un conseil d'achat en quantité/budget/style adapté à l'occasion.
+Génère :
+1. Une description concrète et réaliste de l'événement (type, nombre approximatif de personnes, ambiance recherchée, budget évoqué si pertinent)
+2. Une première réplique du client pour engager la conversation
+Réponds UNIQUEMENT en JSON valide, sans texte autour :
+{"type":"evenement","evenement":"Description de l'événement en une phrase","premiere_replique":"Ta réplique de client, 2-3 phrases, dans le ton de ton profil"}`,
+    apero: `Le client vient simplement pour un moment convivial et sans prétention — un apéritif entre amis/en famille, une envie de "boire quelque chose de sympa" sans repas structuré derrière. Pas de grande gastronomie ici, juste du plaisir simple (éventuellement quelques planches, snacks, ou rien de particulier).
+Génère :
+1. Une description courte du moment (ex: apéro improvisé entre amis un vendredi soir, quelques planches de charcuterie/fromage)
+2. Une première réplique du client pour engager la conversation
+Réponds UNIQUEMENT en JSON valide, sans texte autour :
+{"type":"apero","apero":"Description du moment en une phrase","premiere_replique":"Ta réplique de client, 2-3 phrases, dans le ton de ton profil"}`
+  };
+
+  const systemPrompt = `Tu es "${profil.nom}" (${profil.desc}) dans un caviste/restaurant français, tu demandes conseil à un sommelier en formation.
+
+${contextInstructions[contexteType]}`;
 
   try {
     const data = await callClaudeAPI({
@@ -6083,7 +7367,14 @@ Réponds UNIQUEMENT en JSON valide, sans texte autour :
     let text = data.content?.[0]?.text || '{}';
     text = text.replace(/```json|```/g,'').trim();
     const parsed = JSON.parse(text);
-    simuState.menu = parsed.plats || [];
+    if (contexteType === 'repas') {
+      simuState.menu = parsed.plats || [];
+      simuState.contexteLabel = simuState.menu.join(' · ');
+    } else if (contexteType === 'evenement') {
+      simuState.contexteLabel = parsed.evenement || '';
+    } else {
+      simuState.contexteLabel = parsed.apero || '';
+    }
     simuState.historique.push({role:'client', texte: parsed.premiere_replique || 'Bonjour, que me conseillez-vous ?'});
     simuState.step = 'conversation';
     renderSimuConversation();
@@ -6098,16 +7389,18 @@ Réponds UNIQUEMENT en JSON valide, sans texte autour :
 
 function renderSimuConversation() {
   const p = simuState.profil;
+  const contexteIcon = { repas:'🍽️', evenement:'🎉', apero:'🥂' }[simuState.contexteType] || '🍽️';
+  const contexteTitre = { repas:'Menu', evenement:'Événement', apero:'Moment' }[simuState.contexteType] || 'Menu';
   document.getElementById('screen-simu-client').innerHTML = `
     <div style="padding:1rem 1rem 0;">
       <div style="background:#faf5ff;border-radius:12px;padding:12px 14px;margin-bottom:1rem;display:flex;align-items:center;gap:10px;">
         <span style="font-size:22px;">${p.emoji}</span>
         <div style="flex:1;">
           <div style="font-size:13px;font-weight:700;color:#9333ea;">${p.nom}</div>
-          <div style="font-size:11px;color:#888;">Menu : ${simuState.menu.join(' · ')}</div>
+          <div style="font-size:11px;color:#888;">${contexteIcon} ${contexteTitre} : ${simuState.contexteLabel}</div>
         </div>
         <div style="font-size:11px;font-weight:600;background:#fff;padding:3px 9px;border-radius:20px;color:#9333ea;">
-          ${simuState.objectionsTotal - simuState.objectionsRestantes}/${simuState.objectionsTotal} objections
+          Tour ${simuState.tourCount + 1}
         </div>
       </div>
       <div id="simuHistorique" style="display:flex;flex-direction:column;gap:10px;margin-bottom:1rem;max-height:50vh;overflow-y:auto;">
@@ -6145,30 +7438,45 @@ async function submitSimuReponse() {
   if (!reponse) return;
 
   simuState.historique.push({role:'sommelier', texte: reponse});
+  simuState.tourCount++;
   renderSimuConversation();
 
   document.getElementById('simuHistorique').innerHTML += `
     <div style="align-self:flex-start;font-size:12px;color:#9333ea;padding:6px 14px;">✨ Le client réfléchit…</div>`;
 
-  const isLastTurn = simuState.objectionsRestantes <= 1;
   const p = simuState.profil;
+  const contexteTexte = {
+    repas: `Menu : ${simuState.menu.join(', ')}`,
+    evenement: `Événement : ${simuState.contexteLabel}`,
+    apero: `Moment convivial : ${simuState.contexteLabel}`,
+  }[simuState.contexteType];
 
   const historiqueText = simuState.historique.map(h =>
     `${h.role === 'client' ? 'CLIENT' : 'SOMMELIER'}: ${h.texte}`
   ).join('\n');
 
-  const systemPrompt = `Tu incarnes "${p.nom}" (${p.desc}) dans une simulation d'examen de sommellerie. Menu : ${simuState.menu.join(', ')}.
-Il te reste ${simuState.objectionsRestantes} objection(s) à soulever sur ${simuState.objectionsTotal} au total dans cette conversation.
+  // 2.6.2a — plus de compteur d'objections figé : c'est le client (l'IA) qui
+  // décide quand il a assez d'éléments pour se décider. Le garde-fou maxTours
+  // n'est là que pour éviter une conversation infinie, pas comme objectif à atteindre.
+  const isForcedLastTurn = simuState.tourCount >= simuState.maxTours;
+
+  const systemPrompt = `Tu incarnes "${p.nom}" (${p.desc}) dans une simulation d'examen de sommellerie. ${contexteTexte}.
 
 Historique de la conversation :
 ${historiqueText}
 
-${isLastTurn
-  ? `C'est ta DERNIÈRE intervention. Réagis à la dernière réponse du sommelier de façon cohérente avec ton profil, conclus la conversation en acceptant sa proposition finale ou en exprimant ta décision (positive ou réservée mais réaliste), SANS nouvelle objection.`
-  : `Réagis à la dernière réponse du sommelier. Si sa proposition ne te convient pas totalement ou si tu veux tester autre chose, soulève une NOUVELLE objection réaliste (cépage, couleur, prix, région, texture, déjà bu, allergie, etc. — varie les types d'objections). Reste dans le ton de ton profil.`}
+${isForcedLastTurn
+  ? `C'est ton dernière intervention possible (la conversation doit se conclure maintenant). Réagis à la dernière réponse du sommelier de façon cohérente avec ton profil et prends une décision claire (tu acceptes une proposition, ou tu déclines poliment) — decision_prise doit être true.`
+  : `Réagis naturellement à la dernière réponse du sommelier, comme le ferait vraiment "${p.nom}" dans ce contexte : pose une question, exprime une hésitation, soulève une objection réaliste (cépage, prix, quantité, style, déjà essayé, allergie...), demande une précision, ou — si tu as ce qu'il te faut et que tu es convaincu(e) — conclus et décide-toi. Ne force pas systématiquement une objection à chaque tour si ce n'est pas naturel pour ton profil à ce stade ; laisse la conversation respirer.`}
+
+IMPORTANT — sois humain, pas mécanique :
+- Écris comme à l'oral : phrases de longueur variable, contractions naturelles ("j'sais pas", "c'est-à-dire", "en fait"...) si ça colle au profil, petites hésitations possibles.
+- Évite les formulations robotiques, les listes, ou une structure identique d'un tour à l'autre.
+- Laisse transparaître une émotion ou une personnalité cohérente avec ton profil (impatience, enthousiasme, scepticisme...).
+- Ne répète pas les mêmes tournures que dans tes répliques précédentes.
 
 Réponds UNIQUEMENT en JSON valide :
-{"reponse_client":"Ta réplique, 2-4 phrases, dans le ton de ton profil"}`;
+{"reponse_client":"Ta réplique, 1-4 phrases, dans le ton de ton profil","decision_prise":true|false}`;
 
   try {
     const data = await callClaudeAPI({
@@ -6181,9 +7489,9 @@ Réponds UNIQUEMENT en JSON valide :
     const parsed = JSON.parse(text);
 
     simuState.historique.push({role:'client', texte: parsed.reponse_client || '...'});
-    simuState.objectionsRestantes--;
+    simuState.decisionPrise = !!parsed.decision_prise || isForcedLastTurn;
 
-    if (simuState.objectionsRestantes <= 0) {
+    if (simuState.decisionPrise) {
       simuState.step = 'feedback';
       renderSimuConversation();
       setTimeout(() => showSimuFeedback(), 800);
@@ -6201,21 +7509,27 @@ async function showSimuFeedback() {
       <div style="font-size:14px;color:#9333ea;">✨ Évaluation de votre prestation…</div>
     </div>`;
 
+  const contexteTexte = {
+    repas: `Menu : ${simuState.menu.join(', ')}`,
+    evenement: `Événement : ${simuState.contexteLabel}`,
+    apero: `Moment convivial : ${simuState.contexteLabel}`,
+  }[simuState.contexteType];
+
   const historiqueText = simuState.historique.map(h =>
     `${h.role === 'client' ? 'CLIENT' : 'SOMMELIER'}: ${h.texte}`
   ).join('\n');
 
-  const systemPrompt = `Tu es un formateur de sommellerie qui évalue une simulation complète de conseil client (école SCAG). Le client était "${simuState.profil.nom}" (${simuState.profil.desc}). Menu : ${simuState.menu.join(', ')}.
+  const systemPrompt = `Tu es un formateur de sommellerie qui évalue une simulation complète de conseil client (école SCAG). Le client était "${simuState.profil.nom}" (${simuState.profil.desc}). ${contexteTexte}.
 
 Conversation complète :
 ${historiqueText}
 
-Évalue la prestation du sommelier sur l'ensemble de l'échange : pertinence des accords proposés, écoute et adaptation aux objections du client, posture professionnelle, fluidité de la relation commerciale. Note sur 20.
+Évalue la prestation du sommelier sur l'ensemble de l'échange : pertinence des conseils/accords proposés (adaptés au contexte réel — repas, événement ou moment convivial, pas nécessairement un accord mets-vins classique), qualité du questionnement pour cerner les besoins du client, écoute et adaptation aux objections, posture professionnelle, fluidité de la relation commerciale. Note sur 20.
 
 Format (texte structuré, PAS de JSON) :
 Note : X/20
 
-Puis 3 paragraphes courts : Accords proposés / Gestion de la relation client et des objections / Conseils d'amélioration.
+Puis 3 paragraphes courts : Conseils proposés / Gestion de la relation client et du questionnement / Conseils d'amélioration.
 Réponds en français, ton professionnel et constructif.`;
 
   try {
@@ -6571,10 +7885,23 @@ function computeOralStats() {
 /* ══════════════════════════════════════════════════════
    11.2 — PERSONNALISATION (skins) — sélecteur fonctionnel
    ══════════════════════════════════════════════════════ */
+let personnalisationTab = 'skin';
+
+function setPersonnalisationTab(tab) {
+  personnalisationTab = tab;
+  buildPersonnalisationScreen();
+}
+
 function buildPersonnalisationScreen() {
   const current = document.documentElement.getAttribute('data-theme') || 'classique';
-  document.getElementById('screen-personnalisation').innerHTML = `
-    <div class="cave-form">
+
+  const tabsHtml = `
+    <div style="display:flex;gap:8px;margin-bottom:1.25rem;">
+      <button onclick="setPersonnalisationTab('skin')" style="flex:1;padding:10px;border-radius:10px;border:1px solid ${personnalisationTab==='skin' ? '#9333ea' : '#e5e5e2'};background:${personnalisationTab==='skin' ? '#faf5ff' : '#fff'};color:${personnalisationTab==='skin' ? '#9333ea' : '#666'};font-weight:600;font-size:13px;cursor:pointer;">🎨 Skin</button>
+      <button onclick="setPersonnalisationTab('structure')" style="flex:1;padding:10px;border-radius:10px;border:1px solid ${personnalisationTab==='structure' ? '#9333ea' : '#e5e5e2'};background:${personnalisationTab==='structure' ? '#faf5ff' : '#fff'};color:${personnalisationTab==='structure' ? '#9333ea' : '#666'};font-weight:600;font-size:13px;cursor:pointer;">🏗️ Structure</button>
+    </div>`;
+
+  const skinContent = `
       <div class="form-section-title" style="margin-top:0;">Thème visuel</div>
       <div style="font-size:12px;color:var(--text-secondary);margin-bottom:16px;line-height:1.5;">
         Le thème s'applique immédiatement et se synchronise avec vos autres appareils.
@@ -6589,7 +7916,30 @@ function buildPersonnalisationScreen() {
             <div class="skin-option-desc">${t.desc}</div>
           </div>
           <div class="skin-check">✓</div>
-        </div>`).join('')}
+        </div>`).join('')}`;
+
+  const currentStructure = loadStructure();
+  const structureContent = `
+      <div class="form-section-title" style="margin-top:0;">Structure des menus</div>
+      <div style="font-size:12px;color:var(--text-secondary);margin-bottom:16px;line-height:1.5;">
+        Change la mise en forme des menus de navigation (accueil, révisions, quiz, ma cave) —
+        l'intérieur des quiz eux-mêmes n'est jamais concerné. S'applique immédiatement et se
+        synchronise avec vos autres appareils.
+      </div>
+      ${STRUCTURES.map(s => `
+        <div class="skin-option ${s.key === currentStructure ? 'active' : ''}" onclick="setStructure('${s.key}')">
+          <div class="skin-swatch" style="background:var(--accent-bg);color:var(--accent);">${s.icon}</div>
+          <div class="skin-option-body">
+            <div class="skin-option-title">${s.label}</div>
+            <div class="skin-option-desc">${s.desc}</div>
+          </div>
+          <div class="skin-check">✓</div>
+        </div>`).join('')}`;
+
+  document.getElementById('screen-personnalisation').innerHTML = `
+    <div class="cave-form">
+      ${tabsHtml}
+      ${personnalisationTab === 'skin' ? skinContent : structureContent}
     </div>`;
 }
 
@@ -6741,6 +8091,347 @@ function buildStatsScreen() {
       </div>
     </div>`;
 }
+
+/* ══════════════════════════════════════════════════════
+   12.0 — SOMMEL.IA : assistant expert vin en conversation libre
+   Pas d'historique conservé (chaque question est un échange
+   indépendant) — suggestions générées à partir des points faibles
+   de la progression (mastery) de l'utilisateur.
+   ══════════════════════════════════════════════════════ */
+
+const SOMMELIA_AVATAR_SVG = `
+<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" class="sommelia-avatar-svg">
+  <ellipse cx="60" cy="108" rx="26" ry="5" fill="#000" opacity="0.08"/>
+  <!-- pied du verre -->
+  <rect x="56" y="78" width="8" height="22" rx="3" fill="#d8c9ee"/>
+  <ellipse cx="60" cy="101" rx="18" ry="4" fill="#d8c9ee"/>
+  <!-- coupe du verre -->
+  <path d="M 26 30 Q 26 70 60 78 Q 94 70 94 30 Z" fill="#f3ecfb" stroke="#c9b6ea" stroke-width="2"/>
+  <!-- vin -->
+  <path class="sommelia-wine" d="M 32 38 Q 32 64 60 71 Q 88 64 88 38 Q 88 46 60 50 Q 32 46 32 38 Z" fill="#9333ea"/>
+  <!-- reflet -->
+  <path d="M 36 34 Q 38 46 50 52" stroke="#fff" stroke-width="2.5" fill="none" opacity="0.35" stroke-linecap="round"/>
+  <!-- visage mignon sur le vin -->
+  <g class="sommelia-face">
+    <circle cx="49" cy="41" r="3.2" fill="#2a1435" class="sommelia-eye"/>
+    <circle cx="71" cy="41" r="3.2" fill="#2a1435" class="sommelia-eye"/>
+    <path d="M 51 49 Q 60 55 69 49" stroke="#2a1435" stroke-width="2.4" fill="none" stroke-linecap="round" class="sommelia-mouth"/>
+    <ellipse cx="42" cy="45" rx="4" ry="2.4" fill="#e8a4c0" opacity="0.55"/>
+    <ellipse cx="78" cy="45" rx="4" ry="2.4" fill="#e8a4c0" opacity="0.55"/>
+  </g>
+</svg>`;
+
+document.getElementById('sommeliaFab').innerHTML = SOMMELIA_AVATAR_SVG;
+
+let sommeliaState = { loading: false };
+
+function sommeliaWeakestRegions(n) {
+  const regionStats = Object.keys(QUIZ_BY_REGION).map(key => {
+    const questions = QUIZ_BY_REGION[key];
+    const rate = computeMasteryRate('region_' + key, questions);
+    return { key, name: DATA[key] ? DATA[key].name : key, rate };
+  }).sort((a,b) => a.rate - b.rate);
+  return regionStats.slice(0, n);
+}
+
+function sommeliaBuildSuggestions() {
+  const weak = sommeliaWeakestRegions(2);
+  const suggestions = [];
+
+  if (weak[0]) suggestions.push(`Fais-moi réviser les vins de ${weak[0].name}, c'est ma région la plus faible.`);
+  if (weak[1]) suggestions.push(`Explique-moi les spécificités de ${weak[1].name} par rapport aux régions voisines.`);
+
+  // Suggestion transversale sur un cépage présent dans une des régions faibles
+  const allCepages = [...CEPAGES.rouges, ...CEPAGES.blancs];
+  const cepageMatch = allCepages.find(c => weak.some(w => c.regions_principales?.some(r => r.toLowerCase().includes((w.name||'').toLowerCase().split(' ')[0].toLowerCase()))));
+  const cepage = cepageMatch || allCepages[Math.floor(Math.random()*allCepages.length)];
+  suggestions.push(`Compare le ${cepage.nom} à travers les différentes régions où il est cultivé.`);
+
+  suggestions.push(`Donne-moi 3 pièges classiques d'examen sur les accords mets-vins.`);
+
+  return suggestions.slice(0, 4);
+}
+
+function buildSommelIAScreen() {
+  const suggestions = sommeliaBuildSuggestions();
+  document.getElementById('screen-sommelia').innerHTML = `
+    <div style="padding:1.25rem 1rem;display:flex;flex-direction:column;align-items:center;">
+      <div class="sommelia-avatar" id="sommeliaAvatar">${SOMMELIA_AVATAR_SVG}</div>
+      <div style="font-size:13px;font-weight:700;color:#9333ea;margin-top:4px;">Sommel.IA</div>
+      <div style="font-size:12px;color:#888;text-align:center;margin-top:2px;margin-bottom:1.25rem;">Posez une question de révision, sans format imposé.</div>
+
+      <div id="sommeliaSuggestions" style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:1.25rem;width:100%;">
+        ${suggestions.map(s => `<button class="sommelia-chip" onclick="sommeliaAskSuggestion(this)">${s}</button>`).join('')}
+      </div>
+
+      <div id="sommeliaAnswerZone" style="width:100%;"></div>
+
+      <div style="width:100%;margin-top:0.75rem;">
+        <textarea id="sommeliaInput" placeholder="Ex : Fais-moi réviser les Sauvignon des différentes régions…" rows="3"
+          style="width:100%;padding:12px;border:1px solid #ddd;border-radius:10px;font-size:14px;font-family:inherit;resize:vertical;outline:none;margin-bottom:8px;"></textarea>
+        <button class="btn btn-purple" style="width:100%;padding:12px;" onclick="sommeliaAskInput()">Demander à Sommel.IA →</button>
+      </div>
+    </div>`;
+}
+
+function sommeliaAskSuggestion(btn) {
+  sommeliaAsk(btn.textContent);
+}
+
+function sommeliaAskInput() {
+  const val = document.getElementById('sommeliaInput')?.value.trim() || '';
+  if (!val) return;
+  sommeliaAsk(val);
+}
+
+async function sommeliaAsk(question) {
+  if (sommeliaState.loading) return;
+  sommeliaState.loading = true;
+
+  const avatar = document.getElementById('sommeliaAvatar');
+  if (avatar) avatar.classList.add('sommelia-thinking');
+
+  const zone = document.getElementById('sommeliaAnswerZone');
+  zone.innerHTML = `
+    <div style="background:#faf5ff;border-radius:12px;padding:14px;margin-bottom:0.5rem;">
+      <div style="font-size:11px;font-weight:700;color:#9333ea;text-transform:uppercase;margin-bottom:6px;">Vous avez demandé</div>
+      <div style="font-size:13px;color:#444;">${question.replace(/</g,'&lt;')}</div>
+    </div>
+    <div style="text-align:center;padding:12px;color:#9333ea;font-size:13px;">✨ Sommel.IA réfléchit…</div>`;
+
+  const systemPrompt = `Tu es "Sommel.IA", un petit assistant sommelier expert et pédagogue intégré à l'app de révision SCAG (école de sommellerie française). Un étudiant te pose une question libre de révision — cela peut être un sujet précis (comparer un cépage à travers les régions, creuser une appellation, s'entraîner sur un point technique...) plutôt qu'un exercice fermé comme un partiel ou un oral classique.
+
+Réponds de façon structurée, précise et pédagogique, adaptée à un niveau d'école de sommellerie (précision réglementaire, terroir, cépages, dégustation, accords). Utilise des puces ou des paragraphes courts selon ce qui convient le mieux à la question. Sois concis mais complet — assez pour vraiment réviser le sujet, sans noyer l'étudiant. Réponds en français.`;
+
+  try {
+    const data = await callClaudeAPI({
+      system: systemPrompt,
+      max_tokens: 1200,
+      messages: [{ role:'user', content: question }]
+    });
+    const answer = data.content?.[0]?.text || 'Erreur, réessaie.';
+    zone.innerHTML = `
+      <div style="background:#faf5ff;border-radius:12px;padding:14px;margin-bottom:0.5rem;">
+        <div style="font-size:11px;font-weight:700;color:#9333ea;text-transform:uppercase;margin-bottom:6px;">Vous avez demandé</div>
+        <div style="font-size:13px;color:#444;">${question.replace(/</g,'&lt;')}</div>
+      </div>
+      <div style="background:#fff;border:1px solid #e5e5e2;border-radius:12px;padding:16px;line-height:1.7;font-size:13px;white-space:pre-wrap;">${answer}</div>`;
+  } catch(e) {
+    zone.innerHTML = `
+      <div class="quiz-feedback ko">Erreur de connexion. <button class="btn" onclick="sommeliaAsk(${JSON.stringify(question)})">Réessayer</button></div>`;
+  } finally {
+    sommeliaState.loading = false;
+    if (avatar) avatar.classList.remove('sommelia-thinking');
+  }
+}
+
+/* ══════════════════════════════════════════════════════
+   13.0 — ID AOC : jeu de carte d'identité façon Tinder
+   Texte libre des deux côtés (specs → AOC, ou AOC → specs).
+   Auto-évaluation façon flashcards (l'IA ne note pas ici :
+   le corrigé est révélé et l'étudiant se note lui-même,
+   ce qui permet un rythme rapide, carte après carte, sans coût API).
+   ══════════════════════════════════════════════════════ */
+
+let ALL_AOCS_FLAT = null;
+function getAllAocsFlat() {
+  if (ALL_AOCS_FLAT) return ALL_AOCS_FLAT;
+  const list = [];
+  Object.keys(DATA).forEach(key => {
+    const region = DATA[key];
+    region.subcats.forEach(sc => {
+      sc.aocs.forEach(aoc => {
+        list.push({ ...aoc, regionKey: key, regionName: region.name, subcatLabel: sc.label });
+      });
+    });
+  });
+  ALL_AOCS_FLAT = list;
+  return list;
+}
+
+function idAocCouleurs(aoc) {
+  return (aoc.types || []).filter(t => t !== 'effervescent').join(', ') || '—';
+}
+function idAocNature(aoc) {
+  return (aoc.types || []).includes('effervescent') ? 'Effervescent' : 'Tranquille';
+}
+function idAocSousRegion(aoc) {
+  return `${aoc.subcatLabel} (${aoc.regionName})`;
+}
+function idAocNormalize(str) {
+  return (str || '').toString().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]/g,'');
+}
+/* Famille = AOC partageant exactement le même profil (sous-région + couleurs/nature)
+   — trop d'AOC sont indiscernables sur ces seuls critères (ex : 8 AOC rouges du
+   Médoc, toutes Cabernet-Sauvignon dominant) pour exiger le nom exact. */
+function idAocFamily(aoc) {
+  const pool = getAllAocsFlat();
+  const sig = a => a.regionKey + '|' + a.subcatLabel + '|' + (a.types||[]).slice().sort().join('+');
+  const target = sig(aoc);
+  return pool.filter(a => sig(a) === target);
+}
+
+let idAocState = { mode: 'specs2aoc', current: null, cardMode: 'specs2aoc', revealed: false };
+
+function buildIdAocMenu() {
+  document.getElementById('screen-quiz-idaoc').innerHTML = `
+    <div class="quiz-hub">
+      <div class="quiz-hub-title">🪪 ID AOC</div>
+      <div class="quiz-hub-sub">Fiche d'identité façon Tinder — texte libre, auto-évaluation</div>
+      <div style="background:#fff;border:1px solid #e5e5e2;border-radius:14px;padding:1.25rem;margin-bottom:1rem;">
+        <div style="font-size:13px;line-height:1.7;color:#555;">
+          Une AOC est piochée au hasard. Selon le mode, on te montre soit sa <strong>fiche</strong> (cépage, région, couleurs, nature) et tu devines l'AOC, soit son <strong>nom</strong> et tu remplis sa fiche de mémoire.
+          Réponds en texte libre puis clique "Vérifier" pour révéler le corrigé et t'auto-évaluer — carte après carte, comme un jeu de flashcards.
+        </div>
+      </div>
+      <div class="quiz-type-list">
+        <div class="quiz-type-card" onclick="startIdAoc('specs2aoc')">
+          <div class="quiz-type-icon">🔍</div>
+          <div class="quiz-type-body">
+            <div class="quiz-type-title">Devine l'AOC</div>
+            <div class="quiz-type-desc">Fiche visible, à toi de trouver le nom</div>
+          </div>
+          <span class="quiz-type-arrow">›</span>
+        </div>
+        <div class="quiz-type-card" onclick="startIdAoc('aoc2specs')">
+          <div class="quiz-type-icon">📋</div>
+          <div class="quiz-type-body">
+            <div class="quiz-type-title">Retrouve la fiche</div>
+            <div class="quiz-type-desc">Nom visible, à toi de remplir la fiche</div>
+          </div>
+          <span class="quiz-type-arrow">›</span>
+        </div>
+        <div class="quiz-type-card" onclick="startIdAoc('mix')">
+          <div class="quiz-type-icon">🔀</div>
+          <div class="quiz-type-body">
+            <div class="quiz-type-title">Mix aléatoire</div>
+            <div class="quiz-type-desc">Un coup l'un, un coup l'autre</div>
+          </div>
+          <span class="quiz-type-arrow">›</span>
+        </div>
+      </div>
+    </div>`;
+}
+
+function startIdAoc(mode) {
+  idAocState.mode = mode;
+  idAocNextCard();
+}
+
+function idAocNextCard() {
+  const pool = getAllAocsFlat();
+  const aoc = pool[Math.floor(Math.random()*pool.length)];
+  const cardMode = idAocState.mode === 'mix'
+    ? (Math.random() < 0.5 ? 'specs2aoc' : 'aoc2specs')
+    : idAocState.mode;
+  idAocState.current = aoc;
+  idAocState.cardMode = cardMode;
+  idAocState.revealed = false;
+  renderIdAocCard();
+}
+
+function renderIdAocCard() {
+  const aoc = idAocState.current;
+  const isSpecs2Aoc = idAocState.cardMode === 'specs2aoc';
+
+  const nameBlock = isSpecs2Aoc
+    ? `<input id="idaoc-guess" placeholder="Nom de l'AOC ?" style="width:100%;text-align:center;font-size:18px;font-weight:700;padding:10px;border:2px dashed #d8c9ea;border-radius:10px;outline:none;background:#faf5ff;color:#7c3aed;">`
+    : `<div style="font-size:20px;font-weight:700;color:#333;">${aoc.nom}</div>`;
+
+  const bioField = (label, value, inputId) => isSpecs2Aoc
+    ? `<div style="margin-bottom:8px;"><div style="font-size:10px;color:#999;text-transform:uppercase;font-weight:700;">${label}</div><div style="font-size:13px;color:#444;">${value}</div></div>`
+    : `<div style="margin-bottom:8px;"><div style="font-size:10px;color:#999;text-transform:uppercase;font-weight:700;margin-bottom:3px;">${label}</div><input id="${inputId}" placeholder="…" style="width:100%;padding:7px 10px;border:1px solid #ddd;border-radius:7px;font-size:13px;"></div>`;
+
+  document.getElementById('screen-quiz-idaoc').innerHTML = `
+    <div style="padding:1.5rem 1rem;display:flex;flex-direction:column;align-items:center;">
+      <div style="width:100%;max-width:360px;background:#fff;border:1px solid #e5e5e2;border-radius:20px;box-shadow:0 8px 24px rgba(0,0,0,0.08);padding:20px;">
+        <div style="text-align:center;font-size:10px;letter-spacing:1px;color:#bbb;font-weight:700;text-transform:uppercase;margin-bottom:6px;">AOC</div>
+        <div style="text-align:center;margin-bottom:10px;">${nameBlock}</div>
+        <div style="border-top:2px dashed #eee;margin:14px 0;"></div>
+        <div style="text-align:center;font-size:10px;letter-spacing:1px;color:#bbb;font-weight:700;text-transform:uppercase;margin-bottom:10px;">Bio</div>
+        <div id="idaocBio">
+          ${bioField('Sous-région', isSpecs2Aoc ? idAocSousRegion(aoc) : '', 'idaoc-region')}
+          ${bioField('Cépage(s)', isSpecs2Aoc ? aoc.cepages : '', 'idaoc-cepage')}
+          ${bioField('Couleurs possibles', isSpecs2Aoc ? idAocCouleurs(aoc) : '', 'idaoc-couleur')}
+          ${bioField('Nature', isSpecs2Aoc ? idAocNature(aoc) : '', 'idaoc-nature')}
+        </div>
+        <div id="idaocReveal"></div>
+        <button class="btn btn-purple" style="width:100%;margin-top:10px;" onclick="idAocReveal()">Vérifier →</button>
+      </div>
+    </div>`;
+}
+
+function idAocReveal() {
+  if (idAocState.revealed) return;
+  idAocState.revealed = true;
+  const aoc = idAocState.current;
+  const isSpecs2Aoc = idAocState.cardMode === 'specs2aoc';
+
+  let revealHtml = '';
+  let autoResult = null; // 'exact' | 'famille' | null (pas de détection auto)
+
+  if (isSpecs2Aoc) {
+    const guessRaw = document.getElementById('idaoc-guess')?.value || '';
+    const guessNorm = idAocNormalize(guessRaw);
+    const family = idAocFamily(aoc);
+    const familyNames = family.map(a => a.nom);
+    const matched = family.find(a => idAocNormalize(a.nom) === guessNorm && guessNorm.length > 0);
+
+    if (matched && idAocNormalize(matched.nom) === idAocNormalize(aoc.nom)) {
+      autoResult = 'exact';
+    } else if (matched) {
+      autoResult = 'famille';
+    }
+
+    const familyNote = familyNames.length > 1
+      ? `<div style="margin-top:8px;font-size:11px;color:#666;">🔎 ${familyNames.length} AOC partagent exactement ce profil (${idAocSousRegion(aoc)}, ${idAocCouleurs(aoc)}) : ${familyNames.join(', ')}. N'importe laquelle compte comme bonne réponse.</div>`
+      : '';
+
+    if (autoResult === 'exact') {
+      revealHtml = `<div style="background:#EAF3DE;border-radius:10px;padding:12px;margin-top:10px;font-size:12px;line-height:1.7;">
+        <strong>✅ Exact — c'était bien ${aoc.nom} !</strong>${familyNote}
+      </div>`;
+    } else if (autoResult === 'famille') {
+      revealHtml = `<div style="background:#FFF6DA;border-radius:10px;padding:12px;margin-top:10px;font-size:12px;line-height:1.7;">
+        <strong>🟡 Bonne famille !</strong> C'était en réalité <strong>${aoc.nom}</strong>, mais ${matched.nom} partage exactement le même profil — comptabilisé comme bonne réponse.${familyNote}
+      </div>`;
+    } else {
+      revealHtml = `<div style="background:#EAF3DE;border-radius:10px;padding:12px;margin-top:10px;font-size:12px;line-height:1.7;">
+        <strong>C'était : ${aoc.nom}</strong> (${idAocSousRegion(aoc)})${familyNote}
+      </div>`;
+    }
+  } else {
+    revealHtml = `<div style="background:#EAF3DE;border-radius:10px;padding:12px;margin-top:10px;font-size:12px;line-height:1.7;">
+      <strong>Fiche complète :</strong><br>
+      Sous-région : ${idAocSousRegion(aoc)}<br>
+      Cépage(s) : ${aoc.cepages}<br>
+      Couleurs possibles : ${idAocCouleurs(aoc)}<br>
+      Nature : ${idAocNature(aoc)}
+    </div>`;
+  }
+
+  if (autoResult) {
+    // Détection automatique réussie (exact ou famille) : crédité directement, pas besoin d'auto-évaluation manuelle.
+    recordAnswer('idaoc', { id: aoc.nom }, true);
+    revealHtml += `<button class="btn btn-purple" style="width:100%;margin-top:10px;font-size:18px;" onclick="idAocNextCard()">Carte suivante →</button>`;
+  } else {
+    revealHtml += `
+      <div style="display:flex;gap:8px;margin-top:10px;">
+        <button class="btn" style="flex:1;color:#993C1D;border-color:#f0d0c8;" onclick="idAocMark(false)">❌ Je ne savais pas</button>
+        <button class="btn" style="flex:1;color:#3B6D11;border-color:#c8e0b0;" onclick="idAocMark(true)">✅ Je savais</button>
+      </div>`;
+  }
+  document.getElementById('idaocReveal').innerHTML = revealHtml;
+  const verifBtn = document.querySelector('#screen-quiz-idaoc .btn-purple');
+  if (verifBtn) verifBtn.style.display = 'none';
+}
+
+function idAocMark(correct) {
+  recordAnswer('idaoc', { id: idAocState.current.nom }, correct);
+  document.getElementById('idaocReveal').innerHTML += `
+    <button class="btn btn-purple" style="width:100%;margin-top:10px;font-size:18px;" onclick="idAocNextCard()">Carte suivante →</button>`;
+}
+
 
 function confirmResetMastery() {
   if (confirm('Voulez-vous vraiment réinitialiser toute votre progression (étoiles de maîtrise + historique Oral) ? Cette action est irréversible.')) {
@@ -7511,9 +9202,10 @@ function executeWishlistBuy(id) {
 
 /* ──────────── NAVIGATION ──────────── */
 const SCREEN_META = {
-  'hub':                  {title:'🍷 SCAG', sub:'', back:null, home:false},
+  'hub':                  {title:'🍷 MyWineApp', sub:'', back:null, home:false},
   'revisions-hub':        {title:'📚 Révisions', sub:'', back:'hub', home:true},
   'cave-hub':             {title:'🍷 Ma Cave', sub:'', back:'hub', home:true},
+  'zytho-hub':            {title:'🍺 Zytho', sub:'', back:'hub', home:true},
   'ma-collection':        {title:'Ma Collection', sub:'', back:'cave-hub', home:true},
   'collection-vins':      {title:'Vins', sub:'Ma Collection', back:'ma-collection', home:true},
   'collection-vins-form': {title:'Ajouter un vin', sub:'', back:'collection-vins', home:true},
@@ -7548,6 +9240,7 @@ const SCREEN_META = {
   'endless':              {title:'Mode Sans Fin', sub:'', back:'quiz-hub', home:true},
   'stats':                {title:'Ma progression', sub:'', back:'hub', home:true},
   'personnalisation':     {title:'🎨 Personnalisation', sub:'', back:'hub', home:true},
+  'pins':                 {title:'📌 Épingles', sub:'', back:'hub', home:true},
   'autres-boissons':      {title:'Autres boissons', sub:'', back:'hub', home:true},
   'vins-monde':           {title:'Vins du monde', sub:'', back:'hub', home:true},
   'quiz-autres-boissons': {title:'Quiz Autres boissons', sub:'', back:'quiz-hub', home:true},
@@ -7568,11 +9261,14 @@ const SCREEN_META = {
   'quiz-partiels-active': {title:'Partiel en cours', sub:'', back:'quiz-partiels', home:true},
   'quiz-oral':            {title:'Oral', sub:'', back:'quiz-hub', home:true},
   'simu-client':          {title:'Simulation Client', sub:'', back:'quiz-hub', home:true},
+  'sommelia':             {title:'Sommel.IA', sub:'', back:'revisions-hub', home:true},
+  'quiz-idaoc':           {title:'ID AOC', sub:'', back:'quiz-hub', home:true},
   'quiz-active':          {title:'Quiz', sub:'', back:'quiz-hub', home:true},
   'search':               {title:'Recherche', sub:'', back:'hub', home:true},
 };
 
 let currentScreen = 'hub';
+renderTabbar();
 let navHistory = [];
 let currentQuizRegion = null;
 let score = 0, total = 0, quizAnswered = false;
@@ -7589,7 +9285,7 @@ function goTo(id) {
   const el = document.getElementById('screen-' + screenId);
   if (el) el.classList.add('active');
   
-  const meta = SCREEN_META[id] || {title:'SCAG', sub:'', back:'hub', home:true};
+  const meta = SCREEN_META[id] || {title:'MyWineApp', sub:'', back:'hub', home:true};
   document.getElementById('headerTitle').textContent = meta.title;
   document.getElementById('headerSub').textContent = meta.sub;
   document.getElementById('btnBack').style.display = meta.back ? 'block' : 'none';
@@ -7600,6 +9296,9 @@ function goTo(id) {
   if (id === 'quiz-region-active') { quizMode = 'region'; score = 0; total = 0; startQuiz(); }
   if (id === 'aoc') { buildRegions(); buildAOC(); }
   if (id === 'quiz-regions-menu') buildQuizRegionMenu();
+
+  initStructureCarrousel();
+  renderTabbar();
 }
 
 function goBack() {
@@ -7620,12 +9319,14 @@ function goBack() {
     const screenId = prev === 'quiz-random' || prev === 'quiz-region-active' ? 'quiz-active' : prev;
     const el = document.getElementById('screen-' + screenId);
     if (el) el.classList.add('active');
-    const meta = SCREEN_META[prev] || {title:'SCAG', sub:'', back:null, home:false};
+    const meta = SCREEN_META[prev] || {title:'MyWineApp', sub:'', back:null, home:false};
     document.getElementById('headerTitle').textContent = meta.title;
     document.getElementById('headerSub').textContent = meta.sub;
     document.getElementById('btnBack').style.display = meta.back ? 'block' : 'none';
     document.getElementById('btnHome').style.display = meta.home ? 'block' : 'none';
   }
+  initStructureCarrousel();
+  renderTabbar();
 }
 
 function goHome() {
@@ -7633,10 +9334,14 @@ function goHome() {
   currentScreen = 'hub';
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById('screen-hub').classList.add('active');
-  document.getElementById('headerTitle').textContent = '🍷 SCAG';
+  document.getElementById('headerTitle').textContent = '🍷 MyWineApp';
   document.getElementById('headerSub').textContent = '';
   document.getElementById('btnBack').style.display = 'none';
   document.getElementById('btnHome').style.display = 'none';
+  initStructureCarrousel();
+  renderTabbar();
+  renderHubFavoris();
+  renderResumeWidget();
 }
 
 /* ──────────── FICHES AOC ──────────── */
@@ -8072,11 +9777,40 @@ function doSearch() {
 
 
 /* ──────────── RECHERCHE HUB ──────────── */
+// 14.5 — recherche globale : fonctionnalités de l'app, en plus des AOC (voir hubSearch ci-dessous)
+const APP_FEATURES_SEARCH = [
+  { label:'Sommel.IA',        desc:'Question libre, révision sur mesure', icon:'💬', go:() => { goTo('sommelia'); buildSommelIAScreen(); } },
+  { label:'ID AOC',           desc:'Jeu de carte d\'identité',            icon:'🪪', go:() => { goTo('quiz-idaoc'); buildIdAocMenu(); } },
+  { label:'Quiz',             desc:'Tous les types de quiz',              icon:'🧠', go:() => { goTo('quiz-hub'); } },
+  { label:'Partiels',         desc:'Examen blanc — 1h chrono',            icon:'📝', go:() => { goTo('quiz-partiels'); buildPartielsMenu(); } },
+  { label:'Oral',             desc:'Conseil client, objection à gérer',   icon:'🎤', go:() => { goTo('quiz-oral'); buildOralScreen(); } },
+  { label:'Simulation Client',desc:'Conversation complète',               icon:'💬', go:() => { goTo('simu-client'); buildSimuClientScreen(); } },
+  { label:'VA',               desc:'Valorisation des Acquis',             icon:'🔬', go:() => { goTo('quiz-va'); buildVAMenu(); } },
+  { label:'Fiches AOC',       desc:'202 appellations',                    icon:'🗺️', go:() => { goTo('aoc'); } },
+  { label:'Cépages',          desc:'Blancs, rouges, mutants, clones',     icon:'🌿', go:() => { goTo('cepages'); buildCepagesScreen(); } },
+  { label:'Accords M&V',      desc:'Mets & vins, fromages, recettes',     icon:'🍽️', go:() => { goTo('amv'); buildAMVScreen(); } },
+  { label:'Carte de France',  desc:'Vignobles sur la carte',              icon:'📍', go:() => { goTo('carte'); buildCarteScreen(); } },
+  { label:'Ma Cave',          desc:'Vins, bières, spiritueux',            icon:'🍷', go:() => { goTo('cave-hub'); } },
+  { label:'Zytho',            desc:'Bientôt disponible',                  icon:'🍺', go:() => { goTo('zytho-hub'); } },
+  { label:'Stats',            desc:'Ma progression',                      icon:'📊', go:() => { goTo('stats'); buildStatsScreen(); } },
+  { label:'Personnalisation', desc:'Skins & structure des menus',         icon:'🎨', go:() => { goTo('personnalisation'); buildPersonnalisationScreen(); } },
+];
+
+function searchFromFeature(idx) {
+  document.getElementById('hubSearchResults').classList.remove('open');
+  document.getElementById('hubSearchInput').value = '';
+  APP_FEATURES_SEARCH[idx].go();
+}
+
 function hubSearch() {
   const q = document.getElementById('hubSearchInput').value.toLowerCase().trim();
   const res = document.getElementById('hubSearchResults');
   if (!q) { res.classList.remove('open'); return; }
-  
+
+  const featureMatches = APP_FEATURES_SEARCH
+    .map((f, i) => ({...f, _idx: i}))
+    .filter(f => (f.label + ' ' + f.desc).toLowerCase().includes(q));
+
   const found = [];
   Object.entries(DATA).forEach(([rk, rv]) => {
     rv.subcats.forEach(sc => {
@@ -8087,13 +9821,26 @@ function hubSearch() {
     });
   });
 
-  if (!found.length) {
+  if (!found.length && !featureMatches.length) {
     res.innerHTML = '<div class="hub-search-empty">Aucun résultat pour "' + q + '"</div>';
     res.classList.add('open');
     return;
   }
 
-  res.innerHTML = found.slice(0, 30).map(a => `
+  const featuresHtml = featureMatches.length ? `
+    <div class="hub-search-section-label">Fonctionnalités</div>
+    ${featureMatches.map(f => `
+      <div class="hub-search-item" onclick="searchFromFeature(${f._idx})">
+        <span style="font-size:16px;flex-shrink:0;">${f.icon}</span>
+        <div style="flex:1;">
+          <div class="hub-search-item-name">${f.label}</div>
+          <div class="hub-search-item-region">${f.desc}</div>
+        </div>
+      </div>`).join('')}` : '';
+
+  const aocHtml = found.length ? `
+    ${featureMatches.length ? '<div class="hub-search-section-label">AOC</div>' : ''}
+    ${found.slice(0, 30).map(a => `
     <div class="hub-search-item" onclick="openFromSearch('${a._rk}','${a.nom.replace(/'/g,"\\'")}')">
       <span style="width:8px;height:8px;border-radius:50%;background:${a._color};flex-shrink:0;margin-top:4px;"></span>
       <div style="flex:1;">
@@ -8101,7 +9848,10 @@ function hubSearch() {
         <div class="hub-search-item-region">${a._region}</div>
         <div class="hub-search-item-badges">${badgeHTML(a.types)}</div>
       </div>
-    </div>`).join('') + (found.length > 30 ? `<div class="hub-search-empty">+${found.length-30} autres résultats — affinez votre recherche</div>` : '');
+    </div>`).join('')}
+    ${found.length > 30 ? `<div class="hub-search-empty">+${found.length-30} autres résultats — affinez votre recherche</div>` : ''}` : '';
+
+  res.innerHTML = featuresHtml + aocHtml;
   res.classList.add('open');
 }
 
@@ -8147,6 +9897,7 @@ document.getElementById('countAOC').textContent = totalAOC + ' AOC';
 document.getElementById('countQuiz').textContent = QUIZ.length + ' questions';
 document.getElementById('countCepages').textContent = (CEPAGES.rouges.length+CEPAGES.blancs.length+CEPAGES.locaux.length) + ' cépages';
 document.getElementById('countAMV').textContent = Object.keys(AMV_DATA).length + ' régions';
+renderResumeWidget();
 </script>
 </body>
 </html>
