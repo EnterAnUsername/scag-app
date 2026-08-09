@@ -1,3 +1,4 @@
+<!-- OPTIMISATION V2 -->
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -1285,7 +1286,7 @@ body.has-tabbar .sommelia-fab{display:block;}
     </div>
     <div class="hub-search-wrap">
       <span class="hub-search-icon">🔍</span>
-      <input class="hub-search-bar" type="text" id="hubSearchInput" placeholder="Rechercher une AOC, Sommel.IA, ID AOC…" oninput="hubSearch()" onfocus="hubSearchOpen()" />
+      <input class="hub-search-bar" type="text" id="hubSearchInput" placeholder="Rechercher une AOC, Sommel.IA, ID AOC…" oninput="scheduleHubSearch()" onfocus="hubSearchOpen()" />
       <div class="hub-search-results" id="hubSearchResults"></div>
     </div>
     <div class="resume-widget" id="hubResumeWidget" style="display:none;"></div>
@@ -1717,14 +1718,33 @@ async function callClaudeAPI({ system, messages, max_tokens }) {
   return res.json();
 }
 
+/* File d'écriture par clé : les sauvegardes successives d'une même donnée
+   restent dans le même ordre, sans bloquer l'interface. */
+const cloudWriteQueues = Object.create(null);
+
 function cloudSet(key, value) {
-  // Volontairement pas de "await" ici : on ne fait jamais attendre l'utilisateur
-  // pour une sauvegarde cloud. En cas d'échec (hors ligne, Netlify indisponible…),
-  // la donnée reste correcte en localStorage et sera renvoyée à la prochaine sauvegarde.
-  fetch(`${CLOUD_API_BASE}/${key}`, {
-    method: 'POST',
-    body: JSON.stringify(value),
-  }).catch(e => console.warn(`Cloud (${key}) : échec de sauvegarde, restera en local pour l'instant.`, e));
+  const payload = JSON.stringify(value);
+  const previous = cloudWriteQueues[key] || Promise.resolve();
+
+  const write = previous.catch(() => {}).then(async () => {
+    try {
+      const res = await fetch(`${CLOUD_API_BASE}/${key}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: payload,
+      });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+    } catch (e) {
+      console.warn(`Cloud (${key}) : échec de sauvegarde, restera en local pour l'instant.`, e);
+    }
+  });
+
+  let queued;
+  queued = write.finally(() => {
+    if (cloudWriteQueues[key] === queued) delete cloudWriteQueues[key];
+  });
+  cloudWriteQueues[key] = queued;
+  return write;
 }
 
 /* ══════════════════════════════════════════════════════
@@ -2224,7 +2244,7 @@ rhone:{name:"Vallée du Rhône",color:"#C0DD97",subcats:[
 alsace:{name:"Alsace",color:"#CECBF6",subcats:[
 {label:"Appellations d'Alsace",aocs:[
 {nom:"AOC Alsace",types:["blanc","rouge"],cepages:"Riesling (21,8%), Pinot Blanc/Auxerrois (21,3%), Gewurztraminer (19,8%), Pinot Gris (15,4%), Pinot Noir (10,2%), Sylvaner (6,8%), Muscat (2,3%)",sol:"Très varié : granite, schistes, gneiss, grès (massif vosgien) ; calcaire, argiles, marnes (collines sous-vosgiennes). 15 600 ha, 170 km N-S.",cahier:"AOC 1962. Bouteille flûte obligatoire. Mise en bouteille en Alsace obligatoire (loi 1972). Mentions : cépage (100%), Edelzwicker et Gentil (min 50% cépages nobles). VT et SGN possibles.",accords:"Sylvaner : charcuterie, crudités. Riesling : poissons, crustacés. Pinot Blanc : quiches, volaille. Muscat : asperges. Pinot Noir : gibier, viandes rouges"},
-{nom:"Alsace Grand Cru",types:["blanc"],cepages:"4 cépages nobles UNIQUEMENT : Riesling, Muscat, Pinot Gris, Gewurztraminer",sol:"51 GC sur massif vosgien et collines (jamais en plaine). 10 types de sols : granitique (Brand, Schlossberg), schisteux (Kastelberg), volcano-sédimentaire (Rangen), gréseux (Kessler), calcaire (Rosacker), marno-calcaire (Hengst).",cahier:"AOC 1975. 51 GC (14 Bas-Rhin, 37 Haut-Rhin). Mentions obligatoires : millésime + nom du lieu-dit. ~4% de la production.",accords:"Riesling GC : homard, poissons nobles. Gewurztraminer GC : foie gras, munster. Pinot Gris GC : gibier, foie gras. Muscat GC : asperges"},
+{nom:"Alsace Grand Cru",types:["blanc"],cepages:"4 cépages nobles UNIQUEMENT : Riesling, Muscat, Pinot Gris, Gewurztraminer",sol:"51 GC sur massif vosgien et collines (jamais en plaine). 10 types de sols : granitique (Brand, Schlossberg), schisteux (Kastelberg), volcano-sédimentaire (Rangen), gréseux (Kessler), calcaire (Rosacker), marno-calcaire (Hengst).",cahier:"AOC 1975. 51 GC (14 Bas-Rhin, 37 Haut-Rhin). Mentions obligatoires : millésime + nom du lieu-dit. ~4% de la production.",accords:"Riesling GC : poissons de rivière, choucroute revisitée. Gewurztraminer GC : foie gras, munster. Pinot Gris GC : gibier, foie gras. Muscat GC : asperges"},
 {nom:"Vendanges Tardives (VT)",types:["moelleux","liquoreux"],cepages:"Riesling (min 14° récolte), Muscat (14°), Pinot Gris (15,3°), Gewurztraminer (15,3°)",sol:"En AOC Alsace ou Alsace Grand Cru",cahier:"Décret 1984. Chaptalisation INTERDITE. Surmaturité sans botrytis obligatoire.",accords:"Foie gras, desserts aux fruits jaunes, tarte tatin, fromages bleus"},
 {nom:"Sélection de Grains Nobles (SGN)",types:["liquoreux"],cepages:"Riesling (min 16,4° récolte), Muscat (16,4°), Pinot Gris (18,2°), Gewurztraminer (18,2°)",sol:"En AOC Alsace ou Alsace Grand Cru",cahier:"Décret 1984. Botrytis cinerea obligatoire. Production confidentielle. Vins de très grande garde.",accords:"Foie gras, roquefort, fruits confits, chocolat blanc — à servir seul"},
 {nom:"Crémant d'Alsace",types:["effervescent"],cepages:"Pinot Blanc, Auxerrois, Chardonnay, Riesling, Pinot Gris, Pinot Noir (vinifié en blanc). Rosé : Pinot Noir",sol:"Ensemble du vignoble alsacien",cahier:"AOC 1976. MT obligatoire. Prise de mousse 9 mois min. ~36 millions de bouteilles, ~30% des effervescents français hors Champagne.",accords:"Apéritif, fruits de mer, sushi, flamekueche, gougères"},
@@ -3742,8 +3762,95 @@ function showVAResults() {
    ══════════════════════════════════════════════════════ */
 
 /* ── Banque de templates de questions transversales ── */
-const PARTIEL_TEMPLATES = [
+/* Base cépage → vignobles (distincts des régions viticoles, cf. terminologie) pour la
+   génération dynamique de la question "dégustation transversale par cépage". Uniquement
+   des cépages majeurs, bien répandus — pas de cépages confidentiels type Savagnin. */
+const CEPAGE_VIGNOBLES_MAP = [
+  { cepage:'Sauvignon Blanc', vignobles:[
+      { nom:'Centre-Loire', region:'Loire', aocs:['Sancerre','Pouilly-Fumé','Reuilly','Quincy','Menetou-Salon'] },
+      { nom:'Graves & Libournais', region:'Bordeaux', aocs:['Graves','Pessac-Léognan','Entre-Deux-Mers','Bordeaux Blanc','Francs Côtes de Bordeaux'] },
+    ], exception:{ region:'Bourgogne', aoc:'Saint-Bris' } },
+  { cepage:'Chardonnay', vignobles:[
+      { nom:'Côte de Nuits & Côte de Beaune', region:'Bourgogne', aocs:['Chablis','Meursault','Puligny-Montrachet','Chassagne-Montrachet'] },
+      { nom:'Mâconnais', region:'Bourgogne', aocs:['Pouilly-Fuissé','Mâcon Villages','Viré-Clessé','Saint-Véran'] },
+      { nom:'Champagne', region:'Champagne', aocs:['Champagne Blanc de Blancs','Côte des Blancs'] },
+    ], exception:{ region:'Languedoc', aoc:'Crémant de Limoux' } },
+  { cepage:'Pinot Noir', vignobles:[
+      { nom:'Côte de Nuits', region:'Bourgogne', aocs:['Gevrey-Chambertin','Vosne-Romanée','Chambolle-Musigny','Nuits-Saint-Georges'] },
+      { nom:'Côte de Beaune', region:'Bourgogne', aocs:['Pommard','Volnay','Beaune','Aloxe-Corton'] },
+    ], exception:{ region:'Alsace', aoc:'Alsace Pinot Noir' } },
+  { cepage:'Chenin', vignobles:[
+      { nom:'Anjou-Saumur', region:'Loire', aocs:['Savennières','Coteaux du Layon','Bonnezeaux','Saumur','Quarts de Chaume'] },
+      { nom:'Touraine', region:'Loire', aocs:['Vouvray','Montlouis-sur-Loire'] },
+    ], exception:{ region:'Languedoc', aoc:'Crémant de Limoux (cépage secondaire)' } },
+  { cepage:'Gamay', vignobles:[
+      { nom:'Crus du Beaujolais', region:'Beaujolais', aocs:['Morgon','Fleurie','Moulin-à-Vent','Chénas','Juliénas','Saint-Amour'] },
+      { nom:'Touraine', region:'Loire', aocs:['Touraine Gamay','Anjou Gamay'] },
+      { nom:'Auvergne', region:'Auvergne', aocs:['Côtes d\'Auvergne','Côte Roannaise','Saint-Pourçain'] },
+    ], exception:{ region:'Bourgogne', aoc:'Mâcon Rouge / Bourgogne Passetoutgrain' } },
+  { cepage:'Merlot', vignobles:[
+      { nom:'Libournais', region:'Bordeaux', aocs:['Saint-Émilion','Pomerol','Fronsac','Lalande-de-Pomerol'] },
+      { nom:'Côtes de Bordeaux', region:'Bordeaux', aocs:['Côtes de Bourg','Blaye Côtes de Bordeaux','Castillon Côtes de Bordeaux'] },
+    ], exception:{ region:'Sud-Ouest', aoc:'Bergerac' } },
+  { cepage:'Cabernet Franc', vignobles:[
+      { nom:'Touraine', region:'Loire', aocs:['Chinon','Bourgueil','Saint-Nicolas-de-Bourgueil'] },
+      { nom:'Anjou-Saumur', region:'Loire', aocs:['Saumur-Champigny','Anjou Rouge','Anjou Villages'] },
+    ], exception:{ region:'Bordeaux', aoc:'Saint-Émilion (en assemblage)' } },
+  { cepage:'Syrah', vignobles:[
+      { nom:'Rhône Nord', region:'Vallée du Rhône', aocs:['Côte-Rôtie','Hermitage','Saint-Joseph','Cornas','Crozes-Hermitage'] },
+    ], exception:{ region:'Languedoc', aoc:'en assemblage (Faugères, Saint-Chinian)' } },
+  { cepage:'Grenache', vignobles:[
+      { nom:'Rhône Sud', region:'Vallée du Rhône', aocs:['Châteauneuf-du-Pape','Gigondas','Vacqueyras','Lirac'] },
+      { nom:'Roussillon', region:'Languedoc-Roussillon', aocs:['Banyuls (VDN)','Maury (VDN)','Côtes du Roussillon'] },
+    ], exception:{ region:'Provence', aoc:'majoritaire dans les rosés' } },
+  { cepage:'Cabernet Sauvignon', vignobles:[
+      { nom:'Médoc', region:'Bordeaux', aocs:['Pauillac','Margaux','Saint-Julien','Saint-Estèphe','Haut-Médoc'] },
+      { nom:'Graves', region:'Bordeaux', aocs:['Pessac-Léognan','Graves'] },
+    ], exception:{ region:'Languedoc', aoc:'IGP (hors AOC, en cépage)' } },
+];
 
+
+
+/* Base région viticole → vignoble → couleurs disponibles, pour générer dynamiquement
+   la question de dégustation inter-vignoble (2.6.3a) sur n'importe quelle grande région,
+   en s'adaptant à ce qui existe vraiment (ex : pas de blanc demandé sur le Médoc). */
+const VIGNOBLE_COULEURS_MAP = {
+  'Bourgogne': [
+    { nom:'Côte de Nuits', rouges:['Gevrey-Chambertin','Morey-Saint-Denis','Chambolle-Musigny','Vougeot','Vosne-Romanée','Nuits-Saint-Georges','Fixin'], blancs:['Marsannay Blanc','Nuits-Saint-Georges Blanc','Vougeot Blanc'] },
+    { nom:'Côte Chalonnaise', rouges:['Mercurey Rouge','Givry Rouge','Rully Rouge'], blancs:['Mercurey Blanc','Givry Blanc','Rully Blanc','Montagny','Bouzeron (Aligoté)'] },
+    { nom:'Côte de Beaune', rouges:['Pommard','Volnay','Beaune Rouge','Savigny-lès-Beaune','Monthélie','Santenay'], blancs:['Meursault','Puligny-Montrachet','Chassagne-Montrachet Blanc','Corton-Charlemagne'] },
+    { nom:'Mâconnais', rouges:['Mâcon Rouge'], blancs:['Pouilly-Fuissé','Mâcon Villages','Viré-Clessé','Saint-Véran'] },
+    { nom:'Chablisien', rouges:[], blancs:['Chablis','Chablis Premier Cru','Chablis Grand Cru','Petit Chablis'] },
+  ],
+  'Vallée de la Loire': [
+    { nom:'Touraine', rouges:['Chinon','Bourgueil','Saint-Nicolas-de-Bourgueil','Touraine Gamay'], blancs:['Vouvray','Montlouis-sur-Loire'], effervescents:['Vouvray Pétillant','Touraine Pétillant'] },
+    { nom:'Anjou-Saumur', rouges:['Saumur-Champigny','Anjou Rouge','Anjou Villages'], blancs:['Savennières','Coteaux du Layon','Bonnezeaux','Saumur Blanc'], effervescents:['Crémant de Loire','Saumur Mousseux'], roses:['Cabernet d\'Anjou','Rosé de Loire'] },
+    { nom:'Centre-Loire', rouges:['Sancerre Rouge','Reuilly Rouge','Menetou-Salon Rouge'], blancs:['Sancerre','Pouilly-Fumé','Reuilly','Quincy','Menetou-Salon'] },
+    { nom:'Pays Nantais', rouges:[], blancs:['Muscadet Sèvre et Maine','Muscadet Côtes de Grandlieu','Gros Plant du Pays Nantais'] },
+  ],
+  'Vallée du Rhône': [
+    { nom:'Rhône Nord', rouges:['Côte-Rôtie','Hermitage Rouge','Cornas','Saint-Joseph Rouge','Crozes-Hermitage Rouge'], blancs:['Condrieu','Château-Grillet','Hermitage Blanc','Saint-Péray'] },
+    { nom:'Rhône Sud', rouges:['Châteauneuf-du-Pape','Gigondas','Vacqueyras','Lirac'], blancs:['Châteauneuf-du-Pape Blanc','Côtes du Rhône Blanc'], roses:['Tavel'] },
+  ],
+  'Bordeaux': [
+    { nom:'Médoc', rouges:['Pauillac','Margaux','Saint-Julien','Saint-Estèphe','Haut-Médoc','Listrac-Médoc'], blancs:[] },
+    { nom:'Graves', rouges:['Pessac-Léognan Rouge','Graves Rouge'], blancs:['Pessac-Léognan Blanc','Graves Blanc'] },
+    { nom:'Libournais', rouges:['Saint-Émilion','Pomerol','Fronsac','Lalande-de-Pomerol'], blancs:[] },
+    { nom:'Sauternais', rouges:[], blancs:['Sauternes','Barsac','Cérons'] },
+    { nom:'Entre-Deux-Mers', rouges:['Bordeaux Supérieur'], blancs:['Entre-Deux-Mers','Bordeaux Blanc'] },
+  ],
+  'Beaujolais': [
+    { nom:'Crus du Beaujolais', rouges:['Morgon','Fleurie','Moulin-à-Vent','Chénas','Juliénas','Saint-Amour','Chiroubles','Régnié','Brouilly','Côte de Brouilly'], blancs:[] },
+  ],
+  'Languedoc-Roussillon': [
+    { nom:'Minervois', rouges:['Minervois','Minervois-La Livinière'], blancs:['Minervois Blanc'] },
+    { nom:'Corbières', rouges:['Corbières','Corbières-Boutenac'], blancs:[] },
+    { nom:'Limoux', rouges:[], blancs:['Limoux Blanc'], effervescents:['Blanquette de Limoux','Crémant de Limoux'] },
+  ],
+};
+
+
+const PARTIEL_TEMPLATES = [
   // Q type : AOC de substitution (même cépage, même vignoble)
   {
     id: 'substitution',
@@ -3753,7 +3860,7 @@ const PARTIEL_TEMPLATES = [
     generate: () => {
       // Piocher 5 AOC de régions différentes
       const pool = [
-        {aoc:'Chinon Rouge', autre:'Bourgueil', cepage:'Cabernet Franc', vignoble:'Touraine — Vallée de la Loire', accord:'Coq au vin, rillettes'},
+        {aoc:'Chinon Rouge', autre:'Bourgueil / Saumur-Champigny / Saumur Rouge / Saint-Nicolas-de-Bourgueil', cepage:'Cabernet Franc', vignoble:'Touraine — Vallée de la Loire', accord:'Coq au vin, rillettes'},
         {aoc:'Chénas', autre:'Juliénas', cepage:'Gamay', vignoble:'Beaujolais', accord:'Planche de charcuteries'},
         {aoc:'Vézelay', autre:'Chablis', cepage:'Chardonnay', vignoble:'Bourgogne — Auxerrois', accord:'Rillettes de poisson'},
         {aoc:'Rosé des Riceys', autre:'Coteaux Champenois', cepage:'Pinot Noir', vignoble:'Champagne', accord:'Charcuterie fine champenoise'},
@@ -3772,7 +3879,7 @@ const PARTIEL_TEMPLATES = [
         {aoc:'Pommard', autre:'Volnay', cepage:'Pinot Noir', vignoble:'Côte de Beaune — Bourgogne', accord:'Bœuf bourguignon'},
         {aoc:'Sancerre Blanc', autre:'Pouilly-Fumé', cepage:'Sauvignon', vignoble:'Centre-Loire — Vallée de la Loire', accord:'Crottin de Chavignol'},
         {aoc:'Pessac-Léognan Blanc', autre:'Graves Blanc', cepage:'Sauvignon / Sémillon', vignoble:'Graves — Bordeaux', accord:'Saint-Jacques aux truffes'},
-        {aoc:'Alsace Grand Cru Riesling', autre:'AOC Alsace Riesling', cepage:'Riesling', vignoble:'Alsace', accord:'Homard, poisson noble'},
+        {aoc:'Alsace Grand Cru Riesling', autre:'AOC Alsace Riesling', cepage:'Riesling', vignoble:'Alsace', accord:'Choucroute, poissons de rivière (truite, sandre)'},
         {aoc:'Côtes de Bourg Blanc', autre:'Bordeaux Blanc / Entre-Deux-Mers', cepage:'Sauvignon', vignoble:'Blayais-Bourgeais — Bordeaux', accord:'Huîtres, fruits de mer'},
         {aoc:'Bandol Rouge', autre:'Côtes de Provence', cepage:'Mourvèdre', vignoble:'Provence', accord:'Daube provençale, gibier'},
       ];
@@ -3780,12 +3887,14 @@ const PARTIEL_TEMPLATES = [
     }
   },
 
-  // Q type : termes techniques
+  // Q type : termes techniques (2 sens : définition→terme, ou terme→définition)
   {
     id: 'termes_techniques',
     pts: 10,
     type: 'libre_api',
-    label: () => `À quels <strong>termes techniques</strong> correspondent les définitions suivantes ?`,
+    label: (params) => params.direction === 'terme2def'
+      ? `Donnez la <strong>définition</strong> des termes techniques suivants.`
+      : `À quels <strong>termes techniques</strong> correspondent les définitions suivantes ?`,
     generate: () => {
       const all = [
         {def:'Apparition des bourgeons au printemps', terme:'Débourrement'},
@@ -3803,136 +3912,100 @@ const PARTIEL_TEMPLATES = [
         {def:'Mélange de cépages, de terroirs ou de millésimes pour créer un vin', terme:'Assemblage'},
         {def:'Sucre ajouté au moût avant fermentation pour augmenter le degré alcoolique', terme:'Chaptalisation'},
         {def:'Champignon responsable de la pourriture noble', terme:'Botrytis cinerea'},
-        {def:'Fermentation malolactique — transformation de l\'acide malique en acide lactique', terme:'FML (Fermentation Malo-Lactique)'},
-        {def:'Taille qui ne laisse qu\'un seul sarment avec plusieurs bourgeons', terme:'Guyot simple'},
-        {def:'Taille en forme de coupe sans fil de palissage', terme:'Taille en gobelet'},
+        {def:'Conversion d\'un acide naturellement présent dans le raisin, à goût âpre, en un second acide plus doux, sous l\'action de bactéries', terme:'FML (Fermentation Malo-Lactique)'},
         {def:'Période entre la récolte et la mise en vente d\'un primeur', terme:'Élevage primeur (ou vinification rapide)'},
         {def:'Perte naturelle de vin par évaporation pendant l\'élevage en fût', terme:'Part des anges'},
+        {def:'Ajout de bentonite, blanc d\'œuf ou autre collage pour clarifier un vin trouble', terme:'Collage'},
+        {def:'Séparation du vin de ses dépôts (lies, bourbes) par transfert d\'un contenant à un autre', terme:'Soutirage'},
       ];
-      return [...all].sort(()=>Math.random()-.5).slice(0,8);
+      const direction = Math.random() < 0.5 ? 'def2terme' : 'terme2def';
+      const items = [...all].sort(()=>Math.random()-.5).slice(0,8);
+      return { direction, items };
     }
   },
 
-  // Q type : dégustation par cépage transversal
+  // Q type : dégustation par cépage transversal — génération dynamique
+  // (choix du cépage, puis 1 à 2 vignobles où il est présent, + mention d'une région
+  // d'exception le cas échéant — plus de "0 AOC de Bordeaux" figé sur un schéma imposé)
   {
     id: 'degustation_cepage',
     pts: 11,
     type: 'libre_api',
-    label: (params) => `Vous organisez une dégustation sur le <strong>${params.cepage}</strong>. Proposez <strong>${params.nbLoire} AOC de Loire</strong> (${params.nbLoireVignobles} vignobles différents), <strong>${params.nbBordeaux} AOC de Bordeaux</strong> (${params.nbBordeauxVignobles} vignobles différents) et <strong>${params.nbAutre} AOC d\'un autre vignoble</strong>, en précisant le vignoble concerné.`,
+    label: (params) => {
+      const parts = params.parts.map(p =>
+        `<strong>${p.n} AOC du vignoble ${p.vignoble}</strong> (${p.region})`
+      ).join(', ');
+      const exceptionTxt = params.exception
+        ? `, ainsi qu'une AOC témoignant de sa présence exceptionnelle en <strong>${params.exception.region}</strong>`
+        : '';
+      return `Vous organisez une dégustation sur le <strong>${params.cepage}</strong>. Proposez ${parts}${exceptionTxt}, en précisant à chaque fois le vignoble concerné.`;
+    },
     generate: () => {
-      const configs = [
-        {
-          cepage:'Sauvignon Blanc',
-          nbLoire:3, nbLoireVignobles:2,
-          nbBordeaux:3, nbBordeauxVignobles:3,
-          nbAutre:1,
-          loire:['Reuilly','Quincy','Sancerre','Pouilly-Fumé','Menetou-Salon','Vouvray sec'],
-          bordeaux:['Graves','Pessac-Léognan','Entre-Deux-Mers','Bordeaux Blanc','Francs Côtes de Bordeaux'],
-          autre:['Saint-Bris (Bourgogne)','Touraine (Loire)','Bergerac Blanc']
-        },
-        {
-          cepage:'Gamay',
-          nbLoire:2, nbLoireVignobles:2,
-          nbBordeaux:0, nbBordeauxVignobles:0,
-          nbAutre:3,
-          note:'Proposez 2 AOC de Loire (2 vignobles) et 3 AOC d\'autres vignobles (3 régions différentes)',
-          loire:['Anjou Rouge','Côtes du Forez','Côte Roannaise','Saint-Pourçain','Touraine'],
-          autre:['Chénas (Beaujolais)','Mâcon Rouge (Bourgogne)','Saint-Amour (Beaujolais)','Régnié (Beaujolais)','Moulin-à-Vent (Beaujolais)']
-        },
-        {
-          cepage:'Pinot Noir',
-          nbLoire:1, nbLoireVignobles:1,
-          nbBordeaux:0, nbBordeauxVignobles:0,
-          nbAutre:5,
-          note:'1 AOC de Loire, 5 AOC d\'autres régions (3 régions différentes minimum)',
-          loire:['Sancerre Rouge','Reuilly Rouge','Menetou-Salon Rouge'],
-          autre:['Gevrey-Chambertin (Bourgogne)','Pommard (Bourgogne)','Volnay (Bourgogne)','Marsannay (Bourgogne)','Champagne Blanc de Noirs','Alsace Pinot Noir']
-        },
-        {
-          cepage:'Chardonnay',
-          nbLoire:0, nbLoireVignobles:0,
-          nbBordeaux:0, nbBordeauxVignobles:0,
-          nbAutre:6,
-          note:'6 AOC de 3 régions différentes',
-          autre:['Chablis (Bourgogne)','Meursault (Bourgogne)','Pouilly-Fuissé (Bourgogne)','Champagne Blanc de Blancs','Alsace (rare)','Crémant de Bourgogne']
-        },
-        {
-          cepage:'Chenin',
-          nbLoire:4, nbLoireVignobles:3,
-          nbBordeaux:0, nbBordeauxVignobles:0,
-          nbAutre:1,
-          note:'4 AOC de Loire (3 vignobles différents) et 1 AOC d\'un autre vignoble où le Chenin est autorisé',
-          loire:['Vouvray','Savennières','Coteaux du Layon','Montlouis-sur-Loire','Bonnezeaux','Saumur'],
-          autre:['Crémant de Limoux (Languedoc, cépage voisin)','Jurançon Sec (Sud-Ouest)']
-        },
-        {
-          cepage:'Riesling',
-          nbLoire:0, nbLoireVignobles:0,
-          nbBordeaux:0, nbBordeauxVignobles:0,
-          nbAutre:3,
-          note:'3 AOC/dénominations, toutes d\'Alsace, en précisant leur spécificité',
-          autre:['AOC Alsace Riesling','Alsace Grand Cru Riesling','Vendanges Tardives Riesling']
-        },
-        {
-          cepage:'Merlot',
-          nbLoire:0, nbLoireVignobles:0,
-          nbBordeaux:4, nbBordeauxVignobles:4,
-          nbAutre:1,
-          note:'4 AOC de Bordeaux (4 vignobles différents) et 1 AOC d\'un autre vignoble où le Merlot est autorisé',
-          bordeaux:['Saint-Émilion','Pomerol','Fronsac','Côtes de Bourg','Médoc','Côtes de Bordeaux'],
-          autre:['Bergerac (Sud-Ouest)','Vin de Corse (Corse)']
-        },
-      ];
-      const chosen = configs[Math.floor(Math.random()*configs.length)];
-      return chosen;
+      const entry = CEPAGE_VIGNOBLES_MAP[Math.floor(Math.random()*CEPAGE_VIGNOBLES_MAP.length)];
+      const nbVignobles = entry.vignobles.length > 1 && Math.random() < 0.7 ? 2 : 1;
+      const shuffledVignobles = [...entry.vignobles].sort(()=>Math.random()-.5).slice(0, nbVignobles);
+      const parts = shuffledVignobles.map(v => ({
+        vignoble: v.nom,
+        region: v.region,
+        n: Math.min(v.aocs.length, 2 + Math.floor(Math.random()*2)), // 2 ou 3 AOC demandées, sans dépasser le stock réel
+        aocs: v.aocs,
+      }));
+      const includeException = !!entry.exception && Math.random() < 0.6;
+      return {
+        cepage: entry.cepage,
+        parts,
+        exception: includeException ? entry.exception : null,
+      };
     }
   },
 
-  // Q type : AOC communales par vignoble + dégustation
+  // Q type : dégustation par style de vin (transversal, toutes couleurs/styles confondus)
+  {
+    id: 'degustation_style',
+    pts: 12,
+    type: 'libre_api',
+    label: () => `Organisez une dégustation représentant <strong>tous les grands styles de vin</strong> : un <strong>blanc sec</strong>, un <strong>blanc moelleux ou liquoreux</strong>, un <strong>rouge</strong>, un <strong>rosé</strong> et un <strong>effervescent</strong>. Proposez une AOC pour chaque style, en précisant à chaque fois la région/le vignoble d'origine.`,
+    generate: () => ({
+      corrige: "Blanc sec : Sancerre, Chablis, Muscadet... Moelleux/liquoreux : Sauternes, Coteaux du Layon, Vendanges Tardives Alsace, Monbazillac... Rouge : Médoc, Bourgogne, Beaujolais, Côtes du Rhône... Rosé : Côtes de Provence, Tavel, Cabernet d'Anjou... Effervescent : Champagne, Crémant (toute région), Blanquette de Limoux."
+    })
+  },
+
+  // Q type : dégustation inter-vignoble — génération dynamique (2.6.3a)
+  // Choisit une région viticole, 1-2 vignobles en son sein, et adapte les couleurs
+  // demandées à ce qui existe vraiment (pas de blanc si le vignoble n'en produit pas).
   {
     id: 'aoc_communales',
     pts: 18,
     type: 'mixte',
     label: () => '',
     generate: () => {
-      const configs = [
-        {
-          label: 'Dans votre établissement, vous organisez une dégustation <strong>Côte de Nuits / Côte Chalonnaise</strong>. Proposez <strong>8 AOC différentes</strong> (3 rouges et 1 blanc par vignoble).',
-          coteNuits: {
-            rouges: ['Gevrey-Chambertin','Morey-Saint-Denis','Chambolle-Musigny','Vougeot','Vosne-Romanée','Nuits-Saint-Georges','Fixin','Marsannay Rouge'],
-            blancs: ['Marsannay Blanc','Nuits-Saint-Georges Blanc','Vougeot Blanc']
-          },
-          coteChalon: {
-            rouges: ['Mercurey Rouge','Givry Rouge','Rully Rouge','Bouzeron (Aligoté)'],
-            blancs: ['Mercurey Blanc','Givry Blanc','Rully Blanc','Montagny','Bouzeron']
-          }
-        },
-        {
-          label: 'Vous organisez une dégustation <strong>Côte de Beaune</strong>. Proposez <strong>6 AOC</strong> (3 rouges et 3 blancs).',
-          coteNuits: null,
-          coteChalon: null,
-          coteBeaune: {
-            rouges: ['Pommard','Volnay','Beaune Rouge','Savigny-lès-Beaune','Monthélie','Maranges','Santenay','Auxey-Duresses Rouge'],
-            blancs: ['Meursault','Puligny-Montrachet','Chassagne-Montrachet Blanc','Corton-Charlemagne','Saint-Romain Blanc','Auxey-Duresses Blanc']
-          }
-        },
-        {
-          label: 'Vous organisez une dégustation <strong>Crus du Beaujolais</strong>. Proposez <strong>5 crus différents</strong>, chacun accompagné d\'une caractéristique distinctive.',
-          coteNuits: null, coteChalon: null, coteBeaune: null,
-          beaujolaisCrus: {
-            crus: ['Saint-Amour','Juliénas','Chénas','Moulin-à-Vent','Fleurie','Chiroubles','Morgon','Régnié','Brouilly','Côte de Brouilly']
-          }
-        },
-        {
-          label: 'Vous organisez une dégustation <strong>Rhône Nord</strong>. Proposez <strong>6 AOC</strong> (3 rouges, 3 blancs) en précisant leur cépage principal.',
-          coteNuits: null, coteChalon: null, coteBeaune: null,
-          rhoneNord: {
-            rouges: ['Côte-Rôtie','Hermitage Rouge','Cornas','Crozes-Hermitage Rouge','Saint-Joseph Rouge'],
-            blancs: ['Condrieu','Château-Grillet','Hermitage Blanc','Saint-Péray','Saint-Joseph Blanc']
-          }
-        }
-      ];
-      return configs[Math.floor(Math.random()*configs.length)];
+      const regionNames = Object.keys(VIGNOBLE_COULEURS_MAP);
+      const region = regionNames[Math.floor(Math.random()*regionNames.length)];
+      const vignobles = VIGNOBLE_COULEURS_MAP[region];
+      const nbVignobles = vignobles.length > 1 && Math.random() < 0.75 ? 2 : 1;
+      const chosen = [...vignobles].sort(()=>Math.random()-.5).slice(0, nbVignobles);
+      const colorLabels = {rouges:'rouge', blancs:'blanc', roses:'rosé', effervescents:'effervescent'};
+
+      const parts = chosen.map(v => {
+        const availableColors = ['rouges','blancs','roses','effervescents'].filter(c => v[c] && v[c].length > 0);
+        const nbColors = availableColors.length > 1 && Math.random() < 0.6 ? 2 : 1;
+        const colors = [...availableColors].sort(()=>Math.random()-.5).slice(0, Math.min(nbColors, availableColors.length));
+        const n = 2 + Math.floor(Math.random()*2);
+        return {
+          vignoble: v.nom,
+          colors: colors.map(c => ({ type: colorLabels[c], n: Math.min(n, v[c].length), aocs: v[c] })),
+        };
+      });
+
+      const label = `Vous organisez une dégustation <strong>${parts.map(p=>p.vignoble).join(' / ')}</strong> (${region}). Proposez ${
+        parts.map(p => p.colors.map(c => `<strong>${c.n} AOC ${c.type}${c.n>1?'s':''}</strong> de ${p.vignoble}`).join(' et ')).join(', ainsi que ')
+      }, en précisant à chaque fois le vignoble.`;
+
+      const corrige = parts.map(p =>
+        `${p.vignoble} : ${p.colors.map(c => `${c.type} — ${c.aocs.join(', ')}`).join(' | ')}`
+      ).join(' || ');
+
+      return { label, corrige, region, parts };
     }
   },
 
@@ -3952,7 +4025,7 @@ const PARTIEL_TEMPLATES = [
         {cepage:'César', aoc:'Irancy', vignoble:'Auxerrois — Bourgogne'},
         {cepage:'Sémillon', aoc:'Sauternes', vignoble:'Sauternes — Bordeaux'},
         {cepage:'Chasselas', aoc:'Pouilly-sur-Loire', vignoble:'Centre-Loire — Vallée de la Loire'},
-        {cepage:'Pinot Gris', aoc:'Alsace / Touraine', vignoble:'Alsace ou Touraine'},
+        {cepage:'Pinot Gris', aoc:'Alsace / Touraine / Reuilly (rosé)', vignoble:'Alsace, Touraine ou Centre-Loire'},
         {cepage:'Arbane', aoc:'Champagne', vignoble:'Champagne'},
         {cepage:'Savagnin', aoc:'Château-Chalon / Arbois', vignoble:'Jura'},
         {cepage:'Poulsard', aoc:'Arbois', vignoble:'Jura'},
@@ -3969,45 +4042,15 @@ const PARTIEL_TEMPLATES = [
     }
   },
 
-  // Q type : dégustation sur Sauvignon multi-régions
-  {
-    id: 'degustation_multi',
-    pts: 11,
-    type: 'libre_api',
-    label: () => '',
-    generate: () => {
-      const scenarios = [
-        {
-          label: 'Vous organisez une dégustation sur le <strong>Sauvignon Blanc</strong>. Proposez <strong>3 AOC de Loire</strong> (2 vignobles différents), <strong>3 AOC de Bordeaux</strong> (3 vignobles différents) et <strong>1 AOC d\'un autre vignoble</strong>.',
-          corrige: 'Loire : Sancerre/Pouilly-Fumé/Reuilly/Quincy (Centre-Loire) + Touraine/Coteaux du Vendômois (Touraine). Bordeaux : Graves, Entre-Deux-Mers, Pessac-Léognan (Libournais) — d\'autres dénominations Bordeaux blanc autorisant le Sauvignon sont également valables (ex : Côtes de Bordeaux avec ses dénominations, Côtes de Bourg blanc). Autre : Saint-Bris (Bourgogne/Auxerrois).'
-        },
-        {
-          label: 'Vous organisez une dégustation sur le <strong>Gamay</strong>. Proposez <strong>5 AOC</strong> issues d\'au moins <strong>3 régions viticoles différentes</strong> en précisant le vignoble concerné.',
-          corrige: 'Beaujolais (Morgon, Fleurie, Moulin-à-Vent...), Bourgogne (Mâcon, Bourgogne), Auvergne/Loire (Côtes du Forez, Côte Roannaise, Saint-Pourçain), Touraine.'
-        },
-        {
-          label: 'Vous organisez une dégustation sur le <strong>Chardonnay</strong>. Proposez <strong>5 AOC</strong> issues d\'au moins <strong>3 régions viticoles différentes</strong> en précisant le vignoble concerné.',
-          corrige: 'Bourgogne (Chablis, Meursault, Pouilly-Fuissé, Mâcon...), Champagne (Blanc de Blancs), Jura (Côtes du Jura, Arbois), Savoie (marginal), Languedoc (Limoux/Crémant de Limoux).'
-        },
-        {
-          label: 'Vous organisez une dégustation sur le <strong>Pinot Noir</strong>. Proposez <strong>4 AOC</strong> issues d\'au moins <strong>3 régions viticoles différentes</strong> en précisant le vignoble concerné.',
-          corrige: 'Bourgogne (Gevrey-Chambertin, Volnay, Marsannay...), Alsace (Alsace Pinot Noir), Champagne (base d\'assemblage, Coteaux Champenois, Rosé des Riceys), Loire (Sancerre Rouge, Menetou-Salon Rouge).'
-        },
-        {
-          label: 'Vous organisez une dégustation sur le <strong>Merlot</strong>. Proposez <strong>4 AOC de Bordeaux</strong> (4 vignobles différents) et <strong>1 AOC d\'un autre vignoble</strong> où le Merlot est autorisé.',
-          corrige: 'Bordeaux : Saint-Émilion, Pomerol, Fronsac, Côtes de Bourg, Côtes de Bordeaux (Blaye, Castillon, Francs...). Autre : Bergerac (Sud-Ouest), Vin de Corse (Corse), IGP diverses.'
-        },
-      ];
-      return scenarios[Math.floor(Math.random()*scenarios.length)];
-    }
-  },
+  // (ancien template degustation_multi retiré — remplacé par degustation_cepage,
+  // désormais génération dynamique complète avec terminologie région/vignoble correcte)
 
   // Q type : hiérarchie des appellations (2.6.3a — nouveau template)
   {
     id: 'hierarchie_classification',
     pts: 10,
     type: 'libre_api',
-    label: (params) => `Présentez la <strong>hiérarchie des appellations</strong> (du niveau le plus large au plus précis) pour le vignoble <strong>${params.vignoble}</strong>, en donnant un exemple d'AOC concret à chaque niveau.`,
+    label: (params) => `Présentez la <strong>hiérarchie de précision des appellations</strong> (du niveau le plus large/régional au plus précis) pour <strong>${params.vignoble}</strong>, en donnant un exemple concret à chaque niveau. Ne mentionnez que les échelons de la pyramide qualitative — pas les catégories parallèles (effervescent, liquoreux, VDN...).`,
     generate: () => {
       const options = [
         { vignoble: 'Bourgogne', niveaux: 'Régionale → Village → Premier Cru → Grand Cru', exemple: 'Bourgogne → Gevrey-Chambertin → Gevrey-Chambertin 1er Cru "Clos Saint-Jacques" → Chambertin (Grand Cru)' },
@@ -4015,6 +4058,10 @@ const PARTIEL_TEMPLATES = [
         { vignoble: 'Alsace', niveaux: 'AOC Alsace → AOC Alsace Grand Cru → mentions Vendanges Tardives / Sélection de Grains Nobles', exemple: 'AOC Alsace Riesling → Alsace Grand Cru Riesling "Schlossberg"' },
         { vignoble: 'Champagne', niveaux: 'Champagne → Premier Cru → Grand Cru (échelle des crus)', exemple: 'Champagne → Champagne 1er Cru → Champagne Grand Cru (ex : Ambonnay)' },
         { vignoble: 'Beaujolais', niveaux: 'Beaujolais → Beaujolais-Villages → Crus du Beaujolais', exemple: 'Beaujolais → Beaujolais-Villages → Morgon' },
+        { vignoble: 'Vallée du Rhône', niveaux: 'Côtes du Rhône régionale → Côtes du Rhône Villages → Villages + nom communal → Cru', exemple: 'Côtes du Rhône → Côtes du Rhône Villages → Villages Sablet → Gigondas (Cru)' },
+        { vignoble: 'Saint-Émilion (classification propre)', niveaux: 'Saint-Émilion → Saint-Émilion Grand Cru → Grand Cru Classé → Premier Grand Cru Classé B → Premier Grand Cru Classé A', exemple: 'Saint-Émilion Grand Cru → Château Figeac (Grand Cru Classé) → Château Angélus (1er GCC A)' },
+        { vignoble: 'Sauternes-Barsac (classification 1855)', niveaux: 'Sauternes/Barsac → Deuxième Cru → Premier Cru → Premier Cru Supérieur', exemple: 'Sauternes → Château Rieussec (1er Cru) → Château d\'Yquem (1er Cru Supérieur, unique)' },
+        { vignoble: 'Languedoc', niveaux: 'IGP → Languedoc régionale → Dénomination géographique → Cru du Languedoc', exemple: 'Languedoc → Languedoc Pic Saint-Loup (Cru)' },
       ];
       return options[Math.floor(Math.random()*options.length)];
     }
@@ -4156,6 +4203,26 @@ function renderPartielQuestion(q) {
   return html;
 }
 
+/* Même principe de "famille" que pour ID AOC (13.3) : si la réponse littérale ne
+   correspond pas exactement à l'alternative prévue, on vérifie si elle appartient
+   quand même à la famille des AOC du même vignoble ET du même cépage — évite de
+   sanctionner une réponse par ailleurs juste (ex : Saumur Rouge pour Chinon). */
+function substitutionFamilyCandidates(item) {
+  const pool = getAllAocsFlat();
+  const parts = item.vignoble.split('—').map(s => s.trim());
+  const vignobleName = parts[0] || '';
+  const regionName = parts[1] || '';
+  const cepageKey = item.cepage.split('/')[0].trim().toLowerCase();
+  return pool.filter(a => {
+    const vKey = vignobleName.split(' ')[0].toLowerCase();
+    const rKey = regionName.split(' ')[0].toLowerCase();
+    const matchesPlace = (a.subcatLabel && vKey && a.subcatLabel.toLowerCase().includes(vKey))
+      || (a.regionName && rKey && a.regionName.toLowerCase().includes(rKey));
+    const matchesCepage = a.cepages && a.cepages.toLowerCase().includes(cepageKey);
+    return matchesPlace && matchesCepage;
+  }).map(a => a.nom);
+}
+
 function renderSubstitution(aocs) {
   return `
     <div style="display:flex;flex-direction:column;gap:12px;" id="substContainer">
@@ -4197,7 +4264,11 @@ function submitSubstitution() {
     const userCepage = document.getElementById(`subst_cepage_${i}`)?.value.trim().toLowerCase() || '';
     const refAutre = item.autre.toLowerCase();
     const refCepage = item.cepage.toLowerCase();
-    const okAutre = refAutre.split('/').some(r => userAutre.includes(r.trim().split(' ')[0]) || r.trim().includes(userAutre.split(' ')[0]));
+    const okAutreLiteral = refAutre.split('/').some(r => userAutre.includes(r.trim().split(' ')[0]) || r.trim().includes(userAutre.split(' ')[0]));
+    const familyNames = substitutionFamilyCandidates(item).map(n => idAocNormalize(n));
+    const userNorm = idAocNormalize(userAutre);
+    const okAutreFamily = userNorm.length > 2 && familyNames.some(n => n === userNorm || (n.length>3 && userNorm.length>3 && (n.includes(userNorm) || userNorm.includes(n))));
+    const okAutre = okAutreLiteral || okAutreFamily;
     const okCepage = refCepage.split('/').some(r => userCepage.includes(r.trim().split(' ')[0]) || r.trim().includes(userCepage.split(' ')[0]));
     if (okAutre) correct++;
     if (okCepage) correct++;
@@ -4224,10 +4295,22 @@ function submitSubstitution() {
     <button onclick="nextPartielQuestion(${maxPts},${earned})" class="btn btn-purple" style="width:100%;">Question suivante →</button>`;
 }
 
-function renderTermesTechniques(termes) {
+function renderTermesTechniques(params) {
+  const { direction, items } = params;
+  if (direction === 'terme2def') {
+    return `
+      <div style="display:flex;flex-direction:column;gap:8px;" id="termesContainer">
+        ${items.map((t,i) => `
+          <div style="background:#f8f7f4;border-radius:10px;padding:10px 12px;">
+            <div style="font-size:13px;font-weight:700;margin-bottom:6px;">${i+1}. ${t.terme}</div>
+            <textarea id="terme_${i}" placeholder="Définition…" rows="2" style="width:100%;padding:8px 10px;border:1px solid #ddd;border-radius:7px;font-size:13px;font-family:inherit;"></textarea>
+          </div>`).join('')}
+      </div>
+      <button onclick="revealTermesDefinitions()" class="btn btn-purple" style="margin-top:12px;width:100%;">Vérifier →</button>`;
+  }
   return `
     <div style="display:flex;flex-direction:column;gap:8px;" id="termesContainer">
-      ${termes.map((t,i) => `
+      ${items.map((t,i) => `
         <div style="background:#f8f7f4;border-radius:10px;padding:10px 12px;">
           <div style="font-size:13px;color:#555;margin-bottom:6px;">${i+1}. ${t.def}</div>
           <input id="terme_${i}" placeholder="Terme technique…" style="width:100%;padding:8px 10px;border:1px solid #ddd;border-radius:7px;font-size:13px;">
@@ -4236,9 +4319,48 @@ function renderTermesTechniques(termes) {
     <button onclick="submitTermes()" class="btn btn-purple" style="margin-top:12px;width:100%;">Valider →</button>`;
 }
 
+/* Sens terme→définition : pas de correction algorithmique fiable sur du texte libre,
+   donc on révèle la définition de référence à côté de la réponse et l'étudiant
+   s'auto-évalue par item (même esprit que les flashcards ID AOC). */
+function revealTermesDefinitions() {
+  const q = partielState.questions[partielState.currentQ];
+  const items = q.params.items;
+  let html = '<div style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px;" id="termesSelfAssess">';
+  items.forEach((t,i) => {
+    const userVal = document.getElementById(`terme_${i}`)?.value.trim() || '(vide)';
+    html += `
+      <div style="background:#fff;border:1px solid #e5e5e2;border-radius:10px;padding:10px 12px;">
+        <div style="font-size:12.5px;font-weight:700;margin-bottom:4px;">${t.terme}</div>
+        <div style="font-size:12px;color:#666;margin-bottom:4px;">Votre réponse : <em>${userVal}</em></div>
+        <div style="font-size:12px;color:#3B6D11;margin-bottom:6px;">Définition attendue : ${t.def}</div>
+        <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;">
+          <input type="checkbox" id="self_${i}" checked> J'avais la bonne idée
+        </label>
+      </div>`;
+  });
+  html += '</div>';
+  document.getElementById('termesContainer').outerHTML = html;
+  document.querySelector('#partielBody .btn-purple').outerHTML =
+    `<button onclick="submitTermesSelfAssess()" class="btn btn-purple" style="width:100%;">Confirmer mon score →</button>`;
+}
+
+function submitTermesSelfAssess() {
+  const q = partielState.questions[partielState.currentQ];
+  const items = q.params.items;
+  let correct = 0;
+  items.forEach((t,i) => { if (document.getElementById(`self_${i}`)?.checked) correct++; });
+  const earned = Math.round((correct/items.length)*q.pts);
+  document.getElementById('partielBody').innerHTML = `
+    <div style="font-size:14px;font-weight:500;margin-bottom:1rem;">Q${q.idx+1} — ${q.label_rendered}</div>
+    <div style="background:${earned>=q.pts*.7?'#EAF3DE':'#FFF4E6'};border-radius:10px;padding:10px;margin-bottom:12px;">
+      <strong>${correct}/${items.length} auto-évalués corrects → ${earned}/${q.pts} pts</strong>
+    </div>
+    <button onclick="nextPartielQuestion(${q.pts},${earned})" class="btn btn-purple" style="width:100%;">Question suivante →</button>`;
+}
+
 function submitTermes() {
   const q = partielState.questions[partielState.currentQ];
-  const termes = q.params;
+  const termes = q.params.items;
   let correct = 0;
   let html = '<div style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px;">';
 
@@ -4265,6 +4387,16 @@ function submitTermes() {
       <strong>${correct}/${termes.length} termes corrects → ${earned}/${q.pts} pts</strong>
     </div>
     <button onclick="nextPartielQuestion(${q.pts},${earned})" class="btn btn-purple" style="width:100%;">Question suivante →</button>`;
+}
+
+/* Idem substitution : le cépage peut être présent dans bien plus d'AOC que la seule
+   réponse indicative du pool (ex : Pinot Gris à Reuilly, pas seulement Alsace/Touraine).
+   On vérifie la réponse de l'étudiant contre TOUTES les AOC réelles dont la fiche
+   cépages mentionne ce cépage, pas juste contre 1-2 réponses figées. */
+function cepageAocFamilyCandidates(cepageName) {
+  const pool = getAllAocsFlat();
+  const key = cepageName.split('(')[0].trim().toLowerCase();
+  return pool.filter(a => a.cepages && a.cepages.toLowerCase().includes(key)).map(a => a.nom);
 }
 
 function renderCepageAoc(cepages) {
@@ -4297,10 +4429,14 @@ function submitCepageAoc() {
   items.forEach((item,i) => {
     const userAoc = document.getElementById(`ca_aoc_${i}`)?.value.trim().toLowerCase() || '';
     const refAoc = item.aoc.toLowerCase();
-    const ok = refAoc.split('/').some(r => {
+    const okLiteral = refAoc.split('/').some(r => {
       const words = r.trim().split(' ').filter(w=>w.length>3);
       return words.some(w => userAoc.includes(w));
     });
+    const familyNames = cepageAocFamilyCandidates(item.cepage).map(n => idAocNormalize(n));
+    const userNorm = idAocNormalize(userAoc);
+    const okFamily = userNorm.length > 2 && familyNames.some(n => n === userNorm || (n.length>3 && userNorm.length>3 && (n.includes(userNorm) || userNorm.includes(n))));
+    const ok = okLiteral || okFamily;
     if (ok) correct++;
     html += `
       <div style="background:#fff;border:1px solid #e5e5e2;border-radius:10px;padding:10px 12px;">
@@ -4389,6 +4525,38 @@ function renderLibreAPI(q) {
     <div id="partielFeedback"></div>`;
 }
 
+function escapeHtml(str) {
+  return (str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+/* Bloc partagé "Ma réponse" + correction + bouton de signalement d'erreur.
+   Un accent oublié ou une correction IA trop sévère peut faire perdre des points
+   injustement — ce bouton permet de rajouter 1 point sans repasser par l'API. */
+function renderCorrectionBlock(userAnswer, correctionHtml, earned, maxPts) {
+  return `
+    <div style="background:#f8f7f4;border-radius:10px;padding:12px;margin-top:10px;">
+      <div style="font-size:11px;color:#666;font-weight:600;text-transform:uppercase;margin-bottom:6px;">📝 Ma réponse</div>
+      <div style="font-size:13px;white-space:pre-wrap;color:#333;">${escapeHtml(userAnswer)}</div>
+    </div>
+    <div style="background:#EAF3DE;border-radius:10px;padding:14px;margin-top:10px;line-height:1.6;font-size:13px;">
+      <div style="font-size:11px;color:#3B6D11;font-weight:600;text-transform:uppercase;margin-bottom:6px;">✨ Correction</div>
+      ${correctionHtml}
+    </div>
+    <button id="flagBtn" onclick="flagCorrectionError(this)" class="btn" style="margin-top:10px;width:100%;font-size:11.5px;color:#993C1D;border-color:#f0d0c8;">⚠️ Signaler une erreur de correction (+1 pt)</button>
+    <button id="nextBtn" data-earned="${earned}" data-pts="${maxPts}" onclick="nextPartielQuestion(parseInt(document.getElementById('nextBtn').dataset.pts),parseInt(document.getElementById('nextBtn').dataset.earned))" class="btn btn-purple" style="margin-top:8px;width:100%;">Question suivante →</button>`;
+}
+
+function flagCorrectionError(btn) {
+  const nextBtn = document.getElementById('nextBtn');
+  const maxPts = parseInt(nextBtn.dataset.pts);
+  let earned = parseInt(nextBtn.dataset.earned);
+  earned = Math.min(maxPts, earned + 1);
+  nextBtn.dataset.earned = earned;
+  btn.disabled = true;
+  btn.textContent = '✓ Point ajouté — sera pris en compte à la validation';
+  btn.style.opacity = '0.55';
+}
+
 async function submitPartielAPI() {
   const q = partielState.questions[partielState.currentQ];
   const answer = document.getElementById('va-answer')?.value.trim() || '';
@@ -4398,7 +4566,14 @@ async function submitPartielAPI() {
   document.querySelector('[onclick="submitPartielAPI()"]').disabled = true;
   fb.innerHTML = `<div style="padding:16px;text-align:center;color:#9333ea;font-size:13px;">✨ Correction en cours…</div>`;
 
-  const corrige = q.id === 'degustation_multi' ? q.params.corrige : '';
+  const corrige = q.id === 'degustation_multi' ? q.params.corrige
+    : q.id === 'hierarchie_classification' ? `Niveaux attendus : ${q.params.niveaux}. Exemple : ${q.params.exemple}`
+    : q.id === 'degustation_cepage' ? q.params.parts.map(p => `${p.vignoble} (${p.region}) — exemples : ${p.aocs.join(', ')}`).join(' | ') + (q.params.exception ? ` | Exception ${q.params.exception.region} : ${q.params.exception.aoc}` : '')
+    : q.id === 'degustation_style' ? q.params.corrige
+    : '';
+  const hierarchieGuard = q.id === 'hierarchie_classification'
+    ? `\n- Cette question porte UNIQUEMENT sur la pyramide de précision géographique (régionale → village/communale → cru...). Ne pénalise PAS l'absence de catégories parallèles (Crémant/effervescent, liquoreux, VDN, VDL...) qui ne sont pas des échelons de cette hiérarchie mais des catégories de produit différentes — et ne les compte pas non plus comme des bonus, elles sont simplement hors-sujet ici.`
+    : '';
   const systemPrompt = `Tu es un correcteur bienveillant mais rigoureux de l'école SCAG. Tu corriges une question de partiel sur les vignobles de France. Note sur ${q.pts} points.
 ${corrige ? `Éléments de corrigé (INDICATIFS, non exhaustifs — de nombreuses autres réponses correctes existent) : ${corrige}` : ''}
 
@@ -4407,7 +4582,7 @@ Consignes de correction importantes :
 - En cas de doute sur la validité d'une appellation ou d'un accord proposé par l'étudiant, donne-lui le bénéfice du doute plutôt que de la rejeter catégoriquement — mentionne ton incertitude dans le commentaire plutôt que de sanctionner.
 - Ne retire pas de points pour des différences mineures de formulation, d'accents ou d'ordre si le fond est juste.
 - Distingue une vraie erreur factuelle (à sanctionner) d'un simple choix différent parmi plusieurs réponses valides (à ne pas sanctionner).
-- Sois généreux dans le doute : entre deux notes possibles, retiens la plus haute.
+- Sois généreux dans le doute : entre deux notes possibles, retiens la plus haute.${hierarchieGuard}
 
 Format : commence par "Note : X/${q.pts}" puis donne le corrigé type et les points forts/à améliorer. Réponds en français.`;
 
@@ -4423,12 +4598,7 @@ Format : commence par "Note : X/${q.pts}" puis donne le corrigé type et les poi
     const noteMatch = correction.match(/Note\s*:\s*(\d+(?:[.,]\d+)?)\s*\/\s*(\d+)/i);
     const earned = noteMatch ? Math.min(q.pts, Math.round(parseFloat(noteMatch[1].replace(',','.')))) : Math.round(q.pts/2);
 
-    fb.innerHTML = `
-      <div style="background:#EAF3DE;border-radius:10px;padding:14px;margin-top:10px;line-height:1.6;font-size:13px;">
-        <div style="font-size:11px;color:#3B6D11;font-weight:600;text-transform:uppercase;margin-bottom:6px;">✨ Correction</div>
-        ${correction.replace(/\n/g,'<br>')}
-      </div>
-      <button onclick="nextPartielQuestion(${q.pts},${earned})" class="btn btn-purple" style="margin-top:12px;width:100%;">Question suivante →</button>`;
+    fb.innerHTML = renderCorrectionBlock(answer, correction.replace(/\n/g,'<br>'), earned, q.pts);
   } catch(e) {
     fb.innerHTML = `<div class="quiz-feedback ko">Erreur de connexion. <button onclick="submitPartielAPI()" class="btn">Réessayer</button></div>`;
   }
@@ -4446,6 +4616,7 @@ async function submitAocCommunalesLibre() {
     const data = await callClaudeAPI({
       max_tokens: 800,
       system:`Tu es un correcteur bienveillant mais rigoureux de l'école SCAG. Note sur ${q.pts} points.
+${q.params.corrige ? `Éléments de corrigé (INDICATIFS, non exhaustifs) : ${q.params.corrige}` : ''}
 
 Consignes de correction importantes :
 - Accepte toute appellation, tout cépage correct sur le plan réglementaire, même si elle est moins connue ou inattendue — de nombreuses AOC autorisent plusieurs cépages ou couleurs.
@@ -4459,11 +4630,7 @@ Commence par "Note : X/${q.pts}". Réponds en français.`,
     const correction = data.content?.[0]?.text || 'Erreur.';
     const noteMatch = correction.match(/Note\s*:\s*(\d+(?:[.,]\d+)?)\s*\/\s*(\d+)/i);
     const earned = noteMatch ? Math.min(q.pts, Math.round(parseFloat(noteMatch[1].replace(',','.')))) : Math.round(q.pts/2);
-    fb.innerHTML = `
-      <div style="background:#EAF3DE;border-radius:10px;padding:14px;margin-top:10px;font-size:13px;line-height:1.6;">
-        ${correction.replace(/\n/g,'<br>')}
-      </div>
-      <button onclick="nextPartielQuestion(${q.pts},${earned})" class="btn btn-purple" style="margin-top:12px;width:100%;">Question suivante →</button>`;
+    fb.innerHTML = renderCorrectionBlock(answer, correction.replace(/\n/g,'<br>'), earned, q.pts);
   } catch(e) {
     fb.innerHTML = `<div class="quiz-feedback ko">Erreur. <button onclick="submitAocCommunalesLibre()" class="btn">Réessayer</button></div>`;
   }
@@ -5414,6 +5581,19 @@ function cepageCardHTML(c, i) {
 
 
 const AMV_DATA = {
+  lorraine: {
+    name: "Lorraine", color: "#D6C9E8",
+    specialites: [
+      {plat:"Quiche lorraine", vin:"AOC Moselle Blanc", raison:"La fraîcheur et la légèreté du blanc mosellan (Auxerrois, Pinot Blanc) dégraissent la texture œufs-lardons-crème."},
+      {plat:"Potée lorraine", vin:"AOC Moselle (Auxerrois)", raison:"Un blanc rond et peu acide accompagne ce plat mijoté de charcuteries et légumes sans agresser."},
+      {plat:"Pâté lorrain", vin:"Côtes de Toul (rouge léger)", raison:"Un rouge souple à base de Gamay/Pinot Noir répond à la pâte feuilletée et à la viande hachée persillée."},
+      {plat:"Mirabelles de Lorraine (tarte, dessert)", vin:"Côtes de Toul Gris (vin gris)", raison:"La fraîcheur et les notes fruitées du vin gris font écho au fruit sans le dominer."},
+    ],
+    generaux: [
+      {plat:"Charcuterie locale", vin:"Côtes de Toul Gris", raison:"Le vin gris, polyvalent et vif, s'accorde avec la plupart des charcuteries régionales."},
+      {plat:"Poisson de rivière (truite)", vin:"AOC Moselle Blanc", raison:"Un blanc discret et frais qui ne couvre pas la chair délicate du poisson."},
+    ]
+  },
   bordeaux: {
     name: "Bordeaux", color: "#B5D4F4",
     specialites: [
@@ -5794,67 +5974,95 @@ function toggleAllRegions() {
 
 function renderMapLayers() {
   const g = document.getElementById('mapZoomGroup');
-  const showLabels = mapState.scale >= MAP_ZOOM_LABEL_THRESHOLD;
+  if (!g) return;
 
-  // ── CALQUE 1 : contour France (fond) ──
-  let layer1 = `<path d="${MAP_FRANCE_PATH}" fill="#f3f1e9" stroke="#b8b2a0" stroke-width="${1.2/mapState.scale}"/>`;
-
-  // ── CALQUE 2 : blobs de vignobles (aplats colorés) ──
-  let layer2 = '';
-  Object.entries(MAP_REGION_BLOBS).forEach(([key, region]) => {
-    if (!mapState.activeRegions.has(key)) return;
-    region.paths.forEach(d => {
-      layer2 += `<path d="${d}" fill="${region.color}" fill-opacity="0.55" stroke="${region.color}" stroke-width="${1/mapState.scale}" style="cursor:pointer;" onclick="mapClickRegion('${key}')"/>`;
+  // Construire les nœuds SVG une seule fois. Les changements de zoom/pan
+  // mettent ensuite à jour les attributs existants au lieu de recréer le DOM.
+  if (!g.querySelector('.map-france-base')) {
+    let html = `<path class="map-france-base" d="${MAP_FRANCE_PATH}" fill="#f3f1e9" stroke="#b8b2a0"/>`;
+    Object.entries(MAP_REGION_BLOBS).forEach(([key, region]) => {
+      region.paths.forEach(d => {
+        html += `<path class="map-region-path" data-region="${key}" d="${d}" fill="${region.color}" fill-opacity="0.55" stroke="${region.color}" style="cursor:pointer;"/>`;
+      });
     });
-  });
-
-  // ── CALQUE 3 : points (AOC = ronds, villes = losanges) ──
-  let layer3 = '';
-  // Villes d'abord (en-dessous des AOC visuellement si superposition)
-  MAP_CITIES.forEach(v => {
-    const size = 3.2 / mapState.scale;
-    layer3 += `<g class="map-city-point">
-      <rect x="${v.x-size}" y="${v.y-size}" width="${size*2}" height="${size*2}" transform="rotate(45 ${v.x} ${v.y})" fill="#444" stroke="#fff" stroke-width="${0.8/mapState.scale}"/>
-    </g>`;
-  });
-  // AOC
-  MAP_AOC_POINTS.forEach((a, i) => {
-    if (!mapState.activeRegions.has(a.region)) return;
-    const region = MAP_REGION_BLOBS[a.region];
-    const color = region ? region.color : '#999';
-    const r = mapState.selectedAoc === a.nom ? 5.5/mapState.scale : 3.2/mapState.scale;
-    const strokeW = mapState.selectedAoc === a.nom ? 2/mapState.scale : 1/mapState.scale;
-    layer3 += `<circle class="map-aoc-point" data-idx="${i}" cx="${a.x}" cy="${a.y}" r="${r}" fill="${color}" stroke="#fff" stroke-width="${strokeW}" style="cursor:pointer;" onclick="mapClickAoc(${i})"/>`;
-  });
-
-  // ── CALQUE 4 : labels (visibles au zoom ou au survol) ──
-  let layer4 = '';
-  if (showLabels) {
+    MAP_CITIES.forEach((v, i) => {
+      html += `<g class="map-city-point" data-city-idx="${i}"><rect x="${v.x-3.2}" y="${v.y-3.2}" width="6.4" height="6.4" transform="rotate(45 ${v.x} ${v.y})" fill="#444" stroke="#fff"/></g>`;
+    });
     MAP_AOC_POINTS.forEach((a, i) => {
-      if (!mapState.activeRegions.has(a.region)) return;
-      layer4 += `<text x="${a.x+4/mapState.scale}" y="${a.y-3/mapState.scale}" font-size="${9/mapState.scale}" fill="#1a1a18" font-weight="600" style="pointer-events:none;paint-order:stroke;stroke:#fff;stroke-width:${2.5/mapState.scale}px;">${a.nom}</text>`;
+      const region = MAP_REGION_BLOBS[a.region];
+      const color = region ? region.color : '#999';
+      html += `<circle class="map-aoc-point" data-idx="${i}" data-region="${a.region}" cx="${a.x}" cy="${a.y}" fill="${color}" stroke="#fff" style="cursor:pointer;"/>`;
     });
+    MAP_AOC_POINTS.forEach((a, i) => {
+      html += `<text class="map-aoc-label" data-idx="${i}" data-region="${a.region}" x="${a.x}" y="${a.y}" fill="#1a1a18" font-weight="600" style="pointer-events:none;paint-order:stroke;stroke:#fff;"/>`;
+    });
+    MAP_CITIES.forEach((v, i) => {
+      html += `<text class="map-city-label" data-city-idx="${i}" x="${v.x}" y="${v.y}" fill="#444" font-weight="700" style="pointer-events:none;paint-order:stroke;stroke:#fff;"/>`;
+    });
+    g.innerHTML = html;
   }
-  MAP_CITIES.forEach(v => {
-    layer4 += `<text class="map-city-label" x="${v.x+5/mapState.scale}" y="${v.y+3/mapState.scale}" font-size="${10/mapState.scale}" fill="#444" font-weight="700" style="pointer-events:none;paint-order:stroke;stroke:#fff;stroke-width:${3/mapState.scale}px;${showLabels?'':'display:none;'}">${v.nom}</text>`;
-  });
-
-  g.innerHTML = layer1 + layer2 + layer3 + layer4;
-  g.setAttribute('transform', `translate(${mapState.panX},${mapState.panY}) scale(${mapState.scale})`);
-
-  // Hover tooltips pour AOC (même hors zoom)
-  attachAocHoverTooltips();
+  updateMapVisuals();
 }
 
-function attachAocHoverTooltips() {
-  document.querySelectorAll('.map-aoc-point').forEach(el => {
-    el.addEventListener('mouseenter', function() {
-      const idx = parseInt(this.dataset.idx);
-      const a = MAP_AOC_POINTS[idx];
-      showMapTooltip(a.nom, this);
-    });
-    el.addEventListener('mouseleave', hideMapTooltip);
+function updateMapVisuals() {
+  const g = document.getElementById('mapZoomGroup');
+  if (!g) return;
+  const scale = mapState.scale;
+  const showLabels = scale >= MAP_ZOOM_LABEL_THRESHOLD;
+
+  const base = g.querySelector('.map-france-base');
+  if (base) base.setAttribute('stroke-width', String(1.2 / scale));
+
+  g.querySelectorAll('.map-region-path').forEach(el => {
+    const active = mapState.activeRegions.has(el.dataset.region);
+    el.style.display = active ? '' : 'none';
+    el.setAttribute('stroke-width', String(1 / scale));
   });
+
+  g.querySelectorAll('.map-city-point rect').forEach(el => {
+    const size = 3.2 / scale;
+    const city = MAP_CITIES[Number(el.parentElement.dataset.cityIdx)];
+    if (!city) return;
+    el.setAttribute('x', city.x - size);
+    el.setAttribute('y', city.y - size);
+    el.setAttribute('width', String(size * 2));
+    el.setAttribute('height', String(size * 2));
+    el.setAttribute('stroke-width', String(0.8 / scale));
+  });
+
+  g.querySelectorAll('.map-aoc-point').forEach(el => {
+    const a = MAP_AOC_POINTS[Number(el.dataset.idx)];
+    if (!a) return;
+    const active = mapState.activeRegions.has(a.region);
+    const selected = mapState.selectedAoc === a.nom;
+    el.style.display = active ? '' : 'none';
+    el.setAttribute('r', String((selected ? 5.5 : 3.2) / scale));
+    el.setAttribute('stroke-width', String((selected ? 2 : 1) / scale));
+  });
+
+  g.querySelectorAll('.map-aoc-label').forEach(el => {
+    const a = MAP_AOC_POINTS[Number(el.dataset.idx)];
+    if (!a) return;
+    el.textContent = a.nom;
+    el.setAttribute('x', String(a.x + 4 / scale));
+    el.setAttribute('y', String(a.y - 3 / scale));
+    el.setAttribute('font-size', String(9 / scale));
+    el.setAttribute('stroke-width', String(2.5 / scale));
+    el.style.display = mapState.activeRegions.has(a.region) && showLabels ? '' : 'none';
+  });
+
+  g.querySelectorAll('.map-city-label').forEach(el => {
+    const city = MAP_CITIES[Number(el.dataset.cityIdx)];
+    if (!city) return;
+    el.textContent = city.nom;
+    el.setAttribute('x', String(city.x + 5 / scale));
+    el.setAttribute('y', String(city.y + 3 / scale));
+    el.setAttribute('font-size', String(10 / scale));
+    el.setAttribute('stroke-width', String(3 / scale));
+    el.style.display = showLabels ? '' : 'none';
+  });
+
+  g.setAttribute('transform', `translate(${mapState.panX},${mapState.panY}) scale(${scale})`);
 }
 
 function showMapTooltip(text, el) {
@@ -5882,7 +6090,7 @@ function hideMapTooltip() {
 /* ══ ZOOM / PAN ══ */
 function mapZoom(factor) {
   mapZoomLight(factor);
-  renderMapLayers();
+  updateMapVisuals();
 }
 
 function mapZoomLight(factor) {
@@ -5896,7 +6104,7 @@ function mapZoomLight(factor) {
 
 function mapResetView() {
   mapState.scale = 1; mapState.panX = 0; mapState.panY = 0;
-  renderMapLayers();
+  updateMapVisuals();
 }
 
 function clampMapPan() {
@@ -5909,10 +6117,9 @@ function clampMapPan() {
 function attachMapInteractions() {
   const svg = document.getElementById('franceMapSvg');
   const g = document.getElementById('mapZoomGroup');
+  if (!svg || !g) return;
   let rafPending = false;
-  let pendingFullRender = false;
 
-  // Applique uniquement le transform (ultra rapide, pas de re-render DOM)
   function applyTransformOnly() {
     g.setAttribute('transform', `translate(${mapState.panX},${mapState.panY}) scale(${mapState.scale})`);
     rafPending = false;
@@ -5923,32 +6130,47 @@ function attachMapInteractions() {
       requestAnimationFrame(applyTransformOnly);
     }
   }
-  // Re-render complet différé (recalcule rayons/strokes/labels pour le nouveau zoom)
   let fullRenderTimeout = null;
   function scheduleFullRender(delay) {
     clearTimeout(fullRenderTimeout);
-    fullRenderTimeout = setTimeout(() => renderMapLayers(), delay);
+    fullRenderTimeout = setTimeout(updateMapVisuals, delay);
   }
 
-  // Wheel zoom (desktop) — transform instantané, contenu recalculé après un court délai
+  // Un seul listener pour tous les points/régions, même après mise à jour du DOM.
+  svg.addEventListener('click', e => {
+    const aoc = e.target.closest('.map-aoc-point');
+    if (aoc) return mapClickAoc(Number(aoc.dataset.idx));
+    const region = e.target.closest('.map-region-path');
+    if (region) mapClickRegion(region.dataset.region);
+  });
+
+  svg.addEventListener('pointerover', e => {
+    const aoc = e.target.closest('.map-aoc-point');
+    if (!aoc || !svg.contains(aoc)) return;
+    const a = MAP_AOC_POINTS[Number(aoc.dataset.idx)];
+    if (a) showMapTooltip(a.nom, aoc);
+  });
+  svg.addEventListener('pointerout', e => {
+    if (e.target.closest('.map-aoc-point')) hideMapTooltip();
+  });
+
   svg.addEventListener('wheel', e => {
     e.preventDefault();
-    const factor = e.deltaY < 0 ? 1.15 : 0.87;
-    mapZoomLight(factor);
+    mapZoomLight(e.deltaY < 0 ? 1.15 : 0.87);
     scheduleTransform();
     scheduleFullRender(150);
   }, {passive:false});
 
-  // Drag pan (souris) — uniquement transform pendant le drag
   svg.addEventListener('mousedown', e => {
+    if (e.button !== 0) return;
     mapState.isDragging = true;
     mapState.lastX = e.clientX; mapState.lastY = e.clientY;
     svg.style.cursor = 'grabbing';
   });
   window.addEventListener('mousemove', e => {
     if (!mapState.isDragging) return;
-    const dx = (e.clientX - mapState.lastX);
-    const dy = (e.clientY - mapState.lastY);
+    const dx = e.clientX - mapState.lastX;
+    const dy = e.clientY - mapState.lastY;
     const scaleFactor = MAP_VB_W / svg.getBoundingClientRect().width;
     mapState.panX += dx * scaleFactor;
     mapState.panY += dy * scaleFactor;
@@ -5957,20 +6179,22 @@ function attachMapInteractions() {
     scheduleTransform();
   });
   window.addEventListener('mouseup', () => {
-    if (mapState.isDragging) { mapState.isDragging = false; if(svg) svg.style.cursor='grab'; renderMapLayers(); }
+    if (!mapState.isDragging) return;
+    mapState.isDragging = false;
+    svg.style.cursor = 'grab';
+    updateMapVisuals();
   });
 
-  // Touch pan + pinch zoom (mobile) — uniquement transform pendant le geste
   let lastTouchDist = null;
   svg.addEventListener('touchstart', e => {
     if (e.touches.length === 1) {
       mapState.isDragging = true;
-      mapState.lastX = e.touches[0].clientX; mapState.lastY = e.touches[0].clientY;
+      mapState.lastX = e.touches[0].clientX;
+      mapState.lastY = e.touches[0].clientY;
     } else if (e.touches.length === 2) {
       lastTouchDist = touchDist(e.touches);
     }
   }, {passive:true});
-
   svg.addEventListener('touchmove', e => {
     if (e.touches.length === 1 && mapState.isDragging) {
       const dx = e.touches[0].clientX - mapState.lastX;
@@ -5978,24 +6202,24 @@ function attachMapInteractions() {
       const scaleFactor = MAP_VB_W / svg.getBoundingClientRect().width;
       mapState.panX += dx * scaleFactor;
       mapState.panY += dy * scaleFactor;
-      mapState.lastX = e.touches[0].clientX; mapState.lastY = e.touches[0].clientY;
+      mapState.lastX = e.touches[0].clientX;
+      mapState.lastY = e.touches[0].clientY;
       clampMapPan();
       scheduleTransform();
     } else if (e.touches.length === 2) {
       const newDist = touchDist(e.touches);
       if (lastTouchDist) {
-        const factor = newDist / lastTouchDist;
-        mapZoomLight(factor);
+        mapZoomLight(newDist / lastTouchDist);
         scheduleTransform();
       }
       lastTouchDist = newDist;
     }
   }, {passive:true});
-
   svg.addEventListener('touchend', () => {
     const wasDragging = mapState.isDragging || lastTouchDist;
-    mapState.isDragging = false; lastTouchDist = null;
-    if (wasDragging) renderMapLayers();
+    mapState.isDragging = false;
+    lastTouchDist = null;
+    if (wasDragging) updateMapVisuals();
   });
 }
 
@@ -7666,7 +7890,8 @@ async function syncCollectionFromCloud() {
     });
   }
 }
-syncCollectionFromCloud();
+/* Les synchronisations initiales sont regroupées plus bas pour partir en parallèle
+   et éviter de faire attendre chaque bloc l'un après l'autre. */
 
 /* ── Dégustations : même pattern de stockage, données séparées de la collection ── */
 const DEGUSTATION_STORAGE_KEY = 'scag_degustation_v1';
@@ -7706,7 +7931,6 @@ async function syncDegustationFromCloud() {
     });
   }
 }
-syncDegustationFromCloud();
 
 function addBottleTo(context, category, bottle) {
   const store = storeRef(context);
@@ -7762,7 +7986,6 @@ async function syncWishlistFromCloud() {
     if (document.getElementById('screen-wishlist')?.classList.contains('active')) buildWishlistScreen();
   }
 }
-syncWishlistFromCloud();
 
 /* Au chargement de l'app : on va chercher la version la plus à jour dans le
    cloud (peut venir d'un autre appareil) et on met à jour le cache local +
@@ -7775,7 +7998,14 @@ async function syncMasteryFromCloud() {
     if (document.getElementById('screen-stats')?.classList.contains('active')) buildStatsScreen();
   }
 }
-syncMasteryFromCloud();
+
+/* Synchronisation initiale en parallèle : les quatre ressources sont indépendantes. */
+Promise.all([
+  syncCollectionFromCloud(),
+  syncDegustationFromCloud(),
+  syncWishlistFromCloud(),
+  syncMasteryFromCloud()
+]).catch(e => console.warn('Cloud : synchronisation initiale partiellement échouée.', e));
 
 /* ── Enregistrer une réponse (correct/incorrect) pour une question ── */
 function recordAnswer(category, q, isCorrect) {
@@ -9748,15 +9978,7 @@ function doSearch() {
   const q = document.getElementById('searchInput').value.toLowerCase().trim();
   const res = document.getElementById('searchResults');
   if (!q) { res.innerHTML = ''; return; }
-  const found = [];
-  Object.entries(DATA).forEach(([rk,rv]) => {
-    rv.subcats.forEach(sc => {
-      sc.aocs.forEach(a => {
-        if ([a.nom,a.cepages,a.accords,a.sol,a.cahier,rv.name].some(f => f.toLowerCase().includes(q)))
-          found.push({...a, _region: rv.name});
-      });
-    });
-  });
+  const found = buildSearchIndex().filter(a => a._searchText.includes(q));
   if (!found.length) { res.innerHTML = '<p style="color:#999;font-size:13px;">Aucun résultat.</p>'; return; }
   res.innerHTML = `<p style="font-size:12px;color:#888;margin-bottom:.75rem;">${found.length} résultat(s)</p>`;
   const tmp = document.createElement('div');
@@ -9778,6 +10000,29 @@ function doSearch() {
 
 /* ──────────── RECHERCHE HUB ──────────── */
 // 14.5 — recherche globale : fonctionnalités de l'app, en plus des AOC (voir hubSearch ci-dessous)
+let hubSearchTimer = null;
+let searchIndex = null;
+
+function buildSearchIndex() {
+  if (searchIndex) return searchIndex;
+  searchIndex = [];
+  Object.entries(DATA).forEach(([rk, rv]) => {
+    rv.subcats.forEach(sc => {
+      sc.aocs.forEach(a => {
+        searchIndex.push({
+          ...a,
+          _region: rv.name,
+          _rk: rk,
+          _color: rv.color,
+          _searchText: [a.nom, a.cepages, a.accords, a.sol, a.cahier, rv.name]
+            .filter(Boolean).join(' ').toLowerCase()
+        });
+      });
+    });
+  });
+  return searchIndex;
+}
+
 const APP_FEATURES_SEARCH = [
   { label:'Sommel.IA',        desc:'Question libre, révision sur mesure', icon:'💬', go:() => { goTo('sommelia'); buildSommelIAScreen(); } },
   { label:'ID AOC',           desc:'Jeu de carte d\'identité',            icon:'🪪', go:() => { goTo('quiz-idaoc'); buildIdAocMenu(); } },
@@ -9802,6 +10047,11 @@ function searchFromFeature(idx) {
   APP_FEATURES_SEARCH[idx].go();
 }
 
+function scheduleHubSearch() {
+  clearTimeout(hubSearchTimer);
+  hubSearchTimer = setTimeout(hubSearch, 180);
+}
+
 function hubSearch() {
   const q = document.getElementById('hubSearchInput').value.toLowerCase().trim();
   const res = document.getElementById('hubSearchResults');
@@ -9811,15 +10061,7 @@ function hubSearch() {
     .map((f, i) => ({...f, _idx: i}))
     .filter(f => (f.label + ' ' + f.desc).toLowerCase().includes(q));
 
-  const found = [];
-  Object.entries(DATA).forEach(([rk, rv]) => {
-    rv.subcats.forEach(sc => {
-      sc.aocs.forEach(a => {
-        if ([a.nom, a.cepages, a.accords, a.sol, a.cahier, rv.name].some(f => f.toLowerCase().includes(q)))
-          found.push({...a, _region: rv.name, _rk: rk, _color: rv.color});
-      });
-    });
-  });
+  const found = buildSearchIndex().filter(a => a._searchText.includes(q));
 
   if (!found.length && !featureMatches.length) {
     res.innerHTML = '<div class="hub-search-empty">Aucun résultat pour "' + q + '"</div>';
