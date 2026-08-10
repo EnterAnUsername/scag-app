@@ -1,4 +1,3 @@
-<!-- OPTIMISATION V2 -->
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -1286,7 +1285,7 @@ body.has-tabbar .sommelia-fab{display:block;}
     </div>
     <div class="hub-search-wrap">
       <span class="hub-search-icon">🔍</span>
-      <input class="hub-search-bar" type="text" id="hubSearchInput" placeholder="Rechercher une AOC, Sommel.IA, ID AOC…" oninput="scheduleHubSearch()" onfocus="hubSearchOpen()" />
+      <input class="hub-search-bar" type="text" id="hubSearchInput" placeholder="Rechercher une AOC, Sommel.IA, ID AOC…" oninput="hubSearch()" onfocus="hubSearchOpen()" />
       <div class="hub-search-results" id="hubSearchResults"></div>
     </div>
     <div class="resume-widget" id="hubResumeWidget" style="display:none;"></div>
@@ -1718,33 +1717,14 @@ async function callClaudeAPI({ system, messages, max_tokens }) {
   return res.json();
 }
 
-/* File d'écriture par clé : les sauvegardes successives d'une même donnée
-   restent dans le même ordre, sans bloquer l'interface. */
-const cloudWriteQueues = Object.create(null);
-
 function cloudSet(key, value) {
-  const payload = JSON.stringify(value);
-  const previous = cloudWriteQueues[key] || Promise.resolve();
-
-  const write = previous.catch(() => {}).then(async () => {
-    try {
-      const res = await fetch(`${CLOUD_API_BASE}/${key}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: payload,
-      });
-      if (!res.ok) throw new Error('HTTP ' + res.status);
-    } catch (e) {
-      console.warn(`Cloud (${key}) : échec de sauvegarde, restera en local pour l'instant.`, e);
-    }
-  });
-
-  let queued;
-  queued = write.finally(() => {
-    if (cloudWriteQueues[key] === queued) delete cloudWriteQueues[key];
-  });
-  cloudWriteQueues[key] = queued;
-  return write;
+  // Volontairement pas de "await" ici : on ne fait jamais attendre l'utilisateur
+  // pour une sauvegarde cloud. En cas d'échec (hors ligne, Netlify indisponible…),
+  // la donnée reste correcte en localStorage et sera renvoyée à la prochaine sauvegarde.
+  fetch(`${CLOUD_API_BASE}/${key}`, {
+    method: 'POST',
+    body: JSON.stringify(value),
+  }).catch(e => console.warn(`Cloud (${key}) : échec de sauvegarde, restera en local pour l'instant.`, e));
 }
 
 /* ══════════════════════════════════════════════════════
@@ -3964,9 +3944,9 @@ const PARTIEL_TEMPLATES = [
     id: 'degustation_style',
     pts: 12,
     type: 'libre_api',
-    label: () => `Organisez une dégustation représentant <strong>tous les grands styles de vin</strong> : un <strong>blanc sec</strong>, un <strong>blanc moelleux ou liquoreux</strong>, un <strong>rouge</strong>, un <strong>rosé</strong> et un <strong>effervescent</strong>. Proposez une AOC pour chaque style, en précisant à chaque fois la région/le vignoble d'origine.`,
+    label: () => `Organisez une dégustation représentant <strong>tous les grands styles de vin</strong> : un <strong>blanc sec</strong>, un <strong>blanc moelleux ou liquoreux</strong>, un <strong>rouge</strong>, un <strong>rosé</strong> et un <strong>effervescent</strong> (hors Crémant — trop générique, il en existe dans presque toutes les régions : proposez une AOC effervescente plus spécifique). Proposez une AOC pour chaque style, en précisant à chaque fois la région/le vignoble d'origine.`,
     generate: () => ({
-      corrige: "Blanc sec : Sancerre, Chablis, Muscadet... Moelleux/liquoreux : Sauternes, Coteaux du Layon, Vendanges Tardives Alsace, Monbazillac... Rouge : Médoc, Bourgogne, Beaujolais, Côtes du Rhône... Rosé : Côtes de Provence, Tavel, Cabernet d'Anjou... Effervescent : Champagne, Crémant (toute région), Blanquette de Limoux."
+      corrige: "Blanc sec : Sancerre, Chablis, Muscadet... Moelleux/liquoreux : Sauternes, Coteaux du Layon, Vendanges Tardives Alsace, Monbazillac... Rouge : Médoc, Bourgogne, Beaujolais, Côtes du Rhône... Rosé : Côtes de Provence, Tavel, Cabernet d'Anjou... Effervescent (hors Crémant) : Champagne, Blanquette de Limoux, Clairette de Die, Vouvray Pétillant, Saumur Mousseux, Gaillac Mousseux, Bugey-Cerdon."
     })
   },
 
@@ -4132,9 +4112,9 @@ function startPartiel(mode) {
   partielState.earnedPts = 0;
   partielState.startTime = Date.now();
 
-  // Tirer 6 templates différents aléatoirement
+  // Tirer 7 templates différents aléatoirement (8 disponibles au total)
   const shuffled = [...PARTIEL_TEMPLATES].sort(()=>Math.random()-.5);
-  const selected = shuffled.slice(0,6);
+  const selected = shuffled.slice(0,7);
 
   partielState.questions = selected.map((tpl, idx) => {
     const params = tpl.generate();
@@ -4260,21 +4240,31 @@ function submitSubstitution() {
   let resultHtml = '';
 
   aocs.forEach((item,i) => {
-    const userAutre = document.getElementById(`subst_autre_${i}`)?.value.trim().toLowerCase() || '';
-    const userCepage = document.getElementById(`subst_cepage_${i}`)?.value.trim().toLowerCase() || '';
-    const refAutre = item.autre.toLowerCase();
-    const refCepage = item.cepage.toLowerCase();
-    const okAutreLiteral = refAutre.split('/').some(r => userAutre.includes(r.trim().split(' ')[0]) || r.trim().includes(userAutre.split(' ')[0]));
+    const userAutreRaw = document.getElementById(`subst_autre_${i}`)?.value.trim() || '';
+    const userCepageRaw = document.getElementById(`subst_cepage_${i}`)?.value.trim() || '';
+    const userAutreNorm = idAocNormalize(userAutreRaw);
+    const userCepageNorm = idAocNormalize(userCepageRaw);
+
+    // Comparaison normalisée (accents/tirets/espaces ignorés) contre chaque alternative prévue
+    const okAutreLiteral = userAutreNorm.length > 2 && item.autre.split('/').some(r => {
+      const rNorm = idAocNormalize(r);
+      return rNorm === userAutreNorm || rNorm.includes(userAutreNorm) || userAutreNorm.includes(rNorm);
+    });
     const familyNames = substitutionFamilyCandidates(item).map(n => idAocNormalize(n));
-    const userNorm = idAocNormalize(userAutre);
-    const okAutreFamily = userNorm.length > 2 && familyNames.some(n => n === userNorm || (n.length>3 && userNorm.length>3 && (n.includes(userNorm) || userNorm.includes(n))));
+    const okAutreFamily = userAutreNorm.length > 2 && familyNames.some(n => n === userAutreNorm || (n.length>3 && userAutreNorm.length>3 && (n.includes(userAutreNorm) || userAutreNorm.includes(n))));
     const okAutre = okAutreLiteral || okAutreFamily;
-    const okCepage = refCepage.split('/').some(r => userCepage.includes(r.trim().split(' ')[0]) || r.trim().includes(userCepage.split(' ')[0]));
+
+    const okCepage = userCepageNorm.length > 2 && item.cepage.split('/').some(r => {
+      const rNorm = idAocNormalize(r);
+      return rNorm === userCepageNorm || rNorm.includes(userCepageNorm) || userCepageNorm.includes(rNorm);
+    });
+
     if (okAutre) correct++;
     if (okCepage) correct++;
     resultHtml += `
       <div style="background:#fff;border:1px solid #e5e5e2;border-radius:10px;padding:10px;margin-bottom:8px;">
         <div style="font-size:12px;font-weight:700;margin-bottom:6px;">AOC : ${item.aoc}</div>
+        <div style="font-size:11px;color:#888;margin-bottom:6px;">📝 Ma réponse — Autre AOC : <em>${escapeHtml(userAutreRaw)||'(vide)'}</em> · Cépage : <em>${escapeHtml(userCepageRaw)||'(vide)'}</em></div>
         <div style="font-size:12px;display:grid;grid-template-columns:1fr 1fr;gap:4px;">
           <div>Autre AOC : <strong style="color:${okAutre?'#3B6D11':'#993C1D'}">${item.autre}</strong></div>
           <div>Cépage : <strong style="color:${okCepage?'#3B6D11':'#993C1D'}">${item.cepage}</strong></div>
@@ -4292,7 +4282,19 @@ function submitSubstitution() {
     <div style="background:${earned>=maxPts*.7?'#EAF3DE':'#FFF4E6'};border-radius:10px;padding:10px;margin-bottom:12px;">
       <strong>${correct}/${aocs.length*2} éléments corrects → ${earned}/${maxPts} pts</strong>
     </div>
-    <button onclick="nextPartielQuestion(${maxPts},${earned})" class="btn btn-purple" style="width:100%;">Question suivante →</button>`;
+    <button id="flagBtn" onclick="flagCorrectionErrorInline(${maxPts})" class="btn" style="width:100%;font-size:11.5px;color:#993C1D;border-color:#f0d0c8;margin-bottom:8px;">⚠️ Signaler une erreur de correction (+1 pt)</button>
+    <button id="nextBtn" data-earned="${earned}" data-pts="${maxPts}" onclick="nextPartielQuestion(parseInt(document.getElementById('nextBtn').dataset.pts),parseInt(document.getElementById('nextBtn').dataset.earned))" class="btn btn-purple" style="width:100%;">Question suivante →</button>`;
+}
+
+function flagCorrectionErrorInline(maxPts) {
+  const nextBtn = document.getElementById('nextBtn');
+  let earned = parseInt(nextBtn.dataset.earned);
+  earned = Math.min(maxPts, earned + 1);
+  nextBtn.dataset.earned = earned;
+  const btn = document.getElementById('flagBtn');
+  btn.disabled = true;
+  btn.textContent = '✓ Point ajouté';
+  btn.style.opacity = '0.55';
 }
 
 function renderTermesTechniques(params) {
@@ -4365,13 +4367,15 @@ function submitTermes() {
   let html = '<div style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px;">';
 
   termes.forEach((t,i) => {
-    const userVal = document.getElementById(`terme_${i}`)?.value.trim().toLowerCase() || '';
-    const refVal = t.terme.toLowerCase();
-    const ok = refVal.split('(')[0].trim().split(' ').some(w => w.length > 3 && userVal.includes(w));
+    const userValRaw = document.getElementById(`terme_${i}`)?.value.trim() || '';
+    const userNorm = idAocNormalize(userValRaw);
+    const refNorm = idAocNormalize(t.terme.split('(')[0]);
+    const ok = userNorm.length > 2 && (refNorm.includes(userNorm) || userNorm.includes(refNorm));
     if (ok) correct++;
     html += `
       <div style="background:#fff;border:1px solid #e5e5e2;border-radius:10px;padding:10px 12px;">
         <div style="font-size:12px;color:#666;margin-bottom:4px;">${t.def}</div>
+        <div style="font-size:11px;color:#888;margin-bottom:4px;">📝 Ma réponse : <em>${escapeHtml(userValRaw)||'(vide)'}</em></div>
         <div style="font-size:13px;">
           Réponse attendue : <strong style="color:${ok?'#3B6D11':'#993C1D'}">${t.terme}</strong>
         </div>
@@ -4386,7 +4390,8 @@ function submitTermes() {
     <div style="background:${earned>=q.pts*.7?'#EAF3DE':'#FFF4E6'};border-radius:10px;padding:10px;margin-bottom:12px;">
       <strong>${correct}/${termes.length} termes corrects → ${earned}/${q.pts} pts</strong>
     </div>
-    <button onclick="nextPartielQuestion(${q.pts},${earned})" class="btn btn-purple" style="width:100%;">Question suivante →</button>`;
+    <button id="flagBtn" onclick="flagCorrectionErrorInline(${q.pts})" class="btn" style="width:100%;font-size:11.5px;color:#993C1D;border-color:#f0d0c8;margin-bottom:8px;">⚠️ Signaler une erreur de correction (+1 pt)</button>
+    <button id="nextBtn" data-earned="${earned}" data-pts="${q.pts}" onclick="nextPartielQuestion(parseInt(document.getElementById('nextBtn').dataset.pts),parseInt(document.getElementById('nextBtn').dataset.earned))" class="btn btn-purple" style="width:100%;">Question suivante →</button>`;
 }
 
 /* Idem substitution : le cépage peut être présent dans bien plus d'AOC que la seule
@@ -4427,22 +4432,22 @@ function submitCepageAoc() {
   let html = '<div style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px;">';
 
   items.forEach((item,i) => {
-    const userAoc = document.getElementById(`ca_aoc_${i}`)?.value.trim().toLowerCase() || '';
-    const refAoc = item.aoc.toLowerCase();
-    const okLiteral = refAoc.split('/').some(r => {
-      const words = r.trim().split(' ').filter(w=>w.length>3);
-      return words.some(w => userAoc.includes(w));
+    const userAocRaw = document.getElementById(`ca_aoc_${i}`)?.value.trim() || '';
+    const userNorm = idAocNormalize(userAocRaw);
+    const okLiteral = userNorm.length > 2 && item.aoc.split('/').some(r => {
+      const rNorm = idAocNormalize(r);
+      return rNorm === userNorm || rNorm.includes(userNorm) || userNorm.includes(rNorm);
     });
     const familyNames = cepageAocFamilyCandidates(item.cepage).map(n => idAocNormalize(n));
-    const userNorm = idAocNormalize(userAoc);
     const okFamily = userNorm.length > 2 && familyNames.some(n => n === userNorm || (n.length>3 && userNorm.length>3 && (n.includes(userNorm) || userNorm.includes(n))));
     const ok = okLiteral || okFamily;
     if (ok) correct++;
     html += `
       <div style="background:#fff;border:1px solid #e5e5e2;border-radius:10px;padding:10px 12px;">
         <div style="font-size:12px;font-weight:600;">Cépage : ${item.cepage}</div>
+        <div style="font-size:11px;color:#888;margin-top:4px;">📝 Ma réponse : <em>${escapeHtml(userAocRaw)||'(vide)'}</em></div>
         <div style="font-size:12px;margin-top:4px;">
-          AOC : <strong style="color:${ok?'#3B6D11':'#993C1D'}">${item.aoc}</strong> —
+          AOC attendue : <strong style="color:${ok?'#3B6D11':'#993C1D'}">${item.aoc}</strong> —
           Vignoble : <strong>${item.vignoble}</strong>
         </div>
       </div>`;
@@ -4456,7 +4461,8 @@ function submitCepageAoc() {
     <div style="background:${earned>=q.pts*.7?'#EAF3DE':'#FFF4E6'};border-radius:10px;padding:10px;margin-bottom:12px;">
       <strong>${correct}/${items.length} AOC correctes → ${earned}/${q.pts} pts</strong>
     </div>
-    <button onclick="nextPartielQuestion(${q.pts},${earned})" class="btn btn-purple" style="width:100%;">Question suivante →</button>`;
+    <button id="flagBtn" onclick="flagCorrectionErrorInline(${q.pts})" class="btn" style="width:100%;font-size:11.5px;color:#993C1D;border-color:#f0d0c8;margin-bottom:8px;">⚠️ Signaler une erreur de correction (+1 pt)</button>
+    <button id="nextBtn" data-earned="${earned}" data-pts="${q.pts}" onclick="nextPartielQuestion(parseInt(document.getElementById('nextBtn').dataset.pts),parseInt(document.getElementById('nextBtn').dataset.earned))" class="btn btn-purple" style="width:100%;">Question suivante →</button>`;
 }
 
 function renderAocCommunales(params) {
@@ -4573,6 +4579,8 @@ async function submitPartielAPI() {
     : '';
   const hierarchieGuard = q.id === 'hierarchie_classification'
     ? `\n- Cette question porte UNIQUEMENT sur la pyramide de précision géographique (régionale → village/communale → cru...). Ne pénalise PAS l'absence de catégories parallèles (Crémant/effervescent, liquoreux, VDN, VDL...) qui ne sont pas des échelons de cette hiérarchie mais des catégories de produit différentes — et ne les compte pas non plus comme des bonus, elles sont simplement hors-sujet ici.`
+    : q.id === 'degustation_style'
+    ? `\n- Pour le style "effervescent" : AUCUN Crémant (de Bourgogne, d'Alsace, de Loire, de Limoux, etc.) ne doit être compté comme valide — l'énoncé les exclut explicitement, trop génériques puisqu'il en existe dans presque toutes les régions. Seules des dénominations effervescentes plus spécifiques comptent (Champagne, Blanquette de Limoux, Clairette de Die, Vouvray Pétillant, Saumur Mousseux, Gaillac Mousseux, Bugey-Cerdon...).`
     : '';
   const systemPrompt = `Tu es un correcteur bienveillant mais rigoureux de l'école SCAG. Tu corriges une question de partiel sur les vignobles de France. Note sur ${q.pts} points.
 ${corrige ? `Éléments de corrigé (INDICATIFS, non exhaustifs — de nombreuses autres réponses correctes existent) : ${corrige}` : ''}
@@ -5974,95 +5982,67 @@ function toggleAllRegions() {
 
 function renderMapLayers() {
   const g = document.getElementById('mapZoomGroup');
-  if (!g) return;
+  const showLabels = mapState.scale >= MAP_ZOOM_LABEL_THRESHOLD;
 
-  // Construire les nœuds SVG une seule fois. Les changements de zoom/pan
-  // mettent ensuite à jour les attributs existants au lieu de recréer le DOM.
-  if (!g.querySelector('.map-france-base')) {
-    let html = `<path class="map-france-base" d="${MAP_FRANCE_PATH}" fill="#f3f1e9" stroke="#b8b2a0"/>`;
-    Object.entries(MAP_REGION_BLOBS).forEach(([key, region]) => {
-      region.paths.forEach(d => {
-        html += `<path class="map-region-path" data-region="${key}" d="${d}" fill="${region.color}" fill-opacity="0.55" stroke="${region.color}" style="cursor:pointer;"/>`;
-      });
+  // ── CALQUE 1 : contour France (fond) ──
+  let layer1 = `<path d="${MAP_FRANCE_PATH}" fill="#f3f1e9" stroke="#b8b2a0" stroke-width="${1.2/mapState.scale}"/>`;
+
+  // ── CALQUE 2 : blobs de vignobles (aplats colorés) ──
+  let layer2 = '';
+  Object.entries(MAP_REGION_BLOBS).forEach(([key, region]) => {
+    if (!mapState.activeRegions.has(key)) return;
+    region.paths.forEach(d => {
+      layer2 += `<path d="${d}" fill="${region.color}" fill-opacity="0.55" stroke="${region.color}" stroke-width="${1/mapState.scale}" style="cursor:pointer;" onclick="mapClickRegion('${key}')"/>`;
     });
-    MAP_CITIES.forEach((v, i) => {
-      html += `<g class="map-city-point" data-city-idx="${i}"><rect x="${v.x-3.2}" y="${v.y-3.2}" width="6.4" height="6.4" transform="rotate(45 ${v.x} ${v.y})" fill="#444" stroke="#fff"/></g>`;
-    });
+  });
+
+  // ── CALQUE 3 : points (AOC = ronds, villes = losanges) ──
+  let layer3 = '';
+  // Villes d'abord (en-dessous des AOC visuellement si superposition)
+  MAP_CITIES.forEach(v => {
+    const size = 3.2 / mapState.scale;
+    layer3 += `<g class="map-city-point">
+      <rect x="${v.x-size}" y="${v.y-size}" width="${size*2}" height="${size*2}" transform="rotate(45 ${v.x} ${v.y})" fill="#444" stroke="#fff" stroke-width="${0.8/mapState.scale}"/>
+    </g>`;
+  });
+  // AOC
+  MAP_AOC_POINTS.forEach((a, i) => {
+    if (!mapState.activeRegions.has(a.region)) return;
+    const region = MAP_REGION_BLOBS[a.region];
+    const color = region ? region.color : '#999';
+    const r = mapState.selectedAoc === a.nom ? 5.5/mapState.scale : 3.2/mapState.scale;
+    const strokeW = mapState.selectedAoc === a.nom ? 2/mapState.scale : 1/mapState.scale;
+    layer3 += `<circle class="map-aoc-point" data-idx="${i}" cx="${a.x}" cy="${a.y}" r="${r}" fill="${color}" stroke="#fff" stroke-width="${strokeW}" style="cursor:pointer;" onclick="mapClickAoc(${i})"/>`;
+  });
+
+  // ── CALQUE 4 : labels (visibles au zoom ou au survol) ──
+  let layer4 = '';
+  if (showLabels) {
     MAP_AOC_POINTS.forEach((a, i) => {
-      const region = MAP_REGION_BLOBS[a.region];
-      const color = region ? region.color : '#999';
-      html += `<circle class="map-aoc-point" data-idx="${i}" data-region="${a.region}" cx="${a.x}" cy="${a.y}" fill="${color}" stroke="#fff" style="cursor:pointer;"/>`;
+      if (!mapState.activeRegions.has(a.region)) return;
+      layer4 += `<text x="${a.x+4/mapState.scale}" y="${a.y-3/mapState.scale}" font-size="${9/mapState.scale}" fill="#1a1a18" font-weight="600" style="pointer-events:none;paint-order:stroke;stroke:#fff;stroke-width:${2.5/mapState.scale}px;">${a.nom}</text>`;
     });
-    MAP_AOC_POINTS.forEach((a, i) => {
-      html += `<text class="map-aoc-label" data-idx="${i}" data-region="${a.region}" x="${a.x}" y="${a.y}" fill="#1a1a18" font-weight="600" style="pointer-events:none;paint-order:stroke;stroke:#fff;"/>`;
-    });
-    MAP_CITIES.forEach((v, i) => {
-      html += `<text class="map-city-label" data-city-idx="${i}" x="${v.x}" y="${v.y}" fill="#444" font-weight="700" style="pointer-events:none;paint-order:stroke;stroke:#fff;"/>`;
-    });
-    g.innerHTML = html;
   }
-  updateMapVisuals();
+  MAP_CITIES.forEach(v => {
+    layer4 += `<text class="map-city-label" x="${v.x+5/mapState.scale}" y="${v.y+3/mapState.scale}" font-size="${10/mapState.scale}" fill="#444" font-weight="700" style="pointer-events:none;paint-order:stroke;stroke:#fff;stroke-width:${3/mapState.scale}px;${showLabels?'':'display:none;'}">${v.nom}</text>`;
+  });
+
+  g.innerHTML = layer1 + layer2 + layer3 + layer4;
+  g.setAttribute('transform', `translate(${mapState.panX},${mapState.panY}) scale(${mapState.scale})`);
+
+  // Hover tooltips pour AOC (même hors zoom)
+  attachAocHoverTooltips();
 }
 
-function updateMapVisuals() {
-  const g = document.getElementById('mapZoomGroup');
-  if (!g) return;
-  const scale = mapState.scale;
-  const showLabels = scale >= MAP_ZOOM_LABEL_THRESHOLD;
-
-  const base = g.querySelector('.map-france-base');
-  if (base) base.setAttribute('stroke-width', String(1.2 / scale));
-
-  g.querySelectorAll('.map-region-path').forEach(el => {
-    const active = mapState.activeRegions.has(el.dataset.region);
-    el.style.display = active ? '' : 'none';
-    el.setAttribute('stroke-width', String(1 / scale));
+function attachAocHoverTooltips() {
+  document.querySelectorAll('.map-aoc-point').forEach(el => {
+    el.addEventListener('mouseenter', function() {
+      const idx = parseInt(this.dataset.idx);
+      const a = MAP_AOC_POINTS[idx];
+      showMapTooltip(a.nom, this);
+    });
+    el.addEventListener('mouseleave', hideMapTooltip);
   });
-
-  g.querySelectorAll('.map-city-point rect').forEach(el => {
-    const size = 3.2 / scale;
-    const city = MAP_CITIES[Number(el.parentElement.dataset.cityIdx)];
-    if (!city) return;
-    el.setAttribute('x', city.x - size);
-    el.setAttribute('y', city.y - size);
-    el.setAttribute('width', String(size * 2));
-    el.setAttribute('height', String(size * 2));
-    el.setAttribute('stroke-width', String(0.8 / scale));
-  });
-
-  g.querySelectorAll('.map-aoc-point').forEach(el => {
-    const a = MAP_AOC_POINTS[Number(el.dataset.idx)];
-    if (!a) return;
-    const active = mapState.activeRegions.has(a.region);
-    const selected = mapState.selectedAoc === a.nom;
-    el.style.display = active ? '' : 'none';
-    el.setAttribute('r', String((selected ? 5.5 : 3.2) / scale));
-    el.setAttribute('stroke-width', String((selected ? 2 : 1) / scale));
-  });
-
-  g.querySelectorAll('.map-aoc-label').forEach(el => {
-    const a = MAP_AOC_POINTS[Number(el.dataset.idx)];
-    if (!a) return;
-    el.textContent = a.nom;
-    el.setAttribute('x', String(a.x + 4 / scale));
-    el.setAttribute('y', String(a.y - 3 / scale));
-    el.setAttribute('font-size', String(9 / scale));
-    el.setAttribute('stroke-width', String(2.5 / scale));
-    el.style.display = mapState.activeRegions.has(a.region) && showLabels ? '' : 'none';
-  });
-
-  g.querySelectorAll('.map-city-label').forEach(el => {
-    const city = MAP_CITIES[Number(el.dataset.cityIdx)];
-    if (!city) return;
-    el.textContent = city.nom;
-    el.setAttribute('x', String(city.x + 5 / scale));
-    el.setAttribute('y', String(city.y + 3 / scale));
-    el.setAttribute('font-size', String(10 / scale));
-    el.setAttribute('stroke-width', String(3 / scale));
-    el.style.display = showLabels ? '' : 'none';
-  });
-
-  g.setAttribute('transform', `translate(${mapState.panX},${mapState.panY}) scale(${scale})`);
 }
 
 function showMapTooltip(text, el) {
@@ -6090,7 +6070,7 @@ function hideMapTooltip() {
 /* ══ ZOOM / PAN ══ */
 function mapZoom(factor) {
   mapZoomLight(factor);
-  updateMapVisuals();
+  renderMapLayers();
 }
 
 function mapZoomLight(factor) {
@@ -6104,7 +6084,7 @@ function mapZoomLight(factor) {
 
 function mapResetView() {
   mapState.scale = 1; mapState.panX = 0; mapState.panY = 0;
-  updateMapVisuals();
+  renderMapLayers();
 }
 
 function clampMapPan() {
@@ -6117,9 +6097,10 @@ function clampMapPan() {
 function attachMapInteractions() {
   const svg = document.getElementById('franceMapSvg');
   const g = document.getElementById('mapZoomGroup');
-  if (!svg || !g) return;
   let rafPending = false;
+  let pendingFullRender = false;
 
+  // Applique uniquement le transform (ultra rapide, pas de re-render DOM)
   function applyTransformOnly() {
     g.setAttribute('transform', `translate(${mapState.panX},${mapState.panY}) scale(${mapState.scale})`);
     rafPending = false;
@@ -6130,47 +6111,32 @@ function attachMapInteractions() {
       requestAnimationFrame(applyTransformOnly);
     }
   }
+  // Re-render complet différé (recalcule rayons/strokes/labels pour le nouveau zoom)
   let fullRenderTimeout = null;
   function scheduleFullRender(delay) {
     clearTimeout(fullRenderTimeout);
-    fullRenderTimeout = setTimeout(updateMapVisuals, delay);
+    fullRenderTimeout = setTimeout(() => renderMapLayers(), delay);
   }
 
-  // Un seul listener pour tous les points/régions, même après mise à jour du DOM.
-  svg.addEventListener('click', e => {
-    const aoc = e.target.closest('.map-aoc-point');
-    if (aoc) return mapClickAoc(Number(aoc.dataset.idx));
-    const region = e.target.closest('.map-region-path');
-    if (region) mapClickRegion(region.dataset.region);
-  });
-
-  svg.addEventListener('pointerover', e => {
-    const aoc = e.target.closest('.map-aoc-point');
-    if (!aoc || !svg.contains(aoc)) return;
-    const a = MAP_AOC_POINTS[Number(aoc.dataset.idx)];
-    if (a) showMapTooltip(a.nom, aoc);
-  });
-  svg.addEventListener('pointerout', e => {
-    if (e.target.closest('.map-aoc-point')) hideMapTooltip();
-  });
-
+  // Wheel zoom (desktop) — transform instantané, contenu recalculé après un court délai
   svg.addEventListener('wheel', e => {
     e.preventDefault();
-    mapZoomLight(e.deltaY < 0 ? 1.15 : 0.87);
+    const factor = e.deltaY < 0 ? 1.15 : 0.87;
+    mapZoomLight(factor);
     scheduleTransform();
     scheduleFullRender(150);
   }, {passive:false});
 
+  // Drag pan (souris) — uniquement transform pendant le drag
   svg.addEventListener('mousedown', e => {
-    if (e.button !== 0) return;
     mapState.isDragging = true;
     mapState.lastX = e.clientX; mapState.lastY = e.clientY;
     svg.style.cursor = 'grabbing';
   });
   window.addEventListener('mousemove', e => {
     if (!mapState.isDragging) return;
-    const dx = e.clientX - mapState.lastX;
-    const dy = e.clientY - mapState.lastY;
+    const dx = (e.clientX - mapState.lastX);
+    const dy = (e.clientY - mapState.lastY);
     const scaleFactor = MAP_VB_W / svg.getBoundingClientRect().width;
     mapState.panX += dx * scaleFactor;
     mapState.panY += dy * scaleFactor;
@@ -6179,22 +6145,20 @@ function attachMapInteractions() {
     scheduleTransform();
   });
   window.addEventListener('mouseup', () => {
-    if (!mapState.isDragging) return;
-    mapState.isDragging = false;
-    svg.style.cursor = 'grab';
-    updateMapVisuals();
+    if (mapState.isDragging) { mapState.isDragging = false; if(svg) svg.style.cursor='grab'; renderMapLayers(); }
   });
 
+  // Touch pan + pinch zoom (mobile) — uniquement transform pendant le geste
   let lastTouchDist = null;
   svg.addEventListener('touchstart', e => {
     if (e.touches.length === 1) {
       mapState.isDragging = true;
-      mapState.lastX = e.touches[0].clientX;
-      mapState.lastY = e.touches[0].clientY;
+      mapState.lastX = e.touches[0].clientX; mapState.lastY = e.touches[0].clientY;
     } else if (e.touches.length === 2) {
       lastTouchDist = touchDist(e.touches);
     }
   }, {passive:true});
+
   svg.addEventListener('touchmove', e => {
     if (e.touches.length === 1 && mapState.isDragging) {
       const dx = e.touches[0].clientX - mapState.lastX;
@@ -6202,24 +6166,24 @@ function attachMapInteractions() {
       const scaleFactor = MAP_VB_W / svg.getBoundingClientRect().width;
       mapState.panX += dx * scaleFactor;
       mapState.panY += dy * scaleFactor;
-      mapState.lastX = e.touches[0].clientX;
-      mapState.lastY = e.touches[0].clientY;
+      mapState.lastX = e.touches[0].clientX; mapState.lastY = e.touches[0].clientY;
       clampMapPan();
       scheduleTransform();
     } else if (e.touches.length === 2) {
       const newDist = touchDist(e.touches);
       if (lastTouchDist) {
-        mapZoomLight(newDist / lastTouchDist);
+        const factor = newDist / lastTouchDist;
+        mapZoomLight(factor);
         scheduleTransform();
       }
       lastTouchDist = newDist;
     }
   }, {passive:true});
+
   svg.addEventListener('touchend', () => {
     const wasDragging = mapState.isDragging || lastTouchDist;
-    mapState.isDragging = false;
-    lastTouchDist = null;
-    if (wasDragging) updateMapVisuals();
+    mapState.isDragging = false; lastTouchDist = null;
+    if (wasDragging) renderMapLayers();
   });
 }
 
@@ -7890,8 +7854,7 @@ async function syncCollectionFromCloud() {
     });
   }
 }
-/* Les synchronisations initiales sont regroupées plus bas pour partir en parallèle
-   et éviter de faire attendre chaque bloc l'un après l'autre. */
+syncCollectionFromCloud();
 
 /* ── Dégustations : même pattern de stockage, données séparées de la collection ── */
 const DEGUSTATION_STORAGE_KEY = 'scag_degustation_v1';
@@ -7931,6 +7894,7 @@ async function syncDegustationFromCloud() {
     });
   }
 }
+syncDegustationFromCloud();
 
 function addBottleTo(context, category, bottle) {
   const store = storeRef(context);
@@ -7986,6 +7950,7 @@ async function syncWishlistFromCloud() {
     if (document.getElementById('screen-wishlist')?.classList.contains('active')) buildWishlistScreen();
   }
 }
+syncWishlistFromCloud();
 
 /* Au chargement de l'app : on va chercher la version la plus à jour dans le
    cloud (peut venir d'un autre appareil) et on met à jour le cache local +
@@ -7998,14 +7963,7 @@ async function syncMasteryFromCloud() {
     if (document.getElementById('screen-stats')?.classList.contains('active')) buildStatsScreen();
   }
 }
-
-/* Synchronisation initiale en parallèle : les quatre ressources sont indépendantes. */
-Promise.all([
-  syncCollectionFromCloud(),
-  syncDegustationFromCloud(),
-  syncWishlistFromCloud(),
-  syncMasteryFromCloud()
-]).catch(e => console.warn('Cloud : synchronisation initiale partiellement échouée.', e));
+syncMasteryFromCloud();
 
 /* ── Enregistrer une réponse (correct/incorrect) pour une question ── */
 function recordAnswer(category, q, isCorrect) {
@@ -9978,7 +9936,15 @@ function doSearch() {
   const q = document.getElementById('searchInput').value.toLowerCase().trim();
   const res = document.getElementById('searchResults');
   if (!q) { res.innerHTML = ''; return; }
-  const found = buildSearchIndex().filter(a => a._searchText.includes(q));
+  const found = [];
+  Object.entries(DATA).forEach(([rk,rv]) => {
+    rv.subcats.forEach(sc => {
+      sc.aocs.forEach(a => {
+        if ([a.nom,a.cepages,a.accords,a.sol,a.cahier,rv.name].some(f => f.toLowerCase().includes(q)))
+          found.push({...a, _region: rv.name});
+      });
+    });
+  });
   if (!found.length) { res.innerHTML = '<p style="color:#999;font-size:13px;">Aucun résultat.</p>'; return; }
   res.innerHTML = `<p style="font-size:12px;color:#888;margin-bottom:.75rem;">${found.length} résultat(s)</p>`;
   const tmp = document.createElement('div');
@@ -10000,29 +9966,6 @@ function doSearch() {
 
 /* ──────────── RECHERCHE HUB ──────────── */
 // 14.5 — recherche globale : fonctionnalités de l'app, en plus des AOC (voir hubSearch ci-dessous)
-let hubSearchTimer = null;
-let searchIndex = null;
-
-function buildSearchIndex() {
-  if (searchIndex) return searchIndex;
-  searchIndex = [];
-  Object.entries(DATA).forEach(([rk, rv]) => {
-    rv.subcats.forEach(sc => {
-      sc.aocs.forEach(a => {
-        searchIndex.push({
-          ...a,
-          _region: rv.name,
-          _rk: rk,
-          _color: rv.color,
-          _searchText: [a.nom, a.cepages, a.accords, a.sol, a.cahier, rv.name]
-            .filter(Boolean).join(' ').toLowerCase()
-        });
-      });
-    });
-  });
-  return searchIndex;
-}
-
 const APP_FEATURES_SEARCH = [
   { label:'Sommel.IA',        desc:'Question libre, révision sur mesure', icon:'💬', go:() => { goTo('sommelia'); buildSommelIAScreen(); } },
   { label:'ID AOC',           desc:'Jeu de carte d\'identité',            icon:'🪪', go:() => { goTo('quiz-idaoc'); buildIdAocMenu(); } },
@@ -10047,11 +9990,6 @@ function searchFromFeature(idx) {
   APP_FEATURES_SEARCH[idx].go();
 }
 
-function scheduleHubSearch() {
-  clearTimeout(hubSearchTimer);
-  hubSearchTimer = setTimeout(hubSearch, 180);
-}
-
 function hubSearch() {
   const q = document.getElementById('hubSearchInput').value.toLowerCase().trim();
   const res = document.getElementById('hubSearchResults');
@@ -10061,7 +9999,15 @@ function hubSearch() {
     .map((f, i) => ({...f, _idx: i}))
     .filter(f => (f.label + ' ' + f.desc).toLowerCase().includes(q));
 
-  const found = buildSearchIndex().filter(a => a._searchText.includes(q));
+  const found = [];
+  Object.entries(DATA).forEach(([rk, rv]) => {
+    rv.subcats.forEach(sc => {
+      sc.aocs.forEach(a => {
+        if ([a.nom, a.cepages, a.accords, a.sol, a.cahier, rv.name].some(f => f.toLowerCase().includes(q)))
+          found.push({...a, _region: rv.name, _rk: rk, _color: rv.color});
+      });
+    });
+  });
 
   if (!found.length && !featureMatches.length) {
     res.innerHTML = '<div class="hub-search-empty">Aucun résultat pour "' + q + '"</div>';
