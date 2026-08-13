@@ -3840,14 +3840,14 @@ const PARTIEL_TEMPLATES = [
     generate: () => {
       // Piocher 5 AOC de régions différentes
       const pool = [
-        {aoc:'Chinon Rouge', autre:'Bourgueil / Saumur-Champigny / Saumur Rouge / Saint-Nicolas-de-Bourgueil', cepage:'Cabernet Franc', vignoble:'Touraine — Vallée de la Loire', accord:'Coq au vin, rillettes'},
+        {aoc:'Chinon Rouge', autre:'Bourgueil / Saint-Nicolas-de-Bourgueil', cepage:'Cabernet Franc', vignoble:'Touraine — Vallée de la Loire', accord:'Coq au vin, rillettes'},
         {aoc:'Chénas', autre:'Juliénas', cepage:'Gamay', vignoble:'Beaujolais', accord:'Planche de charcuteries'},
         {aoc:'Vézelay', autre:'Chablis', cepage:'Chardonnay', vignoble:'Bourgogne — Auxerrois', accord:'Rillettes de poisson'},
         {aoc:'Rosé des Riceys', autre:'Coteaux Champenois', cepage:'Pinot Noir', vignoble:'Champagne', accord:'Charcuterie fine champenoise'},
         {aoc:'Reuilly Blanc', autre:'Quincy', cepage:'Sauvignon', vignoble:'Centre-Loire — Vallée de la Loire', accord:'Beurre blanc nantais'},
         {aoc:'Monthélie Rouge', autre:'Meursault rouge', cepage:'Pinot Noir', vignoble:'Côte de Beaune — Bourgogne', accord:'Salmi de palombe'},
         {aoc:'Moulis', autre:'Médoc', cepage:'Cabernet-Sauvignon', vignoble:'Médoc — Bordeaux', accord:'Grenier médocain'},
-        {aoc:'Savennières', autre:'Vouvray', cepage:'Chenin', vignoble:'Anjou-Saumur — Vallée de la Loire', accord:'Escargots, volaille à la crème'},
+        {aoc:'Savennières', autre:'Anjou Blanc / Saumur Blanc', cepage:'Chenin', vignoble:'Anjou-Saumur — Vallée de la Loire', accord:'Escargots, volaille à la crème'},
         {aoc:'Viré-Clessé', autre:'Saint-Véran', cepage:'Chardonnay', vignoble:'Mâconnais — Bourgogne', accord:'Blanquette de veau'},
         {aoc:'Castillon Côtes de Bordeaux', autre:'Saint-Émilion', cepage:'Merlot', vignoble:'Libournais — Bordeaux', accord:'Entrecôte bordelaise'},
         {aoc:'Cornas', autre:'Saint-Joseph', cepage:'Syrah', vignoble:'Rhône Nord', accord:'Daube provençale'},
@@ -3860,8 +3860,18 @@ const PARTIEL_TEMPLATES = [
         {aoc:'Sancerre Blanc', autre:'Pouilly-Fumé', cepage:'Sauvignon', vignoble:'Centre-Loire — Vallée de la Loire', accord:'Crottin de Chavignol'},
         {aoc:'Pessac-Léognan Blanc', autre:'Graves Blanc', cepage:'Sauvignon / Sémillon', vignoble:'Graves — Bordeaux', accord:'Saint-Jacques aux truffes'},
         {aoc:'Alsace Grand Cru Riesling', autre:'AOC Alsace Riesling', cepage:'Riesling', vignoble:'Alsace', accord:'Choucroute, poissons de rivière (truite, sandre)'},
-        {aoc:'Côtes de Bourg Blanc', autre:'Bordeaux Blanc / Entre-Deux-Mers', cepage:'Sauvignon', vignoble:'Blayais-Bourgeais — Bordeaux', accord:'Huîtres, fruits de mer'},
+        {aoc:'Côtes de Bourg Blanc', autre:'Côtes de Blaye / Blaye Côtes de Bordeaux', cepage:'Sauvignon', vignoble:'Côtes & Entre-Deux-Mers — Bordeaux', accord:'Huîtres, fruits de mer'},
         {aoc:'Bandol Rouge', autre:'Côtes de Provence', cepage:'Mourvèdre', vignoble:'Provence', accord:'Daube provençale, gibier'},
+        {aoc:'Fleurie', autre:'Brouilly / Côte de Brouilly', cepage:'Gamay', vignoble:'Beaujolais', accord:'Terrine de campagne'},
+        {aoc:'Marsannay Rouge', autre:'Fixin', cepage:'Pinot Noir', vignoble:'Côte de Nuits — Bourgogne', accord:'Jambon persillé'},
+        {aoc:'Chassagne-Montrachet Blanc', autre:'Puligny-Montrachet', cepage:'Chardonnay', vignoble:'Côte de Beaune — Bourgogne', accord:'Volaille de Bresse sauce crème'},
+        {aoc:'Fronsac', autre:'Canon-Fronsac', cepage:'Merlot', vignoble:'Libournais — Bordeaux', accord:'Magret de canard'},
+        {aoc:'Bourgueil', autre:'Saint-Nicolas-de-Bourgueil', cepage:'Cabernet Franc', vignoble:'Touraine — Vallée de la Loire', accord:'Rillettes de Tours'},
+        {aoc:'Crozes-Hermitage Rouge', autre:'Saint-Joseph Rouge', cepage:'Syrah', vignoble:'Rhône Nord', accord:'Gibier à plumes'},
+        {aoc:'Vacqueyras Blanc', autre:'Beaumes-de-Venise Blanc', cepage:'Grenache Blanc / Clairette', vignoble:'Rhône Sud', accord:'Poissons grillés aux herbes'},
+        {aoc:'Menetou-Salon Blanc', autre:'Quincy / Reuilly Blanc', cepage:'Sauvignon', vignoble:'Centre-Loire — Vallée de la Loire', accord:'Fromages de chèvre du Berry'},
+        {aoc:'Saint-Estèphe', autre:'Pauillac / Saint-Julien', cepage:'Cabernet-Sauvignon', vignoble:'Médoc — Bordeaux', accord:'Agneau de Pauillac'},
+        {aoc:'Rully Rouge', autre:'Mercurey Rouge', cepage:'Pinot Noir', vignoble:'Côte Chalonnaise — Bourgogne', accord:'Jambon persillé bourguignon'},
       ];
       return [...pool].sort(()=>Math.random()-.5).slice(0,5);
     }
@@ -3940,14 +3950,63 @@ const PARTIEL_TEMPLATES = [
   },
 
   // Q type : dégustation par style de vin (transversal, toutes couleurs/styles confondus)
+  // Q type : dégustation par style de vin — 3 variantes pour éviter la question
+  // "trop facile" (tous les styles, n'importe où) à chaque fois.
   {
     id: 'degustation_style',
     pts: 12,
     type: 'libre_api',
-    label: () => `Organisez une dégustation représentant <strong>tous les grands styles de vin</strong> : un <strong>blanc sec</strong>, un <strong>blanc moelleux ou liquoreux</strong>, un <strong>rouge</strong>, un <strong>rosé</strong> et un <strong>effervescent</strong> (hors Crémant — trop générique, il en existe dans presque toutes les régions : proposez une AOC effervescente plus spécifique). Proposez une AOC pour chaque style, en précisant à chaque fois la région/le vignoble d'origine.`,
-    generate: () => ({
-      corrige: "Blanc sec : Sancerre, Chablis, Muscadet... Moelleux/liquoreux : Sauternes, Coteaux du Layon, Vendanges Tardives Alsace, Monbazillac... Rouge : Médoc, Bourgogne, Beaujolais, Côtes du Rhône... Rosé : Côtes de Provence, Tavel, Cabernet d'Anjou... Effervescent (hors Crémant) : Champagne, Blanquette de Limoux, Clairette de Die, Vouvray Pétillant, Saumur Mousseux, Gaillac Mousseux, Bugey-Cerdon."
-    })
+    label: (params) => params.label,
+    generate: () => {
+      const variant = Math.floor(Math.random()*3);
+
+      if (variant === 1) {
+        // Variante B : un seul style, en profondeur, sur plusieurs vignobles différents
+        const styles = [
+          { style:'moelleux ou liquoreux', pool:['Sauternes (Bordeaux)','Coteaux du Layon (Loire)','Vendanges Tardives Gewurztraminer (Alsace)','Monbazillac (Sud-Ouest)','Jurançon (Sud-Ouest)','Quarts de Chaume (Loire)'] },
+          { style:'rouge charpenté de garde', pool:['Pauillac (Bordeaux)','Gevrey-Chambertin (Bourgogne)','Châteauneuf-du-Pape (Rhône)','Madiran (Sud-Ouest)','Bandol (Provence)'] },
+          { style:'blanc sec, vif et minéral', pool:['Chablis (Bourgogne)','Sancerre (Loire)','Muscadet (Loire)','Picpoul de Pinet (Languedoc)','Riesling (Alsace)'] },
+          { style:'rosé', pool:['Côtes de Provence','Tavel (Rhône)','Cabernet d\'Anjou (Loire)','Bandol Rosé (Provence)','Marsannay Rosé (Bourgogne)'] },
+          { style:'effervescent (hors Crémant)', pool:['Champagne','Blanquette de Limoux','Clairette de Die','Vouvray Pétillant','Bugey-Cerdon'] },
+        ];
+        const chosen = styles[Math.floor(Math.random()*styles.length)];
+        const n = Math.min(chosen.pool.length, 4 + Math.floor(Math.random()*2));
+        return {
+          variant: 1,
+          label: `Organisez une dégustation de <strong>${n} vins ${chosen.style}</strong>, tous issus de <strong>vignobles différents</strong>, en précisant à chaque fois la région/le vignoble d'origine.`,
+          corrige: `Exemples valides (vignobles différents attendus) : ${chosen.pool.join(', ')}`
+        };
+      }
+
+      if (variant === 2) {
+        // Variante C : tous les styles disponibles, mais confinés à UNE seule région viticole
+        const regionStyles = {
+          'la Vallée de la Loire': { sec:'Sancerre, Muscadet, Vouvray Sec', moelleux:'Coteaux du Layon, Quarts de Chaume', rouge:'Chinon, Bourgueil, Saumur-Champigny', rose:'Cabernet d\'Anjou, Rosé de Loire', effervescent:'Vouvray Pétillant, Saumur Mousseux' },
+          'Bordeaux': { sec:'Graves Blanc, Entre-Deux-Mers', moelleux:'Sauternes, Loupiac, Cadillac', rouge:'Médoc, Saint-Émilion, Pomerol', rose:'Bordeaux Clairet' },
+          'la Bourgogne': { sec:'Chablis, Meursault, Puligny-Montrachet', rouge:'Gevrey-Chambertin, Volnay, Pommard' },
+          'la Vallée du Rhône': { sec:'Condrieu, Hermitage Blanc', rouge:'Châteauneuf-du-Pape, Côte-Rôtie, Gigondas', rose:'Tavel' },
+          'l\'Alsace': { sec:'Riesling, Sylvaner, Pinot Blanc', moelleux:'Vendanges Tardives, Sélection de Grains Nobles' },
+          'le Languedoc': { sec:'Picpoul de Pinet, Limoux Blanc', rouge:'Corbières, Minervois, Faugères', effervescent:'Blanquette de Limoux' },
+        };
+        const styleLabels = { sec:'un blanc sec', moelleux:'un moelleux/liquoreux', rouge:'un rouge', rose:'un rosé', effervescent:'un effervescent (hors Crémant)' };
+        const regionNames = Object.keys(regionStyles);
+        const region = regionNames[Math.floor(Math.random()*regionNames.length)];
+        const available = regionStyles[region];
+        const styleKeys = Object.keys(available);
+        return {
+          variant: 2,
+          label: `Organisez une dégustation multi-styles, mais <strong>uniquement en ${region}</strong> : proposez ${styleKeys.map(k=>`<strong>${styleLabels[k]}</strong>`).join(', ')}, en indiquant à chaque fois l'AOC et le vignoble précis.`,
+          corrige: styleKeys.map(k => `${styleLabels[k]} : ${available[k]}`).join(' | ')
+        };
+      }
+
+      // Variante A (par défaut) : les 5 grands styles, toutes régions confondues
+      return {
+        variant: 0,
+        label: `Organisez une dégustation représentant <strong>tous les grands styles de vin</strong> : un <strong>blanc sec</strong>, un <strong>blanc moelleux ou liquoreux</strong>, un <strong>rouge</strong>, un <strong>rosé</strong> et un <strong>effervescent</strong> (hors Crémant — trop générique, il en existe dans presque toutes les régions : proposez une AOC effervescente plus spécifique). Proposez une AOC pour chaque style, en précisant à chaque fois la région/le vignoble d'origine.`,
+        corrige: "Blanc sec : Sancerre, Chablis, Muscadet... Moelleux/liquoreux : Sauternes, Coteaux du Layon, Vendanges Tardives Alsace, Monbazillac... Rouge : Médoc, Bourgogne, Beaujolais, Côtes du Rhône... Rosé : Côtes de Provence, Tavel, Cabernet d'Anjou... Effervescent (hors Crémant) : Champagne, Blanquette de Limoux, Clairette de Die, Vouvray Pétillant, Saumur Mousseux, Gaillac Mousseux, Bugey-Cerdon."
+      };
+    }
   },
 
   // Q type : dégustation inter-vignoble — génération dynamique (2.6.3a)
@@ -4024,49 +4083,7 @@ const PARTIEL_TEMPLATES = [
 
   // (ancien template degustation_multi retiré — remplacé par degustation_cepage,
   // désormais génération dynamique complète avec terminologie région/vignoble correcte)
-
-  // Q type : hiérarchie des appellations (2.6.3a — nouveau template)
-  {
-    id: 'hierarchie_classification',
-    pts: 10,
-    type: 'libre_api',
-    label: (params) => `Présentez la <strong>hiérarchie de précision des appellations</strong> (du niveau le plus large/régional au plus précis) pour <strong>${params.vignoble}</strong>, en donnant un exemple concret à chaque niveau. Ne mentionnez que les échelons de la pyramide qualitative — pas les catégories parallèles (effervescent, liquoreux, VDN...).`,
-    generate: () => {
-      const options = [
-        { vignoble: 'Bourgogne', niveaux: 'Régionale → Village → Premier Cru → Grand Cru', exemple: 'Bourgogne → Gevrey-Chambertin → Gevrey-Chambertin 1er Cru "Clos Saint-Jacques" → Chambertin (Grand Cru)' },
-        { vignoble: 'Bordeaux (Médoc)', niveaux: 'Régionale → Sous-région → Communale → Cru Classé', exemple: 'Bordeaux → Médoc/Haut-Médoc → Pauillac → Château classé 1855' },
-        { vignoble: 'Alsace', niveaux: 'AOC Alsace → AOC Alsace Grand Cru → mentions Vendanges Tardives / Sélection de Grains Nobles', exemple: 'AOC Alsace Riesling → Alsace Grand Cru Riesling "Schlossberg"' },
-        { vignoble: 'Champagne', niveaux: 'Champagne → Premier Cru → Grand Cru (échelle des crus)', exemple: 'Champagne → Champagne 1er Cru → Champagne Grand Cru (ex : Ambonnay)' },
-        { vignoble: 'Beaujolais', niveaux: 'Beaujolais → Beaujolais-Villages → Crus du Beaujolais', exemple: 'Beaujolais → Beaujolais-Villages → Morgon' },
-        { vignoble: 'Vallée du Rhône', niveaux: 'Côtes du Rhône régionale → Côtes du Rhône Villages → Villages + nom communal → Cru', exemple: 'Côtes du Rhône → Côtes du Rhône Villages → Villages Sablet → Gigondas (Cru)' },
-        { vignoble: 'Saint-Émilion (classification propre)', niveaux: 'Saint-Émilion → Saint-Émilion Grand Cru → Grand Cru Classé → Premier Grand Cru Classé B → Premier Grand Cru Classé A', exemple: 'Saint-Émilion Grand Cru → Château Figeac (Grand Cru Classé) → Château Angélus (1er GCC A)' },
-        { vignoble: 'Sauternes-Barsac (classification 1855)', niveaux: 'Sauternes/Barsac → Deuxième Cru → Premier Cru → Premier Cru Supérieur', exemple: 'Sauternes → Château Rieussec (1er Cru) → Château d\'Yquem (1er Cru Supérieur, unique)' },
-        { vignoble: 'Languedoc', niveaux: 'IGP → Languedoc régionale → Dénomination géographique → Cru du Languedoc', exemple: 'Languedoc → Languedoc Pic Saint-Loup (Cru)' },
-      ];
-      return options[Math.floor(Math.random()*options.length)];
-    }
-  },
-
-  // Q type : potentiel de garde (2.6.3a — nouveau template)
-  {
-    id: 'millesime_garde',
-    pts: 9,
-    type: 'libre_api',
-    label: (params) => `Pour l'AOC <strong>${params.aoc}</strong>, indiquez son <strong>potentiel de garde</strong> approximatif et expliquez <strong>2 facteurs</strong> qui influencent cette aptitude au vieillissement pour ce type de vin.`,
-    generate: () => {
-      const options = [
-        {aoc:'Château-Chalon (Vin Jaune)'},
-        {aoc:'Sauternes'},
-        {aoc:'Châteauneuf-du-Pape'},
-        {aoc:'Pauillac (Cru Classé)'},
-        {aoc:'Chablis Grand Cru'},
-        {aoc:'Muscadet Sèvre et Maine sur lie'},
-        {aoc:'Beaujolais Nouveau'},
-        {aoc:'Champagne Grand Cru'},
-      ];
-      return options[Math.floor(Math.random()*options.length)];
-    }
-  }
+  // (hierarchie_classification et millesime_garde retirés — corrections jugées peu fiables)
 ];
 
 /* ══ ÉTAT DU PARTIEL ══ */
@@ -4112,9 +4129,11 @@ function startPartiel(mode) {
   partielState.earnedPts = 0;
   partielState.startTime = Date.now();
 
-  // Tirer 7 templates différents aléatoirement (8 disponibles au total)
-  const shuffled = [...PARTIEL_TEMPLATES].sort(()=>Math.random()-.5);
-  const selected = shuffled.slice(0,7);
+  // 6 templates au total désormais (hiérarchie et garde retirés) — on les inclut
+  // tous à chaque partiel, pas de tirage partiel qui pourrait en exclure un
+  // (ex : vocabulaire ou styles de vin qui n'apparaissaient pas assez souvent).
+  // L'ordre reste mélangé pour varier la progression d'une session à l'autre.
+  const selected = [...PARTIEL_TEMPLATES].sort(()=>Math.random()-.5);
 
   partielState.questions = selected.map((tpl, idx) => {
     const params = tpl.generate();
@@ -4185,20 +4204,24 @@ function renderPartielQuestion(q) {
 
 /* Même principe de "famille" que pour ID AOC (13.3) : si la réponse littérale ne
    correspond pas exactement à l'alternative prévue, on vérifie si elle appartient
-   quand même à la famille des AOC du même vignoble ET du même cépage — évite de
-   sanctionner une réponse par ailleurs juste (ex : Saumur Rouge pour Chinon). */
+   quand même à la famille des AOC du même VIGNOBLE (pas juste la même région
+   viticole au sens large — Vouvray et Savennières sont tous deux "Vallée de la
+   Loire" mais Touraine ≠ Anjou-Saumur, ce ne sont pas le même vignoble) ET du
+   même cépage. Comparaison normalisée (accents/casse) pour éviter les faux
+   négatifs (ex: "Provence" vs "provençales"), et sur le nom complet du vignoble
+   plutôt que son premier mot seul (sinon "Côte" matche Nuits/Beaune/Chalonnaise
+   indifféremment). */
+function stripAccents(str) {
+  return (str || '').toString().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+}
 function substitutionFamilyCandidates(item) {
   const pool = getAllAocsFlat();
-  const parts = item.vignoble.split('—').map(s => s.trim());
-  const vignobleName = parts[0] || '';
-  const regionName = parts[1] || '';
-  const cepageKey = item.cepage.split('/')[0].trim().toLowerCase();
+  const vignobleName = item.vignoble.split('—')[0].trim();
+  const vKey = stripAccents(vignobleName);
+  const cepageKey = stripAccents(item.cepage.split('/')[0]);
   return pool.filter(a => {
-    const vKey = vignobleName.split(' ')[0].toLowerCase();
-    const rKey = regionName.split(' ')[0].toLowerCase();
-    const matchesPlace = (a.subcatLabel && vKey && a.subcatLabel.toLowerCase().includes(vKey))
-      || (a.regionName && rKey && a.regionName.toLowerCase().includes(rKey));
-    const matchesCepage = a.cepages && a.cepages.toLowerCase().includes(cepageKey);
+    const matchesPlace = a.subcatLabel && vKey && stripAccents(a.subcatLabel).includes(vKey);
+    const matchesCepage = a.cepages && stripAccents(a.cepages).includes(cepageKey);
     return matchesPlace && matchesCepage;
   }).map(a => a.nom);
 }
@@ -4400,8 +4423,8 @@ function submitTermes() {
    cépages mentionne ce cépage, pas juste contre 1-2 réponses figées. */
 function cepageAocFamilyCandidates(cepageName) {
   const pool = getAllAocsFlat();
-  const key = cepageName.split('(')[0].trim().toLowerCase();
-  return pool.filter(a => a.cepages && a.cepages.toLowerCase().includes(key)).map(a => a.nom);
+  const key = stripAccents(cepageName.split('(')[0]);
+  return pool.filter(a => a.cepages && stripAccents(a.cepages).includes(key)).map(a => a.nom);
 }
 
 function renderCepageAoc(cepages) {
