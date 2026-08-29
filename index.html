@@ -3435,7 +3435,7 @@ function renderQuestion(q) {
       break;
 
     case 'qcm': {
-      const shuffled = [...q.opts].sort(()=>Math.random()-.5);
+      const shuffled = shuffleArray(q.opts);
       q._qcmOpts = shuffled; // conservé pour le binding post-rendu (voir bindQCMOptions)
       html += `<div class="quiz-opts" id="vaOpts"></div><div id="vaFeedback"></div>`;
       break;
@@ -3661,8 +3661,17 @@ Format de ta réponse : commence toujours par la note "Note : X/${q.pts}" puis d
     const correction = data.content?.[0]?.text || 'Erreur de correction.';
 
     // Extraire la note
-    const noteMatch = correction.match(/Note\s*:\s*(\d+(?:[.,]\d+)?)\s*\/\s*(\d+)/i);
-    const earned = noteMatch ? Math.min(q.pts, Math.round(parseFloat(noteMatch[1].replace(',','.')))) : Math.round(q.pts/2);
+    // Rescale proportionnel : l'IA a parfois le réflexe du /20 malgré la consigne "Note sur X points",
+    // donc on ne prend jamais le numérateur brut — on le remet à l'échelle du vrai barème (q.pts).
+    const noteMatch = correction.match(/Note\s*:\s*(\d+(?:[.,]\d+)?)\s*\/\s*(\d+(?:[.,]\d+)?)/i);
+    let earned;
+    if (noteMatch) {
+      const num = parseFloat(noteMatch[1].replace(',','.'));
+      const denom = parseFloat(noteMatch[2].replace(',','.')) || q.pts;
+      earned = Math.min(q.pts, Math.max(0, Math.round((num/denom) * q.pts)));
+    } else {
+      earned = Math.round(q.pts/2);
+    }
 
     fb.innerHTML = `
       <div style="background:#f8f7f4;border-radius:10px;padding:12px;margin-top:12px;">
@@ -3837,8 +3846,8 @@ const PARTIEL_TEMPLATES = [
     pts: 20,
     type: 'substitution',
     label: (aocs) => `Un client vous demande les AOC suivantes — vous ne les avez pas en stock. Proposez-lui une <strong>autre AOC</strong> du même vignoble avec le même cépage dominant, et donnez un <strong>accord régional</strong>.`,
-    generate: () => {
-      // Piocher 5 AOC de régions différentes
+    generate: (selectedRegions) => {
+      // Piocher des AOC de régions différentes
       const pool = [
         {aoc:'Chinon Rouge', autre:'Bourgueil / Saint-Nicolas-de-Bourgueil', cepage:'Cabernet Franc', vignoble:'Touraine — Vallée de la Loire', accord:'Coq au vin, rillettes'},
         {aoc:'Chénas', autre:'Juliénas', cepage:'Gamay', vignoble:'Beaujolais', accord:'Planche de charcuteries'},
@@ -3872,8 +3881,42 @@ const PARTIEL_TEMPLATES = [
         {aoc:'Menetou-Salon Blanc', autre:'Quincy / Reuilly Blanc', cepage:'Sauvignon', vignoble:'Centre-Loire — Vallée de la Loire', accord:'Fromages de chèvre du Berry'},
         {aoc:'Saint-Estèphe', autre:'Pauillac / Saint-Julien', cepage:'Cabernet-Sauvignon', vignoble:'Médoc — Bordeaux', accord:'Agneau de Pauillac'},
         {aoc:'Rully Rouge', autre:'Mercurey Rouge', cepage:'Pinot Noir', vignoble:'Côte Chalonnaise — Bourgogne', accord:'Jambon persillé bourguignon'},
+        {aoc:'Chablis Premier Cru', autre:'Chablis / Petit Chablis', cepage:'Chardonnay', vignoble:'Chablis & Yonne — Bourgogne', accord:'Huîtres, andouillette'},
+        {aoc:'Alsace Grand Cru Gewurztraminer', autre:'AOC Alsace Gewurztraminer', cepage:'Gewurztraminer', vignoble:'Alsace', accord:'Munster, foie gras'},
+        {aoc:'Quincy', autre:'Reuilly Blanc / Menetou-Salon Blanc', cepage:'Sauvignon', vignoble:'Centre-Loire — Vallée de la Loire', accord:'Crottin de chèvre'},
+        {aoc:'Barsac', autre:'Sauternes', cepage:'Sémillon', vignoble:'Graves & Sauternes — Bordeaux', accord:'Foie gras, Roquefort'},
+        {aoc:'Margaux', autre:'Saint-Julien / Pauillac', cepage:'Cabernet-Sauvignon', vignoble:'Médoc — Bordeaux', accord:'Gigot d\'agneau'},
+        {aoc:'Lirac Rouge', autre:'Vacqueyras / Gigondas', cepage:'Grenache', vignoble:'Rhône Sud', accord:'Civet de lièvre'},
+        {aoc:'Côtes du Jura Rouge', autre:'Arbois Rouge', cepage:'Trousseau / Poulsard', vignoble:'Jura', accord:'Volaille au Comté'},
+        {aoc:'Faugères', autre:'Saint-Chinian', cepage:'Syrah / Grenache / Mourvèdre', vignoble:'Languedoc', accord:'Agneau grillé aux herbes'},
+        {aoc:'Cassis Blanc', autre:'Bandol Blanc', cepage:'Clairette / Marsanne / Ugni Blanc', vignoble:'Provence', accord:'Bouillabaisse'},
+        {aoc:'Pécharmant', autre:'Bergerac Rouge', cepage:'Merlot / Cabernet-Sauvignon', vignoble:'Sud-Ouest', accord:'Confit de canard'},
+        {aoc:'Abymes', autre:'Apremont', cepage:'Jacquère', vignoble:'Savoie', accord:'Fondue savoyarde'},
+        {aoc:'Ajaccio Rouge', autre:'Patrimonio Rouge', cepage:'Nielluccio / Sciacarello', vignoble:'Corse', accord:'Charcuterie corse'},
+        {aoc:'Juliénas', autre:'Saint-Amour / Chénas', cepage:'Gamay', vignoble:'Beaujolais', accord:'Coq au vin de Beaujolais'},
+        {aoc:'Régnié', autre:'Brouilly / Morgon', cepage:'Gamay', vignoble:'Beaujolais', accord:'Charcuterie lyonnaise'},
+        {aoc:'Puligny-Montrachet', autre:'Chassagne-Montrachet Blanc / Meursault', cepage:'Chardonnay', vignoble:'Côte de Beaune — Bourgogne', accord:'Homard, Saint-Jacques'},
+        {aoc:'Vosne-Romanée', autre:'Chambolle-Musigny / Nuits-Saint-Georges', cepage:'Pinot Noir', vignoble:'Côte de Nuits — Bourgogne', accord:'Pigeon rôti'},
+        {aoc:'Saint-Véran', autre:'Pouilly-Fuissé / Viré-Clessé', cepage:'Chardonnay', vignoble:'Mâconnais — Bourgogne', accord:'Poulet à la crème'},
+        {aoc:'Saumur Blanc', autre:'Anjou Blanc / Savennières', cepage:'Chenin', vignoble:'Anjou-Saumur — Vallée de la Loire', accord:'Rillettes, poisson de Loire'},
+        {aoc:'Coteaux du Layon', autre:'Bonnezeaux / Quarts de Chaume', cepage:'Chenin', vignoble:'Anjou-Saumur — Vallée de la Loire', accord:'Foie gras, tarte tatin'},
+        {aoc:'Saint-Joseph Blanc', autre:'Crozes-Hermitage Blanc', cepage:'Marsanne / Roussanne', vignoble:'Rhône Nord', accord:'Quenelles sauce Nantua'},
+        {aoc:'Hermitage Rouge', autre:'Côte-Rôtie / Cornas', cepage:'Syrah', vignoble:'Rhône Nord', accord:'Gibier, viande rouge en sauce'},
+        {aoc:'Minervois', autre:'Corbières / Saint-Chinian', cepage:'Syrah / Grenache / Carignan', vignoble:'Languedoc', accord:'Cassoulet'},
+        {aoc:'Bergerac Blanc Sec', autre:'Côtes de Duras Blanc', cepage:'Sauvignon / Sémillon', vignoble:'Sud-Ouest', accord:'Fruits de mer'},
+        {aoc:'Listrac-Médoc', autre:'Moulis / Haut-Médoc', cepage:'Cabernet-Sauvignon', vignoble:'Médoc — Bordeaux', accord:'Entrecôte grillée'},
+        {aoc:'Pomerol', autre:'Saint-Émilion / Lalande-de-Pomerol', cepage:'Merlot', vignoble:'Libournais — Bordeaux', accord:'Magret de canard aux cèpes'},
       ];
-      return [...pool].sort(()=>Math.random()-.5).slice(0,5);
+      const n = 10 + Math.floor(Math.random()*3); // 10, 11 ou 12
+      let filtered = pool;
+      if (selectedRegions && selectedRegions.size > 0 && selectedRegions.size < REGION_FILTER_LIST.length) {
+        filtered = pool.filter(item => {
+          const rk = regionKeyFromText(item.vignoble);
+          return !rk || selectedRegions.has(rk); // garde aussi les non-classifiables plutôt que de les perdre
+        });
+        if (filtered.length < n) filtered = pool; // filet de sécurité si trop restrictif
+      }
+      return shuffleArray(filtered).slice(0,n);
     }
   },
 
@@ -3909,7 +3952,7 @@ const PARTIEL_TEMPLATES = [
         {def:'Séparation du vin de ses dépôts (lies, bourbes) par transfert d\'un contenant à un autre', terme:'Soutirage'},
       ];
       const direction = Math.random() < 0.5 ? 'def2terme' : 'terme2def';
-      const items = [...all].sort(()=>Math.random()-.5).slice(0,8);
+      const items = shuffleArray(all).slice(0,8);
       return { direction, items };
     }
   },
@@ -3930,17 +3973,34 @@ const PARTIEL_TEMPLATES = [
         : '';
       return `Vous organisez une dégustation sur le <strong>${params.cepage}</strong>. Proposez ${parts}${exceptionTxt}, en précisant à chaque fois le vignoble concerné.`;
     },
-    generate: () => {
-      const entry = CEPAGE_VIGNOBLES_MAP[Math.floor(Math.random()*CEPAGE_VIGNOBLES_MAP.length)];
-      const nbVignobles = entry.vignobles.length > 1 && Math.random() < 0.7 ? 2 : 1;
-      const shuffledVignobles = [...entry.vignobles].sort(()=>Math.random()-.5).slice(0, nbVignobles);
+    generate: (selectedRegions) => {
+      const filterActive = selectedRegions && selectedRegions.size > 0 && selectedRegions.size < REGION_FILTER_LIST.length;
+      let candidateEntries = CEPAGE_VIGNOBLES_MAP;
+      if (filterActive) {
+        const filtered = CEPAGE_VIGNOBLES_MAP.filter(e => e.vignobles.some(v => selectedRegions.has(regionKeyFromText(v.region))));
+        if (filtered.length > 0) candidateEntries = filtered;
+      }
+      const entry = candidateEntries[Math.floor(Math.random()*candidateEntries.length)];
+      // Le vignoble le plus fourni en AOC (le plus "emblématique" pour ce cépage,
+      // ex: Beaujolais pour le Gamay) est toujours inclus en premier — on ne le laisse
+      // plus au hasard du tirage, sinon on peut passer à côté de l'essentiel.
+      let usableVignobles = entry.vignobles;
+      if (filterActive) {
+        const filteredV = entry.vignobles.filter(v => selectedRegions.has(regionKeyFromText(v.region)));
+        if (filteredV.length > 0) usableVignobles = filteredV;
+      }
+      const sortedVignobles = [...usableVignobles].sort((a,b) => b.aocs.length - a.aocs.length);
+      const nbVignobles = sortedVignobles.length > 1 && Math.random() < 0.7 ? 2 : 1;
+      const flagship = sortedVignobles[0];
+      const rest = shuffleArray(sortedVignobles.slice(1));
+      const shuffledVignobles = nbVignobles === 2 && rest.length > 0 ? [flagship, rest[0]] : [flagship];
       const parts = shuffledVignobles.map(v => ({
         vignoble: v.nom,
         region: v.region,
         n: Math.min(v.aocs.length, 2 + Math.floor(Math.random()*2)), // 2 ou 3 AOC demandées, sans dépasser le stock réel
         aocs: v.aocs,
       }));
-      const includeException = !!entry.exception && Math.random() < 0.6;
+      const includeException = !!entry.exception && Math.random() < 0.6 && (!filterActive || selectedRegions.has(regionKeyFromText(entry.exception.region)));
       return {
         cepage: entry.cepage,
         parts,
@@ -3957,8 +4017,12 @@ const PARTIEL_TEMPLATES = [
     pts: 12,
     type: 'libre_api',
     label: (params) => params.label,
-    generate: () => {
-      const variant = Math.floor(Math.random()*3);
+    generate: (selectedRegions) => {
+      // Variante "5 styles n'importe où" retirée — jugée trop facile sans contrainte
+      // de région. Il ne reste que les 2 variantes exigeantes : un seul style en
+      // profondeur sur plusieurs vignobles, ou tous les styles mais confinés à 1 région.
+      const variant = Math.random() < 0.5 ? 1 : 2;
+      const filterActive = selectedRegions && selectedRegions.size > 0 && selectedRegions.size < REGION_FILTER_LIST.length;
 
       if (variant === 1) {
         // Variante B : un seul style, en profondeur, sur plusieurs vignobles différents
@@ -3970,41 +4034,41 @@ const PARTIEL_TEMPLATES = [
           { style:'effervescent (hors Crémant)', pool:['Champagne','Blanquette de Limoux','Clairette de Die','Vouvray Pétillant','Bugey-Cerdon'] },
         ];
         const chosen = styles[Math.floor(Math.random()*styles.length)];
-        const n = Math.min(chosen.pool.length, 4 + Math.floor(Math.random()*2));
+        let stylePool = chosen.pool;
+        if (filterActive) {
+          const filteredPool = stylePool.filter(p => selectedRegions.has(regionKeyFromText(p)));
+          if (filteredPool.length >= 3) stylePool = filteredPool;
+        }
+        const n = Math.min(stylePool.length, 4 + Math.floor(Math.random()*2));
         return {
           variant: 1,
           label: `Organisez une dégustation de <strong>${n} vins ${chosen.style}</strong>, tous issus de <strong>vignobles différents</strong>, en précisant à chaque fois la région/le vignoble d'origine.`,
-          corrige: `Exemples valides (vignobles différents attendus) : ${chosen.pool.join(', ')}`
+          corrige: `Exemples valides (vignobles différents attendus) : ${stylePool.join(', ')}`
         };
       }
 
-      if (variant === 2) {
-        // Variante C : tous les styles disponibles, mais confinés à UNE seule région viticole
-        const regionStyles = {
-          'la Vallée de la Loire': { sec:'Sancerre, Muscadet, Vouvray Sec', moelleux:'Coteaux du Layon, Quarts de Chaume', rouge:'Chinon, Bourgueil, Saumur-Champigny', rose:'Cabernet d\'Anjou, Rosé de Loire', effervescent:'Vouvray Pétillant, Saumur Mousseux' },
-          'Bordeaux': { sec:'Graves Blanc, Entre-Deux-Mers', moelleux:'Sauternes, Loupiac, Cadillac', rouge:'Médoc, Saint-Émilion, Pomerol', rose:'Bordeaux Clairet' },
-          'la Bourgogne': { sec:'Chablis, Meursault, Puligny-Montrachet', rouge:'Gevrey-Chambertin, Volnay, Pommard' },
-          'la Vallée du Rhône': { sec:'Condrieu, Hermitage Blanc', rouge:'Châteauneuf-du-Pape, Côte-Rôtie, Gigondas', rose:'Tavel' },
-          'l\'Alsace': { sec:'Riesling, Sylvaner, Pinot Blanc', moelleux:'Vendanges Tardives, Sélection de Grains Nobles' },
-          'le Languedoc': { sec:'Picpoul de Pinet, Limoux Blanc', rouge:'Corbières, Minervois, Faugères', effervescent:'Blanquette de Limoux' },
-        };
-        const styleLabels = { sec:'un blanc sec', moelleux:'un moelleux/liquoreux', rouge:'un rouge', rose:'un rosé', effervescent:'un effervescent (hors Crémant)' };
-        const regionNames = Object.keys(regionStyles);
-        const region = regionNames[Math.floor(Math.random()*regionNames.length)];
-        const available = regionStyles[region];
-        const styleKeys = Object.keys(available);
-        return {
-          variant: 2,
-          label: `Organisez une dégustation multi-styles, mais <strong>uniquement en ${region}</strong> : proposez ${styleKeys.map(k=>`<strong>${styleLabels[k]}</strong>`).join(', ')}, en indiquant à chaque fois l'AOC et le vignoble précis.`,
-          corrige: styleKeys.map(k => `${styleLabels[k]} : ${available[k]}`).join(' | ')
-        };
+      // Variante C : tous les styles disponibles, mais confinés à UNE seule région viticole
+      const regionStyles = {
+        'la Vallée de la Loire': { sec:'Sancerre, Muscadet, Vouvray Sec', moelleux:'Coteaux du Layon, Quarts de Chaume', rouge:'Chinon, Bourgueil, Saumur-Champigny', rose:'Cabernet d\'Anjou, Rosé de Loire', effervescent:'Vouvray Pétillant, Saumur Mousseux' },
+        'Bordeaux': { sec:'Graves Blanc, Entre-Deux-Mers', moelleux:'Sauternes, Loupiac, Cadillac', rouge:'Médoc, Saint-Émilion, Pomerol', rose:'Bordeaux Clairet' },
+        'la Bourgogne': { sec:'Chablis, Meursault, Puligny-Montrachet', rouge:'Gevrey-Chambertin, Volnay, Pommard' },
+        'la Vallée du Rhône': { sec:'Condrieu, Hermitage Blanc', rouge:'Châteauneuf-du-Pape, Côte-Rôtie, Gigondas', rose:'Tavel' },
+        'l\'Alsace': { sec:'Riesling, Sylvaner, Pinot Blanc', moelleux:'Vendanges Tardives, Sélection de Grains Nobles' },
+        'le Languedoc': { sec:'Picpoul de Pinet, Limoux Blanc', rouge:'Corbières, Minervois, Faugères', effervescent:'Blanquette de Limoux' },
+      };
+      const styleLabels = { sec:'un blanc sec', moelleux:'un moelleux/liquoreux', rouge:'un rouge', rose:'un rosé', effervescent:'un effervescent (hors Crémant)' };
+      let regionNames = Object.keys(regionStyles);
+      if (filterActive) {
+        const filteredNames = regionNames.filter(rn => selectedRegions.has(regionKeyFromText(rn)));
+        if (filteredNames.length > 0) regionNames = filteredNames;
       }
-
-      // Variante A (par défaut) : les 5 grands styles, toutes régions confondues
+      const region = regionNames[Math.floor(Math.random()*regionNames.length)];
+      const available = regionStyles[region];
+      const styleKeys = Object.keys(available);
       return {
-        variant: 0,
-        label: `Organisez une dégustation représentant <strong>tous les grands styles de vin</strong> : un <strong>blanc sec</strong>, un <strong>blanc moelleux ou liquoreux</strong>, un <strong>rouge</strong>, un <strong>rosé</strong> et un <strong>effervescent</strong> (hors Crémant — trop générique, il en existe dans presque toutes les régions : proposez une AOC effervescente plus spécifique). Proposez une AOC pour chaque style, en précisant à chaque fois la région/le vignoble d'origine.`,
-        corrige: "Blanc sec : Sancerre, Chablis, Muscadet... Moelleux/liquoreux : Sauternes, Coteaux du Layon, Vendanges Tardives Alsace, Monbazillac... Rouge : Médoc, Bourgogne, Beaujolais, Côtes du Rhône... Rosé : Côtes de Provence, Tavel, Cabernet d'Anjou... Effervescent (hors Crémant) : Champagne, Blanquette de Limoux, Clairette de Die, Vouvray Pétillant, Saumur Mousseux, Gaillac Mousseux, Bugey-Cerdon."
+        variant: 2,
+        label: `Organisez une dégustation multi-styles, mais <strong>uniquement en ${region}</strong> : proposez ${styleKeys.map(k=>`<strong>${styleLabels[k]}</strong>`).join(', ')}, en indiquant à chaque fois l'AOC et le vignoble précis.`,
+        corrige: styleKeys.map(k => `${styleLabels[k]} : ${available[k]}`).join(' | ')
       };
     }
   },
@@ -4017,18 +4081,22 @@ const PARTIEL_TEMPLATES = [
     pts: 18,
     type: 'mixte',
     label: () => '',
-    generate: () => {
-      const regionNames = Object.keys(VIGNOBLE_COULEURS_MAP);
+    generate: (selectedRegions) => {
+      let regionNames = Object.keys(VIGNOBLE_COULEURS_MAP);
+      if (selectedRegions && selectedRegions.size > 0 && selectedRegions.size < REGION_FILTER_LIST.length) {
+        const filteredNames = regionNames.filter(rn => selectedRegions.has(regionKeyFromText(rn)));
+        if (filteredNames.length > 0) regionNames = filteredNames;
+      }
       const region = regionNames[Math.floor(Math.random()*regionNames.length)];
       const vignobles = VIGNOBLE_COULEURS_MAP[region];
       const nbVignobles = vignobles.length > 1 && Math.random() < 0.75 ? 2 : 1;
-      const chosen = [...vignobles].sort(()=>Math.random()-.5).slice(0, nbVignobles);
+      const chosen = shuffleArray(vignobles).slice(0, nbVignobles);
       const colorLabels = {rouges:'rouge', blancs:'blanc', roses:'rosé', effervescents:'effervescent'};
 
       const parts = chosen.map(v => {
         const availableColors = ['rouges','blancs','roses','effervescents'].filter(c => v[c] && v[c].length > 0);
         const nbColors = availableColors.length > 1 && Math.random() < 0.6 ? 2 : 1;
-        const colors = [...availableColors].sort(()=>Math.random()-.5).slice(0, Math.min(nbColors, availableColors.length));
+        const colors = shuffleArray(availableColors).slice(0, Math.min(nbColors, availableColors.length));
         const n = 2 + Math.floor(Math.random()*2);
         return {
           vignoble: v.nom,
@@ -4054,7 +4122,7 @@ const PARTIEL_TEMPLATES = [
     pts: 10,
     type: 'matching',
     label: () => `Pour chaque cépage suivant, donnez <strong>1 AOC communale possible</strong> et précisez le <strong>vignoble concerné</strong>.`,
-    generate: () => {
+    generate: (selectedRegions) => {
       const all = [
         {cepage:'Romorantin', aoc:'Cour-Cheverny', vignoble:'Touraine — Vallée de la Loire'},
         {cepage:'Aligoté', aoc:'Bouzeron', vignoble:'Côte Chalonnaise — Bourgogne'},
@@ -4076,8 +4144,28 @@ const PARTIEL_TEMPLATES = [
         {cepage:'Nielluccio', aoc:'Patrimonio', vignoble:'Corse'},
         {cepage:'Vermentino', aoc:'Ajaccio Blanc / Patrimonio Blanc', vignoble:'Corse'},
         {cepage:'Tannat', aoc:'Madiran', vignoble:'Sud-Ouest'},
+        {cepage:'Malbec (Côt)', aoc:'Cahors', vignoble:'Sud-Ouest'},
+        {cepage:'Négrette', aoc:'Fronton', vignoble:'Sud-Ouest'},
+        {cepage:'Petit Manseng', aoc:'Jurançon', vignoble:'Sud-Ouest'},
+        {cepage:'Trousseau', aoc:'Arbois', vignoble:'Jura'},
+        {cepage:'Jacquère', aoc:'Apremont', vignoble:'Savoie'},
+        {cepage:'Altesse (Roussette)', aoc:'Roussette de Savoie', vignoble:'Savoie'},
+        {cepage:'Mondeuse', aoc:'Vin de Savoie Arbin', vignoble:'Savoie'},
+        {cepage:'Grolleau', aoc:'Rosé d\'Anjou', vignoble:'Anjou-Saumur — Vallée de la Loire'},
+        {cepage:'Meunier (Pinot Meunier)', aoc:'Champagne', vignoble:'Champagne'},
+        {cepage:'Picpoul (Piquepoul)', aoc:'Picpoul de Pinet', vignoble:'Languedoc'},
+        {cepage:'Bourboulenc', aoc:'Châteauneuf-du-Pape Blanc', vignoble:'Rhône Sud'},
       ];
-      return [...all].sort(()=>Math.random()-.5).slice(0,8);
+      const n = 10 + Math.floor(Math.random()*3); // 10, 11 ou 12
+      let filtered = all;
+      if (selectedRegions && selectedRegions.size > 0 && selectedRegions.size < REGION_FILTER_LIST.length) {
+        filtered = all.filter(item => {
+          const rk = regionKeyFromText(item.vignoble);
+          return !rk || selectedRegions.has(rk);
+        });
+        if (filtered.length < n) filtered = all;
+      }
+      return shuffleArray(filtered).slice(0,n);
     }
   },
 
@@ -4097,7 +4185,61 @@ let partielState = {
 };
 
 /* ══ NAVIGATION PARTIELS ══ */
+const REGION_FILTER_LIST = [
+  {key:'bordeaux', label:'Bordeaux'},
+  {key:'bourgogne', label:'Bourgogne'},
+  {key:'champagne', label:'Champagne'},
+  {key:'loire', label:'Vallée de la Loire'},
+  {key:'rhone', label:'Vallée du Rhône'},
+  {key:'alsace', label:'Alsace'},
+  {key:'beaujolais', label:'Beaujolais'},
+  {key:'provence', label:'Provence'},
+  {key:'sudouest', label:'Sud-Ouest'},
+  {key:'languedoc', label:'Languedoc'},
+  {key:'jura', label:'Jura'},
+  {key:'savoie', label:'Savoie'},
+  {key:'corse', label:'Corse'},
+  {key:'lorraine', label:'Lorraine'},
+];
+
+// Détecte à quelle région canonique appartient un texte libre de vignoble/région
+// (ex: "Médoc — Bordeaux" -> bordeaux, "Vallée de la Loire" -> loire...)
+function regionKeyFromText(text) {
+  const t = stripAccents(text || '');
+  if (/(bordeaux|medoc|graves|libournais|sauternes|blaye|entre-?deux-?mers)/.test(t)) return 'bordeaux';
+  if (/(bourgogne|chablis|cote de nuits|cote de beaune|chalonnaise|maconnais|auxerrois)/.test(t)) return 'bourgogne';
+  if (/champagne/.test(t)) return 'champagne';
+  if (/(loire|touraine|anjou|saumur|nantais|centre-?loire|auvergne)/.test(t)) return 'loire';
+  if (/rhone/.test(t)) return 'rhone';
+  if (/alsace/.test(t)) return 'alsace';
+  if (/beaujolais/.test(t)) return 'beaujolais';
+  if (/(provence|bandol|cassis)/.test(t)) return 'provence';
+  if (/sud-?ouest/.test(t)) return 'sudouest';
+  if (/(languedoc|roussillon)/.test(t)) return 'languedoc';
+  if (/jura/.test(t)) return 'jura';
+  if (/savoie/.test(t)) return 'savoie';
+  if (/corse/.test(t)) return 'corse';
+  if (/(lorraine|moselle|toul)/.test(t)) return 'lorraine';
+  return null;
+}
+
+if (!partielState.selectedRegions) {
+  partielState.selectedRegions = new Set(REGION_FILTER_LIST.map(r => r.key));
+}
+
+function togglePartielRegion(key) {
+  if (partielState.selectedRegions.has(key)) partielState.selectedRegions.delete(key);
+  else partielState.selectedRegions.add(key);
+  buildPartielsMenu();
+}
+
+function toggleAllPartielRegions(checked) {
+  partielState.selectedRegions = checked ? new Set(REGION_FILTER_LIST.map(r => r.key)) : new Set();
+  buildPartielsMenu();
+}
+
 function buildPartielsMenu() {
+  const allChecked = partielState.selectedRegions.size === REGION_FILTER_LIST.length;
   document.getElementById('screen-quiz-partiels').innerHTML = `
     <div class="quiz-hub">
       <div class="quiz-hub-title">Examens Blancs — Partiels</div>
@@ -4109,8 +4251,23 @@ function buildPartielsMenu() {
           <strong>Correction :</strong> auto-corrigée + correction Claude pour les développements.
         </div>
       </div>
+      <div style="background:#fff;border:1px solid #e5e5e2;border-radius:14px;padding:1.25rem;margin-bottom:1rem;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+          <div style="font-size:13px;font-weight:700;">Régions à traiter</div>
+          <label style="font-size:11px;color:#9333ea;cursor:pointer;display:flex;align-items:center;gap:4px;">
+            <input type="checkbox" ${allChecked?'checked':''} onchange="toggleAllPartielRegions(this.checked)"> Tout cocher/décocher
+          </label>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+          ${REGION_FILTER_LIST.map(r => `
+            <label style="display:flex;align-items:center;gap:6px;font-size:12.5px;cursor:pointer;padding:4px 0;">
+              <input type="checkbox" ${partielState.selectedRegions.has(r.key)?'checked':''} onchange="togglePartielRegion('${r.key}')"> ${r.label}
+            </label>`).join('')}
+        </div>
+        ${partielState.selectedRegions.size === 0 ? '<div style="font-size:11px;color:#993C1D;margin-top:8px;">Sélectionne au moins une région pour lancer un partiel.</div>' : ''}
+      </div>
       <div class="quiz-type-list">
-        <div class="quiz-type-card" onclick="startPartiel('standard')">
+        <div class="quiz-type-card" ${partielState.selectedRegions.size === 0 ? 'style="opacity:.5;pointer-events:none;"' : ''} onclick="startPartiel('standard')">
           <div class="quiz-type-icon">📝</div>
           <div class="quiz-type-body">
             <div class="quiz-type-title">Partiel standard</div>
@@ -4123,6 +4280,19 @@ function buildPartielsMenu() {
     </div>`;
 }
 
+/* Array.sort(() => Math.random()-.5) est un mélange BIAISÉ et non-uniforme
+   (artefact bien connu des implémentations de tri) — certains éléments ont
+   statistiquement plus de chances de se regrouper ou de rester proches de
+   leur position d'origine. Fisher-Yates est le vrai mélange uniforme. */
+function shuffleArray(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
 function startPartiel(mode) {
   partielState.currentQ = 0;
   partielState.answers = [];
@@ -4133,10 +4303,10 @@ function startPartiel(mode) {
   // tous à chaque partiel, pas de tirage partiel qui pourrait en exclure un
   // (ex : vocabulaire ou styles de vin qui n'apparaissaient pas assez souvent).
   // L'ordre reste mélangé pour varier la progression d'une session à l'autre.
-  const selected = [...PARTIEL_TEMPLATES].sort(()=>Math.random()-.5);
+  const selected = shuffleArray(PARTIEL_TEMPLATES);
 
   partielState.questions = selected.map((tpl, idx) => {
-    const params = tpl.generate();
+    const params = tpl.generate(partielState.selectedRegions);
     return { ...tpl, idx, params, label_rendered: typeof tpl.label === 'function' ? tpl.label(params) : tpl.label };
   });
 
@@ -4302,8 +4472,8 @@ function submitSubstitution() {
   document.getElementById('partielBody').innerHTML = `
     <div style="font-size:14px;font-weight:500;margin-bottom:1rem;">Q${q.idx+1} — ${q.label_rendered}</div>
     ${resultHtml}
-    <div style="background:${earned>=maxPts*.7?'#EAF3DE':'#FFF4E6'};border-radius:10px;padding:10px;margin-bottom:12px;">
-      <strong>${correct}/${aocs.length*2} éléments corrects → ${earned}/${maxPts} pts</strong>
+    <div style="background:${earned>=maxPts*.7?'#EAF3DE':'#FFF4E6'};border-radius:10px;padding:10px;margin-bottom:12px;" id="scoreBox">
+      <strong>${correct}/${aocs.length*2} éléments corrects → <span id="scoreEarned">${earned}</span>/${maxPts} pts</strong>
     </div>
     <button id="flagBtn" onclick="flagCorrectionErrorInline(${maxPts})" class="btn" style="width:100%;font-size:11.5px;color:#993C1D;border-color:#f0d0c8;margin-bottom:8px;">⚠️ Signaler une erreur de correction (+1 pt)</button>
     <button id="nextBtn" data-earned="${earned}" data-pts="${maxPts}" onclick="nextPartielQuestion(parseInt(document.getElementById('nextBtn').dataset.pts),parseInt(document.getElementById('nextBtn').dataset.earned))" class="btn btn-purple" style="width:100%;">Question suivante →</button>`;
@@ -4314,6 +4484,10 @@ function flagCorrectionErrorInline(maxPts) {
   let earned = parseInt(nextBtn.dataset.earned);
   earned = Math.min(maxPts, earned + 1);
   nextBtn.dataset.earned = earned;
+  const scoreEl = document.getElementById('scoreEarned');
+  if (scoreEl) scoreEl.textContent = earned;
+  const scoreBox = document.getElementById('scoreBox');
+  if (scoreBox && earned >= maxPts*.7) scoreBox.style.background = '#EAF3DE';
   const btn = document.getElementById('flagBtn');
   btn.disabled = true;
   btn.textContent = '✓ Point ajouté';
@@ -4377,10 +4551,11 @@ function submitTermesSelfAssess() {
   const earned = Math.round((correct/items.length)*q.pts);
   document.getElementById('partielBody').innerHTML = `
     <div style="font-size:14px;font-weight:500;margin-bottom:1rem;">Q${q.idx+1} — ${q.label_rendered}</div>
-    <div style="background:${earned>=q.pts*.7?'#EAF3DE':'#FFF4E6'};border-radius:10px;padding:10px;margin-bottom:12px;">
-      <strong>${correct}/${items.length} auto-évalués corrects → ${earned}/${q.pts} pts</strong>
+    <div style="background:${earned>=q.pts*.7?'#EAF3DE':'#FFF4E6'};border-radius:10px;padding:10px;margin-bottom:12px;" id="scoreBox">
+      <strong>${correct}/${items.length} auto-évalués corrects → <span id="scoreEarned">${earned}</span>/${q.pts} pts</strong>
     </div>
-    <button onclick="nextPartielQuestion(${q.pts},${earned})" class="btn btn-purple" style="width:100%;">Question suivante →</button>`;
+    <button id="flagBtn" onclick="flagCorrectionErrorInline(${q.pts})" class="btn" style="width:100%;font-size:11.5px;color:#993C1D;border-color:#f0d0c8;margin-bottom:8px;">⚠️ Signaler une erreur de correction (+1 pt)</button>
+    <button id="nextBtn" data-earned="${earned}" data-pts="${q.pts}" onclick="nextPartielQuestion(parseInt(document.getElementById('nextBtn').dataset.pts),parseInt(document.getElementById('nextBtn').dataset.earned))" class="btn btn-purple" style="width:100%;">Question suivante →</button>`;
 }
 
 function submitTermes() {
@@ -4410,8 +4585,8 @@ function submitTermes() {
   document.getElementById('partielBody').innerHTML = `
     <div style="font-size:14px;font-weight:500;margin-bottom:1rem;">Q${q.idx+1} — ${q.label_rendered}</div>
     ${html}
-    <div style="background:${earned>=q.pts*.7?'#EAF3DE':'#FFF4E6'};border-radius:10px;padding:10px;margin-bottom:12px;">
-      <strong>${correct}/${termes.length} termes corrects → ${earned}/${q.pts} pts</strong>
+    <div style="background:${earned>=q.pts*.7?'#EAF3DE':'#FFF4E6'};border-radius:10px;padding:10px;margin-bottom:12px;" id="scoreBox">
+      <strong>${correct}/${termes.length} termes corrects → <span id="scoreEarned">${earned}</span>/${q.pts} pts</strong>
     </div>
     <button id="flagBtn" onclick="flagCorrectionErrorInline(${q.pts})" class="btn" style="width:100%;font-size:11.5px;color:#993C1D;border-color:#f0d0c8;margin-bottom:8px;">⚠️ Signaler une erreur de correction (+1 pt)</button>
     <button id="nextBtn" data-earned="${earned}" data-pts="${q.pts}" onclick="nextPartielQuestion(parseInt(document.getElementById('nextBtn').dataset.pts),parseInt(document.getElementById('nextBtn').dataset.earned))" class="btn btn-purple" style="width:100%;">Question suivante →</button>`;
@@ -4481,8 +4656,8 @@ function submitCepageAoc() {
   document.getElementById('partielBody').innerHTML = `
     <div style="font-size:14px;font-weight:500;margin-bottom:1rem;">Q${q.idx+1} — ${q.label_rendered}</div>
     ${html}
-    <div style="background:${earned>=q.pts*.7?'#EAF3DE':'#FFF4E6'};border-radius:10px;padding:10px;margin-bottom:12px;">
-      <strong>${correct}/${items.length} AOC correctes → ${earned}/${q.pts} pts</strong>
+    <div style="background:${earned>=q.pts*.7?'#EAF3DE':'#FFF4E6'};border-radius:10px;padding:10px;margin-bottom:12px;" id="scoreBox">
+      <strong>${correct}/${items.length} AOC correctes → <span id="scoreEarned">${earned}</span>/${q.pts} pts</strong>
     </div>
     <button id="flagBtn" onclick="flagCorrectionErrorInline(${q.pts})" class="btn" style="width:100%;font-size:11.5px;color:#993C1D;border-color:#f0d0c8;margin-bottom:8px;">⚠️ Signaler une erreur de correction (+1 pt)</button>
     <button id="nextBtn" data-earned="${earned}" data-pts="${q.pts}" onclick="nextPartielQuestion(parseInt(document.getElementById('nextBtn').dataset.pts),parseInt(document.getElementById('nextBtn').dataset.earned))" class="btn btn-purple" style="width:100%;">Question suivante →</button>`;
@@ -4613,9 +4788,10 @@ Consignes de correction importantes :
 - En cas de doute sur la validité d'une appellation ou d'un accord proposé par l'étudiant, donne-lui le bénéfice du doute plutôt que de la rejeter catégoriquement — mentionne ton incertitude dans le commentaire plutôt que de sanctionner.
 - Ne retire pas de points pour des différences mineures de formulation, d'accents ou d'ordre si le fond est juste.
 - Distingue une vraie erreur factuelle (à sanctionner) d'un simple choix différent parmi plusieurs réponses valides (à ne pas sanctionner).
-- Sois généreux dans le doute : entre deux notes possibles, retiens la plus haute.${hierarchieGuard}
+- Sois généreux dans le doute : entre deux notes possibles, retiens la plus haute.
+- IMPORTANT sur le barème : cette question est notée sur ${q.pts} points, PAS sur 20. N'utilise JAMAIS le réflexe français du "/20" — le X de "Note : X/${q.pts}" doit être un nombre entre 0 et ${q.pts} inclus, jamais une note sur 20 recalculée ou non.${hierarchieGuard}
 
-Format : commence par "Note : X/${q.pts}" puis donne le corrigé type et les points forts/à améliorer. Réponds en français.`;
+Format : commence IMPÉRATIVEMENT par "Note : X/${q.pts}" (X entre 0 et ${q.pts}) puis donne le corrigé type et les points forts/à améliorer. Réponds en français.`;
 
   const questionText = q.id === 'degustation_multi' ? q.params.label.replace(/<[^>]*>/g,'') : q.label_rendered.replace(/<[^>]*>/g,'');
 
@@ -4626,8 +4802,17 @@ Format : commence par "Note : X/${q.pts}" puis donne le corrigé type et les poi
       messages:[{role:'user', content:`Question : ${questionText}\n\nRéponse de l'étudiant : ${answer}`}]
     });
     const correction = data.content?.[0]?.text || 'Erreur.';
-    const noteMatch = correction.match(/Note\s*:\s*(\d+(?:[.,]\d+)?)\s*\/\s*(\d+)/i);
-    const earned = noteMatch ? Math.min(q.pts, Math.round(parseFloat(noteMatch[1].replace(',','.')))) : Math.round(q.pts/2);
+    // Rescale proportionnel : l'IA a parfois le réflexe du /20 malgré la consigne "Note sur X points",
+    // donc on ne prend jamais le numérateur brut — on le remet à l'échelle du vrai barème (q.pts).
+    const noteMatch = correction.match(/Note\s*:\s*(\d+(?:[.,]\d+)?)\s*\/\s*(\d+(?:[.,]\d+)?)/i);
+    let earned;
+    if (noteMatch) {
+      const num = parseFloat(noteMatch[1].replace(',','.'));
+      const denom = parseFloat(noteMatch[2].replace(',','.')) || q.pts;
+      earned = Math.min(q.pts, Math.max(0, Math.round((num/denom) * q.pts)));
+    } else {
+      earned = Math.round(q.pts/2);
+    }
 
     fb.innerHTML = renderCorrectionBlock(answer, correction.replace(/\n/g,'<br>'), earned, q.pts);
   } catch(e) {
@@ -4654,13 +4839,23 @@ Consignes de correction importantes :
 - En cas de doute sur la validité d'une réponse, donne le bénéfice du doute plutôt que de la rejeter catégoriquement.
 - Ne retire pas de points pour des différences mineures de formulation si le fond est juste.
 - Sois généreux dans le doute : entre deux notes possibles, retiens la plus haute.
+- IMPORTANT sur le barème : cette question est notée sur ${q.pts} points, PAS sur 20. N'utilise JAMAIS le réflexe français du "/20" — le X doit être un nombre entre 0 et ${q.pts} inclus.
 
-Commence par "Note : X/${q.pts}". Réponds en français.`,
+Commence IMPÉRATIVEMENT par "Note : X/${q.pts}" (X entre 0 et ${q.pts}). Réponds en français.`,
       messages:[{role:'user', content:`Question : ${q.params.label.replace(/<[^>]*>/g,'')}\n\nRéponse : ${answer}`}]
     });
     const correction = data.content?.[0]?.text || 'Erreur.';
-    const noteMatch = correction.match(/Note\s*:\s*(\d+(?:[.,]\d+)?)\s*\/\s*(\d+)/i);
-    const earned = noteMatch ? Math.min(q.pts, Math.round(parseFloat(noteMatch[1].replace(',','.')))) : Math.round(q.pts/2);
+    // Rescale proportionnel : l'IA a parfois le réflexe du /20 malgré la consigne "Note sur X points",
+    // donc on ne prend jamais le numérateur brut — on le remet à l'échelle du vrai barème (q.pts).
+    const noteMatch = correction.match(/Note\s*:\s*(\d+(?:[.,]\d+)?)\s*\/\s*(\d+(?:[.,]\d+)?)/i);
+    let earned;
+    if (noteMatch) {
+      const num = parseFloat(noteMatch[1].replace(',','.'));
+      const denom = parseFloat(noteMatch[2].replace(',','.')) || q.pts;
+      earned = Math.min(q.pts, Math.max(0, Math.round((num/denom) * q.pts)));
+    } else {
+      earned = Math.round(q.pts/2);
+    }
     fb.innerHTML = renderCorrectionBlock(answer, correction.replace(/\n/g,'<br>'), earned, q.pts);
   } catch(e) {
     fb.innerHTML = `<div class="quiz-feedback ko">Erreur. <button onclick="submitAocCommunalesLibre()" class="btn">Réessayer</button></div>`;
@@ -7542,7 +7737,7 @@ async function startSimuClient(profilId) {
     </div>`;
 
   const regions = Object.keys(DATA);
-  const randomRegions = [...regions].sort(()=>Math.random()-.5).slice(0,3);
+  const randomRegions = shuffleArray(regions).slice(0,3);
 
   const contextInstructions = {
     repas: `Le client vient dîner dans un restaurant gastronomique français et demande conseil sur les vins pour accompagner son repas.
