@@ -847,7 +847,7 @@ body.has-tabbar .screen.active{padding-bottom:56px;}
 .orga-sort-wrap select{border:none;background:transparent;font-size:12.5px;font-weight:600;color:var(--page-text);padding:0;font-family:inherit;cursor:pointer;}
 .orga-sort-wrap select:focus{outline:none;}
 .orga-drawer{max-height:0;overflow:hidden;transition:max-height .3s ease;background:var(--card-bg);border-radius:12px;}
-.orga-drawer.open{max-height:900px;border:var(--border-width) solid var(--card-border);margin-bottom:10px;}
+.orga-drawer.open{max-height:70vh;overflow-y:auto;border:var(--border-width) solid var(--card-border);margin-bottom:10px;}
 .orga-drawer-inner{padding:14px;}
 .orga-group{margin-bottom:14px;}
 .orga-group:last-of-type{margin-bottom:6px;}
@@ -856,6 +856,9 @@ body.has-tabbar .screen.active{padding-bottom:56px;}
 .orga-chip{display:flex;align-items:center;gap:6px;padding:6px 12px;border-radius:20px;border:1px solid var(--card-border);background:var(--page-bg);font-size:12px;font-weight:600;color:var(--text-secondary);cursor:pointer;user-select:none;transition:all .15s;}
 .orga-chip .orga-fdot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
 .orga-chip.active{background:var(--accent);border-color:var(--accent);color:#fff;}
+.orga-minor-tag{font-size:9.5px;font-weight:700;color:var(--text-muted);margin-left:2px;}
+.orga-chip.active .orga-minor-tag{color:rgba(255,255,255,.75);}
+.orga-group-hint{font-size:10.5px;color:var(--text-muted);margin:-4px 0 8px;font-style:italic;}
 .orga-drawer-actions{text-align:right;}
 .orga-drawer-actions button{background:none;border:none;color:var(--accent);font-size:12px;font-weight:600;cursor:pointer;}
 .orga-legend{display:flex;flex-wrap:wrap;gap:10px;padding:4px 2px 10px;font-size:11px;color:var(--text-secondary);}
@@ -2234,6 +2237,11 @@ bordeaux:{name:"Bordeaux",color:"#B5D4F4",subcats:[
 {nom:"Francs Côtes de Bordeaux",types:["rouge","blanc"],cepages:"Rouge : Merlot, CS, CF. Blanc : Sémillon, Sauvignon, Muscadelle",sol:"Argilo-calcaires",cahier:"Petite AOC, production confidentielle.",accords:"Viandes légères, poisson"},
 {nom:"Cadillac Côtes de Bordeaux",types:["rouge"],cepages:"Merlot, CS, CF, Malbec",sol:"Rive droite de la Garonne, coteaux",cahier:"Rouges uniquement depuis 2009 (anciennement 1ères Côtes de Bordeaux).",accords:"Viandes rouges, volaille, fromages"},
 {nom:"Entre-Deux-Mers",types:["blanc"],cepages:"Sauvignon Blanc (dominant), Sémillon, Muscadelle, Ugni Blanc, Colombard, Merlot Blanc",sol:"Sols très divers : argiles, argilo-calcaires, molasses, alluvions (entre Garonne et Dordogne)",cahier:"Blancs secs uniquement. Vins frais, aromatiques, à boire jeunes.",accords:"Huîtres, fruits de mer, poisson grillé, fromages de chèvre"},
+{nom:"Graves de Vayres",types:["rouge","blanc"],cepages:"Rouge : Merlot, Cabernet-Sauvignon, Cabernet Franc. Blanc : Sémillon, Sauvignon, Muscadelle",sol:"Terrasses de graves sur la rive gauche de la Dordogne, communes de Vayres et Arveyres.",cahier:"Petite AOC enclavée dans l'Entre-Deux-Mers, produit rouge et blanc (sec à moelleux).",accords:"Rouge : viandes rouges légères. Blanc : fruits de mer, volaille"},
+{nom:"Sainte-Foy Côtes de Bordeaux",types:["rouge","blanc","moelleux"],cepages:"Rouge : Merlot, Cabernet-Sauvignon, Cabernet Franc. Blanc : Sémillon, Sauvignon, Sauvignon Gris, Muscadelle",sol:"Coteaux argilo-calcaires à l'extrémité est de l'Entre-Deux-Mers, vers Sainte-Foy-la-Grande.",cahier:"Dénomination géographique complémentaire de Côtes de Bordeaux depuis 2016 (AOC autonome \\\"Sainte-Foy-Bordeaux\\\" avant cette date). Rouge, blanc sec, moelleux et liquoreux.",accords:"Rouge : charcuterie, viandes. Blanc moelleux : foie gras, desserts"},
+{nom:"Côtes de Bordeaux-Saint-Macaire",types:["blanc","moelleux","liquoreux"],cepages:"Sémillon (dominant) + Sauvignon, Sauvignon Gris, Muscadelle",sol:"Sol brun calcaire, rive droite de la Garonne près de Langon, 10 communes.",cahier:"AOC autonome (1937), pas une simple dénomination de Côtes de Bordeaux. Vins blancs du sec au liquoreux, production confidentielle et en recul.",accords:"Apéritif, foie gras, viandes blanches, fromages à pâte persillée"},
+{nom:"Bordeaux Haut-Benauge",types:["blanc","moelleux"],cepages:"Sémillon, Sauvignon Blanc, Muscadelle",sol:"Plateau calcaire de l'Entre-Deux-Mers, 9 communes autour d'Arbis (ancien Vicomté de Benauge).",cahier:"Dénomination géographique complémentaire de Bordeaux (1955), historiquement moelleux, évolue vers le sec.",accords:"Apéritif, poisson en sauce, fromages"},
+{nom:"Entre-Deux-Mers Haut-Benauge",types:["blanc"],cepages:"Sauvignon, Sémillon, Muscadelle",sol:"Même plateau calcaire que Bordeaux Haut-Benauge, mêmes 9 communes.",cahier:"Dénomination géographique complémentaire d'Entre-Deux-Mers (1955), blanc sec uniquement (contrairement à Bordeaux Haut-Benauge qui reste moelleux).",accords:"Fruits de mer, poisson grillé"},
 ]},
 ]},
 bourgogne:{name:"Bourgogne",color:"#FAC775",subcats:[
@@ -2363,6 +2371,21 @@ rhone:{name:"Vallée du Rhône",color:"#C0DD97",subcats:[
 {nom:"Côtes du Rhône",types:["rouge","blanc","rosé"],cepages:"Rouge/Rosé : Grenache + Syrah, Mourvèdre + accessoires. Blanc : Grenache B, Marsanne, Roussanne, Viognier, Bourboulenc, Clairette",sol:"Divers selon secteur. 172 communes.",cahier:"Décret 1937. 80% de la production totale du Rhône.",accords:"Rouge : grillades, agneau. Blanc : poisson, volaille"},
 {nom:"Côtes du Rhône Villages",types:["rouge","blanc","rosé"],cepages:"Rouge : Grenache 50% min + Syrah, Mourvèdre. Blanc/Rosé : comme CDR",sol:"Zone méridionale, 95 communes.",cahier:"17 communes peuvent ajouter leur nom (ex : CDR Villages Séguret).",accords:"Viandes grillées, agneau, ratatouille, fromages régionaux"},
 {nom:"Ventoux",types:["rouge","blanc","rosé"],cepages:"Rouge/Rosé : Grenache, Syrah, Mourvèdre, Cinsault, Carignan 50% min. Blanc : Bourboulenc, Clairette, Grenache B, Roussanne, Rolle",sol:"Autour du Mont Ventoux. 6650 ha.",cahier:"Assemblage 2 cépages minimum.",accords:"Grillades, agneau, cuisine provençale"},
+{nom:"Rasteau",types:["rouge"],cepages:"Grenache 50% min + Syrah, Mourvèdre",sol:"Terrasses de galets roulés, marnes et sable, Vaucluse.",cahier:"Cru des Côtes du Rhône depuis 2010 (issu des Côtes du Rhône Villages).",accords:"Viandes rouges, gibier, fromages affinés"},
+{nom:"Rasteau VDN",types:["rouge"],cepages:"Grenache (dominant, N/B/G) + cépages accessoires du Châteauneuf-du-Pape",sol:"Mêmes terroirs que Rasteau rouge.",cahier:"Vin doux naturel muté à l'alcool, style tuilé ou rancio selon l'élevage.",accords:"Chocolat, fromages persillés, desserts aux fruits secs"},
+{nom:"Vinsobres",types:["rouge"],cepages:"Grenache + Syrah, Mourvèdre",sol:"Terrasses caillouteuses, Drôme provençale.",cahier:"Cru des Côtes du Rhône depuis 2006, le plus septentrional des crus méridionaux.",accords:"Viandes rouges, gibier"},
+{nom:"Laudun",types:["rouge","blanc","rosé"],cepages:"Rouge : Grenache + Syrah, Mourvèdre 40% min combinés. Blanc : Clairette, Grenache B, Roussanne (au moins 2 cépages, 20% min chacun) + Bourboulenc, Piquepoul B, Marsanne",sol:"Terrasses calcaires, rive droite du Rhône, Gard.",cahier:"Cru des Côtes du Rhône depuis 2024, le plus récent.",accords:"Rouge : viandes rouges. Blanc : poisson, volaille"},
+{nom:"Beaumes-de-Venise",types:["rouge"],cepages:"Grenache 50% min + Syrah, Mourvèdre",sol:"Pied des Dentelles de Montmirail, Vaucluse.",cahier:"Cru rouge des Côtes du Rhône depuis 2005, distinct du Muscat de Beaumes-de-Venise (VDN).",accords:"Viandes rouges, gibier, cuisine provençale"},
+{nom:"Costières de Nîmes",types:["rouge","blanc","rosé"],cepages:"Rouge/Rosé : Syrah, Grenache, Mourvèdre, Carignan. Blanc : Grenache B, Roussanne, Marsanne, Vermentino, Viognier",sol:"Terrasses de galets roulés (\\\"gress\\\"), au sud de Nîmes, transition Rhône/Languedoc.",cahier:"Rattachée administrativement au vignoble du Rhône bien que géographiquement en bordure du Languedoc.",accords:"Grillades, cuisine méditerranéenne, poisson (blanc)"},
+{nom:"Clairette de Bellegarde",types:["blanc"],cepages:"Clairette exclusivement",sol:"Sols caillouteux autour de Bellegarde, Gard.",cahier:"Petite AOC confidentielle, blanc sec uniquement.",accords:"Apéritif, fruits de mer"},
+{nom:"Luberon",types:["rouge","blanc","rosé"],cepages:"Rouge/Rosé : Grenache, Syrah, Mourvèdre, Cinsault, Carignan. Blanc : Clairette, Grenache B, Roussanne, Vermentino, Ugni Blanc",sol:"Coteaux calcaires du massif du Luberon, Vaucluse.",cahier:"Anciennement Côtes du Luberon. Climat plus frais que le reste du Rhône méridional (altitude).",accords:"Grillades, cuisine provençale, charcuterie"},
+{nom:"Crémant de Die",types:["effervescent"],cepages:"Clairette (dominant) + Aligoté, Muscat",sol:"Coteaux de la vallée de la Drôme.",cahier:"Méthode traditionnelle, distinct de la Clairette de Die méthode ancestrale.",accords:"Apéritif, fruits de mer"},
+{nom:"Châtillon-en-Diois",types:["rouge","blanc","rosé"],cepages:"Rouge/Rosé : Gamay, Pinot Noir, Syrah. Blanc : Aligoté, Chardonnay",sol:"Coteaux calcaires de la vallée de la Drôme, en amont de Die.",cahier:"Petite AOC confidentielle, influence bourguignonne (Gamay, Aligoté, Chardonnay) au cœur du Rhône.",accords:"Charcuterie, viandes blanches"},
+{nom:"Coteaux de Die",types:["blanc"],cepages:"Clairette exclusivement",sol:"Coteaux de la vallée de la Drôme autour de Die.",cahier:"Blanc sec, à ne pas confondre avec la Clairette de Die (effervescente ou moelleuse).",accords:"Apéritif, poisson"},
+{nom:"Grignan-les-Adhémar",types:["rouge","blanc","rosé"],cepages:"Rouge/Rosé : Syrah, Grenache, Mourvèdre, Cinsault, Carignan. Blanc : Viognier, Marsanne, Roussanne, Clairette, Grenache B, Bourboulenc",sol:"Drôme provençale, au nord de Vinsobres.",cahier:"Anciennement Coteaux du Tricastin, renommée en 2010.",accords:"Grillades, cuisine provençale"},
+{nom:"Côtes du Vivarais",types:["rouge","blanc","rosé"],cepages:"Rouge/Rosé : Grenache, Syrah, Cinsault. Blanc : Grenache B, Clairette, Marsanne",sol:"Coteaux calcaires de l'Ardèche méridionale.",cahier:"Rive droite du Rhône, en Ardèche.",accords:"Charcuterie, grillades légères"},
+{nom:"Duché d'Uzès",types:["rouge","blanc","rosé"],cepages:"Rouge/Rosé : Syrah, Grenache, Mourvèdre. Blanc : Grenache B, Vermentino, Viognier",sol:"Garrigues calcaires autour d'Uzès, Gard.",cahier:"AOC reconnue en 2012, la plus récente du secteur avant Laudun.",accords:"Cuisine méditerranéenne, grillades"},
+{nom:"Pierrevert",types:["rouge","blanc","rosé"],cepages:"Rouge/Rosé : Grenache, Syrah. Blanc : Grenache B, Vermentino",sol:"Alpes-de-Haute-Provence, aux confins du Luberon.",cahier:"AOC la plus septentrionale et la plus fraîche (altitude) du grand Sud-Est.",accords:"Cuisine provençale, charcuterie"},
 ]},
 ]},
 alsace:{name:"Alsace",color:"#CECBF6",subcats:[
@@ -2372,6 +2395,7 @@ alsace:{name:"Alsace",color:"#CECBF6",subcats:[
 {nom:"Vendanges Tardives (VT)",types:["moelleux","liquoreux"],cepages:"Riesling (min 14° récolte), Muscat (14°), Pinot Gris (15,3°), Gewurztraminer (15,3°)",sol:"En AOC Alsace ou Alsace Grand Cru",cahier:"Décret 1984. Chaptalisation INTERDITE. Surmaturité sans botrytis obligatoire.",accords:"Foie gras, desserts aux fruits jaunes, tarte tatin, fromages bleus"},
 {nom:"Sélection de Grains Nobles (SGN)",types:["liquoreux"],cepages:"Riesling (min 16,4° récolte), Muscat (16,4°), Pinot Gris (18,2°), Gewurztraminer (18,2°)",sol:"En AOC Alsace ou Alsace Grand Cru",cahier:"Décret 1984. Botrytis cinerea obligatoire. Production confidentielle. Vins de très grande garde.",accords:"Foie gras, roquefort, fruits confits, chocolat blanc — à servir seul"},
 {nom:"Crémant d'Alsace",types:["effervescent"],cepages:"Pinot Blanc, Auxerrois, Chardonnay, Riesling, Pinot Gris, Pinot Noir (vinifié en blanc). Rosé : Pinot Noir",sol:"Ensemble du vignoble alsacien",cahier:"AOC 1976. MT obligatoire. Prise de mousse 9 mois min. ~36 millions de bouteilles, ~30% des effervescents français hors Champagne.",accords:"Apéritif, fruits de mer, sushi, flamekueche, gougères"},
+{nom:"Klevener de Heiligenstein",types:["blanc"],cepages:"Savagnin Rose (Traminer) exclusivement",sol:"Environs de Heiligenstein, Bas-Rhin.",cahier:"Dénomination confidentielle réservée à 8 communes autour de Heiligenstein, seul lieu en Alsace où ce cépage est vinifié séparément du Gewurztraminer.",accords:"Charcuterie, quiche, plats légèrement épicés"},
 ]},
 ]},
 lorraine:{name:"Lorraine",color:"#D3D1C7",subcats:[
@@ -2418,6 +2442,8 @@ loire:{name:"Vallée de la Loire",color:"#C8E6C9",subcats:[
 {nom:"Chinon",types:["rouge","blanc"],cepages:"Cabernet Franc (Breton) 50% min + Cabernet-Sauvignon. Blanc : Chenin",sol:"Sables/graviers (vins légers), tuffeau (vins de garde). 2300 ha, 18 communes.",cahier:"AOC 1937. Caves troglodytes.",accords:"Rillettes, andouillette, poulet rôti, chèvre ligérien"},
 {nom:"Bourgueil",types:["rouge"],cepages:"Cabernet Franc 50% min + Cabernet-Sauvignon",sol:"Sables, graviers, tuffeau, argilo-siliceux. 1400 ha, 8 communes.",cahier:"AOC 1937. Vins de garde sur tuffeau.",accords:"Charcuterie, volaille, fromages de chèvre, viandes rouges"},
 {nom:"Saint-Nicolas-de-Bourgueil",types:["rouge"],cepages:"Cabernet Franc 50% min + Cabernet-Sauvignon",sol:"Sables de la Loire (80%) + coteaux argilo-calcaires (20%). 1050 ha, 1 commune.",cahier:"Vins plus légers et fruités que Bourgueil (sols sableux précoces).",accords:"Charcuterie légère, volaille, fromages de chèvre frais"},
+{nom:"Coteaux du Vendômois",types:["rouge","rosé","blanc"],cepages:"Rouge : Pineau d'Aunis min 50% + Cabernet Franc, Pinot Noir (10 à 40% chacun), Gamay (20% max). Gris (rosé) : Pineau d'Aunis exclusivement (pressurage direct). Blanc : Chenin + Chardonnay (20% max)",sol:"Coteaux calcaires et argilo-siliceux de la vallée du Loir, Loir-et-Cher. ~150 ha, 27 communes.",cahier:"AOC 2001 (VDQS depuis 1968). Le Pineau d'Aunis y trouve un de ses rares terroirs de prédilection : le \\\"gris\\\" (rosé pâle, 100% Pineau d'Aunis) est la production emblématique de l'appellation.",accords:"Gris : charcuterie, poissons, fromages de chèvre. Rouge : viandes légères, volaille"},
+{nom:"Coteaux du Loir",types:["rouge","rosé","blanc"],cepages:"Rouge/Rosé : Pineau d'Aunis min 65% + Cabernet Franc, Cot (Malbec), Gamay (cépages accessoires, 30% max chacun). Blanc : Chenin exclusivement",sol:"Argile à silex, coteaux escarpés de la vallée du Loir, aux confins de la Touraine, du Maine et de l'Anjou.",cahier:"AOC 1949, une des plus anciennes appellations de la vallée du Loir, voisine de Jasnières. Le Pineau d'Aunis y est le cépage historique.",accords:"Rouge/Rosé : charcuterie, viandes rouges légères. Blanc : poisson, fromages de chèvre"},
 ]},
 {label:"Touraine — Blancs (Chenin)",aocs:[
 {nom:"Vouvray",types:["sec","demi-sec","moelleux","liquoreux","effervescent"],cepages:"Chenin (Pineau de la Loire) min 50% + Orbois (Menu Pineau)",sol:"Aubuis (tuffeau) et perruches (argile à silex). 2000 ha, rive droite Loire.",cahier:"AOC 1936. 6 styles : sec, demi-sec, moelleux, liquoreux, pétillant, mousseux (MT, élevage 12 mois min). Grande longévité des moelleux (50+ ans). Caves troglodytes.",accords:"Sec : rillettes, chèvre. Demi-sec : volaille crème. Moelleux : foie gras, roquefort"},
@@ -2427,6 +2453,8 @@ loire:{name:"Vallée de la Loire",color:"#C8E6C9",subcats:[
 {label:"Touraine — Appellations régionales Touraine",aocs:[
 {nom:"Touraine",types:["rouge","blanc","rosé","effervescent"],cepages:"Rouge : Gamay 85% min ou Côt 50% min. Blanc : Sauvignon 50% min. Rosé : assemblage",sol:"Tuffeau, argile à silex, sables. 5500 ha, 146 communes.",cahier:"AOC 1939. + Touraine Primeur (Gamay 100%). 6 DGC : Amboise, Azay-le-Rideau, Mesland, Noble Joué, Chenonceaux, Oisly.",accords:"Blanc : chèvre, poisson. Rouge : charcuterie, viandes légères"},
 {nom:"Cheverny",types:["rouge","blanc","rosé"],cepages:"Rouge : Pinot Noir 50% min + Gamay + CF. Blanc : Sauvignon 50% min + Chardonnay, Chenin",sol:"Au sud de Blois. 530 ha.",cahier:"AOC 1993. Cour-Cheverny : Romorantin 100% (48 ha), unique AOC avec ce cépage.",accords:"Blanc : poisson, volaille, chèvre. Rouge : viandes légères"},
+{nom:"Cour-Cheverny",types:["blanc"],cepages:"Romorantin exclusivement",sol:"Sols sablo-argileux au sud de Blois, mêmes communes que Cheverny.",cahier:"AOC distincte de Cheverny depuis 1993, seule appellation au monde à utiliser le Romorantin (cépage planté sur ordre de François Ier en 1519).",accords:"Poisson en sauce, volaille, fromages de chèvre"},
+{nom:"Valençay",types:["rouge","blanc","rosé"],cepages:"Rouge/Rosé : Gamay, Cot, Cabernet Franc, Cabernet-Sauvignon, Pinot Noir. Blanc : Sauvignon (dominant) + Chardonnay, Chenin, Arbois",sol:"Argilo-siliceux et argilo-calcaires, entre Touraine et Sologne.",cahier:"AOC depuis 2004 (ex-VDQS), zone historiquement liée au château de Talleyrand.",accords:"Rouge : charcuterie, viandes légères. Blanc : fromages de chèvre (Valençay AOC fromagère voisine)"},
 ]},
 
 {label:"Centre-Loire",aocs:[
@@ -2443,6 +2471,8 @@ loire:{name:"Vallée de la Loire",color:"#C8E6C9",subcats:[
 {nom:"Côtes d\'Auvergne",types:["rouge","blanc","rosé"],cepages:"Rouge/Rosé : Gamay (dominant), Pinot Noir. Blanc : Chardonnay",sol:"Sols volcaniques (basalte, andésite, trachyte) et argilo-calcaires. 5 crus : Boudes, Chanturgue, Châteaugay, Corent, Madargue. 400 ha, Puy-de-Dôme.",cahier:"AOC 2011. Vignoble sur les contreforts du Massif Central. Corent : rosé de pressurage direct.",accords:"Rouge : charcuterie auvergnate, lentilles du Puy. Rosé : cuisine légère. Blanc : Saint-Nectaire, truite"},
 {nom:"Côtes du Forez",types:["rouge","rosé"],cepages:"Gamay exclusivement",sol:"Argilo-calcaires et granites. 200 ha, 15 communes, Loire.",cahier:"AOC 2000. Gamay 100% obligatoire. Coteaux dominant la plaine du Forez.",accords:"Charcuterie, viandes légères, fromages de chèvre"},
 {nom:"Côte Roannaise",types:["rouge","rosé"],cepages:"Gamay Saint-Romain exclusivement",sol:"Granite et sables granitiques. 200 ha, 14 communes, Loire.",cahier:"AOC 1994. Clone particulier de Gamay. Vendanges manuelles.",accords:"Charcuterie, cuisine régionale lyonnaise, fromages de chèvre"},
+{nom:"Côtes d'Auvergne",types:["rouge","blanc","rosé"],cepages:"Rouge/Rosé : Gamay (dominant) + Pinot Noir. Blanc : Chardonnay",sol:"Coteaux volcaniques et granitiques du Puy-de-Dôme.",cahier:"AOC depuis 2011 (ex-VDQS), 5 dénominations de village possibles (Boudes, Chanturgue, Châteaugay, Corent, Madargue).",accords:"Charcuterie auvergnate, potée, fromages de caractère"},
+{nom:"Orléans",types:["rouge","blanc","rosé"],cepages:"Rouge/Rosé : Pinot Meunier (dominant) + Pinot Noir, Cabernet Franc. Blanc : Chardonnay + Pinot Gris (Orléans-Cléry en rouge : Cabernet Franc exclusivement)",sol:"Sables et graves de la vallée de la Loire autour d'Orléans.",cahier:"AOC depuis 2006 (ex-VDQS), vignoble historique quasiment disparu puis relancé. Orléans-Cléry est une dénomination rouge distincte, 100% Cabernet Franc.",accords:"Rouge : charcuterie. Blanc : poisson de Loire"},
 {nom:"Saint-Pourçain",types:["rouge","blanc","rosé"],cepages:"Rouge/Rosé : Gamay + Pinot Noir. Blanc : Tressallier (Sacy) dominant + Chardonnay, Sauvignon",sol:"Argilo-calcaires et sableux. 570 ha, 19 communes, Allier.",cahier:"AOC 2009. Tressallier (= Sacy de Chablis) : cépage quasi exclusif pour les blancs.",accords:"Blanc : poisson, fromages de chèvre. Rouge : viandes légères, charcuterie"}
 ]},
 ]},
@@ -2467,6 +2497,20 @@ sudouest:{name:"Sud-Ouest",color:"#FDE68A",subcats:[
 {nom:"Bergerac",types:["rouge","blanc","rosé"],cepages:"Rouge : Merlot, CF, CS, Malbec, Fer Servadou. Blanc : Sémillon, Sauvignon, Muscadelle",sol:"Argilo-calcaires et terrasses graveleuses. 2 rives de la Dordogne.",cahier:"AOC 1936. Sous-appellations : Pécharmant (rouge, tannique), Monbazillac (blanc liquoreux, botrytis), Montravel, Rosette.",accords:"Rouge : canard, magret. Blanc sec : poisson"},
 {nom:"Monbazillac",types:["liquoreux"],cepages:"Sémillon, Sauvignon, Muscadelle",sol:"Argilo-calcaires, coteaux dominant la Dordogne.",cahier:"Botrytis cinerea. Tries successives. 'Sauternes du Périgord'.",accords:"Foie gras, roquefort, desserts"},
 {nom:"Gaillac",types:["rouge","blanc","rosé","effervescent"],cepages:"Rouges locaux : Duras, Fer Servadou (Braucol), + Syrah, Gamay, CS, CF, Merlot. Blancs locaux : Mauzac, Len de l'El + Sauvignon",sol:"Argilo-calcaires et sableux. 2 rives du Tarn.",cahier:"Méthode ancestrale pour les pétillants (Mauzac).",accords:"Blanc : cuisine du Tarn, poisson. Rouge : viandes, cassoulet"},
+{nom:"Buzet",types:["rouge","blanc","rosé"],cepages:"Rouge/Rosé : Merlot, Cabernet-Sauvignon, Cabernet Franc, Malbec. Blanc : Sémillon, Sauvignon, Muscadelle",sol:"Terrasses graveleuses et argilo-calcaires, rive gauche de la Garonne, Lot-et-Garonne.",cahier:"Cépages bordelais, prolongement du vignoble bordelais vers le Sud-Ouest.",accords:"Rouge : viandes rouges, canard. Blanc : poisson"},
+{nom:"Fronton",types:["rouge","rosé"],cepages:"Négrette 40 à 70% + Syrah, Gamay, Cabernet Franc, Cabernet-Sauvignon, Malbec",sol:"Terrasses de graves et de boulbènes, entre Toulouse et Montauban.",cahier:"La Négrette y est cépage signature, quasi unique à cette appellation.",accords:"Cassoulet, charcuterie, cuisine toulousaine"},
+{nom:"Marcillac",types:["rouge","rosé"],cepages:"Fer Servadou (Mansois) 90% min + Cabernet Franc, Merlot",sol:"Grès rouge permien (\\\"rougiers\\\"), Aveyron.",cahier:"L'un des rares fiefs du Fer Servadou en cépage quasi-exclusif.",accords:"Aligot-saucisse, charcuterie, tripoux"},
+{nom:"Irouléguy",types:["rouge","blanc","rosé"],cepages:"Rouge/Rosé : Tannat, Cabernet Franc, Cabernet-Sauvignon. Blanc : Gros Manseng, Petit Manseng, Petit Courbu",sol:"Coteaux schisteux et calcaires du Pays basque, pied des Pyrénées.",cahier:"Seule AOC viticole du Pays basque français.",accords:"Agneau des Pyrénées, piperade, fromage de brebis"},
+{nom:"Béarn",types:["rouge","blanc","rosé"],cepages:"Rouge/Rosé : Tannat, Cabernet Franc, Cabernet-Sauvignon. Blanc : Gros Manseng, Petit Manseng, Camaralet, Lauzet",sol:"Piémont pyrénéen autour de Pau.",cahier:"Englobe historiquement la zone de Bellocq (rosé traditionnel).",accords:"Garbure, cuisine paysanne du Béarn"},
+{nom:"Pacherenc du Vic-Bilh",types:["blanc","moelleux"],cepages:"Gros Manseng, Petit Manseng, Petit Courbu, Arrufiac + Sauvignon, Sémillon",sol:"Mêmes coteaux argilo-calcaires que Madiran (aire géographique commune).",cahier:"Blanc sec à moelleux (passerillage), pendant blanc du Madiran.",accords:"Sec : apéritif, poisson. Moelleux : foie gras, desserts"},
+{nom:"Saint-Mont",types:["rouge","blanc","rosé"],cepages:"Rouge/Rosé : Tannat, Cabernet Franc, Cabernet-Sauvignon, Fer Servadou. Blanc : Gros Manseng, Petit Manseng, Petit Courbu, Arrufiac",sol:"Coteaux du Gers, entre Armagnac et Madiran.",cahier:"Cépages locaux préservés grâce au travail de conservatoire ampélographique de Plaimont.",accords:"Rouge : cassoulet, viandes. Blanc : fruits de mer"},
+{nom:"Tursan",types:["rouge","blanc","rosé"],cepages:"Rouge/Rosé : Tannat, Cabernet Franc, Cabernet-Sauvignon. Blanc : Gros Manseng, Petit Manseng, Baroque (cépage local rare)",sol:"Sables et graves des Landes, sud du Gers.",cahier:"Le Baroque, cépage endémique quasi unique au monde, y est emblématique.",accords:"Poulet des Landes, cuisine landaise"},
+{nom:"Pécharmant",types:["rouge"],cepages:"Merlot, Cabernet-Sauvignon, Cabernet Franc, Malbec",sol:"Coteaux de graves et de fer (\\\"tran\\\"), au nord-est de Bergerac.",cahier:"Meilleur terroir rouge du Bergeracois, structure et garde supérieures au Bergerac rouge simple.",accords:"Viandes rouges, gibier, magret"},
+{nom:"Côtes de Duras",types:["rouge","blanc","rosé"],cepages:"Rouge/Rosé : Merlot, Cabernet-Sauvignon, Cabernet Franc. Blanc : Sauvignon, Sémillon, Muscadelle",sol:"Argilo-calcaires, prolongement du Bergeracois en Lot-et-Garonne.",cahier:"Cépages bordelais, style proche de l'Entre-Deux-Mers pour le blanc.",accords:"Blanc : fruits de mer. Rouge : viandes"},
+{nom:"Côtes du Marmandais",types:["rouge","blanc","rosé"],cepages:"Rouge/Rosé : Merlot, Cabernets, Malbec, Abouriou, Syrah. Blanc : Sauvignon, Sémillon, Muscadelle",sol:"Rive de la Garonne, autour de Marmande.",cahier:"L'Abouriou (cépage local rare) apporte une touche fruitée distinctive.",accords:"Rouge : viandes, canard. Blanc : poisson"},
+{nom:"Montravel",types:["blanc"],cepages:"Sauvignon, Sémillon, Muscadelle",sol:"Rive droite de la Dordogne, ouest du Bergeracois.",cahier:"Blanc sec ; les dénominations Côtes de Montravel et Haut-Montravel couvrent les styles moelleux.",accords:"Fruits de mer, poisson"},
+{nom:"Brulhois",types:["rouge","rosé"],cepages:"Merlot, Cabernets, Malbec, Tannat, Fer Servadou",sol:"Coteaux argilo-calcaires entre Agen et Moissac.",cahier:"Petite AOC confidentielle du Lot-et-Garonne/Tarn-et-Garonne.",accords:"Viandes, cuisine locale"},
+{nom:"Coteaux du Quercy",types:["rouge","rosé"],cepages:"Cabernet Franc, Cabernet-Sauvignon, Merlot, Malbec, Gamay, Tannat",sol:"Causses calcaires du Quercy, entre Cahors et Montauban.",cahier:"AOC récente (2011), zone tampon entre Cahors et Fronton.",accords:"Viandes, cuisine quercynoise"},
 ]},
 ]},
 languedoc:{name:"Languedoc",color:"#9FE1CB",subcats:[
@@ -2477,12 +2521,26 @@ languedoc:{name:"Languedoc",color:"#9FE1CB",subcats:[
 {nom:"Languedoc",types:["rouge","blanc","rosé"],cepages:"Rouge : Grenache, Syrah, Mourvèdre min 50%. Blanc : Grenache B, Roussanne, Marsanne, Vermentino, Bourboulenc, Clairette",sol:"Calcaires, argilo-calcaires, schistes selon secteur.",cahier:"Nombreux crus : La Clape, Pic Saint-Loup, Terrasses du Larzac, Grès de Montpellier.",accords:"Rouge : viandes, agneau, gibier. Blanc : poisson, fruits de mer"},
 {nom:"Minervois",types:["rouge","blanc","rosé"],cepages:"Grenache, Syrah, Mourvèdre min 60% + Carignan, Cinsault",sol:"Calcaires et schistes entre Montagne Noire et Canal du Midi.",cahier:"AOC 1985. Minervois-La-Livinière : cru (Syrah dominante).",accords:"Agneau, viandes grillées, fromages de brebis"},
 {nom:"Corbières",types:["rouge","blanc","rosé"],cepages:"Carignan, Grenache, Syrah, Mourvèdre, Cinsault. Blanc : Grenache B, Bourboulenc, Maccabeu, Roussanne",sol:"Calcaires, schistes, grès. Entre Narbonne et Pyrénées.",cahier:"AOC 1985. Boutenac : cru (Carignan, vieilles vignes).",accords:"Viandes rouges, gibier, fromages, charcuterie"},
+{nom:"Corbières-Boutenac",types:["rouge"],cepages:"Carignan (vieilles vignes, 30% min) + Grenache, Mourvèdre, Syrah",sol:"Argilo-calcaires et grès, cœur des Corbières autour de Boutenac.",cahier:"Cru des Corbières depuis 2005, seule AOC dédiée au vieux Carignan en France.",accords:"Gibier, viandes rouges, fromages affinés"},
+{nom:"Fitou",types:["rouge"],cepages:"Carignan + Grenache, Syrah, Mourvèdre, Lledoner Pelut",sol:"Deux secteurs distincts : schistes littoraux et argilo-calcaires de l'arrière-pays.",cahier:"Plus ancienne AOC rouge du Languedoc (1948).",accords:"Cassoulet, gibier, viandes en sauce"},
+{nom:"Minervois-La Livinière",types:["rouge"],cepages:"Syrah, Mourvèdre, Grenache + Carignan (limité)",sol:"Argilo-calcaires, secteur nord du Minervois autour de La Livinière.",cahier:"Cru du Minervois depuis 1999, premier cru reconnu en Languedoc.",accords:"Viandes rouges, gibier"},
+{nom:"Cabardès",types:["rouge","rosé"],cepages:"Cabernet-Sauvignon, Cabernet Franc, Merlot (cépages atlantiques) + Syrah, Grenache, Cinsault, Fer Servadou (cépages méditerranéens)",sol:"Piémont de la Montagne Noire, à l'ouest de Carcassonne.",cahier:"Unique AOC où se rencontrent cépages bordelais et méditerranéens dans un même assemblage obligatoire.",accords:"Cassoulet, charcuterie, viandes"},
+{nom:"Malepère",types:["rouge","rosé"],cepages:"Merlot (dominant) + Cabernet Franc, Cabernet-Sauvignon, Cot, Grenache, Lledoner Pelut",sol:"Collines argilo-calcaires à l'ouest de Carcassonne, aux confins de l'Atlantique et de la Méditerranée.",cahier:"AOC la plus occidentale du Languedoc, climat déjà influencé par l'Atlantique.",accords:"Viandes rouges, charcuterie"},
+{nom:"Pic Saint-Loup",types:["rouge","rosé"],cepages:"Syrah, Grenache, Mourvèdre (au moins 2 cépages, Carignan interdit)",sol:"Garrigues calcaires au pied du pic Saint-Loup, nord de Montpellier.",cahier:"Terroir frais (relief, altitude), l'un des plus réputés du Languedoc.",accords:"Agneau, gibier, viandes rouges"},
+{nom:"Terrasses du Larzac",types:["rouge"],cepages:"Syrah, Grenache, Mourvèdre + Carignan, Cinsault, Cot",sol:"Terrasses caillouteuses au pied du Causse du Larzac, autour d'Aniane et Montpeyroux.",cahier:"AOC récente (2005, ex-Coteaux du Languedoc), fraîcheur apportée par la proximité du Larzac.",accords:"Viandes rouges, gibier, fromages de caractère"},
+{nom:"La Clape",types:["rouge","blanc","rosé"],cepages:"Rouge/Rosé : Syrah, Grenache, Mourvèdre, Carignan. Blanc : Bourboulenc (dominant) + Grenache B, Roussanne, Marsanne, Vermentino",sol:"Massif calcaire littoral près de Narbonne, quasi-îlot entouré par la mer et les étangs.",cahier:"Seule AOC languedocienne réputée aussi pour ses blancs (Bourboulenc).",accords:"Blanc : poisson, fruits de mer. Rouge : viandes, garrigue"},
+{nom:"Clairette du Languedoc",types:["blanc"],cepages:"Clairette exclusivement",sol:"Collines autour d'Adissan et Pézenas, Hérault.",cahier:"Blanc sec à moelleux/rancio selon les styles, AOC ancienne (1948) en déclin.",accords:"Apéritif, poisson"},
+{nom:"Muscat de Frontignan",types:["liquoreux"],cepages:"Muscat Blanc à Petits Grains exclusivement",sol:"Coteaux calcaires face à l'étang de Thau, autour de Frontignan.",cahier:"Vin doux naturel, l'un des plus anciens Muscat de France.",accords:"Roquefort, desserts aux fruits, foie gras"},
+{nom:"Muscat de Lunel",types:["liquoreux"],cepages:"Muscat Blanc à Petits Grains exclusivement",sol:"Coteaux autour de Lunel, entre Montpellier et Nîmes.",cahier:"Vin doux naturel confidentiel.",accords:"Desserts, fromages persillés"},
+{nom:"Muscat de Mireval",types:["liquoreux"],cepages:"Muscat Blanc à Petits Grains exclusivement",sol:"Coteaux calcaires voisins de Frontignan.",cahier:"Vin doux naturel, petite production.",accords:"Desserts, foie gras"},
+{nom:"Muscat de Saint-Jean-de-Minervois",types:["liquoreux"],cepages:"Muscat Blanc à Petits Grains exclusivement",sol:"Causse calcaire d'altitude, nord du Minervois.",cahier:"Le plus septentrional et le plus frais des Muscat languedociens.",accords:"Desserts, fromages persillés"},
 ]},
 ]},
 jura:{name:"Jura",color:"#F0997B",subcats:[
 {label:"Appellations du Jura",aocs:[
 {nom:"Château-Chalon",types:["blanc"],cepages:"Savagnin exclusivement",sol:"Marnes grises et bleues + éboulis calcaires. 45 ha, 4 communes, 270-450 m.",cahier:"Vin Jaune UNIQUEMENT. Commission peut refuser l'AOC certaines années (1974, 1980, 1984, 2001). Élevage 6 ans 3 mois min sans ouillage. Clavelin 62 cl.",accords:"Comté très affiné, morilles à la crème, poulet au vin jaune, noix fraîches"},
 {nom:"Arbois",types:["rouge","blanc","rosé"],cepages:"Blancs : Savagnin (15%), Chardonnay (45%). Rouges : Poulsard (20%), Trousseau (5%), Pinot Noir",sol:"Marnes (Savagnin, Poulsard), argiles à chailles (Trousseau). 870 ha + 30 ha Arbois-Pupillin.",cahier:"1ère AOC de France (décret 15/04/1936). Sous-appellation Arbois-Pupillin. Vin Jaune, Vin de Paille, Crémant possibles.",accords:"Poulsard : charcuterie, volaille. Trousseau : viandes rouges. Vin Jaune : Comté, morilles"},
+{nom:"Arbois-Pupillin",types:["rouge","blanc","rosé"],cepages:"Mêmes cépages qu'Arbois : Savagnin, Chardonnay, Poulsard, Trousseau, Pinot Noir",sol:"Marnes du Lias, commune de Pupillin uniquement (sud d'Arbois).",cahier:"Dénomination géographique complémentaire d'Arbois, réservée à la seule commune de Pupillin (~30 ha), réputée pour ses vins de caractère.",accords:"Poulsard : charcuterie. Trousseau : viandes rouges"},
 {nom:"Côtes du Jura",types:["rouge","blanc","rosé"],cepages:"Blancs : Savagnin, Chardonnay. Rouges : Poulsard, Trousseau, Pinot Noir",sol:"Nord-Revermont : marneux. Sud-Revermont : calcaire. 700 ha sur 80 km.",cahier:"AOC 1937. Tous types + Vin Jaune, Vin de Paille, Crémant possibles.",accords:"Blancs : fondue, comté. Rouges : volaille, saucisse de Morteau"},
 {nom:"L'Étoile",types:["blanc"],cepages:"Chardonnay (90%), Savagnin, Poulsard (Vin de Paille)",sol:"Marnes calcaires. 80 ha, 4 communes.",cahier:"Nom : 5 collines en étoile ou fossiles d'échinodermes. Blancs tranquilles, Vin Jaune et Vin de Paille uniquement.",accords:"Poisson, grenouilles, escargots, comté, quenelles de brochet"},
 {nom:"Vin Jaune",types:["blanc"],cepages:"Savagnin exclusivement",sol:"Marnes bleues du Lias et du Trias",cahier:"Exclusivité mondiale. Voile de levures (Saccharomyces oviformis). Élevage 6 ans 3 mois min SANS ouillage. Arômes : noix, noisette, curry, sotolon. Clavelin (62 cl). Garde : 100 ans.",accords:"Comté 36 mois+, morilles, poulet de Bresse, noix fraîches, curry"},
@@ -2692,6 +2750,12 @@ corse: [
 {q:"Comment appelle-t-on le vin rouge doux corse, issu de Grenache et Aleatico en surmaturité ?",opts:["Rappu","Muscat rouge","Cap Corse Doux","Vin de paille corse"],a:0,expl:"Le Rappu est une spécialité rare : vin rouge doux à base de Grenache Noir et Aleatico récoltés en surmaturité, muté à l'eau-de-vie — production confidentielle du Cap Corse."},
 {q:"Quel pourcentage de la production totale de vin corse représente l'AOC Vin de Corse (régionale) ?",opts:["20%","35%","50%","75%"],a:2,expl:"L'AOC Vin de Corse (régionale, 1976) représente environ 50% de la production totale de l'île, se déclinant en plusieurs sous-régions (Calvi, Sartène, Figari, Porto-Vecchio...)."},
 {q:"Sur quel type de sol repose l'AOC Ajaccio, favorisant la finesse du Sciaccarello ?",opts:["Calcaires argileux","Arènes granitiques","Schistes","Sables"],a:1,expl:"Les arènes granitiques d'Ajaccio offrent une structure légère qui favorise la finesse et l'élégance du Sciaccarello — contraste net avec le calcaire de Patrimonio."},
+{q:"Quelle fut la première AOC corse, créée en 1968 ?",opts:["Ajaccio","Patrimonio","Corse","Muscat du Cap Corse"],a:1,expl:"Patrimonio, sur sol calcaire au nord de l'île, fut la première appellation corse reconnue en AOC, en 1968."},
+{q:"Quel cépage rouge domine l'appellation Patrimonio, sur sol calcaire ?",opts:["Sciaccarello","Nielluccio","Grenache","Carignan"],a:1,expl:"Le Nielluccio (apparenté au Sangiovese toscan) domine à Patrimonio, où le calcaire lui apporte structure et finesse."},
+{q:"Quel vin doux naturel est produit sur la pointe nord de la Corse ?",opts:["Muscat de Rivesaltes","Muscat du Cap Corse","Muscat de Beaumes-de-Venise","Muscat de Frontignan"],a:1,expl:"Le Muscat du Cap Corse, élaboré à partir de Muscat Blanc à Petits Grains, est produit sur les coteaux escarpés de la pointe nord de l'île."},
+{q:"Laquelle de ces appellations N'EST PAS une dénomination géographique de l'AOC Corse ?",opts:["Calvi","Figari","Patrimonio","Porto-Vecchio"],a:2,expl:"Patrimonio est une AOC à part entière, distincte de l'AOC Corse et de ses dénominations géographiques (Calvi, Sartène, Figari, Porto-Vecchio, Coteaux du Cap Corse)."},
+{q:"Le Nielluccio, cépage rouge phare de Corse, est génétiquement apparenté à quel cépage italien ?",opts:["Nebbiolo","Sangiovese","Barbera","Montepulciano"],a:1,expl:"Le Nielluccio est identique au Sangiovese toscan, importé en Corse probablement par les Génois."},
+{q:"Quel type de sol caractérise Patrimonio, en contraste avec les arènes granitiques d'Ajaccio ?",opts:["Schistes","Argilo-calcaire","Sables","Grès"],a:1,expl:"Patrimonio repose sur des sols argilo-calcaires, tandis qu'Ajaccio, plus au sud, s'exprime sur des arènes granitiques favorables au Sciaccarello."},
 ],
 loire: [
 {q:"Quel est le cépage exclusif du Muscadet Sèvre et Maine ?",opts:["Sauvignon Blanc","Chenin Blanc","Melon de Bourgogne","Chardonnay"],a:2,expl:"Le Melon de Bourgogne est l'unique cépage autorisé dans le Muscadet, élevé sur lies (élevage sur lattes) pour enrichir texture et complexité."},
@@ -2741,6 +2805,12 @@ provence: [
 {q:"La Provence est la 1ère région française productrice de quelle catégorie de vin AOC ?",opts:["Blanc liquoreux","Rosé","Effervescent","Rouge de garde"],a:1,expl:"La Provence fournit 38% de la production nationale de rosés AOC, et environ 8% des rosés produits dans le monde."},
 {q:"Combien de dénominations géographiques peuvent compléter le nom de l'AOC Côtes de Provence (Sainte-Victoire, Fréjus, La Londe...) ?",opts:["3","4","5","6"],a:2,expl:"5 dénominations géographiques : Sainte-Victoire, Fréjus, La Londe, Pierrefeu et Notre-Dame-des-Anges — ensemble environ 5% de la production de l'appellation."},
 {q:"Quel département borde la Provence à l'ouest et compose l'essentiel du vignoble des Baux-de-Provence ?",opts:["Le Var","Les Alpes-Maritimes","Les Bouches-du-Rhône","Le Vaucluse"],a:2,expl:"Les Baux-de-Provence se situent dans les Bouches-du-Rhône, au pied des Alpilles, sur des sols calcaires du crétacé."},
+{q:"Quelle est approximativement la part du rosé dans la production totale de Provence ?",opts:["~40%","~60%","~89%","~99%"],a:2,expl:"Environ 89% de la production provençale est du rosé, faisant de la région le premier producteur mondial de rosé."},
+{q:"Quelle AOC minuscule, proche d'Aix-en-Provence, est dominée par le Château Simone ?",opts:["Palette","Cassis","Bellet","Baux-de-Provence"],a:0,expl:"Palette, l'une des plus petites AOC de France, est presque intégralement portée par le domaine du Château Simone."},
+{q:"Quels cépages typiques et rares composent l'AOC Bellet, sur les hauteurs de Nice ?",opts:["Rolle, Braquet, Folle Noire","Grenache, Syrah, Mourvèdre","Cinsault, Carignan, Ugni Blanc","Sciaccarello, Vermentino, Nielluccio"],a:0,expl:"Bellet, minuscule AOC niçoise, cultive des cépages quasi endémiques : Rolle (blanc), Braquet et Folle Noire (rouges)."},
+{q:"Quelle appellation provençale impose la plus forte proportion de Mourvèdre de la région ?",opts:["Côtes de Provence","Bandol","Cassis","Palette"],a:1,expl:"Bandol impose un minimum de 50% de Mourvèdre pour ses rouges, la plus forte exigence de Provence pour ce cépage tardif."},
+{q:"Quelle AOC est reconnue pour un fort engagement en agriculture biologique, autour des Alpilles ?",opts:["Coteaux d'Aix-en-Provence","Les Baux-de-Provence","Coteaux Varois en Provence","Côtes de Provence"],a:1,expl:"Les Baux-de-Provence, au pied des Alpilles, affiche l'une des plus fortes proportions de domaines certifiés bio de France."},
+{q:"Combien de dénominations géographiques complémentaires possède l'AOC Côtes de Provence ?",opts:["2","5","7","10"],a:1,expl:"Côtes de Provence compte 5 DGC : Sainte-Victoire, Fréjus, La Londe, Notre-Dame des Anges et Pierrefeu."},
 ],
 sudouest: [
 {q:"Quel pourcentage minimum de Malbec (Côt) est exigé à Cahors ?",opts:["50%","60%","70%","90%"],a:2,expl:"Le Malbec, appelé aussi Côt ou Auxerrois à Cahors, doit représenter au moins 70% de l'assemblage — Cahors est considérée comme la capitale mondiale du Malbec."},
@@ -2755,6 +2825,12 @@ sudouest: [
 {q:"Quel sol caractéristique, aux oxydes de fer, donne sa couleur au terroir de Marcillac ?",opts:["Le kimméridgien","Le rougier","Les schistes bleus","Le tuffeau"],a:1,expl:"Le 'rougier', sol argileux rougi par les oxydes de fer, est caractéristique du terroir de Marcillac — d'où sa robe sombre aux reflets violacés typique."},
 {q:"Dans quelle région culturelle se situe l'AOC Irouléguy, seule appellation viticole de la zone ?",opts:["Le Béarn","Le Pays Basque","La Bigorre","Le Comminges"],a:1,expl:"Irouléguy est la seule AOC du Pays Basque français (Basse-Navarre) — on la surnomme parfois « le plus petit vignoble de France, le plus grand du Pays Basque Nord »."},
 {q:"Face à quelle grande appellation liquoreuse bordelaise, de l'autre côté de la Dordogne, se trouve Monbazillac ?",opts:["Barsac","Sauternes","Loupiac","Cadillac"],a:1,expl:"Monbazillac fait face à Sauternes sur l'autre rive de la Dordogne, avec un botrytis favorisé par des brouillards matinaux similaires."},
+{q:"Quel cépage, rare hors Sud-Ouest, doit représenter au moins 50% de l'encépagement du Fronton ?",opts:["Négrette","Tannat","Fer Servadou","Duras"],a:0,expl:"La Négrette, cépage quasi exclusif à la région toulousaine, est le cépage identitaire de l'AOC Fronton."},
+{q:"Quel cépage, quasi unique à Marcillac, donne des arômes poivrés caractéristiques ?",opts:["Tannat","Fer Servadou (Mansois)","Duras","Négrette"],a:1,expl:"Le Fer Servadou, localement appelé Mansois, domine très largement l'encépagement de Marcillac, dans l'Aveyron."},
+{q:"Quelle AOC du Pays Basque associe Tannat, Cabernet Franc et Cabernet Sauvignon ?",opts:["Jurançon","Irouléguy","Béarn","Madiran"],a:1,expl:"Irouléguy, seule AOC du Pays Basque français, assemble Tannat et Cabernets sur des coteaux escarpés."},
+{q:"Quel cépage blanc autochtone de Gaillac, à la texture cireuse, sert aussi aux effervescents en méthode ancestrale ?",opts:["Len de l'El","Mauzac","Ondenc","Muscadelle"],a:1,expl:"Le Mauzac, cépage blanc historique de Gaillac, donne des vins tranquilles cireux et sert de base au Gaillac Mousseux en méthode ancestrale."},
+{q:"Quels cépages Manseng composent le Jurançon moelleux, vendangé tardivement en passerillage sur pied ?",opts:["Petit Manseng et Gros Manseng","Sémillon et Sauvignon","Petit Courbu et Camaralet","Colombard et Ugni Blanc"],a:0,expl:"Le Petit Manseng (peau épaisse, forte concentration) et le Gros Manseng composent l'essentiel du Jurançon moelleux."},
+{q:"Quelle rivière sépare Bergerac / Monbazillac de Sauternes / Barsac, situées sur l'autre rive ?",opts:["La Garonne","La Dordogne","Le Lot","L'Isle"],a:1,expl:"La Dordogne sépare le vignoble de Bergerac (rive droite) de celui de Sauternes et Barsac (rive gauche), avec des conditions de botrytis comparables."},
 ],
 rhone: [
 {q:"Combien de cépages sont autorisés dans l'AOC Châteauneuf-du-Pape ?",opts:["9","11","13","18"],a:2,expl:"13 cépages sont autorisés à Châteauneuf-du-Pape : Grenache, Syrah, Mourvèdre, Cinsault, Clairette, Bourboulenc, Roussanne, Counoise, Muscardin, Picardan, Picpoul, Terret Noir, Camarèse."},
@@ -2794,6 +2870,12 @@ beaujolais: [
 {q:"Quel cru peut être commercialisé sous l'appellation Moulin-à-Vent selon la réglementation ?",opts:["Fleurie","Chénas","Morgon","Brouilly"],a:1,expl:"Les vins de Chénas peuvent être commercialisés sous l'AOC Moulin-à-Vent (les 2 crus étant limitrophes et partageant certains terroirs), une facilité réglementaire historique."},
 {q:"Sur quels 2 départements s'étend le vignoble du Beaujolais ?",opts:["Rhône et Loire","Rhône et Saône-et-Loire","Ain et Rhône","Saône-et-Loire et Ain"],a:1,expl:"Le Beaujolais s'étend sur le Rhône (majoritaire) et la Saône-et-Loire (nord de la région, notamment Saint-Amour), soit 96 communes au total."},
 {q:"Quelle levure est responsable de l'arôme de banane typique du Beaujolais Nouveau ?",opts:["Saccharomyces cerevisiae standard","La levure B71","Aucune levure spécifique, c'est naturel","Brettanomyces"],a:1,expl:"La levure exogène B71, particulièrement efficace et utilisée en macération semi-carbonique, est responsable de l'arôme caractéristique de banane du Beaujolais Nouveau."},
+{q:"Quel jour est traditionnellement fixé la sortie du Beaujolais Nouveau ?",opts:["Le premier jeudi de novembre","Le troisième jeudi de novembre","Le dernier jeudi d'octobre","Le premier jeudi de décembre"],a:1,expl:"Le Beaujolais Nouveau est traditionnellement commercialisé le troisième jeudi de novembre à minuit."},
+{q:"Quel cru du Beaujolais, réputé le plus charpenté et apte à la garde, est parfois surnommé le 'Bourgogne du Beaujolais' ?",opts:["Fleurie","Chiroubles","Moulin-à-Vent","Saint-Amour"],a:2,expl:"Moulin-à-Vent, sur sol riche en manganèse, produit les vins les plus structurés et les plus aptes à la garde du Beaujolais."},
+{q:"Quel type de sol distingue principalement les crus du Beaujolais (nord) du Beaujolais générique (sud) ?",opts:["Granite au nord, argilo-calcaire au sud","Calcaire au nord, granite au sud","Argile partout","Sables partout"],a:0,expl:"Les crus du nord reposent sur des sols granitiques, tandis que le Beaujolais et Beaujolais-Villages du sud s'expriment sur des sols argilo-calcaires."},
+{q:"Quel phénomène de vieillissement particulier caractérise le cru Morgon, sur sol de schistes altérés ?",opts:["Le 'morgonner' (évolution vers des notes de kirsch et de pruneau)","L'oxydation précoce","La prise de mousse spontanée","Le développement de Botrytis"],a:0,expl:"Le 'morgonner' désigne l'évolution typique des Morgon vers des arômes de kirsch et de fruits confits en vieillissant, due à la roche pourrie."},
+{q:"Quel est le seul cru du Beaujolais dont le nom évoque directement un moulin emblématique ?",opts:["Chénas","Moulin-à-Vent","Juliénas","Régnié"],a:1,expl:"Moulin-à-Vent tire son nom du moulin à vent classé qui domine ses coteaux."},
+{q:"Quel cru du Beaujolais, le plus récent (1988), porte le nom d'un village entre Morgon et Brouilly ?",opts:["Régnié","Côte de Brouilly","Chiroubles","Fleurie"],a:0,expl:"Régnié, promu cru en 1988, est le dixième et dernier cru du Beaujolais reconnu à ce jour."},
 ],
 jura: [
 {q:"Quel cépage est exclusif au Vin Jaune du Jura ?",opts:["Chardonnay","Poulsard","Trousseau","Savagnin"],a:3,expl:"Le Savagnin est le seul cépage autorisé pour le Vin Jaune — représentant 15% de l'encépagement jurassien mais concentrant toute la singularité de la région."},
@@ -2808,6 +2890,12 @@ jura: [
 {q:"D'où vient le nom de l'AOC L'Étoile, dans le Jura ?",opts:["De la forme du village vu du ciel","Des fossiles en forme d'étoile (crinoïdes) trouvés dans le sol","D'un cépage appelé Étoile","D'une légende viticole locale"],a:1,expl:"L'Étoile tire son nom des fossiles marins en forme d'étoile (crinoïdes/pentacrines) que l'on trouve abondamment dans ses sols calcaires du Jurassique."},
 {q:"Quel fromage AOP est l'accord classique et régional du Vin Jaune ?",opts:["Reblochon","Comté (vieux, affiné)","Époisses","Beaufort"],a:1,expl:"Le Comté bien affiné (18-24 mois et plus) est l'accord terroir emblématique du Vin Jaune — les notes de noix se répondent entre le vin et le fromage."},
 {q:"Quelle appellation régionale du Jura peut produire les 4 couleurs/styles (rouge, blanc, rosé et Vin Jaune) ?",opts:["Arbois seul","Côtes du Jura","L'Étoile","Château-Chalon"],a:1,expl:"Côtes du Jura est l'appellation régionale la plus large, capable de produire toutes les couleurs, y compris le Vin Jaune et le Vin de Paille."},
+{q:"Quelle est la seule AOC du Jura consacrée exclusivement au Vin Jaune ?",opts:["Arbois","L'Étoile","Château-Chalon","Côtes du Jura"],a:2,expl:"Château-Chalon est la seule appellation jurassienne à ne produire que du Vin Jaune, 100% Savagnin sous voile."},
+{q:"D'où vient le nom de l'appellation jurassienne L'Étoile ?",opts:["La forme de son vignoble","Des fossiles en forme d'étoile de mer dans le sol","Un hommage à Napoléon","La disposition des parcelles"],a:1,expl:"Le nom L'Étoile viendrait des nombreux fossiles de crinoïdes (étoiles de mer) présents dans les marnes du sous-sol."},
+{q:"Comment s'appelle le vin de liqueur typique du Jura, obtenu par mutage de moût au marc ?",opts:["Pineau des Charentes","Macvin du Jura","Floc de Gascogne","Ratafia"],a:1,expl:"Le Macvin du Jura, vin de liqueur muté au marc de Franche-Comté, est une spécialité régionale au même titre que le Vin Jaune."},
+{q:"Le Poulsard, cépage rouge jurassien à peau fine, donne généralement des vins de quelle robe ?",opts:["Rouge foncé et tannique","Rouge pâle et léger","Blanc","Rosé uniquement"],a:1,expl:"Le Poulsard, très peu coloré et peu tannique, donne des rouges pâles proches du rosé, parfois vinifiés en blanc de noir."},
+{q:"L'absence d'ouillage, permettant le développement du voile de levures, caractérise l'élaboration de quel vin jurassien ?",opts:["Le Vin Jaune","Le Crémant du Jura","Le Vin de Paille","Le Macvin"],a:0,expl:"Le Vin Jaune est élevé sans ouillage (sans compléter l'évaporation), ce qui permet au voile de levures de se développer et de l'oxyder de façon ménagée."},
+{q:"Quelle est la méthode d'élaboration du Crémant du Jura ?",opts:["Méthode ancestrale","Méthode traditionnelle","Méthode Charmat","Méthode Solera"],a:1,expl:"Le Crémant du Jura est élaboré en méthode traditionnelle, avec seconde fermentation en bouteille comme en Champagne."},
 ],
 savoie: [
 {q:"Quel cépage blanc domine largement le vignoble de Savoie ?",opts:["Altesse","Jacquère","Roussanne","Chardonnay"],a:1,expl:"La Jacquère est le cépage blanc le plus planté en Savoie, donnant des vins légers, frais et vivifiants comme Apremont et Abymes."},
@@ -2821,6 +2909,12 @@ savoie: [
 {q:"Quels sont les 4 crus reconnus de la Roussette de Savoie ?",opts:["Apremont, Abymes, Chignin, Arbin","Frangy, Marestel, Monterminod, Monthoux","Frangy, Seyssel, Chignin, Cruet","Marestel, Chautagne, Ripaille, Crépy"],a:1,expl:"Les 4 crus de la Roussette de Savoie (100% Altesse) sont Frangy, Marestel, Monterminod et Monthoux, le long du Rhône et du lac du Bourget."},
 {q:"Quel cépage doit représenter au minimum 40% de l'assemblage du Crémant de Savoie ?",opts:["Chardonnay","Altesse","Jacquère","Chasselas"],a:2,expl:"Le Crémant de Savoie (AOC depuis 2014, le dernier crémant français reconnu) impose au moins 40% de Jacquère, le Chardonnay étant limité à 40% maximum."},
 {q:"Quel massif/paysage a façonné la minéralité typique des vins de Savoie ?",opts:["Volcans éteints","Glaciers et moraines alpines","Dunes sableuses","Marais salants"],a:1,expl:"Les terroirs savoyards ont été façonnés par les glaciers et moraines alpines, donnant aux vins leur minéralité et fraîcheur singulières."},
+{q:"Quel cépage unique compose l'AOC Vin de Savoie Ayze ?",opts:["Jacquère","Altesse","Gringet","Mondeuse"],a:2,expl:"Le Gringet, cépage rare et local, est le seul cépage autorisé pour l'appellation Ayze, y compris en effervescent."},
+{q:"Quel cépage donne l'appellation Roussette de Savoie ?",opts:["Jacquère","Altesse","Mondeuse","Chasselas"],a:1,expl:"L'Altesse, aussi appelée Roussette, est le cépage exclusif de l'appellation Roussette de Savoie."},
+{q:"Quel cru rouge savoyard est réputé être vinifié en 100% Mondeuse ?",opts:["Chignin","Apremont","Arbin","Abymes"],a:2,expl:"Arbin, sur la rive gauche de l'Isère, est le cru rouge savoyard associé de longue date à la Mondeuse, cépage identitaire de Savoie."},
+{q:"Le Vin de Savoie a été reconnu en AOC en quelle année ?",opts:["1953","1973","1985","2009"],a:1,expl:"L'appellation Vin de Savoie a été officiellement reconnue en AOC en 1973."},
+{q:"Le cépage Chasselas, cultivé sur les rives du lac Léman, entre dans quelle appellation savoyarde ?",opts:["Crépy","Apremont","Chignin","Arbin"],a:0,expl:"Crépy, au bord du lac Léman, est élaboré exclusivement à partir de Chasselas."},
+{q:"Quel massif calcaire, célèbre pour son éboulis de 1248, domine le vignoble d'Apremont et des Abymes ?",opts:["Mont Granier","Mont Blanc","La Vanoise","Mont Ventoux"],a:0,expl:"L'éboulement du Mont Granier en 1248 a façonné les sols d'éboulis calcaires typiques d'Apremont et des Abymes."},
 ],
 languedoc: [
 {q:"Quel cépage est exclusif à l'AOC Picpoul de Pinet ?",opts:["Picpoul Blanc","Clairette","Vermentino","Grenache Blanc"],a:0,expl:"Le Picpoul Blanc, cépage méditerranéen local, est exclusif à cette petite AOC près de l'étang de Thau — vins frais et acidulés, parfaits avec les huîtres de Bouzigues."},
@@ -2834,6 +2928,12 @@ languedoc: [
 {q:"Quel cépage domine le Crémant de Limoux, à la différence de la Blanquette ?",opts:["Mauzac","Chardonnay","Chenin","Pinot Noir"],a:1,expl:"Le Crémant de Limoux est dominé par le Chardonnay (50 à 90%), complété par Chenin, Mauzac et Pinot Noir — profil différent de la Blanquette, dominée par le Mauzac."},
 {q:"Quels 3 cépages dominent l'appellation Pic Saint-Loup ?",opts:["Grenache, Cinsault, Carignan","Syrah, Grenache, Mourvèdre","Merlot, Cabernet, Syrah","Carignan, Mourvèdre, Cinsault"],a:1,expl:"Syrah, Grenache et Mourvèdre dominent les replantations du Pic Saint-Loup depuis une trentaine d'années — la Syrah y est le cépage le plus typé aromatiquement."},
 {q:"Combien l'appellation Languedoc compte-t-elle de « Crus », son haut de gamme reconnu en AOC à part entière ?",opts:["3","5","7","10"],a:1,expl:"5 Crus du Languedoc : Pic Saint-Loup, Corbières-Boutenac, La Clape, Minervois-La Livinière et Terrasses du Larzac."},
+{q:"Quelle AOC languedocienne est réputée être le berceau du tout premier vin effervescent, dès 1531 ?",opts:["Crémant de Limoux","Blanquette de Limoux","Clairette de Die","Saint-Péray"],a:1,expl:"La Blanquette de Limoux, élaborée par les moines de l'abbaye Saint-Hilaire dès 1531, est considérée comme le plus ancien vin effervescent connu au monde."},
+{q:"Quelle AOC blanche du littoral languedocien accompagne classiquement les huîtres de Bouzigues ?",opts:["Picpoul de Pinet","Clairette du Languedoc","La Clape Blanc","Limoux Blanc"],a:0,expl:"Le Picpoul de Pinet, vif et iodé, est l'accord traditionnel des huîtres de l'étang de Thau et de Bouzigues."},
+{q:"Quelle est la plus ancienne AOC rouge du Languedoc, reconnue dès 1948 ?",opts:["Corbières","Faugères","Fitou","Minervois"],a:2,expl:"Fitou, reconnue en 1948, est la doyenne des AOC rouges du Languedoc."},
+{q:"Quel cépage, historiquement majoritaire, reste emblématique de Corbières-Boutenac (minimum 30%) ?",opts:["Grenache","Carignan","Syrah","Cinsault"],a:1,expl:"Corbières-Boutenac impose un minimum de 30% de Carignan, cépage identitaire de ce cru du Languedoc."},
+{q:"Le Cru Terrasses du Larzac se situe sur les contreforts de quel plateau calcaire ?",opts:["Le Causse du Larzac","Le Plateau de Valensole","Le Causse de Sauveterre","Le Plateau de Sault"],a:0,expl:"Terrasses du Larzac s'étend sur les avant-monts du Causse du Larzac, au nord de Montpellier."},
+{q:"Quel cépage aromatique donne le Muscat de Frontignan, vin doux naturel du Languedoc ?",opts:["Muscat Blanc à Petits Grains","Muscat d'Alexandrie","Muscat Ottonel","Gewurztraminer"],a:0,expl:"Le Muscat Blanc à Petits Grains, le plus fin des Muscat, est le cépage exclusif du Muscat de Frontignan."},
 ],
 lorraine: [
 {q:"Quelle est la spécialité des Côtes de Toul, en Lorraine ?",opts:["Vin de paille","Vin gris","Vin jaune","Vin liquoreux"],a:1,expl:"Le vin gris est la spécialité des Côtes de Toul : un rosé très pâle obtenu par pressurage direct de raisins rouges, sans macération."},
@@ -2845,6 +2945,12 @@ lorraine: [
 {q:"Quel cépage domine l'assemblage du Gris de Toul ?",opts:["Gamay","Pinot Noir","Auxerrois","Pinot Meunier"],a:1,expl:"Le Gris de Toul est élaboré principalement à partir de Pinot Noir, avec parfois une touche de Gamay en assemblage."},
 {q:"Quelle dénomination IGP concerne un troisième secteur viticole lorrain, en renaissance, autour de Vigneulles-lès-Hattonchâtel ?",opts:["Côtes de Meuse","Côtes de Moselle","Vallée de la Meurthe","Pays du Saintois"],a:0,expl:"Les Côtes de Meuse (IGP) forment, avec Côtes de Toul et Moselle (toutes deux AOC), le troisième secteur du petit vignoble lorrain."},
 {q:"Quelle couleur de vin représente la majorité de la production lorraine ?",opts:["Blanc","Rouge","Rosé (vin gris)","Effervescent"],a:2,expl:"Le vin gris (rosé pâle) représente environ 55% de la production lorraine, devant le rouge (20%), le blanc (15%) et les mousseux (10%)."},
+{q:"Quelle ville est le centre historique du vignoble des Côtes de Toul ?",opts:["Metz","Toul","Nancy","Verdun"],a:1,expl:"Toul, sur les rives de la Moselle près de Nancy, est le centre historique de cette petite AOC lorraine, connue pour son vin gris."},
+{q:"Quel cépage domine l'élaboration du célèbre vin gris des Côtes de Toul ?",opts:["Gamay","Pinot Meunier","Chardonnay","Sylvaner"],a:0,expl:"Le Gamay, pressuré directement, donne ce rosé très pâle typique des Côtes de Toul, complété par du Pinot Noir et de l'Auxerrois."},
+{q:"L'AOC Moselle, reconnue en 2010, se situe autour de quelle ville ?",opts:["Nancy","Épinal","Metz","Bar-le-Duc"],a:2,expl:"L'AOC Moselle couvre les coteaux autour de Metz, ancien VDQS promu AOC en 2010, avec des blancs à base d'Auxerrois et de Pinot Blanc."},
+{q:"Avant de devenir AOC, Côtes de Toul et Moselle étaient classées comment ?",opts:["Vin de Pays","VDQS","IGP","Cru Bourgeois"],a:1,expl:"Les deux appellations lorraines sont passées du statut de VDQS (Vin Délimité de Qualité Supérieure) à celui d'AOC, respectivement en 1998 et 2010."},
+{q:"Quel cépage blanc, également emblématique d'Alsace voisine, est cultivé en Moselle lorraine ?",opts:["Auxerrois","Ugni Blanc","Colombard","Melon de Bourgogne"],a:0,expl:"L'Auxerrois, cépage rond et souple, est très présent en Moselle lorraine comme en Alsace toute proche."},
+{q:"En Côtes de Toul, quel cépage rouge est autorisé aux côtés du Gamay pour les rouges et le vin gris ?",opts:["Merlot","Pinot Noir","Cabernet Franc","Syrah"],a:1,expl:"Le Pinot Noir complète le Gamay dans l'encépagement rouge des Côtes de Toul, aux côtés de l'Auxerrois et de l'Aligoté en blanc."},
 ],
 };
 
@@ -4050,6 +4156,14 @@ const PARTIEL_TEMPLATES = [
         {aoc:'Bergerac Blanc Sec', autre:'Côtes de Duras Blanc', cepage:'Sauvignon / Sémillon', vignoble:'Sud-Ouest', accord:'Fruits de mer'},
         {aoc:'Listrac-Médoc', autre:'Moulis / Haut-Médoc', cepage:'Cabernet-Sauvignon', vignoble:'Médoc — Bordeaux', accord:'Entrecôte grillée'},
         {aoc:'Pomerol', autre:'Saint-Émilion / Lalande-de-Pomerol', cepage:'Merlot', vignoble:'Libournais — Bordeaux', accord:'Magret de canard aux cèpes'},
+        {aoc:'Côtes de Toul Gris', autre:'Moselle Rosé', cepage:'Gamay', vignoble:'Lorraine', accord:'Quiche lorraine'},
+        {aoc:'Moselle Blanc', autre:'Côtes de Toul Blanc', cepage:'Auxerrois / Pinot Blanc', vignoble:'Lorraine', accord:'Tarte à l\'oignon'},
+        {aoc:'L\'Étoile', autre:'Côtes du Jura Blanc', cepage:'Chardonnay / Savagnin', vignoble:'Jura', accord:'Poulet au vin jaune et morilles'},
+        {aoc:'Chignin-Bergeron', autre:'Condrieu', cepage:'Roussanne', vignoble:'Savoie', accord:'Quenelles de brochet'},
+        {aoc:'Muscat du Cap Corse', autre:'Muscat de Beaumes-de-Venise', cepage:'Muscat Blanc à Petits Grains', vignoble:'Corse', accord:'Fiadone (tarte au fromage corse)'},
+        {aoc:'Picpoul de Pinet', autre:'Muscadet Sèvre et Maine', cepage:'Picpoul', vignoble:'Languedoc', accord:'Huîtres de Bouzigues'},
+        {aoc:'Irouléguy Rouge', autre:'Madiran', cepage:'Tannat', vignoble:'Sud-Ouest', accord:'Axoa de veau basque'},
+        {aoc:'Bellet Rouge', autre:'Côtes de Provence', cepage:'Braquet / Folle Noire', vignoble:'Provence', accord:'Daube niçoise'},
       ];
       const n = 10 + Math.floor(Math.random()*3); // 10, 11 ou 12
       let filtered = pool;
@@ -4299,6 +4413,12 @@ const PARTIEL_TEMPLATES = [
         {cepage:'Meunier (Pinot Meunier)', aoc:'Champagne', vignoble:'Champagne'},
         {cepage:'Picpoul (Piquepoul)', aoc:'Picpoul de Pinet', vignoble:'Languedoc'},
         {cepage:'Bourboulenc', aoc:'Châteauneuf-du-Pape Blanc', vignoble:'Rhône Sud'},
+        {cepage:'Gamay (vin gris)', aoc:'Côtes de Toul', vignoble:'Lorraine'},
+        {cepage:'Auxerrois', aoc:'Moselle', vignoble:'Lorraine'},
+        {cepage:'Gringet', aoc:'Vin de Savoie Ayze', vignoble:'Savoie'},
+        {cepage:'Sciaccarello', aoc:'Ajaccio', vignoble:'Corse'},
+        {cepage:'Picpoul', aoc:'Picpoul de Pinet', vignoble:'Languedoc'},
+        {cepage:'Braquet', aoc:'Bellet', vignoble:'Provence'},
       ];
       const n = 10 + Math.floor(Math.random()*3); // 10, 11 ou 12
       let filtered = all;
@@ -9923,31 +10043,76 @@ const ORGA_TYPES = [
   {key:'sec',          label:'Sec',          dot:'#0C4A6E', bg:'#F0F9FF', text:'#0C4A6E'},
 ];
 
-/* Cépages principaux (les plus fréquents dans les 202 AOC). Le matching se fait
-   par simple inclusion de texte dans le champ "cepages" existant de chaque AOC,
-   pas besoin de retagger les 202 fiches une par une. */
+/* Cépages détectés dans les 202 AOC (par inclusion de texte dans le champ
+   "cepages" existant de chaque fiche, sans avoir à retagger les 202 fiches
+   une par une). "rare:true" = présent dans moins de 10 fiches sur 202 —
+   affiché dans un sous-groupe séparé. "minor:true" = jamais présenté comme
+   dominant/exclusif dans le texte actuel des fiches, toujours en appoint
+   dans un assemblage — indiqué visuellement plutôt que masqué, car certains
+   sont sous-représentés par le texte plus que réellement mineurs (Riesling,
+   Gewurztraminer... en Alsace par ex., où le vin final est mono-cépage). */
 const ORGA_CEPAGES = [
-  {label:'Cabernet-Sauvignon', match:['cabernet-sauvignon','cabernet sauvignon']},
-  {label:'Cabernet Franc',     match:['cabernet-franc','cabernet franc']},
-  {label:'Merlot',             match:['merlot']},
-  {label:'Malbec',             match:['malbec']},
+  // — Courants (≥10 fiches) —
+  {label:'Sauvignon',          match:['sauvignon'], exclude:['cabernet-sauvignon','cabernet sauvignon']},
   {label:'Pinot Noir',         match:['pinot noir']},
-  {label:'Pinot Gris',         match:['pinot gris']},
-  {label:'Gamay',              match:['gamay']},
-  {label:'Syrah',              match:['syrah']},
-  {label:'Grenache',           match:['grenache']},
-  {label:'Mourvèdre',          match:['mourvèdre','mourvedre']},
-  {label:'Carignan',           match:['carignan']},
-  {label:'Cinsault',           match:['cinsault','cinsaut']},
   {label:'Chardonnay',         match:['chardonnay']},
-  {label:'Sauvignon',          match:['sauvignon']},
+  {label:'Gamay',              match:['gamay']},
+  {label:'Merlot',             match:['merlot'], exclude:['merlot blanc']},
+  {label:'Cabernet-Sauvignon', match:['cabernet-sauvignon','cabernet sauvignon']},
+  {label:'Grenache',           match:['grenache']},
+  {label:'Syrah',              match:['syrah']},
+  {label:'Mourvèdre',          match:['mourvèdre','mourvedre']},
   {label:'Sémillon',           match:['sémillon','semillon']},
-  {label:'Chenin',             match:['chenin']},
+  {label:'Muscadelle',         match:['muscadelle']},
+  {label:'Cinsault',           match:['cinsault','cinsaut']},
   {label:'Clairette',          match:['clairette']},
+  {label:'Pinot Gris',         match:['pinot gris']},
   {label:'Roussanne',          match:['roussanne']},
-  {label:'Marsanne',           match:['marsanne']},
-  {label:'Vermentino / Rolle', match:['vermentino','rolle']},
+  {label:'Chenin',             match:['chenin']},
+  {label:'Vermentino / Rolle', match:['vermentino','rolle'], exclude:['grolleau']},
+  {label:'Cabernet Franc',     match:['cabernet-franc','cabernet franc']},
+  {label:'Carignan',           match:['carignan']},
   {label:'Bourboulenc',        match:['bourboulenc']},
+  // — Plus rares (<10 fiches) —
+  {label:'Malbec',             match:['malbec'], rare:true},
+  {label:'Marsanne',           match:['marsanne'], rare:true},
+  {label:'Savagnin',           match:['savagnin'], rare:true},
+  {label:'Pinot Meunier',      match:['pinot meunier'], rare:true, minor:true},
+  {label:'Sciaccarello',       match:['sciaccarello'], rare:true},
+  {label:'Nielluccio',         match:['nielluccio','niellucciu'], rare:true},
+  {label:'Muscat',             match:['muscat'], rare:true},
+  {label:'Altesse / Roussette',match:['altesse','roussette'], rare:true},
+  {label:'Poulsard',           match:['poulsard','ploussard'], rare:true, minor:true},
+  {label:'Petit Verdot',       match:['petit verdot'], rare:true, minor:true},
+  {label:'Trousseau',          match:['trousseau'], rare:true, minor:true},
+  {label:"Pineau d'Aunis",     match:["pineau d'aunis"], rare:true},
+  {label:'Riesling',           match:['riesling'], rare:true, minor:true},
+  {label:'Viognier',           match:['viognier'], rare:true},
+  {label:'Aligoté',            match:['aligoté','aligote'], rare:true},
+  {label:'Ugni Blanc',         match:['ugni blanc'], rare:true, minor:true},
+  {label:'Auxerrois',          match:['auxerrois'], exclude:['côt/auxerrois','cot/auxerrois','côt / auxerrois','cot / auxerrois'], rare:true, minor:true},
+  {label:'Pinot Blanc',        match:['pinot blanc'], rare:true, minor:true},
+  {label:'Grolleau',           match:['grolleau'], rare:true, minor:true},
+  {label:'Gewurztraminer',     match:['gewurztraminer','gewurz'], rare:true, minor:true},
+  {label:'Melon de Bourgogne', match:['melon'], rare:true},
+  {label:'Mondeuse',           match:['mondeuse'], rare:true, minor:true},
+  {label:'Picpoul / Piquepoul',match:['picpoul','piquepoul'], rare:true},
+  {label:'Colombard',          match:['colombard'], rare:true, minor:true},
+  {label:'Jacquère',           match:['jacquère','jacquere'], rare:true},
+  {label:'Fer Servadou',       match:['fer servadou','braucol','mansois'], rare:true, minor:true},
+  {label:'Tannat',             match:['tannat'], rare:true},
+  {label:'Petit Manseng',      match:['petit manseng'], rare:true},
+  {label:'Gros Manseng',       match:['gros manseng'], rare:true},
+  {label:'Chasselas',          match:['chasselas'], rare:true},
+  {label:'Counoise',           match:['counoise'], rare:true, minor:true},
+  {label:'Négrette',           match:['négrette','negrette'], rare:true, minor:true},
+  {label:'Duras',              match:['duras'], rare:true, minor:true},
+  {label:'Terret Noir',        match:['terret noir','terret'], rare:true, minor:true},
+  {label:'Muscardin',          match:['muscardin'], rare:true, minor:true},
+  {label:'Folle Blanche',      match:['folle blanche'], rare:true, minor:true},
+  {label:'Mauzac',             match:['mauzac'], rare:true, minor:true},
+  {label:"Len de l'El",        match:["len de l'el","loin de l'œil","loin de l'oeil"], rare:true, minor:true},
+  {label:'Sylvaner',           match:['sylvaner'], rare:true},
 ];
 const ORGA_CEPAGE_COLORS = ["#3d6fb4","#2f9e6e","#c0567a","#b45309","#7c5cff","#0369A1","#993C1D","#00857a","#8a5a2b"];
 
@@ -9965,7 +10130,10 @@ function orgaGetAllAocs(){
 }
 
 function orgaCepageTextMatch(aoc, cepageEntry){
-  const text = (aoc.cepages || '').toLowerCase();
+  let text = (aoc.cepages || '').toLowerCase();
+  if (cepageEntry.exclude){
+    cepageEntry.exclude.forEach(ex => { text = text.split(ex.toLowerCase()).join(' '); });
+  }
   return cepageEntry.match.some(alias => text.includes(alias));
 }
 
@@ -9999,20 +10167,22 @@ function orgaLeafHTML(a){
   </div></li>`;
 }
 
-function orgaAocsInRegionMatching(region, predicate){
-  const out = [];
-  region.subcats.forEach(sc => sc.aocs.forEach(a => { if (predicate(a)) out.push(a); }));
-  return out;
-}
-
 function orgaRegionSubgroupsHTML(predicate){
   return Object.values(DATA).map(region => {
-    const aocs = orgaAocsInRegionMatching(region, predicate);
-    if (!aocs.length) return '';
+    const subcatsHTML = region.subcats.map(sc => {
+      const aocs = sc.aocs.filter(predicate);
+      if (!aocs.length) return '';
+      return `<li>
+        <div class="orga-node orga-subcat-node">${escapeHtml(sc.label)}</div>
+        <span class="orga-hline"></span>
+        <ul>${aocs.map(orgaLeafHTML).join('')}</ul>
+      </li>`;
+    }).join('');
+    if (!subcatsHTML) return '';
     return `<li>
-      <div class="orga-node orga-subcat-node">${escapeHtml(region.name)}</div>
+      <div class="orga-node orga-subcat-node" style="background:${region.color}33;border-color:${region.color};font-weight:700;">${escapeHtml(region.name)}</div>
       <span class="orga-hline"></span>
-      <ul>${aocs.map(orgaLeafHTML).join('')}</ul>
+      <ul>${subcatsHTML}</ul>
     </li>`;
   }).join('');
 }
@@ -10093,13 +10263,18 @@ function orgaSetSort(mode){
   orgaRenderTree();
 }
 
+function orgaCepageChipHTML(c){
+  const minorTag = c.minor ? `<span class="orga-minor-tag" title="Toujours en assemblage secondaire dans les fiches actuelles, jamais dominant">· appoint</span>` : '';
+  return `<div class="orga-chip" id="orgaChipCepage-${orgaSlug(c.label)}" onclick="orgaToggleCepage('${c.label.replace(/'/g,"\\'")}')">${c.label}${minorTag}</div>`;
+}
+
 function orgaBuildFilterChips(){
   document.getElementById('orgaTypeChips').innerHTML = ORGA_TYPES.map(t => `
     <div class="orga-chip" id="orgaChipType-${orgaSlug(t.key)}" onclick="orgaToggleType('${t.key}')">
       <span class="orga-fdot" style="background:${t.dot}"></span>${t.label}
     </div>`).join('');
-  document.getElementById('orgaCepageChips').innerHTML = ORGA_CEPAGES.map(c => `
-    <div class="orga-chip" id="orgaChipCepage-${orgaSlug(c.label)}" onclick="orgaToggleCepage('${c.label.replace(/'/g,"\\'")}')">${c.label}</div>`).join('');
+  document.getElementById('orgaCepageChips').innerHTML = ORGA_CEPAGES.filter(c => !c.rare).map(orgaCepageChipHTML).join('');
+  document.getElementById('orgaCepageChipsRare').innerHTML = ORGA_CEPAGES.filter(c => c.rare).map(orgaCepageChipHTML).join('');
 }
 
 function orgaRenderLegend(){
@@ -10163,6 +10338,11 @@ function buildOrganigrammeScreen(){
           <div class="orga-group">
             <div class="orga-group-title">Cépage principal</div>
             <div class="orga-chip-row" id="orgaCepageChips"></div>
+          </div>
+          <div class="orga-group">
+            <div class="orga-group-title">Cépages plus rares</div>
+            <div class="orga-group-hint">"· appoint" = toujours en assemblage secondaire dans les fiches actuelles, jamais dominant</div>
+            <div class="orga-chip-row" id="orgaCepageChipsRare"></div>
           </div>
           <div class="orga-drawer-actions"><button onclick="orgaClearFilters()">Réinitialiser les filtres</button></div>
         </div>
