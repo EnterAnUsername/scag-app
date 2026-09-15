@@ -1624,6 +1624,16 @@ body.has-tabbar .sommelia-fab{display:block;}
         <span class="quiz-type-arrow">›</span>
       </div>
 
+      <div class="quiz-type-card" onclick="goTo('quiz-exercices');buildExercicesMenu()">
+        <div class="quiz-type-icon">🧠</div>
+        <div class="quiz-type-body">
+          <div class="quiz-type-title">Exercices</div>
+          <div class="quiz-type-desc">Cépages & tableau des couleurs — une ou plusieurs régions</div>
+          <span class="quiz-type-badge">Sélection région</span>
+        </div>
+        <span class="quiz-type-arrow">›</span>
+      </div>
+
       <div class="quiz-type-card" onclick="goTo('quiz-oral');buildOralScreen()">
         <div class="quiz-type-icon">🎤</div>
         <div class="quiz-type-body">
@@ -1709,6 +1719,7 @@ body.has-tabbar .sommelia-fab{display:block;}
 </div>
 <div class="screen" id="screen-quiz-va"></div>
 <div class="screen" id="screen-quiz-partiels"></div>
+<div class="screen" id="screen-quiz-exercices"></div>
 <div class="screen" id="screen-quiz-oral"></div>
 
 <!-- ═══════════════ QUIZ — ACTIF ═══════════════ -->
@@ -2489,64 +2500,78 @@ provence:{name:"Provence",color:"#F4C0D1",subcats:[
 ]},
 ]},
 sudouest:{name:"Sud-Ouest",color:"#FDE68A",subcats:[
-{label:"Appellations du Sud-Ouest",aocs:[
+{label:"Le Bergeracois",aocs:[
+{nom:"Bergerac",types:["rouge","blanc","rosé"],cepages:"Rouge : Merlot, CF, CS, Malbec, Fer Servadou. Blanc : Sémillon, Sauvignon, Muscadelle",sol:"Argilo-calcaires et terrasses graveleuses. 2 rives de la Dordogne.",cahier:"AOC 1936. Sous-appellations : Pécharmant (rouge, tannique), Monbazillac (blanc liquoreux, botrytis), Montravel, Rosette.",accords:"Rouge : canard, magret. Blanc sec : poisson"},
+{nom:"Monbazillac",types:["liquoreux"],cepages:"Sémillon, Sauvignon, Muscadelle",sol:"Argilo-calcaires, coteaux dominant la Dordogne.",cahier:"Botrytis cinerea. Tries successives. 'Sauternes du Périgord'.",accords:"Foie gras, roquefort, desserts"},
+{nom:"Pécharmant",types:["rouge"],cepages:"Merlot, Cabernet-Sauvignon, Cabernet Franc, Malbec",sol:"Coteaux de graves et de fer (\\\"tran\\\"), au nord-est de Bergerac.",cahier:"Meilleur terroir rouge du Bergeracois, structure et garde supérieures au Bergerac rouge simple.",accords:"Viandes rouges, gibier, magret"},
+{nom:"Rosette",types:["moelleux"],cepages:"Sémillon, Sauvignon, Muscadelle (2 cépages mini)",sol:"Coteaux de sables et graviers au N-O de Bergerac, rive droite, même terroir que Pécharmant.",cahier:"AOC 1946. 125 ha délimités, 28 ha revendiqués seulement. 12% mini, sucres résiduels entre 25 et 51 g/l.",accords:"Apéritif, foie gras léger, desserts peu sucrés"},
+{nom:"Saussignac",types:["moelleux","liquoreux"],cepages:"Sémillon, Sauvignon, Muscadelle 50% mini + Ondenc, Chenin, Ugni Blanc",sol:"Plateau calcaire entaillé de vallées, molasses et grèzes (éboulis calcaires), rive gauche.",cahier:"AOC 1982. Vendanges manuelles par tries successives. Rdt 25 hl/ha, sucres résiduels 68 g/l mini. Petite production confidentielle.",accords:"Foie gras, desserts aux fruits, fromages persillés"},
+{nom:"Montravel",types:["blanc"],cepages:"Sauvignon, Sémillon, Muscadelle",sol:"Rive droite de la Dordogne, ouest du Bergeracois.",cahier:"Blanc sec ; les dénominations Côtes de Montravel et Haut-Montravel couvrent les styles moelleux.",accords:"Fruits de mer, poisson"},
+]},
+{label:"Le Haut-Pays",aocs:[
 {nom:"Cahors",types:["rouge"],cepages:"Malbec (Côt/Auxerrois) min 70% + Merlot, Tannat",sol:"3 terrasses : causses calcaires, argilo-calcaires, alluvions.",cahier:"AOC 1971. Capitale mondiale du Malbec. 'Vin noir' historique.",accords:"Cassoulet, magret, confit, truffe du Périgord, fromages de brebis"},
+{nom:"Gaillac",types:["rouge","blanc","rosé","effervescent"],cepages:"Rouges locaux : Duras, Fer Servadou (Braucol), + Syrah, Gamay, CS, CF, Merlot. Blancs locaux : Mauzac, Len de l'El + Sauvignon",sol:"Argilo-calcaires et sableux. 2 rives du Tarn.",cahier:"Méthode ancestrale pour les pétillants (Mauzac).",accords:"Blanc : cuisine du Tarn, poisson. Rouge : viandes, cassoulet"},
+{nom:"Fronton",types:["rouge","rosé"],cepages:"Négrette 40 à 70% + Syrah, Gamay, Cabernet Franc, Cabernet-Sauvignon, Malbec",sol:"Terrasses de graves et de boulbènes, entre Toulouse et Montauban.",cahier:"La Négrette y est cépage signature, quasi unique à cette appellation.",accords:"Cassoulet, charcuterie, cuisine toulousaine"},
+{nom:"Buzet",types:["rouge","blanc","rosé"],cepages:"Rouge/Rosé : Merlot, Cabernet-Sauvignon, Cabernet Franc, Malbec. Blanc : Sémillon, Sauvignon, Muscadelle",sol:"Terrasses graveleuses et argilo-calcaires, rive gauche de la Garonne, Lot-et-Garonne.",cahier:"Cépages bordelais, prolongement du vignoble bordelais vers le Sud-Ouest.",accords:"Rouge : viandes rouges, canard. Blanc : poisson"},
+{nom:"Côtes du Marmandais",types:["rouge","blanc","rosé"],cepages:"Rouge/Rosé : Merlot, Cabernets, Malbec, Abouriou, Syrah. Blanc : Sauvignon, Sémillon, Muscadelle",sol:"Rive de la Garonne, autour de Marmande.",cahier:"L'Abouriou (cépage local rare) apporte une touche fruitée distinctive.",accords:"Rouge : viandes, canard. Blanc : poisson"},
+{nom:"Côtes de Duras",types:["rouge","blanc","rosé"],cepages:"Rouge/Rosé : Merlot, Cabernet-Sauvignon, Cabernet Franc. Blanc : Sauvignon, Sémillon, Muscadelle",sol:"Argilo-calcaires, prolongement du Bergeracois en Lot-et-Garonne.",cahier:"Cépages bordelais, style proche de l'Entre-Deux-Mers pour le blanc.",accords:"Blanc : fruits de mer. Rouge : viandes"},
+{nom:"Marcillac",types:["rouge","rosé"],cepages:"Fer Servadou (Mansois) 90% min + Cabernet Franc, Merlot",sol:"Grès rouge permien (\\\"rougiers\\\"), Aveyron.",cahier:"L'un des rares fiefs du Fer Servadou en cépage quasi-exclusif.",accords:"Aligot-saucisse, charcuterie, tripoux"},
+{nom:"Coteaux du Quercy",types:["rouge","rosé"],cepages:"Cabernet Franc, Cabernet-Sauvignon, Merlot, Malbec, Gamay, Tannat",sol:"Causses calcaires du Quercy, entre Cahors et Montauban.",cahier:"AOC récente (2011), zone tampon entre Cahors et Fronton.",accords:"Viandes, cuisine quercynoise"},
+{nom:"Côtes de Millau",types:["rouge","rosé","blanc"],cepages:"Rouge : Gamay, Syrah 30% mini chacun + CS, Duras, Fer Servadou. Rosé : Gamay 50% mini + Syrah, CS, Duras, Fer Servadou. Blanc : Chenin 50% mini + Mauzac 10% mini",sol:"Gorges du Tarn, sols calcaires, Aveyron.",cahier:"AOC 2011. 60 ha seulement. L'une des plus petites AOC du Sud-Ouest.",accords:"Charcuterie de l'Aveyron, viandes grillées"},
+{nom:"Estaing",types:["rouge","rosé","blanc"],cepages:"Rouge/Rosé : Gamay, Fer Servadou 50% mini + CF, CS + cépages locaux (Abouriou, Castet, Duras, Négret de Banhars, Mouyssaguès). Blanc : Chenin 50% mini + Mauzac, Saint Côme, Fel",sol:"Coteaux granitiques, vallée du Lot, Aveyron.",cahier:"AOC 2011. 14 ha, 3 communes. Cépages locaux confidentiels préservés.",accords:"Charcuterie, fromages de l'Aveyron"},
+{nom:"Entraygues et le Fel",types:["rouge","rosé","blanc"],cepages:"Rouge/Rosé : Mansoi (Fer Servadou) 40% mini + CF, CS + Mouyssagues, Négret de Banhars. Blanc : Chenin (gamay blanc, nom local) 90% mini + Saint Côme, Fel Blanc, Mauzac",sol:"Coteaux rocailleux exposés sud, vallée du Lot (Rouergue).",cahier:"AOC 2011. 20 ha seulement, à cheval sur l'Aveyron et le Cantal.",accords:"Charcuterie, cuisine du Rouergue"},
+{nom:"Saint-Sardos",types:["rouge","rosé"],cepages:"Syrah 80% maxi, Tannat 60% mini + Cabernet Franc, Merlot",sol:"Coteaux entre Tarn et Garonne (Tarn-et-Garonne, Haute-Garonne).",cahier:"AOC 2011. 200 ha. Petite appellation récente proche de Fronton.",accords:"Viandes grillées, cuisine du Sud-Ouest"},
+{nom:"Brulhois",types:["rouge","rosé"],cepages:"Merlot, Cabernets, Malbec, Tannat, Fer Servadou",sol:"Coteaux argilo-calcaires entre Agen et Moissac.",cahier:"Petite AOC confidentielle du Lot-et-Garonne/Tarn-et-Garonne.",accords:"Viandes, cuisine locale"},
+]},
+{label:"Le Piémont Pyrénéen",aocs:[
 {nom:"Madiran",types:["rouge"],cepages:"Tannat min 60% + Cabernet-Franc, Cabernet-Sauvignon",sol:"Argilo-calcaire, boulbènes, sables.",cahier:"Tannat très tannique. Élevage barriques obligatoire. Micro-oxygénation inventée ici (Patrick Ducournau).",accords:"Confit de canard, garbure gasconne, cassoulet, magret"},
 {nom:"Jurançon Sec",types:["blanc"],cepages:"Gros Manseng (dominant), Courbu, Petit Manseng",sol:"Argilo-calcaire, molasses, poudingues pyrénéens.",cahier:"Blanc sec.",accords:"Poisson, chèvre, cuisine basque légère"},
 {nom:"Jurançon",types:["moelleux"],cepages:"Petit Manseng (dominant), Gros Manseng, Courbu",sol:"Argilo-calcaire, molasses, poudingues pyrénéens.",cahier:"Passerillage naturel en novembre. Tries successives.",accords:"Foie gras, desserts aux fruits, fromages bleus"},
-{nom:"Bergerac",types:["rouge","blanc","rosé"],cepages:"Rouge : Merlot, CF, CS, Malbec, Fer Servadou. Blanc : Sémillon, Sauvignon, Muscadelle",sol:"Argilo-calcaires et terrasses graveleuses. 2 rives de la Dordogne.",cahier:"AOC 1936. Sous-appellations : Pécharmant (rouge, tannique), Monbazillac (blanc liquoreux, botrytis), Montravel, Rosette.",accords:"Rouge : canard, magret. Blanc sec : poisson"},
-{nom:"Monbazillac",types:["liquoreux"],cepages:"Sémillon, Sauvignon, Muscadelle",sol:"Argilo-calcaires, coteaux dominant la Dordogne.",cahier:"Botrytis cinerea. Tries successives. 'Sauternes du Périgord'.",accords:"Foie gras, roquefort, desserts"},
-{nom:"Gaillac",types:["rouge","blanc","rosé","effervescent"],cepages:"Rouges locaux : Duras, Fer Servadou (Braucol), + Syrah, Gamay, CS, CF, Merlot. Blancs locaux : Mauzac, Len de l'El + Sauvignon",sol:"Argilo-calcaires et sableux. 2 rives du Tarn.",cahier:"Méthode ancestrale pour les pétillants (Mauzac).",accords:"Blanc : cuisine du Tarn, poisson. Rouge : viandes, cassoulet"},
-{nom:"Buzet",types:["rouge","blanc","rosé"],cepages:"Rouge/Rosé : Merlot, Cabernet-Sauvignon, Cabernet Franc, Malbec. Blanc : Sémillon, Sauvignon, Muscadelle",sol:"Terrasses graveleuses et argilo-calcaires, rive gauche de la Garonne, Lot-et-Garonne.",cahier:"Cépages bordelais, prolongement du vignoble bordelais vers le Sud-Ouest.",accords:"Rouge : viandes rouges, canard. Blanc : poisson"},
-{nom:"Fronton",types:["rouge","rosé"],cepages:"Négrette 40 à 70% + Syrah, Gamay, Cabernet Franc, Cabernet-Sauvignon, Malbec",sol:"Terrasses de graves et de boulbènes, entre Toulouse et Montauban.",cahier:"La Négrette y est cépage signature, quasi unique à cette appellation.",accords:"Cassoulet, charcuterie, cuisine toulousaine"},
-{nom:"Marcillac",types:["rouge","rosé"],cepages:"Fer Servadou (Mansois) 90% min + Cabernet Franc, Merlot",sol:"Grès rouge permien (\\\"rougiers\\\"), Aveyron.",cahier:"L'un des rares fiefs du Fer Servadou en cépage quasi-exclusif.",accords:"Aligot-saucisse, charcuterie, tripoux"},
 {nom:"Irouléguy",types:["rouge","blanc","rosé"],cepages:"Rouge/Rosé : Tannat, Cabernet Franc, Cabernet-Sauvignon. Blanc : Gros Manseng, Petit Manseng, Petit Courbu",sol:"Coteaux schisteux et calcaires du Pays basque, pied des Pyrénées.",cahier:"Seule AOC viticole du Pays basque français.",accords:"Agneau des Pyrénées, piperade, fromage de brebis"},
 {nom:"Béarn",types:["rouge","blanc","rosé"],cepages:"Rouge/Rosé : Tannat, Cabernet Franc, Cabernet-Sauvignon. Blanc : Gros Manseng, Petit Manseng, Camaralet, Lauzet",sol:"Piémont pyrénéen autour de Pau.",cahier:"Englobe historiquement la zone de Bellocq (rosé traditionnel).",accords:"Garbure, cuisine paysanne du Béarn"},
 {nom:"Pacherenc du Vic-Bilh",types:["blanc","moelleux"],cepages:"Gros Manseng, Petit Manseng, Petit Courbu, Arrufiac + Sauvignon, Sémillon",sol:"Mêmes coteaux argilo-calcaires que Madiran (aire géographique commune).",cahier:"Blanc sec à moelleux (passerillage), pendant blanc du Madiran.",accords:"Sec : apéritif, poisson. Moelleux : foie gras, desserts"},
 {nom:"Saint-Mont",types:["rouge","blanc","rosé"],cepages:"Rouge/Rosé : Tannat, Cabernet Franc, Cabernet-Sauvignon, Fer Servadou. Blanc : Gros Manseng, Petit Manseng, Petit Courbu, Arrufiac",sol:"Coteaux du Gers, entre Armagnac et Madiran.",cahier:"Cépages locaux préservés grâce au travail de conservatoire ampélographique de Plaimont.",accords:"Rouge : cassoulet, viandes. Blanc : fruits de mer"},
 {nom:"Tursan",types:["rouge","blanc","rosé"],cepages:"Rouge/Rosé : Tannat, Cabernet Franc, Cabernet-Sauvignon. Blanc : Gros Manseng, Petit Manseng, Baroque (cépage local rare)",sol:"Sables et graves des Landes, sud du Gers.",cahier:"Le Baroque, cépage endémique quasi unique au monde, y est emblématique.",accords:"Poulet des Landes, cuisine landaise"},
-{nom:"Pécharmant",types:["rouge"],cepages:"Merlot, Cabernet-Sauvignon, Cabernet Franc, Malbec",sol:"Coteaux de graves et de fer (\\\"tran\\\"), au nord-est de Bergerac.",cahier:"Meilleur terroir rouge du Bergeracois, structure et garde supérieures au Bergerac rouge simple.",accords:"Viandes rouges, gibier, magret"},
-{nom:"Côtes de Duras",types:["rouge","blanc","rosé"],cepages:"Rouge/Rosé : Merlot, Cabernet-Sauvignon, Cabernet Franc. Blanc : Sauvignon, Sémillon, Muscadelle",sol:"Argilo-calcaires, prolongement du Bergeracois en Lot-et-Garonne.",cahier:"Cépages bordelais, style proche de l'Entre-Deux-Mers pour le blanc.",accords:"Blanc : fruits de mer. Rouge : viandes"},
-{nom:"Côtes du Marmandais",types:["rouge","blanc","rosé"],cepages:"Rouge/Rosé : Merlot, Cabernets, Malbec, Abouriou, Syrah. Blanc : Sauvignon, Sémillon, Muscadelle",sol:"Rive de la Garonne, autour de Marmande.",cahier:"L'Abouriou (cépage local rare) apporte une touche fruitée distinctive.",accords:"Rouge : viandes, canard. Blanc : poisson"},
-{nom:"Montravel",types:["blanc"],cepages:"Sauvignon, Sémillon, Muscadelle",sol:"Rive droite de la Dordogne, ouest du Bergeracois.",cahier:"Blanc sec ; les dénominations Côtes de Montravel et Haut-Montravel couvrent les styles moelleux.",accords:"Fruits de mer, poisson"},
-{nom:"Brulhois",types:["rouge","rosé"],cepages:"Merlot, Cabernets, Malbec, Tannat, Fer Servadou",sol:"Coteaux argilo-calcaires entre Agen et Moissac.",cahier:"Petite AOC confidentielle du Lot-et-Garonne/Tarn-et-Garonne.",accords:"Viandes, cuisine locale"},
-{nom:"Coteaux du Quercy",types:["rouge","rosé"],cepages:"Cabernet Franc, Cabernet-Sauvignon, Merlot, Malbec, Gamay, Tannat",sol:"Causses calcaires du Quercy, entre Cahors et Montauban.",cahier:"AOC récente (2011), zone tampon entre Cahors et Fronton.",accords:"Viandes, cuisine quercynoise"},
-{nom:"Rosette",types:["moelleux"],cepages:"Sémillon, Sauvignon, Muscadelle (2 cépages mini)",sol:"Coteaux de sables et graviers au N-O de Bergerac, rive droite, même terroir que Pécharmant.",cahier:"AOC 1946. 125 ha délimités, 28 ha revendiqués seulement. 12% mini, sucres résiduels entre 25 et 51 g/l.",accords:"Apéritif, foie gras léger, desserts peu sucrés"},
-{nom:"Saussignac",types:["moelleux","liquoreux"],cepages:"Sémillon, Sauvignon, Muscadelle 50% mini + Ondenc, Chenin, Ugni Blanc",sol:"Plateau calcaire entaillé de vallées, molasses et grèzes (éboulis calcaires), rive gauche.",cahier:"AOC 1982. Vendanges manuelles par tries successives. Rdt 25 hl/ha, sucres résiduels 68 g/l mini. Petite production confidentielle.",accords:"Foie gras, desserts aux fruits, fromages persillés"},
-{nom:"Côtes de Millau",types:["rouge","rosé","blanc"],cepages:"Rouge : Gamay, Syrah 30% mini chacun + CS, Duras, Fer Servadou. Rosé : Gamay 50% mini + Syrah, CS, Duras, Fer Servadou. Blanc : Chenin 50% mini + Mauzac 10% mini",sol:"Gorges du Tarn, sols calcaires, Aveyron.",cahier:"AOC 2011. 60 ha seulement. L'une des plus petites AOC du Sud-Ouest.",accords:"Charcuterie de l'Aveyron, viandes grillées"},
-{nom:"Estaing",types:["rouge","rosé","blanc"],cepages:"Rouge/Rosé : Gamay, Fer Servadou 50% mini + CF, CS + cépages locaux (Abouriou, Castet, Duras, Négret de Banhars, Mouyssaguès). Blanc : Chenin 50% mini + Mauzac, Saint Côme, Fel",sol:"Coteaux granitiques, vallée du Lot, Aveyron.",cahier:"AOC 2011. 14 ha, 3 communes. Cépages locaux confidentiels préservés.",accords:"Charcuterie, fromages de l'Aveyron"},
-{nom:"Entraygues et le Fel",types:["rouge","rosé","blanc"],cepages:"Rouge/Rosé : Mansoi (Fer Servadou) 40% mini + CF, CS + Mouyssagues, Négret de Banhars. Blanc : Chenin (gamay blanc, nom local) 90% mini + Saint Côme, Fel Blanc, Mauzac",sol:"Coteaux rocailleux exposés sud, vallée du Lot (Rouergue).",cahier:"AOC 2011. 20 ha seulement, à cheval sur l'Aveyron et le Cantal.",accords:"Charcuterie, cuisine du Rouergue"},
-{nom:"Saint-Sardos",types:["rouge","rosé"],cepages:"Syrah 80% maxi, Tannat 60% mini + Cabernet Franc, Merlot",sol:"Coteaux entre Tarn et Garonne (Tarn-et-Garonne, Haute-Garonne).",cahier:"AOC 2011. 200 ha. Petite appellation récente proche de Fronton.",accords:"Viandes grillées, cuisine du Sud-Ouest"},
 ]},
 ]},
 languedoc:{name:"Languedoc-Roussillon",color:"#9FE1CB",subcats:[
-{label:"Appellations du Languedoc",aocs:[
-{nom:"Picpoul de Pinet",types:["blanc"],cepages:"Picpoul Blanc exclusivement",sol:"Calcaire argileux près de l'étang de Thau.",cahier:"Cépage méditerranéen local. Vins frais, acidulés, à boire jeunes (1-3 ans).",accords:"Huîtres de Bouzigues, moules, tellines, poissons grillés"},
-{nom:"Faugères",types:["rouge","blanc","rosé"],cepages:"Grenache, Syrah, Mourvèdre (améliorateurs min 20%)",sol:"Schistes EXCLUSIVEMENT (unique en Languedoc).",cahier:"AOC 1982. Blancs depuis 2004.",accords:"Agneau, magret, gibier, fromages de brebis"},
-{nom:"Saint-Chinian",types:["rouge","blanc","rosé"],cepages:"Grenache, Syrah, Mourvèdre, Cinsault",sol:"Schistes (nord, vins fins) + argilo-calcaires (sud, vins ronds). 2 profils distincts.",cahier:"Blancs depuis 2005.",accords:"Grillades, agneau, tajine, fromages du Languedoc"},
+{label:"Languedoc AOC & terroirs",aocs:[
 {nom:"Languedoc",types:["rouge","blanc","rosé"],cepages:"Rouge : Grenache, Syrah, Mourvèdre min 50%. Blanc : Grenache B, Roussanne, Marsanne, Vermentino, Bourboulenc, Clairette",sol:"Calcaires, argilo-calcaires, schistes selon secteur.",cahier:"Nombreux crus : La Clape, Pic Saint-Loup, Terrasses du Larzac, Grès de Montpellier.",accords:"Rouge : viandes, agneau, gibier. Blanc : poisson, fruits de mer"},
-{nom:"Minervois",types:["rouge","blanc","rosé"],cepages:"Grenache, Syrah, Mourvèdre min 60% + Carignan, Cinsault",sol:"Calcaires et schistes entre Montagne Noire et Canal du Midi.",cahier:"AOC 1985. Minervois-La-Livinière : cru (Syrah dominante).",accords:"Agneau, viandes grillées, fromages de brebis"},
-{nom:"Corbières",types:["rouge","blanc","rosé"],cepages:"Carignan, Grenache, Syrah, Mourvèdre, Cinsault. Blanc : Grenache B, Bourboulenc, Maccabeu, Roussanne",sol:"Calcaires, schistes, grès. Entre Narbonne et Pyrénées.",cahier:"AOC 1985. Boutenac : cru (Carignan, vieilles vignes).",accords:"Viandes rouges, gibier, fromages, charcuterie"},
-{nom:"Corbières-Boutenac",types:["rouge"],cepages:"Carignan (vieilles vignes, 30% min) + Grenache, Mourvèdre, Syrah",sol:"Argilo-calcaires et grès, cœur des Corbières autour de Boutenac.",cahier:"Cru des Corbières depuis 2005, seule AOC dédiée au vieux Carignan en France.",accords:"Gibier, viandes rouges, fromages affinés"},
-{nom:"Fitou",types:["rouge"],cepages:"Carignan + Grenache, Syrah, Mourvèdre, Lledoner Pelut",sol:"Deux secteurs distincts : schistes littoraux et argilo-calcaires de l'arrière-pays.",cahier:"Plus ancienne AOC rouge du Languedoc (1948).",accords:"Cassoulet, gibier, viandes en sauce"},
-{nom:"Minervois-La Livinière",types:["rouge"],cepages:"Syrah, Mourvèdre, Grenache + Carignan (limité)",sol:"Argilo-calcaires, secteur nord du Minervois autour de La Livinière.",cahier:"Cru du Minervois depuis 1999, premier cru reconnu en Languedoc.",accords:"Viandes rouges, gibier"},
-{nom:"Cabardès",types:["rouge","rosé"],cepages:"Cabernet-Sauvignon, Cabernet Franc, Merlot (cépages atlantiques) + Syrah, Grenache, Cinsault, Fer Servadou (cépages méditerranéens)",sol:"Piémont de la Montagne Noire, à l'ouest de Carcassonne.",cahier:"Unique AOC où se rencontrent cépages bordelais et méditerranéens dans un même assemblage obligatoire.",accords:"Cassoulet, charcuterie, viandes"},
-{nom:"Malepère",types:["rouge","rosé"],cepages:"Merlot (dominant) + Cabernet Franc, Cabernet-Sauvignon, Cot, Grenache, Lledoner Pelut",sol:"Collines argilo-calcaires à l'ouest de Carcassonne, aux confins de l'Atlantique et de la Méditerranée.",cahier:"AOC la plus occidentale du Languedoc, climat déjà influencé par l'Atlantique.",accords:"Viandes rouges, charcuterie"},
 {nom:"Pic Saint-Loup",types:["rouge","rosé"],cepages:"Syrah, Grenache, Mourvèdre (au moins 2 cépages, Carignan interdit)",sol:"Garrigues calcaires au pied du pic Saint-Loup, nord de Montpellier.",cahier:"Terroir frais (relief, altitude), l'un des plus réputés du Languedoc.",accords:"Agneau, gibier, viandes rouges"},
 {nom:"Terrasses du Larzac",types:["rouge"],cepages:"Syrah, Grenache, Mourvèdre + Carignan, Cinsault, Cot",sol:"Terrasses caillouteuses au pied du Causse du Larzac, autour d'Aniane et Montpeyroux.",cahier:"AOC récente (2005, ex-Coteaux du Languedoc), fraîcheur apportée par la proximité du Larzac.",accords:"Viandes rouges, gibier, fromages de caractère"},
 {nom:"La Clape",types:["rouge","blanc","rosé"],cepages:"Rouge/Rosé : Syrah, Grenache, Mourvèdre, Carignan. Blanc : Bourboulenc (dominant) + Grenache B, Roussanne, Marsanne, Vermentino",sol:"Massif calcaire littoral près de Narbonne, quasi-îlot entouré par la mer et les étangs.",cahier:"Seule AOC languedocienne réputée aussi pour ses blancs (Bourboulenc).",accords:"Blanc : poisson, fruits de mer. Rouge : viandes, garrigue"},
-{nom:"Clairette du Languedoc",types:["blanc"],cepages:"Clairette exclusivement",sol:"Collines autour d'Adissan et Pézenas, Hérault.",cahier:"Blanc sec à moelleux/rancio selon les styles, AOC ancienne (1948) en déclin.",accords:"Apéritif, poisson"},
-{nom:"Muscat de Frontignan",types:["liquoreux"],cepages:"Muscat Blanc à Petits Grains exclusivement",sol:"Coteaux calcaires face à l'étang de Thau, autour de Frontignan.",cahier:"Vin doux naturel, l'un des plus anciens Muscat de France.",accords:"Roquefort, desserts aux fruits, foie gras"},
-{nom:"Muscat de Lunel",types:["liquoreux"],cepages:"Muscat Blanc à Petits Grains exclusivement",sol:"Coteaux autour de Lunel, entre Montpellier et Nîmes.",cahier:"Vin doux naturel confidentiel.",accords:"Desserts, fromages persillés"},
-{nom:"Muscat de Mireval",types:["liquoreux"],cepages:"Muscat Blanc à Petits Grains exclusivement",sol:"Coteaux calcaires voisins de Frontignan.",cahier:"Vin doux naturel, petite production.",accords:"Desserts, foie gras"},
-{nom:"Muscat de Saint-Jean-de-Minervois",types:["liquoreux"],cepages:"Muscat Blanc à Petits Grains exclusivement",sol:"Causse calcaire d'altitude, nord du Minervois.",cahier:"Le plus septentrional et le plus frais des Muscat languedociens.",accords:"Desserts, fromages persillés"},
 {nom:"Grès de Montpellier",types:["rouge"],cepages:"Grenache, Mourvèdre, Syrah + Carignan, Cinsault, Morrastel (assemblage de 2 cépages principaux 50% mini, aucun cépage ne peut excéder 80%)",sol:"Sols caillouteux, secteur chaud et aride autour de Montpellier.",cahier:"AOC 2023 (ex dénomination géographique complémentaire Languedoc depuis 2003). 45 communes de l'Hérault.",accords:"Viandes rouges, agneau, garrigue"},
+{nom:"Picpoul de Pinet",types:["blanc"],cepages:"Picpoul Blanc exclusivement",sol:"Calcaire argileux près de l'étang de Thau.",cahier:"Cépage méditerranéen local. Vins frais, acidulés, à boire jeunes (1-3 ans).",accords:"Huîtres de Bouzigues, moules, tellines, poissons grillés"},
+{nom:"Clairette du Languedoc",types:["blanc"],cepages:"Clairette exclusivement",sol:"Collines autour d'Adissan et Pézenas, Hérault.",cahier:"Blanc sec à moelleux/rancio selon les styles, AOC ancienne (1948) en déclin.",accords:"Apéritif, poisson"},
+]},
+{label:"Minervois, Corbières & Fitou",aocs:[
+{nom:"Minervois",types:["rouge","blanc","rosé"],cepages:"Grenache, Syrah, Mourvèdre min 60% + Carignan, Cinsault",sol:"Calcaires et schistes entre Montagne Noire et Canal du Midi.",cahier:"AOC 1985. Minervois-La-Livinière : cru (Syrah dominante).",accords:"Agneau, viandes grillées, fromages de brebis"},
+{nom:"Minervois-La Livinière",types:["rouge"],cepages:"Syrah, Mourvèdre, Grenache + Carignan (limité)",sol:"Argilo-calcaires, secteur nord du Minervois autour de La Livinière.",cahier:"Cru du Minervois depuis 1999, premier cru reconnu en Languedoc.",accords:"Viandes rouges, gibier"},
+{nom:"Corbières",types:["rouge","blanc","rosé"],cepages:"Carignan, Grenache, Syrah, Mourvèdre, Cinsault. Blanc : Grenache B, Bourboulenc, Maccabeu, Roussanne",sol:"Calcaires, schistes, grès. Entre Narbonne et Pyrénées.",cahier:"AOC 1985. Boutenac : cru (Carignan, vieilles vignes).",accords:"Viandes rouges, gibier, fromages, charcuterie"},
+{nom:"Corbières-Boutenac",types:["rouge"],cepages:"Carignan (vieilles vignes, 30% min) + Grenache, Mourvèdre, Syrah",sol:"Argilo-calcaires et grès, cœur des Corbières autour de Boutenac.",cahier:"Cru des Corbières depuis 2005, seule AOC dédiée au vieux Carignan en France.",accords:"Gibier, viandes rouges, fromages affinés"},
+{nom:"Fitou",types:["rouge"],cepages:"Carignan + Grenache, Syrah, Mourvèdre, Lledoner Pelut",sol:"Deux secteurs distincts : schistes littoraux et argilo-calcaires de l'arrière-pays.",cahier:"Plus ancienne AOC rouge du Languedoc (1948).",accords:"Cassoulet, gibier, viandes en sauce"},
+]},
+{label:"Faugères & Saint-Chinian",aocs:[
+{nom:"Faugères",types:["rouge","blanc","rosé"],cepages:"Grenache, Syrah, Mourvèdre (améliorateurs min 20%)",sol:"Schistes EXCLUSIVEMENT (unique en Languedoc).",cahier:"AOC 1982. Blancs depuis 2004.",accords:"Agneau, magret, gibier, fromages de brebis"},
+{nom:"Saint-Chinian",types:["rouge","blanc","rosé"],cepages:"Grenache, Syrah, Mourvèdre, Cinsault",sol:"Schistes (nord, vins fins) + argilo-calcaires (sud, vins ronds). 2 profils distincts.",cahier:"Blancs depuis 2005.",accords:"Grillades, agneau, tajine, fromages du Languedoc"},
 {nom:"Saint-Chinian Berlou",types:["rouge"],cepages:"Grenache, Mourvèdre, Syrah 40% mini + Carignan 10% mini",sol:"Schistes, 5 communes de l'Hérault autour de Berlou.",cahier:"Dénomination géographique complémentaire de Saint-Chinian, rouges uniquement, rdt 40 hl/ha.",accords:"Agneau, gibier, viandes en sauce"},
 {nom:"Saint-Chinian Roquebrun",types:["rouge"],cepages:"Grenache, Syrah 50% mini + Carignan, Mourvèdre",sol:"Schistes, 4 communes de l'Hérault autour de Roquebrun.",cahier:"Dénomination géographique complémentaire de Saint-Chinian, rdt 40 hl/ha.",accords:"Agneau, viandes grillées, cuisine méditerranéenne"},
+]},
+{label:"Cabardès & Malepère",aocs:[
+{nom:"Cabardès",types:["rouge","rosé"],cepages:"Cabernet-Sauvignon, Cabernet Franc, Merlot (cépages atlantiques) + Syrah, Grenache, Cinsault, Fer Servadou (cépages méditerranéens)",sol:"Piémont de la Montagne Noire, à l'ouest de Carcassonne.",cahier:"Unique AOC où se rencontrent cépages bordelais et méditerranéens dans un même assemblage obligatoire.",accords:"Cassoulet, charcuterie, viandes"},
+{nom:"Malepère",types:["rouge","rosé"],cepages:"Merlot (dominant) + Cabernet Franc, Cabernet-Sauvignon, Cot, Grenache, Lledoner Pelut",sol:"Collines argilo-calcaires à l'ouest de Carcassonne, aux confins de l'Atlantique et de la Méditerranée.",cahier:"AOC la plus occidentale du Languedoc, climat déjà influencé par l'Atlantique.",accords:"Viandes rouges, charcuterie"},
+]},
+{label:"Limoux",aocs:[
 {nom:"Blanquette de Limoux",types:["effervescent"],cepages:"Mauzac 90% mini + Chardonnay, Chenin",sol:"Coteaux argilo-calcaires et caillouteux autour de Limoux, Aude.",cahier:"AOC 1938. Méthode traditionnelle. 9 mois mini de vieillissement en cave. Prise de mousse mise au point par les moines bénédictins de Limoux dès 1531, antériorité revendiquée sur la Champagne.",accords:"Apéritif, fruits de mer, desserts légers"},
 {nom:"Blanquette de Limoux Méthode Ancestrale",types:["effervescent"],cepages:"Mauzac exclusivement (100%)",sol:"Mêmes terroirs que la Blanquette de Limoux.",cahier:"AOC 1938. Prise de mousse directement en bouteille (sans deuxième ajout de liqueur). Vin à 6-7% d'alcool, avec sucres résiduels naturels.",accords:"Apéritif, desserts fruités"},
 {nom:"Crémant de Limoux",types:["effervescent","rosé"],cepages:"Chardonnay 50% mini, Chenin 10 à 40% + Pinot Noir (30% maxi), Mauzac (20% maxi)",sol:"Coteaux argilo-calcaires de la région de Limoux.",cahier:"AOC 1990. Méthode traditionnelle. 15 mois de vieillissement en cave minimum.",accords:"Apéritif, fruits de mer, volaille"},
 {nom:"Limoux",types:["blanc","rouge"],cepages:"Blanc : Chardonnay, Chenin, Mauzac. Rouge : Merlot 45 à 70% + Côt, Syrah, Grenache 20% mini + CF, CS (35% maxi), 3 cépages mini",sol:"Terrains argilo-calcaires et caillouteux, 4 terroirs climatiques distincts (Autan, Océanique, Méditerranéen, Haute-Vallée).",cahier:"AOC Limoux blanc 1993 (vinification et élevage en fûts de chêne obligatoires, sur lies fines avec bâtonnage), rouge 2004. Rdt 50 hl/ha.",accords:"Blanc : poisson, volaille. Rouge : viandes"},
+]},
+{label:"Muscats & Sable de Camargue",aocs:[
+{nom:"Muscat de Frontignan",types:["liquoreux"],cepages:"Muscat Blanc à Petits Grains exclusivement",sol:"Coteaux calcaires face à l'étang de Thau, autour de Frontignan.",cahier:"Vin doux naturel, l'un des plus anciens Muscat de France.",accords:"Roquefort, desserts aux fruits, foie gras"},
+{nom:"Muscat de Lunel",types:["liquoreux"],cepages:"Muscat Blanc à Petits Grains exclusivement",sol:"Coteaux autour de Lunel, entre Montpellier et Nîmes.",cahier:"Vin doux naturel confidentiel.",accords:"Desserts, fromages persillés"},
+{nom:"Muscat de Mireval",types:["liquoreux"],cepages:"Muscat Blanc à Petits Grains exclusivement",sol:"Coteaux calcaires voisins de Frontignan.",cahier:"Vin doux naturel, petite production.",accords:"Desserts, foie gras"},
+{nom:"Muscat de Saint-Jean-de-Minervois",types:["liquoreux"],cepages:"Muscat Blanc à Petits Grains exclusivement",sol:"Causse calcaire d'altitude, nord du Minervois.",cahier:"Le plus septentrional et le plus frais des Muscat languedociens.",accords:"Desserts, fromages persillés"},
 {nom:"Sable de Camargue",types:["rosé"],cepages:"Principaux : Merlot, CF, CS, Carignan, Cinsault, Grenache N et G + accessoires (Chardonnay, Clairette, Muscat, Roussanne, Syrah, Vermentino...)",sol:"Sables du littoral méditerranéen, 14 communes de l'Hérault, du Gard et des Bouches-du-Rhône.",cahier:"AOC 2022. Production de vins gris et gris de gris uniquement. Gris de gris = Grenache Gris 100%.",accords:"Fruits de mer, cuisine camarguaise, apéritif"},
 ]},
 {label:"Appellations du Roussillon",aocs:[
@@ -3504,8 +3529,8 @@ const VA_CEPAGES = {
     blancs: ['Clairette','Marsanne','Rolle (Vermentino)','Ugni Blanc']
   },
   sudouest: {
-    rouges: ['Malbec (Côt)','Tannat','Cabernet Franc','Cabernet-Sauvignon'],
-    blancs: ['Gros Manseng','Petit Manseng','Sémillon','Sauvignon','Muscadelle']
+    rouges: ['Malbec (Côt)','Tannat','Merlot','Cabernet-Sauvignon','Cabernet Franc','Fer Servadou (Mansois/Braucol/Pinenc)','Négrette','Duras','Abouriou','Gamay'],
+    blancs: ['Sémillon','Sauvignon','Muscadelle','Gros Manseng','Petit Manseng','Petit Courbu','Courbu','Ondenc','Chenin','Mauzac','Len de l\'El','Arrufiac','Baroque','Colombard']
   },
   languedoc: {
     rouges: ['Grenache Noir','Syrah','Mourvèdre','Carignan','Cinsault','Lledoner Pelut'],
@@ -6183,6 +6208,318 @@ const CEPAGES = {
     },
   ]
 };
+
+
+/* ══════════════════════════════════════════════════════
+   EXERCICES — cépages & tableau des couleurs, par région(s)
+   ══════════════════════════════════════════════════════ */
+
+let exerciceState = {
+  selectedRegions: new Set(REGION_FILTER_LIST.map(r => r.key)),
+  currentType: null,   // 'cepages' | 'couleurs'
+  currentEx: null,     // objet généré par startExercice
+};
+
+function toggleExerciceRegion(key) {
+  if (exerciceState.selectedRegions.has(key)) exerciceState.selectedRegions.delete(key);
+  else exerciceState.selectedRegions.add(key);
+  buildExercicesMenu();
+}
+
+function toggleAllExerciceRegions(checked) {
+  exerciceState.selectedRegions = checked ? new Set(REGION_FILTER_LIST.map(r => r.key)) : new Set();
+  buildExercicesMenu();
+}
+
+function buildExercicesMenu() {
+  const n = exerciceState.selectedRegions.size;
+  const allChecked = n === REGION_FILTER_LIST.length;
+  const disabled = n === 0 ? 'style="opacity:.5;pointer-events:none;"' : '';
+  const modeLabel = n === 1
+    ? 'Une région sélectionnée — exercices directs'
+    : n > 1
+      ? `${n} régions sélectionnées — exercices croisés`
+      : 'Sélectionne au moins une région';
+
+  document.getElementById('screen-quiz-exercices').innerHTML = `
+    <div class="quiz-hub">
+      <div class="quiz-hub-title">🧠 Exercices</div>
+      <div class="quiz-hub-sub">Entraînement libre — cépages & couleurs, autant de fois que tu veux</div>
+      <div style="background:#fff;border:1px solid #e5e5e2;border-radius:14px;padding:1.25rem;margin-bottom:1rem;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+          <div style="font-size:13px;font-weight:700;">Régions</div>
+          <label style="font-size:11px;color:#9333ea;cursor:pointer;display:flex;align-items:center;gap:4px;">
+            <input type="checkbox" ${allChecked?'checked':''} onchange="toggleAllExerciceRegions(this.checked)"> Tout cocher/décocher
+          </label>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+          ${REGION_FILTER_LIST.map(r => `
+            <label style="display:flex;align-items:center;gap:6px;font-size:12.5px;cursor:pointer;padding:4px 0;">
+              <input type="checkbox" ${exerciceState.selectedRegions.has(r.key)?'checked':''} onchange="toggleExerciceRegion('${r.key}')"> ${r.label}
+            </label>`).join('')}
+        </div>
+        <div style="font-size:11px;color:${n===0?'#993C1D':'#666'};margin-top:8px;">${modeLabel}</div>
+      </div>
+      <div class="quiz-type-list">
+        <div class="quiz-type-card" ${disabled} onclick="startExercice('cepages')">
+          <div class="quiz-type-icon">🍇</div>
+          <div class="quiz-type-body">
+            <div class="quiz-type-title">Cépages</div>
+            <div class="quiz-type-desc">${n===1 ? "Citez des cépages de la région sélectionnée" : "Retrouvez les régions d'un cépage donné"}</div>
+          </div>
+          <span class="quiz-type-arrow">›</span>
+        </div>
+        <div class="quiz-type-card" ${disabled} onclick="startExercice('couleurs')">
+          <div class="quiz-type-icon">🎨</div>
+          <div class="quiz-type-body">
+            <div class="quiz-type-title">Tableau des couleurs</div>
+            <div class="quiz-type-desc">${n===1 ? 'Toutes les AOC de la région, à colorer' : '20 AOC piochées parmi les régions sélectionnées'}</div>
+          </div>
+          <span class="quiz-type-arrow">›</span>
+        </div>
+      </div>
+    </div>`;
+}
+
+// Normalise un nom de cépage pour comparaison inter-régions
+// (retire les synonymes entre parenthèses/slash, accents, casse)
+function exerciceNormCepage(s) {
+  return stripAccents(String(s).split('(')[0].split('/')[0].trim().toLowerCase());
+}
+
+function startExercice(type) {
+  exerciceState.currentType = type;
+  const regions = [...exerciceState.selectedRegions];
+  const multi = regions.length > 1;
+
+  if (type === 'cepages') {
+    if (!multi) {
+      const key = regions[0];
+      const cepages = VA_CEPAGES[key];
+      const nbRed = Math.min(5, cepages.rouges.length);
+      const nbWhite = Math.min(3, cepages.blancs.length);
+      exerciceState.currentEx = { mode: 'single', key, nbRed, nbWhite, rouges: cepages.rouges, blancs: cepages.blancs };
+    } else {
+      // Cépages inverse : pioche un cépage parmi les régions sélectionnées,
+      // demande de cocher les régions (parmi celles sélectionnées) où on le trouve.
+      const pool = [];
+      regions.forEach(key => {
+        const c = VA_CEPAGES[key];
+        c.rouges.forEach(nom => pool.push({ nom, couleur: 'rouge', key }));
+        c.blancs.forEach(nom => pool.push({ nom, couleur: 'blanc', key }));
+      });
+      const picked = pool[Math.floor(Math.random() * pool.length)];
+      const normPicked = exerciceNormCepage(picked.nom);
+      const correctKeys = new Set(regions.filter(key => {
+        const c = VA_CEPAGES[key];
+        return [...c.rouges, ...c.blancs].some(n => exerciceNormCepage(n) === normPicked);
+      }));
+      exerciceState.currentEx = { mode: 'multi', cepage: picked.nom, couleur: picked.couleur, regions, correctKeys };
+    }
+  } else if (type === 'couleurs') {
+    if (!multi) {
+      const key = regions[0];
+      const allAocs = DATA[key].subcats.flatMap(s => s.aocs);
+      exerciceState.currentEx = { mode: 'single', key, aocs: allAocs };
+    } else {
+      let pool = [];
+      regions.forEach(key => {
+        DATA[key].subcats.flatMap(s => s.aocs).forEach(a => pool.push({ ...a, _region: key }));
+      });
+      const chosen = shuffleArray(pool).slice(0, Math.min(20, pool.length));
+      exerciceState.currentEx = { mode: 'multi', regions, aocs: chosen };
+    }
+  }
+
+  renderExercice();
+}
+
+function exerciceRegionLabel(key) {
+  return REGION_FILTER_LIST.find(r => r.key === key)?.label || key;
+}
+
+function renderExercice() {
+  const ex = exerciceState.currentEx;
+  const type = exerciceState.currentType;
+
+  document.getElementById('headerTitle').textContent = 'Exercices';
+  document.getElementById('headerSub').textContent = '';
+  document.getElementById('btnBack').style.display = 'block';
+  document.getElementById('btnHome').style.display = 'block';
+
+  let body = '';
+
+  if (type === 'cepages' && ex.mode === 'single') {
+    body = `
+      <div style="font-size:15px;font-weight:500;line-height:1.6;margin-bottom:1.25rem;">
+        Citez <strong>${ex.nbRed} cépages rouges</strong> et <strong>${ex.nbWhite} cépages blancs</strong> du vignoble de <strong>${DATA[ex.key].name}</strong>.
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
+        <div>
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;color:#993C1D;margin-bottom:6px;">🍇 Rouges (${ex.nbRed})</div>
+          ${Array.from({length:ex.nbRed}).map((_,i)=>`<input id="exr${i}" placeholder="Cépage rouge ${i+1}…" style="width:100%;padding:8px 10px;border:1px solid #ddd;border-radius:8px;font-size:13px;margin-bottom:6px;">`).join('')}
+        </div>
+        <div>
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;color:#3B6D11;margin-bottom:6px;">🌿 Blancs (${ex.nbWhite})</div>
+          ${Array.from({length:ex.nbWhite}).map((_,i)=>`<input id="exb${i}" placeholder="Cépage blanc ${i+1}…" style="width:100%;padding:8px 10px;border:1px solid #ddd;border-radius:8px;font-size:13px;margin-bottom:6px;">`).join('')}
+        </div>
+      </div>
+      <button onclick="submitExerciceCepagesSingle()" class="btn btn-purple" style="width:100%;">Valider →</button>`;
+  } else if (type === 'cepages' && ex.mode === 'multi') {
+    body = `
+      <div style="font-size:15px;font-weight:500;line-height:1.6;margin-bottom:1.25rem;">
+        Le cépage <strong>${ex.cepage}</strong> (${ex.couleur}) apparaît dans au moins une des régions sélectionnées. Cochez <strong>toutes les régions</strong>, parmi celles sélectionnées, où on le trouve.
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:14px;">
+        ${ex.regions.map(key => `
+          <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;padding:6px 8px;border:1px solid #e5e5e2;border-radius:8px;">
+            <input type="checkbox" id="exreg_${key}"> ${exerciceRegionLabel(key)}
+          </label>`).join('')}
+      </div>
+      <button onclick="submitExerciceCepagesMulti()" class="btn btn-purple" style="width:100%;">Valider →</button>`;
+  } else if (type === 'couleurs') {
+    const couleursList = ['blanc','rouge','rosé','effervescent','liquoreux','moelleux'];
+    const title = ex.mode === 'single'
+      ? `Retrouvez les <strong>couleurs</strong> de toutes les AOC de <strong>${DATA[ex.key].name}</strong> :`
+      : `Retrouvez les <strong>couleurs</strong> de ces <strong>${ex.aocs.length} AOC</strong> piochées parmi les régions sélectionnées :`;
+    body = `
+      <div style="font-size:15px;font-weight:500;line-height:1.6;margin-bottom:1.25rem;">${title}</div>
+      <div style="overflow-x:auto;">
+        <table style="width:100%;border-collapse:collapse;font-size:12px;">
+          <thead>
+            <tr style="background:#f8f7f4;">
+              <th style="padding:8px;text-align:left;border:1px solid #e5e5e2;">AOC</th>
+              ${couleursList.map(c=>`<th style="padding:8px;text-align:center;border:1px solid #e5e5e2;font-size:10px;">${c.charAt(0).toUpperCase()+c.slice(1)}</th>`).join('')}
+            </tr>
+          </thead>
+          <tbody>
+            ${ex.aocs.map((aoc,idx)=>`
+              <tr>
+                <td style="padding:8px;border:1px solid #e5e5e2;font-weight:500;">${aoc.nom}</td>
+                ${couleursList.map(c=>`
+                  <td style="padding:8px;text-align:center;border:1px solid #e5e5e2;">
+                    <input type="checkbox" id="excb_${idx}_${c}" style="width:16px;height:16px;cursor:pointer;">
+                  </td>`).join('')}
+              </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+      <button onclick="submitExerciceCouleurs()" class="btn btn-purple" style="margin-top:12px;width:100%;">Valider →</button>`;
+  }
+
+  document.getElementById('screen-quiz-exercices').innerHTML = `
+    <div style="padding:0 0 80px;">
+      <div style="background:#1a1a18;color:#f5f4f0;padding:10px 16px;display:flex;align-items:center;gap:10px;position:sticky;top:48px;z-index:100;">
+        <div style="flex:1;font-size:13px;font-weight:500;">Exercices — ${type === 'cepages' ? 'Cépages' : 'Tableau des couleurs'}</div>
+        <button onclick="buildExercicesMenu()" class="btn" style="padding:3px 10px;font-size:11px;">← Régions</button>
+      </div>
+      <div style="padding:1.25rem 1rem;" id="exerciceBody">${body}</div>
+    </div>`;
+}
+
+function submitExerciceCepagesSingle() {
+  const ex = exerciceState.currentEx;
+  const userRed = Array.from({length:ex.nbRed}).map((_,i)=>document.getElementById(`exr${i}`)?.value.trim().toLowerCase()).filter(Boolean);
+  const userWhite = Array.from({length:ex.nbWhite}).map((_,i)=>document.getElementById(`exb${i}`)?.value.trim().toLowerCase()).filter(Boolean);
+  const refRed = ex.rouges.map(c=>c.toLowerCase());
+  const refWhite = ex.blancs.map(c=>c.toLowerCase());
+
+  let redOk = 0, whiteOk = 0;
+  userRed.forEach(c => { if (refRed.some(r=>r.includes(c)||c.includes(r.split(' ')[0]))) redOk++; });
+  userWhite.forEach(c => { if (refWhite.some(r=>r.includes(c)||c.includes(r.split(' ')[0]))) whiteOk++; });
+
+  const total = ex.nbRed + ex.nbWhite;
+  const good = redOk + whiteOk;
+
+  document.getElementById('exerciceBody').innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+      <div style="background:#f8f7f4;border-radius:10px;padding:12px;">
+        <div style="font-size:11px;color:#993C1D;font-weight:600;text-transform:uppercase;margin-bottom:6px;">🍇 Rouges — Corrigé</div>
+        ${ex.rouges.map(c=>`<div style="font-size:12px;padding:2px 0;">• ${c}</div>`).join('')}
+      </div>
+      <div style="background:#f8f7f4;border-radius:10px;padding:12px;">
+        <div style="font-size:11px;color:#3B6D11;font-weight:600;text-transform:uppercase;margin-bottom:6px;">🌿 Blancs — Corrigé</div>
+        ${ex.blancs.map(c=>`<div style="font-size:12px;padding:2px 0;">• ${c}</div>`).join('')}
+      </div>
+    </div>
+    <div style="background:${good>=total*.7?'#EAF3DE':good>0?'#FFF4E6':'#FAECE7'};border-radius:10px;padding:12px;margin-bottom:12px;">
+      <strong>${good}/${total} cépages reconnus</strong><br>
+      <span style="font-size:12px;">Rouges : ${redOk}/${ex.nbRed} · Blancs : ${whiteOk}/${ex.nbWhite}</span>
+    </div>
+    <div style="display:flex;gap:8px;">
+      <button onclick="startExercice('cepages')" class="btn btn-purple" style="flex:1;">Nouvel exercice →</button>
+      <button onclick="buildExercicesMenu()" class="btn" style="flex:1;">Changer de région(s)</button>
+    </div>`;
+}
+
+function submitExerciceCepagesMulti() {
+  const ex = exerciceState.currentEx;
+  let correct = 0;
+  const rows = ex.regions.map(key => {
+    const cb = document.getElementById(`exreg_${key}`);
+    const checked = cb?.checked;
+    const shouldBe = ex.correctKeys.has(key);
+    if (checked === shouldBe) correct++;
+    const bg = checked && shouldBe ? '#EAF3DE' : checked && !shouldBe ? '#FAECE7' : shouldBe ? '#FFF6DA' : '';
+    const icon = shouldBe ? '✓ attendu' : (checked ? '✗ non attendu' : '');
+    return `<div style="display:flex;justify-content:space-between;padding:6px 8px;background:${bg};border-radius:6px;font-size:12.5px;margin-bottom:4px;">
+      <span>${exerciceRegionLabel(key)}</span><span style="color:#666;">${icon}</span>
+    </div>`;
+  }).join('');
+
+  const total = ex.regions.length;
+  document.getElementById('exerciceBody').innerHTML = `
+    <div style="font-size:14px;margin-bottom:10px;">Le cépage <strong>${ex.cepage}</strong> se trouve dans : <strong>${[...ex.correctKeys].map(exerciceRegionLabel).join(', ') || 'aucune des régions sélectionnées (cas rare)'}</strong></div>
+    <div style="margin-bottom:12px;">${rows}</div>
+    <div style="background:${correct===total?'#EAF3DE':'#FFF4E6'};border-radius:10px;padding:12px;margin-bottom:12px;">
+      <strong>${correct}/${total} régions correctement cochées</strong>
+    </div>
+    <div style="display:flex;gap:8px;">
+      <button onclick="startExercice('cepages')" class="btn btn-purple" style="flex:1;">Nouvel exercice →</button>
+      <button onclick="buildExercicesMenu()" class="btn" style="flex:1;">Changer de région(s)</button>
+    </div>`;
+}
+
+function submitExerciceCouleurs() {
+  const ex = exerciceState.currentEx;
+  const couleursList = ['blanc','rouge','rosé','effervescent','liquoreux','moelleux'];
+  let correct = 0, total = 0;
+  let resultRows = '';
+
+  ex.aocs.forEach((aoc, idx) => {
+    const ref = aoc.types || [];
+    resultRows += `<tr><td style="padding:6px 8px;border:1px solid #e5e5e2;font-weight:500;font-size:12px;">${aoc.nom}</td>`;
+    couleursList.forEach(c => {
+      const cb = document.getElementById(`excb_${idx}_${c}`);
+      const checked = cb?.checked;
+      const shouldBe = ref.includes(c);
+      total++;
+      if (checked === shouldBe) correct++;
+      const icon = shouldBe ? '✓' : '';
+      const bg = checked && shouldBe ? '#EAF3DE' : checked && !shouldBe ? '#FAECE7' : shouldBe ? '#FFF4E6' : '';
+      resultRows += `<td style="padding:6px;text-align:center;border:1px solid #e5e5e2;background:${bg};font-size:13px;">${icon}${checked&&!shouldBe?'✗':''}</td>`;
+    });
+    resultRows += `</tr>`;
+  });
+
+  document.getElementById('exerciceBody').innerHTML = `
+    <div style="overflow-x:auto;margin-bottom:12px;">
+      <table style="width:100%;border-collapse:collapse;font-size:11px;">
+        <thead><tr style="background:#f8f7f4;">
+          <th style="padding:6px 8px;text-align:left;border:1px solid #e5e5e2;">AOC</th>
+          ${couleursList.map(c=>`<th style="padding:6px;text-align:center;border:1px solid #e5e5e2;">${c.charAt(0).toUpperCase()+c.slice(1)}</th>`).join('')}
+        </tr></thead>
+        <tbody>${resultRows}</tbody>
+      </table>
+    </div>
+    <div style="background:${correct>=total*.7?'#EAF3DE':'#FFF4E6'};border-radius:10px;padding:10px;margin-bottom:12px;">
+      <strong>${correct}/${total} cases correctes</strong>
+    </div>
+    <div style="display:flex;gap:8px;">
+      <button onclick="startExercice('couleurs')" class="btn btn-purple" style="flex:1;">Nouvel exercice →</button>
+      <button onclick="buildExercicesMenu()" class="btn" style="flex:1;">Changer de région(s)</button>
+    </div>`;
+}
 
 
 /* ══════════════════════════════════════════════════════
@@ -9265,7 +9602,7 @@ function renderIdAocCard() {
           ${bioField('Nature', isSpecs2Aoc ? idAocNature(aoc) : '', 'idaoc-nature')}
         </div>
         <div id="idaocReveal"></div>
-        <button class="btn btn-purple" style="width:100%;margin-top:10px;" onclick="idAocReveal()">Vérifier →</button>
+        <button id="idaocVerifBtn" class="btn btn-purple" style="width:100%;margin-top:10px;" onclick="idAocReveal()">Vérifier →</button>
       </div>
     </div>`;
 }
@@ -9331,7 +9668,7 @@ function idAocReveal() {
       </div>`;
   }
   document.getElementById('idaocReveal').innerHTML = revealHtml;
-  const verifBtn = document.querySelector('#screen-quiz-idaoc .btn-purple');
+  const verifBtn = document.getElementById('idaocVerifBtn');
   if (verifBtn) verifBtn.style.display = 'none';
 }
 
@@ -10170,6 +10507,7 @@ const SCREEN_META = {
   'quiz-va-active':       {title:'VA en cours', sub:'', back:'quiz-va', home:true},
   'quiz-partiels':        {title:'Partiels', sub:'', back:'quiz-hub', home:true},
   'quiz-partiels-active': {title:'Partiel en cours', sub:'', back:'quiz-partiels', home:true},
+  'quiz-exercices':       {title:'Exercices', sub:'', back:'quiz-hub', home:true},
   'quiz-oral':            {title:'Oral', sub:'', back:'quiz-hub', home:true},
   'simu-client':          {title:'Simulation Client', sub:'', back:'quiz-hub', home:true},
   'sommelia':             {title:'Sommel.IA', sub:'', back:'revisions-hub', home:true},
