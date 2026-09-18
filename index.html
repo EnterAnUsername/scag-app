@@ -944,6 +944,15 @@ body.has-tabbar .screen.active{padding-bottom:56px;}
 .bottle-preset-btn{padding:6px 12px;border-radius:20px;border:var(--border-width) solid var(--card-border);background:var(--card-bg);font-size:11px;font-weight:600;cursor:pointer;color:var(--text-secondary);}
 .bottle-preset-btn.active{background:var(--accent);border-color:var(--accent);color:#fff;}
 
+/* ── Fiches de dégustation détaillées (bière/vin) ── */
+.scale-row{display:flex;flex-wrap:wrap;gap:6px;}
+.scale-pt{padding:7px 10px;border:var(--border-width) solid var(--card-border);border-radius:8px;background:var(--card-bg);font-size:11.5px;font-weight:500;cursor:pointer;color:var(--text-secondary);transition:all .15s;}
+.scale-pt.active{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:700;}
+.aroma-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px 10px;margin-bottom:8px;}
+.aroma-col-title{font-size:11px;font-weight:700;color:var(--accent);margin-bottom:6px;}
+.aroma-col .form-checkbox{width:100%;box-sizing:border-box;margin-bottom:4px;border-radius:8px;padding:6px 10px;}
+.deg-subhead{font-size:13px;font-weight:800;margin:26px 0 4px;padding-bottom:6px;border-bottom:2px solid var(--accent);}
+
 /* ── Cartes bouteille (listes de collection) ── */
 .bottle-card{background:var(--card-bg);border:var(--border-width) solid var(--card-border);border-radius:14px;padding:14px 16px;margin-bottom:10px;cursor:pointer;transition:transform .12s;box-shadow:var(--shadow-card);}
 .bottle-card:active{transform:scale(.98);}
@@ -9919,6 +9928,51 @@ function ratingSlidersHTML() {
     </div>`;
 }
 
+/* ── Composant réutilisable : échelle à points cliquables (ex. paper : mot entouré sur une ligne) ── */
+function scaleFieldHTML(id, label, points) {
+  return `
+    <div class="form-field">
+      <label>${label}</label>
+      <div class="scale-row" id="${id}_row">
+        ${points.map((p, i) => `<button type="button" class="scale-pt" data-val="${p.replace(/"/g,'&quot;')}" onclick="selectScalePoint('${id}',${i})">${p}</button>`).join('')}
+      </div>
+      <input type="hidden" id="${id}">
+    </div>`;
+}
+function selectScalePoint(id, idx) {
+  const row = activeFormEl(`#${id}_row`);
+  const pts = [...row.querySelectorAll('.scale-pt')];
+  pts.forEach((b, i) => b.classList.toggle('active', i === idx));
+  activeFormEl(`#${id}`).value = pts[idx].dataset.val;
+}
+
+/* ── Composant réutilisable : ligne de choix unique (radio) ── */
+function radioRowHTML(name, options) {
+  return `<div class="form-checkrow">${options.map(o => `
+    <label class="form-checkbox"><input type="radio" name="${name}" value="${o.replace(/"/g,'&quot;')}" onchange="this.closest('.form-checkrow').querySelectorAll('.form-checkbox').forEach(l=>l.classList.remove('checked'));this.parentElement.classList.add('checked');"> ${o}</label>`).join('')}</div>`;
+}
+function radioRowValue(name) {
+  return activeFormEl(`input[name="${name}"]:checked`)?.value || '';
+}
+
+/* ── Composant réutilisable : grille d'arômes à cocher (Maltées/Fruitées/Végétales/Épicées — bière) ── */
+const BIERE_AROMES = {
+  'Maltées': ['Pain', 'Noix', 'Caramel', 'Toasté', 'Café', 'Chocolat', 'Fumé'],
+  'Fruitées': ['Agrumes', 'Fruits tropicaux', 'Fruits rouges/noirs', 'Fruits du verger', 'Fruits à noyaux', 'Raisin', 'Fruits secs'],
+  'Végétales': ['Herbacé', 'Foin', 'Florale', 'Résineux', 'Terreux', 'Épicé'],
+  'Épicées': ['Poivre', 'Clou de girofle', 'Vanille', "Écorce d'orange", 'Piment', 'Anis'],
+};
+function aromeGridHTML(prefix) {
+  return `<div class="aroma-grid">${Object.entries(BIERE_AROMES).map(([cat, items]) => `
+    <div class="aroma-col">
+      <div class="aroma-col-title">${cat}</div>
+      ${items.map(it => `<label class="form-checkbox"><input type="checkbox" class="${prefix}_cb" value="${it}" onchange="this.parentElement.classList.toggle('checked',this.checked)"> ${it}</label>`).join('')}
+    </div>`).join('')}</div>`;
+}
+function aromeGridValues(prefix) {
+  return [...activeFormAll(`.${prefix}_cb:checked`)].map(cb => cb.value);
+}
+
 /* ── Aiguillage vers le bon formulaire selon la catégorie ── */
 function buildBottleFormScreen(context, category) {
   if (category === 'bieres') return buildBiereFormScreen(context);
@@ -9927,17 +9981,68 @@ function buildBottleFormScreen(context, category) {
   if (category === 'autres') return buildAutresFormScreen(context);
 }
 
-/* ── FORMULAIRE BIÈRE ── */
+/* ── FORMULAIRE BIÈRE (fiche Craftology complète en dégustation) ── */
 function buildBiereFormScreen(context) {
   const isDeg = context === 'degustation';
   document.getElementById('screen-' + context + '-bieres-form').innerHTML = `
     <div class="cave-form">
-      <div class="form-field"><label>Nom de la bière</label><input type="text" id="f_nom" placeholder="Ex. Punk IPA"></div>
-      <div class="form-field"><label>Brasserie</label><input type="text" id="f_brasserie" placeholder="Ex. BrewDog"></div>
-      <div class="form-field"><label>Type de bière</label><input type="text" id="f_type" placeholder="Ex. IPA, Stout, Lager…"></div>
-      <div class="form-field"><label>Degré d'alcool <span class="opt">(%)</span></label><input type="number" id="f_degre" step="0.1" min="0" max="20" placeholder="Ex. 5.6"></div>
+      <div class="form-field"><label>Nom de la bière</label><input type="text" id="f_nom" placeholder="Ex. Maduro"></div>
+      <div class="form-field"><label>Brasserie</label><input type="text" id="f_brasserie" placeholder="Ex. Cigar City Brewing"></div>
+      <div class="form-field"><label>Style</label><input type="text" id="f_type" placeholder="Ex. Brown Ale, IPA, Stout…"></div>
+      <div class="form-field"><label>Degré d'alcool <span class="opt">(%)</span></label><input type="number" id="f_degre" step="0.1" min="0" max="20" placeholder="Ex. 5.5"></div>
+      <div class="form-field"><label>EBC <span class="opt">(couleur, facultatif)</span></label><input type="number" id="f_ebc" step="1" min="0" placeholder="Ex. 40"></div>
+      <div class="form-field"><label>IBU <span class="opt">(amertume, facultatif)</span></label><input type="number" id="f_ibu" step="1" min="0" placeholder="Ex. 25"></div>
       ${!isDeg ? `<div class="form-field"><label>Date de péremption</label><input type="date" id="f_datePeremption"></div>` : ''}
-      ${isDeg ? `${dateDegustationFieldHTML()}<div class="form-field"><label>Avis général</label><textarea id="f_avis" placeholder="Vos impressions générales…"></textarea></div>${ratingSlidersHTML()}` : ''}
+      ${isDeg ? `
+        ${dateDegustationFieldHTML()}
+
+        <div class="deg-subhead">👃 Nez</div>
+        <div class="form-field"><label>Notes aromatiques</label>${aromeGridHTML('nez')}</div>
+        ${scaleFieldHTML('f_nezIntensite', 'Intensité aromatique', ['Faible','Moyenne','Prononcée','Intense'])}
+        <div class="form-field"><label>Autres arômes</label><textarea id="f_nezAutres" placeholder="Notes non listées ci-dessus…"></textarea></div>
+
+        <div class="deg-subhead">👁️ Vue</div>
+        ${scaleFieldHTML('f_robeColeur', 'Couleur de la robe', ['Blanche','Paille','Jaune','Dorée','Ambrée','Brune','Noire'])}
+        ${scaleFieldHTML('f_transparence', 'Transparence', ['Limpide','Voilée','Trouble','Opaque'])}
+        <div class="form-field"><label>Couleur de la mousse</label>
+          <div class="form-checkrow">
+            ${['Blanche','Beige','Rouge','Café','Brune'].map(c=>`<label class="form-checkbox"><input type="checkbox" class="mousseCouleur_cb" value="${c}" onchange="this.parentElement.classList.toggle('checked',this.checked)"> ${c}</label>`).join('')}
+          </div>
+        </div>
+        ${scaleFieldHTML('f_mousseConsistance', 'Consistance de la mousse', ['Aucune','Mince','Moyenne','Épaisse'])}
+        ${scaleFieldHTML('f_mousseTenue', 'Tenue de la mousse', ['Aucune','Pauvre (< 15 sec)','Moyenne (15 à 60 sec)','Persistance (> 60 sec)'])}
+        <div class="form-field"><label>Autres observations</label><textarea id="f_vueAutres" placeholder="…"></textarea></div>
+
+        <div class="deg-subhead">👄 Bouche</div>
+        ${scaleFieldHTML('f_boucheIntensite', 'Intensité aromatique', ['Faible','Moyenne','Prononcée','Intense'])}
+        <div class="form-field"><label>Arômes</label>${aromeGridHTML('bouche')}</div>
+        <div class="form-section-title">Saveurs</div>
+        ${scaleFieldHTML('f_amertume', 'Amertume', ['Inexistante','Faible','Modérée','Prononcée','Très prononcée'])}
+        ${scaleFieldHTML('f_sucrosite', 'Sucrosité', ['Inexistante','Faible','Modérée','Prononcée','Très prononcée'])}
+        ${scaleFieldHTML('f_aciditeBiere', 'Acidité', ['Inexistante','Faible','Modérée','Prononcée','Très prononcée'])}
+        <div class="form-field"><label>Autre</label><input type="text" id="f_saveurAutre" placeholder="…"></div>
+        <div class="form-section-title">Sensations</div>
+        ${scaleFieldHTML('f_petillance', 'Pétillance', ['Plate','Faible','Moyenne','Élevée'])}
+        ${scaleFieldHTML('f_corps', 'Corps', ['Aqueux','Mince','Moyen','Épais'])}
+        <div class="form-field"><label>Texture</label>
+          <div class="form-checkrow">
+            ${['Astringence','Chauffante','Collante','Crémeuse','Douce','Gras','Légère','Piquante','Sèche','Sirupeuse','Soyeuse','Visqueuse'].map(t=>`<label class="form-checkbox"><input type="checkbox" class="texture_cb" value="${t}" onchange="this.parentElement.classList.toggle('checked',this.checked)"> ${t}</label>`).join('')}
+          </div>
+        </div>
+        ${scaleFieldHTML('f_ressentiAlcool', "Ressenti d'alcool", ['Faible (< 5%)','Moyen (entre 5 et 7%)','Fort (entre 7 et 9%)','Très fort (+ de 9%)'])}
+        ${scaleFieldHTML('f_longueurBouche', 'Longueur en bouche', ['Courte','Moyenne','Longue','Très longue'])}
+        <div class="form-field">
+          <div class="form-checkrow">
+            ${['Arôme','Saveur'].map(t=>`<label class="form-checkbox"><input type="checkbox" class="longueurType_cb" value="${t}" onchange="this.parentElement.classList.toggle('checked',this.checked)"> ${t}</label>`).join('')}
+          </div>
+        </div>
+        ${scaleFieldHTML('f_equilibreBiere', 'Équilibre', ['Équilibré','Léger déséquilibre','Déséquilibré'])}
+        ${scaleFieldHTML('f_impressionPerso', 'Impression personnelle', ['Pas pour moi','Ok en demi','Pintable (excellente)'])}
+
+        <div class="deg-subhead">📝 Notes</div>
+        <div class="form-field"><label>Cohérence ortho/rétro, défauts, accords possibles, cohérence au style, fraîcheur…</label><textarea id="f_avis" placeholder="Vos impressions générales…"></textarea></div>
+        ${ratingSlidersHTML()}
+      ` : ''}
       <button class="form-submit" onclick="submitBiereForm('${context}')">💾 Enregistrer la bière</button>
     </div>`;
 }
@@ -9945,6 +10050,7 @@ function buildBiereFormScreen(context) {
 function submitBiereForm(context) {
   const nom = activeFormEl('#f_nom').value.trim();
   if (!nom) { alert('Le nom de la bière est obligatoire.'); return; }
+  const isDeg = context === 'degustation';
   const datePeremptionEl = activeFormEl('#f_datePeremption');
   const dateDegEl = activeFormEl('#f_dateDegustation');
   const avisEl = activeFormEl('#f_avis');
@@ -9955,12 +10061,41 @@ function submitBiereForm(context) {
     brasserie: activeFormEl('#f_brasserie').value.trim(),
     type: activeFormEl('#f_type').value.trim(),
     degre: parseFloat(activeFormEl('#f_degre').value) || null,
+    ebc: parseFloat(activeFormEl('#f_ebc')?.value) || null,
+    ibu: parseFloat(activeFormEl('#f_ibu')?.value) || null,
     datePeremption: datePeremptionEl ? (datePeremptionEl.value || null) : null,
     dateDegustation: dateDegEl ? (dateDegEl.value || null) : null,
     avisGeneral: avisEl ? avisEl.value.trim() : '',
     noteObjective: noteObjEl ? parseFloat(noteObjEl.value) : undefined,
     noteSubjective: noteSubjEl ? parseFloat(noteSubjEl.value) : undefined,
   };
+  if (isDeg) {
+    Object.assign(bottle, {
+      nezAromes: aromeGridValues('nez'),
+      nezIntensite: activeFormEl('#f_nezIntensite')?.value || '',
+      nezAutres: activeFormEl('#f_nezAutres')?.value.trim() || '',
+      robeCouleur: activeFormEl('#f_robeColeur')?.value || '',
+      transparence: activeFormEl('#f_transparence')?.value || '',
+      mousseCouleur: [...activeFormAll('.mousseCouleur_cb:checked')].map(cb => cb.value),
+      mousseConsistance: activeFormEl('#f_mousseConsistance')?.value || '',
+      mousseTenue: activeFormEl('#f_mousseTenue')?.value || '',
+      vueAutres: activeFormEl('#f_vueAutres')?.value.trim() || '',
+      boucheIntensite: activeFormEl('#f_boucheIntensite')?.value || '',
+      boucheAromes: aromeGridValues('bouche'),
+      amertume: activeFormEl('#f_amertume')?.value || '',
+      sucrosite: activeFormEl('#f_sucrosite')?.value || '',
+      aciditeBiere: activeFormEl('#f_aciditeBiere')?.value || '',
+      saveurAutre: activeFormEl('#f_saveurAutre')?.value.trim() || '',
+      petillance: activeFormEl('#f_petillance')?.value || '',
+      corps: activeFormEl('#f_corps')?.value || '',
+      texture: [...activeFormAll('.texture_cb:checked')].map(cb => cb.value),
+      ressentiAlcool: activeFormEl('#f_ressentiAlcool')?.value || '',
+      longueurBouche: activeFormEl('#f_longueurBouche')?.value || '',
+      longueurType: [...activeFormAll('.longueurType_cb:checked')].map(cb => cb.value),
+      equilibreBiere: activeFormEl('#f_equilibreBiere')?.value || '',
+      impressionPerso: activeFormEl('#f_impressionPerso')?.value || '',
+    });
+  }
   const id = addBottleTo(context, 'bieres', bottle);
   goTo(context + '-bieres-detail');
   buildBottleDetailScreen(context, 'bieres', id);
@@ -10051,23 +10186,31 @@ function submitSpiritueuxForm(context) {
 }
 
 /* ── FORMULAIRE VIN (champs optionnels + génération auto accords/garde) ── */
+/* ── FORMULAIRE VIN (champs optionnels + génération auto accords/garde ; fiche CFA complète en dégustation) ── */
 function buildVinFormScreen(context) {
+  const isDeg = context === 'degustation';
   document.getElementById('screen-' + context + '-vins-form').innerHTML = `
     <div class="cave-form">
-      <div class="form-field"><label>Nom du vin</label><input type="text" id="f_nom" placeholder="Ex. Clos des Chênes"></div>
+      <div class="form-field"><label>Nom du vin <span class="opt">(cuvée)</span></label><input type="text" id="f_nom" placeholder="Ex. Clos des Chênes"></div>
+      ${isDeg ? `<div class="form-field"><label>AOP <span class="opt">(facultatif)</span></label><input type="text" id="f_aop" placeholder="Ex. Volnay" list="aocNameList">
+        <datalist id="aocNameList">${getAllAocsFlat().map(a=>`<option value="${a.nom}">`).join('')}</datalist>
+      </div>` : ''}
       <div class="form-field"><label>Millésime <span class="opt">(facultatif)</span></label><input type="number" id="f_millesime" min="1900" max="2100" placeholder="Ex. 2019"></div>
       <div class="form-field"><label>Cépage <span class="opt">(facultatif)</span></label><input type="text" id="f_cepage" placeholder="Ex. Pinot Noir" list="cepageList">
         <datalist id="cepageList">${[...(CEPAGES.rouges||[]),...(CEPAGES.blancs||[]),...(CEPAGES.locaux||[])].map(c=>`<option value="${c.nom}">`).join('')}</datalist>
       </div>
       <div class="form-field"><label>Domaine <span class="opt">(facultatif)</span></label><input type="text" id="f_domaine" placeholder="Ex. Domaine de la Romanée-Conti"></div>
+      ${isDeg ? `<div class="form-field"><label>Sols <span class="opt">(facultatif)</span></label><input type="text" id="f_sols" placeholder="Ex. Argilo-calcaire"></div>
+      <div class="form-field"><label>Vinification et élevage <span class="opt">(facultatif)</span></label><input type="text" id="f_vinifElevage" placeholder="Ex. Élevage 12 mois en fûts de chêne"></div>` : ''}
       <div class="form-field">
         <label>Label <span class="opt">(facultatif)</span></label>
         <div class="form-checkrow">
-          <label class="form-checkbox"><input type="checkbox" value="Bio" onchange="this.parentElement.classList.toggle('checked',this.checked)"> Bio</label>
-          <label class="form-checkbox"><input type="checkbox" value="Demeter" onchange="this.parentElement.classList.toggle('checked',this.checked)"> Demeter</label>
-          <label class="form-checkbox"><input type="checkbox" value="Biodynamie" onchange="this.parentElement.classList.toggle('checked',this.checked)"> Biodynamie</label>
+          <label class="form-checkbox"><input type="checkbox" class="label_cb" value="Bio" onchange="this.parentElement.classList.toggle('checked',this.checked)"> Bio</label>
+          <label class="form-checkbox"><input type="checkbox" class="label_cb" value="Demeter" onchange="this.parentElement.classList.toggle('checked',this.checked)"> Demeter</label>
+          <label class="form-checkbox"><input type="checkbox" class="label_cb" value="Biodynamie" onchange="this.parentElement.classList.toggle('checked',this.checked)"> Biodynamie</label>
         </div>
       </div>
+      ${isDeg ? `<div class="form-field"><label>Agriculture <span class="opt">(facultatif)</span></label>${radioRowHTML('f_agriculture', ['Conventionnelle','Biologique','Biodynamique','Naturelle'])}</div>` : ''}
       <div class="form-field"><label>Type de vin <span class="opt">(recommandé — utilisé pour générer accords/garde)</span></label>
         <select id="f_typeVin">
           <option value="">— Non précisé —</option>
@@ -10078,18 +10221,64 @@ function buildVinFormScreen(context) {
           <option value="liquoreux">Liquoreux</option>
         </select>
       </div>
-      <div class="form-section-title">Description <span class="opt" style="text-transform:none;font-weight:400;">(facultatif)</span></div>
-      ${context === 'degustation' ? `
+      ${isDeg ? `
         ${dateDegustationFieldHTML()}
-        <div class="form-field"><label>Œil</label><textarea id="f_oeil" placeholder="Couleur, robe, intensité…"></textarea></div>
-        <div class="form-field"><label>Nez</label><textarea id="f_nez" placeholder="Arômes perçus…"></textarea></div>
-        <div class="form-field"><label>Bouche</label><textarea id="f_bouche" placeholder="Attaque, corps, finale…"></textarea></div>
+
+        <div class="deg-subhead">💭 Dégustation intuitive</div>
+        <div class="form-field"><label>Mes ressentis intuitifs</label><textarea id="f_ressentisIntuitifs" placeholder="…"></textarea></div>
+        <div class="form-field"><label>Je suis sensible à…</label><input type="text" id="f_sensibleA" placeholder="…"></div>
+        <div class="form-field"><label>…par le symbole de</label><input type="text" id="f_symboleDe" placeholder="…"></div>
+
+        <div class="deg-subhead">🌍 Dégustation géo-sensorielle</div>
+        ${scaleFieldHTML('f_dynamiqueSalivation', 'Dynamique de la salivation', ['Faible','Abondante'])}
+        <div class="form-field"><label>Lieu de la salivation</label>${radioRowHTML('f_lieuSalivation', ['Sous la langue','Sur l’arrière','Sur les côtés','Sur l’avant','Autre'])}
+          <input type="text" id="f_lieuSalivationAutre" placeholder="Si « Autre »…" style="margin-top:8px;">
+        </div>
+        ${scaleFieldHTML('f_fluiditeSalivation', 'Fluidité de la salivation', ['Fluide','Collante'])}
+        ${scaleFieldHTML('f_textureSalivation', 'Texture de la salivation', ['Lisse','Rugueuse'])}
+        <div class="form-field"><label>Mes perceptions sont…</label><input type="text" id="f_perceptionsSont" placeholder="…"></div>
+        <div class="form-field"><label>…pour un sol composé de</label><input type="text" id="f_solCompose" placeholder="…"></div>
+
+        <div class="deg-subhead">🔬 Dégustation analytique</div>
+        <div class="form-section-title">Aspect visuel</div>
+        <div class="form-field"><label>Teinte et nuance</label><input type="text" id="f_teinteNuance" placeholder="…"></div>
+        <div class="form-field"><label>Reflets</label><input type="text" id="f_reflets" placeholder="…"></div>
+        <div class="form-field"><label>Limpidité et éclat</label><input type="text" id="f_limpiditeEclat" placeholder="…"></div>
+        <div class="form-field"><label>Autres observations</label><textarea id="f_visuelAutres" placeholder="…"></textarea></div>
+        <div class="form-field"><label>Conclusion (visuel)</label><input type="text" id="f_visuelConclusion" placeholder="…"></div>
+
+        <div class="form-section-title">Aspect olfactif</div>
+        <div class="form-field"><label>Intensité et qualité</label><input type="text" id="f_olfactifIntensite" placeholder="…"></div>
+        <div class="form-field"><label>Description — Nez 1</label><textarea id="f_nez1" placeholder="…"></textarea></div>
+        <div class="form-field"><label>Description — Nez 2</label><textarea id="f_nez2" placeholder="…"></textarea></div>
+        <div class="form-field"><label>Conclusion (olfactif)</label><input type="text" id="f_olfactifConclusion" placeholder="…"></div>
+
+        <div class="form-section-title">Aspect gustatif</div>
+        <div class="form-field"><label>Attaque</label><input type="text" id="f_attaque" placeholder="…"></div>
+        <div class="form-field"><label>Équilibre des saveurs</label><input type="text" id="f_equilibreSaveurs" placeholder="…"></div>
+        <div class="form-field"><label>Structure</label><input type="text" id="f_structure" placeholder="…"></div>
+        <div class="form-field"><label>Rétronasal</label><input type="text" id="f_retronasal" placeholder="…"></div>
+        <div class="form-field"><label>Fin de bouche</label><input type="text" id="f_finBouche" placeholder="…"></div>
+        <div class="form-field"><label>Persistance</label><input type="text" id="f_persistanceVin" placeholder="…"></div>
+        <div class="form-field"><label>Conclusion (gustatif)</label><input type="text" id="f_gustatifConclusion" placeholder="…"></div>
+
+        <div class="form-section-title">Harmonie générale</div>
+        <div class="form-field"><label>Description synthétique</label><textarea id="f_harmonieDesc" placeholder="…"></textarea></div>
+        <div class="form-field"><label>Service</label><input type="text" id="f_service" placeholder="Ex. 16-18°C, carafage 1h…"></div>
+
+        <div class="deg-subhead">🍽️ Association avec des mets</div>
+        <div class="form-field"><textarea id="f_associationMets" placeholder="…"></textarea></div>
+
+        <div class="deg-subhead">📝 Avis</div>
         <div class="form-field"><label>Avis général</label><textarea id="f_avis" placeholder="Vos impressions générales…"></textarea></div>
         ${ratingSlidersHTML()}
       ` : ''}
       <button class="form-submit" onclick="submitVinForm('${context}')">✨ Enregistrer et générer les accords</button>
     </div>`;
 }
+
+/* NB : getAllAocsFlat() est déjà définie plus haut (mémoïsée, utilisée par l'exercice ID AOC) — réutilisée ici. */
+
 
 /* Génère accords + potentiel de garde à partir du cépage (base CEPAGES) si possible,
    sinon repli sur des règles génériques par type de vin. */
@@ -10133,16 +10322,14 @@ function generateWineInsights(cepageInput, typeVin, millesime) {
 function submitVinForm(context) {
   const nom = activeFormEl('#f_nom').value.trim();
   if (!nom) { alert('Le nom du vin est obligatoire.'); return; }
-  const labels = [...activeFormAll('.form-checkbox input:checked')].map(cb => cb.value);
+  const isDeg = context === 'degustation';
+  const labels = [...activeFormAll('.label_cb:checked')].map(cb => cb.value);
   const cepage = activeFormEl('#f_cepage').value.trim();
   const typeVin = activeFormEl('#f_typeVin').value;
   const millesime = parseInt(activeFormEl('#f_millesime').value) || null;
 
   const insights = generateWineInsights(cepage, typeVin, millesime);
 
-  const oeilEl = activeFormEl('#f_oeil');
-  const nezEl = activeFormEl('#f_nez');
-  const boucheEl = activeFormEl('#f_bouche');
   const avisEl = activeFormEl('#f_avis');
   const dateDegEl = activeFormEl('#f_dateDegustation');
   const noteObjEl = activeFormEl('#noteObjective');
@@ -10155,15 +10342,49 @@ function submitVinForm(context) {
     domaine: activeFormEl('#f_domaine').value.trim(),
     labels,
     typeVin,
-    oeil: oeilEl ? oeilEl.value.trim() : '',
-    nez: nezEl ? nezEl.value.trim() : '',
-    bouche: boucheEl ? boucheEl.value.trim() : '',
     avisGeneral: avisEl ? avisEl.value.trim() : '',
     dateDegustation: dateDegEl ? (dateDegEl.value || null) : null,
     noteObjective: noteObjEl ? parseFloat(noteObjEl.value) : undefined,
     noteSubjective: noteSubjEl ? parseFloat(noteSubjEl.value) : undefined,
     insights,
   };
+  if (isDeg) {
+    Object.assign(bottle, {
+      aop: activeFormEl('#f_aop')?.value.trim() || '',
+      sols: activeFormEl('#f_sols')?.value.trim() || '',
+      vinifElevage: activeFormEl('#f_vinifElevage')?.value.trim() || '',
+      agriculture: radioRowValue('f_agriculture'),
+      ressentisIntuitifs: activeFormEl('#f_ressentisIntuitifs')?.value.trim() || '',
+      sensibleA: activeFormEl('#f_sensibleA')?.value.trim() || '',
+      symboleDe: activeFormEl('#f_symboleDe')?.value.trim() || '',
+      dynamiqueSalivation: activeFormEl('#f_dynamiqueSalivation')?.value || '',
+      lieuSalivation: radioRowValue('f_lieuSalivation'),
+      lieuSalivationAutre: activeFormEl('#f_lieuSalivationAutre')?.value.trim() || '',
+      fluiditeSalivation: activeFormEl('#f_fluiditeSalivation')?.value || '',
+      textureSalivation: activeFormEl('#f_textureSalivation')?.value || '',
+      perceptionsSont: activeFormEl('#f_perceptionsSont')?.value.trim() || '',
+      solCompose: activeFormEl('#f_solCompose')?.value.trim() || '',
+      teinteNuance: activeFormEl('#f_teinteNuance')?.value.trim() || '',
+      reflets: activeFormEl('#f_reflets')?.value.trim() || '',
+      limpiditeEclat: activeFormEl('#f_limpiditeEclat')?.value.trim() || '',
+      visuelAutres: activeFormEl('#f_visuelAutres')?.value.trim() || '',
+      visuelConclusion: activeFormEl('#f_visuelConclusion')?.value.trim() || '',
+      olfactifIntensite: activeFormEl('#f_olfactifIntensite')?.value.trim() || '',
+      nez1: activeFormEl('#f_nez1')?.value.trim() || '',
+      nez2: activeFormEl('#f_nez2')?.value.trim() || '',
+      olfactifConclusion: activeFormEl('#f_olfactifConclusion')?.value.trim() || '',
+      attaque: activeFormEl('#f_attaque')?.value.trim() || '',
+      equilibreSaveurs: activeFormEl('#f_equilibreSaveurs')?.value.trim() || '',
+      structure: activeFormEl('#f_structure')?.value.trim() || '',
+      retronasal: activeFormEl('#f_retronasal')?.value.trim() || '',
+      finBouche: activeFormEl('#f_finBouche')?.value.trim() || '',
+      persistanceVin: activeFormEl('#f_persistanceVin')?.value.trim() || '',
+      gustatifConclusion: activeFormEl('#f_gustatifConclusion')?.value.trim() || '',
+      harmonieDesc: activeFormEl('#f_harmonieDesc')?.value.trim() || '',
+      service: activeFormEl('#f_service')?.value.trim() || '',
+      associationMets: activeFormEl('#f_associationMets')?.value.trim() || '',
+    });
+  }
   const id = addBottleTo(context, 'vins', bottle);
   goTo(context + '-vins-detail');
   buildBottleDetailScreen(context, 'vins', id);
@@ -10226,11 +10447,41 @@ function buildBottleDetailScreen(context, category, id) {
   if (category === 'bieres') {
     fieldsHTML = `
       ${row('Brasserie', bottle.brasserie)}
-      ${row('Type', bottle.type)}
+      ${row('Style', bottle.type)}
       ${row("Degré d'alcool", bottle.degre ? bottle.degre + '%' : null)}
+      ${row('EBC', bottle.ebc)}
+      ${row('IBU', bottle.ibu)}
       ${row('Date de péremption', bottle.datePeremption)}
       ${row('Date de dégustation', formatDateFr(bottle.dateDegustation))}
-      ${row('Avis général', bottle.avisGeneral)}`;
+      ${bottle.nezAromes?.length || bottle.nezIntensite || bottle.nezAutres ? `
+        <div class="form-section-title">👃 Nez</div>
+        ${row('Notes aromatiques', bottle.nezAromes?.join(', '))}
+        ${row('Intensité aromatique', bottle.nezIntensite)}
+        ${row('Autres arômes', bottle.nezAutres)}` : ''}
+      ${bottle.robeCouleur || bottle.transparence || bottle.mousseCouleur?.length ? `
+        <div class="form-section-title">👁️ Vue</div>
+        ${row('Couleur de la robe', bottle.robeCouleur)}
+        ${row('Transparence', bottle.transparence)}
+        ${row('Couleur de la mousse', bottle.mousseCouleur?.join(', '))}
+        ${row('Consistance de la mousse', bottle.mousseConsistance)}
+        ${row('Tenue de la mousse', bottle.mousseTenue)}
+        ${row('Autres observations', bottle.vueAutres)}` : ''}
+      ${bottle.boucheAromes?.length || bottle.amertume || bottle.corps ? `
+        <div class="form-section-title">👄 Bouche</div>
+        ${row('Intensité aromatique', bottle.boucheIntensite)}
+        ${row('Arômes', bottle.boucheAromes?.join(', '))}
+        ${row('Amertume', bottle.amertume)}
+        ${row('Sucrosité', bottle.sucrosite)}
+        ${row('Acidité', bottle.aciditeBiere)}
+        ${row('Autre saveur', bottle.saveurAutre)}
+        ${row('Pétillance', bottle.petillance)}
+        ${row('Corps', bottle.corps)}
+        ${row('Texture', bottle.texture?.join(', '))}
+        ${row("Ressenti d'alcool", bottle.ressentiAlcool)}
+        ${row('Longueur en bouche', [bottle.longueurBouche, bottle.longueurType?.join(', ')].filter(Boolean).join(' — '))}
+        ${row('Équilibre', bottle.equilibreBiere)}
+        ${row('Impression personnelle', bottle.impressionPerso)}` : ''}
+      ${row('Notes', bottle.avisGeneral)}`;
   } else if (category === 'spiritueux') {
     fieldsHTML = `
       ${row('Type', bottle.type)}
@@ -10253,15 +10504,51 @@ function buildBottleDetailScreen(context, category, id) {
       ${row('Avis général', bottle.avisGeneral)}`;
   } else if (category === 'vins') {
     fieldsHTML = `
+      ${row('AOP', bottle.aop)}
       ${row('Millésime', bottle.millesime)}
       ${row('Cépage', bottle.cepage)}
       ${row('Domaine', bottle.domaine)}
+      ${row('Sols', bottle.sols)}
+      ${row('Vinification et élevage', bottle.vinifElevage)}
+      ${row('Agriculture', bottle.agriculture)}
       ${row('Label', bottle.labels && bottle.labels.length ? bottle.labels.join(', ') : null)}
       ${row('Type', bottle.typeVin)}
       ${row('Date de dégustation', formatDateFr(bottle.dateDegustation))}
       ${row('Œil', bottle.oeil)}
       ${row('Nez', bottle.nez)}
       ${row('Bouche', bottle.bouche)}
+      ${bottle.ressentisIntuitifs || bottle.sensibleA || bottle.symboleDe ? `
+        <div class="form-section-title">💭 Dégustation intuitive</div>
+        ${row('Mes ressentis intuitifs', bottle.ressentisIntuitifs)}
+        ${row('Sensible à', [bottle.sensibleA, bottle.symboleDe ? 'par le symbole de ' + bottle.symboleDe : null].filter(Boolean).join(' — '))}` : ''}
+      ${bottle.dynamiqueSalivation || bottle.lieuSalivation || bottle.fluiditeSalivation || bottle.textureSalivation ? `
+        <div class="form-section-title">🌍 Dégustation géo-sensorielle</div>
+        ${row('Dynamique de la salivation', bottle.dynamiqueSalivation)}
+        ${row('Lieu de la salivation', [bottle.lieuSalivation, bottle.lieuSalivation === 'Autre' ? bottle.lieuSalivationAutre : null].filter(Boolean).join(' — '))}
+        ${row('Fluidité de la salivation', bottle.fluiditeSalivation)}
+        ${row('Texture de la salivation', bottle.textureSalivation)}
+        ${row('Perceptions', [bottle.perceptionsSont, bottle.solCompose ? 'pour un sol composé de ' + bottle.solCompose : null].filter(Boolean).join(' — '))}` : ''}
+      ${bottle.teinteNuance || bottle.olfactifIntensite || bottle.attaque ? `
+        <div class="form-section-title">🔬 Dégustation analytique</div>
+        ${row('Aspect visuel — Teinte et nuance', bottle.teinteNuance)}
+        ${row('Reflets', bottle.reflets)}
+        ${row('Limpidité et éclat', bottle.limpiditeEclat)}
+        ${row('Autres observations (visuel)', bottle.visuelAutres)}
+        ${row('Conclusion (visuel)', bottle.visuelConclusion)}
+        ${row('Aspect olfactif — Intensité et qualité', bottle.olfactifIntensite)}
+        ${row('Nez 1', bottle.nez1)}
+        ${row('Nez 2', bottle.nez2)}
+        ${row('Conclusion (olfactif)', bottle.olfactifConclusion)}
+        ${row('Aspect gustatif — Attaque', bottle.attaque)}
+        ${row('Équilibre des saveurs', bottle.equilibreSaveurs)}
+        ${row('Structure', bottle.structure)}
+        ${row('Rétronasal', bottle.retronasal)}
+        ${row('Fin de bouche', bottle.finBouche)}
+        ${row('Persistance', bottle.persistanceVin)}
+        ${row('Conclusion (gustatif)', bottle.gustatifConclusion)}
+        ${row('Harmonie générale', bottle.harmonieDesc)}
+        ${row('Service', bottle.service)}` : ''}
+      ${row('Association avec des mets', bottle.associationMets)}
       ${row('Avis général', bottle.avisGeneral)}
       ${bottle.insights ? `
         <div class="insight-box">
