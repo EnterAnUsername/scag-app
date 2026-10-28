@@ -599,8 +599,11 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;
 .header-home:hover{background:var(--header-hover);}
 .header-stats{background:none;border:none;color:var(--header-text);cursor:pointer;font-size:16px;padding:2px 6px;border-radius:6px;display:block;transition:background .15s;opacity:.85;}
 .header-stats:hover{background:var(--header-hover);opacity:1;}
-.header-title{font-family:var(--font-display);font-size:16px;font-weight:500;letter-spacing:.02em;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);pointer-events:none;white-space:nowrap;}
-.header-sub{font-size:11px;color:var(--text-muted);margin-left:auto;}
+.header-title{font-family:var(--font-display);font-size:16px;font-weight:500;letter-spacing:.02em;flex:1 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.header-sub{font-size:11px;color:var(--text-muted);flex:0 0 auto;max-width:30%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.header-sub:empty{display:none;}
+.header button{flex:0 0 auto;}
+@media(max-width:420px){.header{padding:11px 10px;gap:4px;}.header-title{font-size:15px;}}
 
 /* ── SCREENS ── */
 .screen{display:none;min-height:calc(100vh - 48px);}
@@ -821,6 +824,13 @@ body.has-tabbar .screen.active{padding-bottom:56px;}
 .aoc-list{display:flex;flex-direction:column;gap:7px;}
 .subcat-header{padding:8px 4px 4px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-muted);border-bottom:1px solid var(--card-border-soft);margin-top:12px;margin-bottom:4px;}
 .subcat-header:first-child{margin-top:0;}
+.aoc-tabs{display:flex;gap:6px;margin:4px 0 12px;}
+.aoc-tab{flex:1;padding:9px 12px;border-radius:10px;border:var(--border-width) solid var(--card-border);background:var(--card-bg);font-size:13px;font-weight:700;color:var(--text-secondary);cursor:pointer;font-family:inherit;}
+.aoc-tab.active{background:var(--accent);border-color:var(--accent);color:#fff;}
+.dgc-parent{font-size:11px;color:var(--text-muted);font-weight:500;}
+.dgc-src-tag{display:inline-block;font-size:9.5px;font-weight:700;color:#b45309;background:#fffbeb;border:1px solid #fde68a;border-radius:6px;padding:1px 6px;margin-left:6px;vertical-align:middle;}
+.dgc-src-web{color:#166534;background:#f0fdf4;border-color:#bbf7d0;}
+.dgc-empty{padding:28px 12px;text-align:center;font-size:13px;color:var(--text-muted);line-height:1.6;}
 .aoc-card{border:var(--border-width) solid var(--card-border);border-radius:12px;background:var(--card-bg);overflow:hidden;}
 .aoc-header{padding:11px 15px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;user-select:none;}
 .aoc-title{font-weight:500;font-size:14px;}
@@ -884,6 +894,16 @@ body.has-tabbar .screen.active{padding-bottom:56px;}
 .orga-aoc-node.dim{opacity:.2;filter:blur(1.5px) grayscale(.6);transform:scale(.92);}
 .orga-aoc-node.match{border-color:var(--accent);box-shadow:0 0 0 3px rgba(147,51,234,.15);transform:scale(1.05);}
 .orga-dot-row{display:flex;flex-direction:row;gap:3px;flex-shrink:0;}
+.orga-aoc-node{cursor:pointer;}
+.orga-leaf-chev{font-size:13px;font-weight:700;color:var(--text-muted);transition:transform .2s;flex-shrink:0;}
+.orga-leaf.open > .orga-aoc-node .orga-leaf-chev{transform:rotate(90deg);}
+.orga-leaf.open > .orga-aoc-node{border-color:var(--accent);}
+.orga-leaf-hline{display:none;}
+.orga-leaf.open > .orga-leaf-hline{display:block;}
+.orga-detail{display:none;width:270px;flex-shrink:0;background:var(--card-bg);border:1.5px solid var(--accent);border-radius:10px;padding:9px 12px;font-size:11.5px;line-height:1.45;color:var(--text-secondary);white-space:normal;}
+.orga-leaf.open > .orga-detail{display:block;}
+.orga-detail-row + .orga-detail-row{margin-top:7px;}
+.orga-detail-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;color:var(--accent);margin-bottom:1px;}
 .orga-type-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
 .aoc-body{display:none;padding:11px 15px 13px;border-top:1px solid var(--card-border-soft);}
 .aoc-body.open{display:block;}
@@ -896,6 +916,89 @@ body.has-tabbar .screen.active{padding-bottom:56px;}
 .chevron.open{transform:rotate(180deg);}
 
 /* ── PLACEHOLDER screens (Cépages, AMV) ── */
+/* ── Zytho : arbre des arômes ── */
+.za-wrap{padding:14px 14px 90px;max-width:560px;margin:0 auto;--c:#8b6a9e;}
+.za-wrap[data-o="malt"]{--c:#8b6a9e}.za-wrap[data-o="houblon"]{--c:#3f8f68}
+.za-wrap[data-o="levure"]{--c:#d4962a}.za-wrap[data-o="roue"]{--c:#3a8aa5}
+.za-intro{font-size:12px;color:var(--text-secondary);margin:0 4px 12px;line-height:1.5;text-align:center;}
+.za-tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-bottom:14px;}
+.za-tab{font:600 13px var(--font-body);padding:10px 2px;border:1.5px solid var(--card-border);background:var(--card-bg);color:var(--page-text);border-radius:10px;cursor:pointer;}
+.za-tab[aria-selected="true"]{background:var(--c);border-color:var(--c);color:#fff;}
+.za-title{background:color-mix(in srgb,var(--c) 14%,var(--card-bg));border-left:6px solid var(--c);border-radius:4px 12px 12px 4px;padding:13px 14px;font-size:15px;line-height:1.35;margin-bottom:8px;color:var(--page-text);}
+.za-title b{color:var(--c);}
+.za-tools{display:flex;justify-content:flex-end;margin-bottom:4px;}
+.za-all{font-size:12px;color:var(--c);background:none;border:0;padding:6px 2px;cursor:pointer;text-decoration:underline;}
+.za-cat{border:1.5px solid var(--card-border);border-radius:12px;background:var(--card-bg);margin-bottom:8px;overflow:hidden;}
+.za-cat.open{border-color:var(--c);}
+.za-cat>button{all:unset;box-sizing:border-box;display:flex;align-items:center;gap:10px;width:100%;padding:13px 14px;cursor:pointer;font-size:15px;font-weight:600;color:var(--page-text);}
+.za-dot{width:12px;height:12px;border-radius:50%;background:var(--c);flex:none;}
+.za-n{margin-left:auto;font-size:11px;color:var(--text-muted);font-weight:400;text-align:right;}
+.za-chev{flex:none;width:18px;height:18px;transition:transform .2s;color:var(--text-muted);}
+.za-cat.open .za-chev{transform:rotate(90deg);}
+.za-body{display:none;padding:2px 12px 14px;}
+.za-cat.open .za-body{display:block;}
+.za-cat.def .za-dot{background:#c2503c;}.za-cat.def.open{border-color:#c2503c;}
+.za-group{background:color-mix(in srgb,var(--c) 12%,var(--card-bg));border-radius:10px;padding:10px 12px;margin-top:8px;}
+.za-cat.def .za-group{background:color-mix(in srgb,#c2503c 13%,var(--card-bg));}
+.za-group h4{margin:0 0 7px;font-size:14px;font-weight:600;color:var(--c);}
+.za-cat.def .za-group h4{color:#c2503c;}
+.za-group h4:last-child{margin-bottom:0;}
+.za-code{font-size:11px;color:var(--text-muted);font-weight:400;margin-left:6px;}
+.za-chips{display:flex;flex-wrap:wrap;gap:6px;}
+.za-chip{font-size:13px;background:var(--card-bg);color:var(--page-text);border:1px solid var(--card-border);border-radius:999px;padding:4px 11px;}
+.za-chip.more{border-style:dashed;color:var(--text-muted);}
+.za-lone{margin:10px 2px 0;font-size:13px;color:var(--text-muted);}
+.za-foot{margin-top:14px;font-size:11px;color:var(--text-muted);text-align:center;line-height:1.5;}
+.za-tab:focus-visible,.za-cat>button:focus-visible,.za-all:focus-visible{outline:3px solid var(--c);outline-offset:2px;}
+@media (prefers-reduced-motion:reduce){.za-chev{transition:none}}
+
+/* ── Zytho : mind map des styles ── */
+.zs-wrap{padding:14px 14px 90px;max-width:560px;margin:0 auto;}
+.zs-intro{font-size:12px;color:var(--text-secondary);margin:0 4px 10px;line-height:1.5;text-align:center;}
+.zs-hero{position:relative;width:100%;aspect-ratio:1/.95;margin:6px auto 0;}
+.zs-center{position:absolute;left:30%;top:28.9%;width:40%;aspect-ratio:1;border-radius:50%;background:var(--card-bg);box-shadow:0 8px 24px rgba(0,0,0,.14);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;z-index:2;color:var(--page-text);}
+.zs-center .zs-ico{font-size:clamp(20px,7vw,32px);line-height:1;margin-bottom:4px;}
+.zs-center b{font-family:var(--font-display);font-size:clamp(11px,3.6vw,16px);letter-spacing:.04em;}
+.zs-center small{font-size:clamp(9px,3vw,13px);color:var(--text-muted);letter-spacing:.06em;}
+.zs-dashes{display:flex;gap:3px;margin-top:6px;}
+.zs-dashes i{display:block;width:clamp(8px,2.6vw,12px);height:3px;border-radius:2px;background:var(--zs-c);}
+.zs-sat{position:absolute;width:29%;aspect-ratio:1;border-radius:50%;border:none;background:var(--card-bg);box-shadow:0 6px 18px rgba(0,0,0,.12);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;color:var(--page-text);transition:transform .18s,box-shadow .18s,opacity .18s;z-index:1;padding:0;}
+.zs-sat .zs-num{font-family:var(--font-display);font-weight:700;font-size:clamp(18px,6.4vw,28px);line-height:1;color:var(--zs-c);}
+.zs-sat .zs-fname{font-size:clamp(9px,2.9vw,12px);margin-top:3px;color:var(--text-secondary);font-weight:600;}
+.zs-sat.pos0{left:7%;top:9%;}.zs-sat.pos1{left:64%;top:9%;}.zs-sat.pos2{left:64%;top:60%;}.zs-sat.pos3{left:7%;top:60%;}
+.zs-sat.active{transform:scale(1.08);box-shadow:0 0 0 3px var(--zs-c),0 8px 22px rgba(0,0,0,.2);}
+.zs-hero.has-sel .zs-sat:not(.active){opacity:.6;}
+.zs-tri-wrap{position:absolute;inset:0;pointer-events:none;transform:rotate(var(--a));}
+.zs-tri{position:absolute;right:-10px;top:50%;width:17px;height:22px;margin-top:-11px;background:var(--zs-c);clip-path:polygon(0 0,100% 50%,0 100%);}
+.zs-panel{scroll-margin-top:76px;margin-top:14px;min-height:calc(100vh - 90px);}
+.zs-hint{text-align:center;font-size:13px;color:var(--text-muted);padding:16px 8px;}
+.zs-stem{width:3px;height:18px;background:var(--zs-c);margin:0 auto;border-radius:2px;}
+.zs-sheet-bg{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:300;display:none;}
+.zs-sheet-bg.show{display:block;}
+.zs-sheet{position:absolute;left:0;right:0;bottom:0;max-height:75vh;overflow:auto;background:var(--card-bg);color:var(--page-text);border-radius:18px 18px 0 0;padding:18px 18px calc(24px + env(safe-area-inset-bottom,0px));}
+.zs-sheet h3{font-family:var(--font-display);font-size:17px;margin:0 28px 4px 0;}
+.zs-sheet .zs-close{position:absolute;top:12px;right:14px;border:none;background:none;font-size:20px;color:var(--text-muted);cursor:pointer;}
+.zs-sheet .zs-path{font-size:11px;color:var(--text-muted);margin-bottom:12px;}
+.zs-field{padding:8px 0;border-top:1px solid var(--card-border);}
+.zs-field b{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--text-muted);margin-bottom:2px;}
+.zs-field span{font-size:13px;line-height:1.5;}
+.zs-todo{font-size:13px;color:var(--text-muted);padding:10px 0;}
+
+.zs-crumbs{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:6px;}
+.zs-crumb{border:1.5px solid var(--zs-c);background:var(--card-bg);color:var(--page-text);border-radius:14px;padding:4px 10px;font-size:11px;cursor:pointer;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.zs-crumb.cur{background:var(--zs-c);color:#fff;}
+.zs-hubwrap{position:relative;width:40%;margin:0 auto;}
+.zs-hub{width:100%;aspect-ratio:1;border-radius:50%;border:none;background:var(--zs-c);color:#fff;box-shadow:0 8px 22px rgba(0,0,0,.2);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:10%;font-family:var(--font-display);font-weight:700;font-size:clamp(11px,3.4vw,15px);line-height:1.15;overflow-wrap:anywhere;cursor:default;}
+.zs-hub small{font-weight:400;font-size:clamp(9px,2.6vw,11px);opacity:.9;margin-top:3px;}
+.zs-hub-arrow,.zs-bub-arrow{position:absolute;border:none;border-radius:50%;background:var(--card-bg);color:var(--zs-c);box-shadow:0 2px 8px rgba(0,0,0,.25);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.zs-hub-arrow{right:-4px;top:2px;width:34px;height:34px;}
+.zs-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:14px 10px;margin-top:4px;}
+.zs-b{position:relative;width:calc((100% - 20px)/3);animation:zsPop .24s ease both;animation-delay:calc(var(--i)*25ms);}
+.zs-bub{width:100%;aspect-ratio:1;border-radius:50%;border:2.5px solid var(--zs-c);background:var(--card-bg);color:var(--page-text);box-shadow:0 5px 14px rgba(0,0,0,.1);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:9%;cursor:pointer;font-family:var(--font-display);font-weight:600;font-size:clamp(10px,3vw,12.5px);line-height:1.2;overflow-wrap:anywhere;}
+.zs-bub small{font-weight:400;font-size:clamp(8.5px,2.4vw,10px);color:var(--zs-c);margin-top:3px;}
+.zs-bub:active{transform:scale(.96);}
+.zs-bub-arrow{right:-2px;top:-2px;width:26px;height:26px;font-size:12px;background:var(--zs-c);color:#fff;}
+@keyframes zsPop{from{opacity:0;transform:scale(.7);}to{opacity:1;transform:scale(1);}}
 .placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;gap:16px;padding:2rem;text-align:center;}
 .placeholder-icon{font-size:52px;}
 .placeholder-title{font-family:var(--font-display);font-size:18px;font-weight:600;}
@@ -1359,7 +1462,7 @@ body.has-tabbar .sommelia-fab{display:block;}
       <div class="hub-card cat-carte" onclick="goTo('zytho-hub')" style="grid-column:1/-1;padding:26px 20px;">
         <div class="hub-card-icon" style="font-size:30px;">🍺</div>
         <div class="hub-card-title" style="font-size:17px;">Zytho</div>
-        <div class="hub-card-desc">Bientôt disponible</div>
+        <div class="hub-card-desc">Cours, bibliothèque, styles, quiz…</div>
       </div>
       <div class="hub-card cat-carte" onclick="goTo('cave-hub')" style="grid-column:1/-1;padding:26px 20px;">
         <div class="hub-card-icon" style="font-size:30px;">🍷</div>
@@ -1408,8 +1511,8 @@ body.has-tabbar .sommelia-fab{display:block;}
       <div class="hub-card cat-wip" onclick="goTo('autres-boissons');buildAutresBoissonsScreen()">
         <div class="hub-card-icon">🥃</div>
         <div class="hub-card-title">Autres boissons</div>
-        <div class="hub-card-desc">Bières, spiritueux, thés, cafés…</div>
-        <span class="hub-card-count count-wip">WIP</span>
+        <div class="hub-card-desc">Saké, bières, spiritueux, thés, cafés…</div>
+        <span class="hub-card-count count-wip">Saké</span>
       </div>
       <div class="hub-card cat-wip" onclick="goTo('vins-monde');buildVinsMondeScreen()">
         <div class="hub-card-icon">🌍</div>
@@ -1440,9 +1543,171 @@ body.has-tabbar .sommelia-fab{display:block;}
   </div>
 </div>
 
-<!-- ═══════════════ ZYTHO (placeholder) ═══════════════ -->
+<!-- ═══════════════ ZYTHO ═══════════════ -->
 <div class="screen" id="screen-zytho-hub">
-  <div class="placeholder"><div class="placeholder-icon">🍺</div><div class="placeholder-title">Zytho</div><div class="placeholder-desc">Contenu à venir.</div><span class="placeholder-badge">Bientôt</span></div>
+  <div class="hub">
+    <div class="hub-greeting">
+      <h2>🍺 Zytho</h2>
+      <p>Formation Zytho — cours, ingrédients, styles, quiz</p>
+    </div>
+    <div class="hub-grid">
+      <div class="hub-card cat-aoc" onclick="goTo('zytho-cours')">
+        <div class="hub-card-icon">📖</div>
+        <div class="hub-card-title">Cours</div>
+        <div class="hub-card-desc">7 modules de la formation</div>
+      </div>
+      <div class="hub-card cat-cepages" onclick="goTo('zytho-biblio')">
+        <div class="hub-card-icon">📚</div>
+        <div class="hub-card-title">Bibliothèque</div>
+        <div class="hub-card-desc">Houblons, levures, malts…</div>
+      </div>
+      <div class="hub-card cat-carte" onclick="goTo('zytho-styles');buildZythoStylesScreen()">
+        <div class="hub-card-icon">🧭</div>
+        <div class="hub-card-title">Styles</div>
+        <div class="hub-card-desc">Mind map interactive des styles de bière</div>
+      </div>
+      <div class="hub-card cat-quiz" onclick="goTo('zytho-quiz')">
+        <div class="hub-card-icon">🧠</div>
+        <div class="hub-card-title">Quiz</div>
+        <div class="hub-card-desc">QCM, examen, mode sans fin</div>
+      </div>
+      <div class="hub-card cat-amv" onclick="goTo('zytho-accords')">
+        <div class="hub-card-icon">🍽️</div>
+        <div class="hub-card-title">Accords mets-bière</div>
+        <div class="hub-card-desc">Associer plats et bières</div>
+      </div>
+      <div class="hub-card cat-cepages" onclick="goTo('zytho-aromes');buildZythoAromesScreen()">
+        <div class="hub-card-icon">🌳</div>
+        <div class="hub-card-title">Arbre des arômes</div>
+        <div class="hub-card-desc">Malt, houblon, levure, roue des saveurs</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="screen" id="screen-zytho-cours">
+  <div class="hub">
+    <div class="hub-greeting">
+      <h2>📖 Cours</h2>
+      <p>Les 7 modules de la formation Zytho</p>
+    </div>
+    <div class="hub-grid">
+      <div class="hub-card cat-wip">
+        <div class="hub-card-icon">📘</div>
+        <div class="hub-card-title">Module 1</div>
+        <div class="hub-card-desc">Titre à définir</div>
+        <span class="hub-card-count count-wip">Bientôt</span>
+      </div>
+      <div class="hub-card cat-wip">
+        <div class="hub-card-icon">⚗️</div>
+        <div class="hub-card-title">Module 2 — Brassage</div>
+        <div class="hub-card-desc">Le procédé de brassage</div>
+        <span class="hub-card-count count-wip">Bientôt</span>
+      </div>
+      <div class="hub-card cat-wip">
+        <div class="hub-card-icon">📘</div>
+        <div class="hub-card-title">Module 3</div>
+        <div class="hub-card-desc">Titre à définir</div>
+        <span class="hub-card-count count-wip">Bientôt</span>
+      </div>
+      <div class="hub-card cat-wip">
+        <div class="hub-card-icon">📘</div>
+        <div class="hub-card-title">Module 4</div>
+        <div class="hub-card-desc">Titre à définir</div>
+        <span class="hub-card-count count-wip">Bientôt</span>
+      </div>
+      <div class="hub-card cat-wip">
+        <div class="hub-card-icon">📘</div>
+        <div class="hub-card-title">Module 5</div>
+        <div class="hub-card-desc">Titre à définir</div>
+        <span class="hub-card-count count-wip">Bientôt</span>
+      </div>
+      <div class="hub-card cat-wip">
+        <div class="hub-card-icon">📘</div>
+        <div class="hub-card-title">Module 6</div>
+        <div class="hub-card-desc">Titre à définir</div>
+        <span class="hub-card-count count-wip">Bientôt</span>
+      </div>
+      <div class="hub-card cat-wip">
+        <div class="hub-card-icon">📘</div>
+        <div class="hub-card-title">Module 7</div>
+        <div class="hub-card-desc">Titre à définir</div>
+        <span class="hub-card-count count-wip">Bientôt</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="screen" id="screen-zytho-biblio">
+  <div class="hub">
+    <div class="hub-greeting">
+      <h2>📚 Bibliothèque</h2>
+      <p>Les ingrédients de la bière</p>
+    </div>
+    <div class="hub-grid">
+      <div class="hub-card cat-wip">
+        <div class="hub-card-icon">🌿</div>
+        <div class="hub-card-title">Houblons</div>
+        <div class="hub-card-desc">Variétés, arômes, amertume</div>
+        <span class="hub-card-count count-wip">Bientôt</span>
+      </div>
+      <div class="hub-card cat-wip">
+        <div class="hub-card-icon">🧫</div>
+        <div class="hub-card-title">Levures</div>
+        <div class="hub-card-desc">Souches, fermentations</div>
+        <span class="hub-card-count count-wip">Bientôt</span>
+      </div>
+      <div class="hub-card cat-wip">
+        <div class="hub-card-icon">🌾</div>
+        <div class="hub-card-title">Malts</div>
+        <div class="hub-card-desc">Types, couleurs, saveurs</div>
+        <span class="hub-card-count count-wip">Bientôt</span>
+      </div>
+      <div class="hub-card cat-wip">
+        <div class="hub-card-icon">🧂</div>
+        <div class="hub-card-title">Autres ingrédients</div>
+        <div class="hub-card-desc">Eau, épices, adjuvants…</div>
+        <span class="hub-card-count count-wip">Bientôt</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="screen" id="screen-zytho-styles"></div>
+
+<div class="screen" id="screen-zytho-aromes"></div>
+
+<div class="screen" id="screen-zytho-quiz">
+  <div class="hub">
+    <div class="hub-greeting">
+      <h2>🧠 Quiz Zytho</h2>
+      <p>Entraînez-vous sur la bière</p>
+    </div>
+    <div class="hub-grid">
+      <div class="hub-card cat-wip">
+        <div class="hub-card-icon">✅</div>
+        <div class="hub-card-title">QCM</div>
+        <div class="hub-card-desc">Questions à choix multiples</div>
+        <span class="hub-card-count count-wip">Bientôt</span>
+      </div>
+      <div class="hub-card cat-wip">
+        <div class="hub-card-icon">📝</div>
+        <div class="hub-card-title">Examen</div>
+        <div class="hub-card-desc">Simulation d'examen</div>
+        <span class="hub-card-count count-wip">Bientôt</span>
+      </div>
+      <div class="hub-card cat-wip">
+        <div class="hub-card-icon">♾️</div>
+        <div class="hub-card-title">Mode sans fin</div>
+        <div class="hub-card-desc">Enchaînez jusqu'à perdre vos vies</div>
+        <span class="hub-card-count count-wip">Bientôt</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="screen" id="screen-zytho-accords">
+  <div class="placeholder"><div class="placeholder-icon">🍽️</div><div class="placeholder-title">Accords mets-bière</div><div class="placeholder-desc">Associer plats et bières.</div><span class="placeholder-badge">Bientôt</span></div>
 </div>
 
 <!-- ═══════════════ SOUS-MENU MA CAVE ═══════════════ -->
@@ -1533,6 +1798,7 @@ body.has-tabbar .sommelia-fab{display:block;}
 <div class="screen" id="screen-aoc">
   <div class="section-wrap">
     <div class="region-grid" id="regionGrid"></div>
+    <div class="aoc-tabs" id="aocTabs"></div>
     <div class="aoc-list" id="aocList"></div>
   </div>
 </div>
@@ -1633,6 +1899,16 @@ body.has-tabbar .sommelia-fab{display:block;}
         <span class="quiz-type-arrow">›</span>
       </div>
 
+      <div class="quiz-type-card" onclick="goTo('quiz-examen');buildExamenMenu()">
+        <div class="quiz-type-icon">🎓</div>
+        <div class="quiz-type-body">
+          <div class="quiz-type-title">Examen</div>
+          <div class="quiz-type-desc">Mélange des Partiels 1 et 2 — 60 pts, 1h chrono</div>
+          <span class="quiz-type-badge">6 questions</span>
+        </div>
+        <span class="quiz-type-arrow">›</span>
+      </div>
+
       <div class="quiz-type-card" onclick="goTo('quiz-exercices');buildExercicesMenu()">
         <div class="quiz-type-icon">🧠</div>
         <div class="quiz-type-body">
@@ -1673,12 +1949,12 @@ body.has-tabbar .sommelia-fab{display:block;}
         <span class="quiz-type-arrow">›</span>
       </div>
 
-      <div class="quiz-type-card" onclick="goTo('quiz-autres-boissons')">
+      <div class="quiz-type-card" onclick="goTo('quiz-autres-boissons');buildSakeQuiz()">
         <div class="quiz-type-icon">🥃</div>
         <div class="quiz-type-body">
           <div class="quiz-type-title">Autres boissons</div>
-          <div class="quiz-type-desc">Bières, spiritueux, thés, cafés</div>
-          <span class="quiz-type-badge">Bientôt</span>
+          <div class="quiz-type-desc">Saké (15 questions) — bières, spiritueux à venir</div>
+          <span class="quiz-type-badge">Saké</span>
         </div>
         <span class="quiz-type-arrow">›</span>
       </div>
@@ -1729,6 +2005,7 @@ body.has-tabbar .sommelia-fab{display:block;}
 <div class="screen" id="screen-quiz-va"></div>
 <div class="screen" id="screen-quiz-partiels"></div>
 <div class="screen" id="screen-quiz-exercices"></div>
+<div class="screen" id="screen-quiz-examen"></div>
 <div class="screen" id="screen-quiz-oral"></div>
 
 <!-- ═══════════════ QUIZ — ACTIF ═══════════════ -->
@@ -4174,7 +4451,7 @@ const PARTIEL_TEMPLATES = [
     id: 'substitution',
     pts: 20,
     type: 'substitution',
-    label: (aocs) => `Un client vous demande les AOC suivantes — vous ne les avez pas en stock. Proposez-lui une <strong>autre AOC</strong> du même vignoble avec le même cépage dominant, et donnez un <strong>accord régional</strong>.`,
+    label: (aocs) => `Un client vous demande les AOC suivantes — vous ne les avez pas en stock. Proposez-lui une <strong>autre AOC</strong> (même cépage, même vignoble) et précisez le <strong>cépage dominant</strong> et le <strong>vignoble</strong>.`,
     generate: (selectedRegions) => {
       // Piocher des AOC de régions différentes
       const pool = [
@@ -4243,6 +4520,12 @@ const PARTIEL_TEMPLATES = [
         {aoc:'Picpoul de Pinet', autre:'Muscadet Sèvre et Maine', cepage:'Picpoul', vignoble:'Languedoc', accord:'Huîtres de Bouzigues'},
         {aoc:'Irouléguy Rouge', autre:'Madiran', cepage:'Tannat', vignoble:'Sud-Ouest', accord:'Axoa de veau basque'},
         {aoc:'Bellet Rouge', autre:'Côtes de Provence', cepage:'Braquet / Folle Noire', vignoble:'Provence', accord:'Daube niçoise'},
+        {aoc:'Saint-Péray', autre:'Saint-Joseph Blanc / Crozes-Hermitage Blanc', cepage:'Marsanne / Roussanne', vignoble:'Rhône Nord', accord:'Quenelles sauce Nantua'},
+        {aoc:'Châteaumeillant', autre:'Reuilly Rouge / Menetou-Salon Rouge / Sancerre Rouge', cepage:'Gamay / Pinot Noir', vignoble:'Centre-Loire — Vallée de la Loire', accord:'Terrine de campagne'},
+        {aoc:'Maranges Blanc', autre:'Santenay Blanc / Meursault', cepage:'Chardonnay', vignoble:'Côte de Beaune — Bourgogne', accord:'Poulet à la crème'},
+        {aoc:'Chiroubles', autre:'Fleurie / Morgon', cepage:'Gamay', vignoble:'Beaujolais', accord:'Charcuterie lyonnaise'},
+        {aoc:'Valençay Blanc', autre:'Touraine Blanc / Cheverny Blanc', cepage:'Sauvignon', vignoble:'Touraine — Vallée de la Loire', accord:'Crottin de chèvre'},
+        {aoc:'Saint-Julien', autre:'Pauillac / Margaux', cepage:'Cabernet-Sauvignon', vignoble:'Médoc — Bordeaux', accord:'Agneau de Pauillac'},
       ];
       const n = 10 + Math.floor(Math.random()*3); // 10, 11 ou 12
       let filtered = pool;
@@ -4498,6 +4781,7 @@ const PARTIEL_TEMPLATES = [
         {cepage:'Sciaccarello', aoc:'Ajaccio', vignoble:'Corse'},
         {cepage:'Picpoul', aoc:'Picpoul de Pinet', vignoble:'Languedoc'},
         {cepage:'Braquet', aoc:'Bellet', vignoble:'Provence'},
+        {cepage:'Savagnin Rosé', aoc:'Klevener de Heiligenstein', vignoble:'Alsace'},
       ];
       const n = 10 + Math.floor(Math.random()*3); // 10, 11 ou 12
       let filtered = all;
@@ -4512,10 +4796,318 @@ const PARTIEL_TEMPLATES = [
     }
   },
 
+  // ── Partiel 2 — Q2 : étapes d'élaboration (2 lignes max par étape) ──
+  {
+    id: 'etapes_elaboration',
+    pts: 8,
+    type: 'libre_api',
+    label: (p) => (p && p.produit)
+      ? `Citez et définissez (<strong>en 2 lignes maximum</strong>) les différentes <strong>étapes de l'élaboration</strong> ${p.article} <strong>${p.produit}</strong>.`
+      : `Citez et définissez les différentes étapes de l'élaboration d'un vin.`,
+    generate: () => {
+      // Le Champagne est tombé au Partiel 2 : on le tire une fois sur deux
+      const pool = Math.random() < 0.5 ? [ELABORATIONS[0]] : ELABORATIONS.slice(1);
+      const e = pool[Math.floor(Math.random()*pool.length)];
+      return {
+        produit: e.produit, article: e.article, steps: e.steps,
+        corrige: `Étapes attendues pour ${e.produit} : ` + e.steps.map((st,i) => `${i+1}. ${st[0]} (${st[1]})`).join(' ; '),
+      };
+    }
+  },
+
+  // ── Partiel 2 — Q3 : DGC → AOC, vignoble, cépage dominant ──
+  {
+    id: 'dgc_aoc',
+    pts: 10,
+    type: 'dgc',
+    label: () => `À quelle <strong>AOC</strong> correspond chaque <strong>DGC</strong> suivante ? Précisez le <strong>vignoble</strong> et le <strong>cépage dominant</strong> concernés.`,
+    generate: (selectedRegions) => dgcGenerateItems(selectedRegions)
+  },
+
+  // ── Partiel 2 — Q4 : accords sur 2 plats (type de vin + 6 AOC de 6 régions) ──
+  {
+    id: 'accords_plats',
+    pts: 10,
+    type: 'libre_api',
+    label: (p) => (p && p.plats)
+      ? `Pour ces 2 plats (ci-après), expliquez quel <strong>type de vin</strong> vous allez suggérer à votre client, puis effectuez <strong>6 propositions d'AOC issues de 6 régions viticoles différentes</strong> pour chaque plat.<br><br>${p.plats.map((pl,i) => `<strong>${i+1}.</strong> ${pl.plat}`).join('<br>')}`
+      : `Accords mets-vins sur 2 plats : type de vin + 6 AOC de 6 régions différentes.`,
+    generate: () => {
+      const blancs = PLATS_ACCORDS.filter(pl => pl.famille !== 'rouge');
+      const rouges = PLATS_ACCORDS.filter(pl => pl.famille === 'rouge');
+      const plats = shuffleArray([blancs[Math.floor(Math.random()*blancs.length)], rouges[Math.floor(Math.random()*rouges.length)]]);
+      return {
+        plats,
+        corrige: plats.map(pl => `${pl.plat} → type de vin : ${pl.type}. Exemples d'AOC (région) : ${pl.aocs.join(', ')}`).join(' || '),
+        guard: "Les 6 AOC proposées pour un même plat doivent venir de 6 régions viticoles DIFFÉRENTES (deux AOC de la même région = une seule compte). Le type de vin doit être cohérent avec le plat (couleur, structure, acidité, sucrosité). Accepte tout accord défendable même s'il n'est pas dans la liste d'exemples.",
+      };
+    }
+  },
+
   // (ancien template degustation_multi retiré — remplacé par degustation_cepage,
   // désormais génération dynamique complète avec terminologie région/vignoble correcte)
   // (hierarchie_classification et millesime_garde retirés — corrections jugées peu fiables)
 ];
+
+
+
+/* ══ EXAMEN — mélange des Partiels 1 et 2 ══ */
+function toggleExamenRegion(key) {
+  const r = partielState.selectedRegions;
+  r.has(key) ? r.delete(key) : r.add(key);
+  buildExamenMenu();
+}
+function toggleAllExamenRegions(checked) {
+  partielState.selectedRegions = checked ? new Set(REGION_FILTER_LIST.map(r => r.key)) : new Set();
+  buildExamenMenu();
+}
+function buildExamenMenu() {
+  const sel = partielState.selectedRegions, n = sel.size;
+  const allChecked = n === REGION_FILTER_LIST.length;
+  document.getElementById('screen-quiz-examen').innerHTML = `
+    <div class="quiz-hub">
+      <div class="quiz-hub-title">🎓 Examen</div>
+      <div class="quiz-hub-sub">Un examen blanc qui mélange les questions du Partiel 1 et du Partiel 2 — 60 pts, 1h chrono</div>
+      <div style="background:#fff;border:1px solid #e5e5e2;border-radius:14px;padding:1.25rem;margin-bottom:1rem;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+          <div style="font-size:13px;font-weight:700;">Régions au programme</div>
+          <label style="font-size:11px;color:#9333ea;cursor:pointer;display:flex;align-items:center;gap:4px;">
+            <input type="checkbox" ${allChecked ? 'checked' : ''} onchange="toggleAllExamenRegions(this.checked)"> Tout cocher/décocher
+          </label>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+          ${REGION_FILTER_LIST.map(r => `
+            <label style="display:flex;align-items:center;gap:6px;font-size:12.5px;cursor:pointer;padding:4px 0;">
+              <input type="checkbox" ${sel.has(r.key) ? 'checked' : ''} onchange="toggleExamenRegion('${r.key}')"> ${r.label}
+            </label>`).join('')}
+        </div>
+        <div style="font-size:11px;color:${n === 0 ? '#993C1D' : '#666'};margin-top:8px;">${n === 0 ? 'Sélectionne au moins une région' : n + ' région(s) sélectionnée(s)'}</div>
+      </div>
+      <div class="quiz-type-list">
+        <div class="quiz-type-card" ${n === 0 ? 'style="opacity:.5;pointer-events:none;"' : ''} onclick="startExamen()">
+          <div class="quiz-type-icon">▶️</div>
+          <div class="quiz-type-body">
+            <div class="quiz-type-title">Lancer l'examen</div>
+            <div class="quiz-type-desc">6 questions tirées des deux partiels, barème sur 60</div>
+            <span class="quiz-type-badge">60 pts · 1h</span>
+          </div>
+          <span class="quiz-type-arrow">›</span>
+        </div>
+      </div>
+    </div>`;
+}
+function startExamen() {
+  goTo('quiz-partiels');
+  startPartiel('examen');
+}
+/* Retour au bon menu après un partiel / un examen */
+function partielBackToMenu() {
+  if (partielState.mode === 'examen') { goTo('quiz-examen'); buildExamenMenu(); }
+  else { goTo('quiz-partiels'); buildPartielsMenu(); }
+}
+
+/* ══ PARTIEL 2 — données et fonctions ══ */
+
+/* Étapes d'élaboration : [étape, définition courte] */
+const ELABORATIONS = [
+  { produit:'Champagne', article:"d'un", steps:[
+    ["Vendanges","manuelles, en grappes entières, Pinot noir / Meunier / Chardonnay"],
+    ["Pressurage","pressoir champenois, jus extrait sans coloration : 4 000 kg donnent 2 550 L (cuvée + taille)"],
+    ["Débourbage et 1re fermentation","décantation du moût puis fermentation alcoolique : on obtient des vins clairs tranquilles"],
+    ["Assemblage","mélange de cépages, de crus et d'années (vins de réserve) pour composer la cuvée"],
+    ["Tirage","mise en bouteille du vin clair avec la liqueur de tirage (sucre + levures), bouchage provisoire"],
+    ["Prise de mousse","2e fermentation en bouteille : l'alcool augmente et le CO2 reste dissous, un dépôt de levures se forme"],
+    ["Élevage sur lattes","bouteilles couchées en cave sur les lies : 15 mois mini (non millésimé), 3 ans (millésimé)"],
+    ["Remuage","rotation progressive des bouteilles (pupitre ou gyropalette) pour amener le dépôt dans le goulot"],
+    ["Dégorgement","congélation du goulot puis éjection du dépôt de levures"],
+    ["Dosage et bouchage","ajout de la liqueur d'expédition (sucre) qui définit le style (brut, extra-brut...), bouchon liège et muselet"],
+  ]},
+  { produit:'Crémant (méthode traditionnelle)', article:"d'un", steps:[
+    ["Vendanges","manuelles, en grappes entières"],
+    ["Pressurage","rendement de pressurage limité (environ 100 L pour 150 kg)"],
+    ["Fermentation alcoolique","vins de base tranquilles"],
+    ["Assemblage","cépages, parcelles, millésimes"],
+    ["Tirage","liqueur de tirage (sucre + levures), mise en bouteille"],
+    ["Prise de mousse","2e fermentation en bouteille"],
+    ["Élevage sur lattes","9 à 15 mois selon l'appellation (ex. 9 mois Blanquette de Limoux, 15 mois Crémant de Limoux)"],
+    ["Remuage et dégorgement","dépôt amené au goulot puis éjecté"],
+    ["Dosage et bouchage","liqueur d'expédition, bouchon et muselet"],
+  ]},
+  { produit:'vin rouge', article:"d'un", steps:[
+    ["Vendanges","à maturité, manuelles ou mécaniques"],
+    ["Égrappage et foulage","séparation des baies de la rafle puis éclatement des baies"],
+    ["Encuvage et macération","mise en cuve du raisin ; la macération extrait couleur et tanins des peaux"],
+    ["Fermentation alcoolique","les levures transforment le sucre en alcool et CO2, avec remontages ou pigeages"],
+    ["Décuvage et pressurage","écoulage du vin de goutte puis pressurage du marc (vin de presse)"],
+    ["Fermentation malolactique","l'acide malique devient acide lactique : le vin s'assouplit"],
+    ["Élevage","en cuve ou en fût, avec soutirages"],
+    ["Assemblage, collage, filtration","mise au point et stabilisation du vin"],
+    ["Mise en bouteille",""],
+  ]},
+  { produit:'vin blanc sec', article:"d'un", steps:[
+    ["Vendanges","à maturité, raisins sains"],
+    ["Pressurage","direct, avant fermentation, pour séparer le jus des peaux"],
+    ["Débourbage","décantation du moût à froid (12 à 24 h) pour éliminer les bourbes"],
+    ["Fermentation alcoolique","à basse température (16-20 °C), en cuve ou en fût"],
+    ["Fermentation malolactique","facultative selon le style recherché"],
+    ["Élevage sur lies","avec ou sans bâtonnage, en cuve ou en fût"],
+    ["Collage, stabilisation, filtration",""],
+    ["Mise en bouteille",""],
+  ]},
+  { produit:'vin rosé', article:"d'un", steps:[
+    ["Vendanges","raisins rouges, souvent plus tôt pour garder l'acidité"],
+    ["Pressurage direct ou saignée","pressurage immédiat des raisins, ou courte macération (2 à 24 h) puis écoulage du jus"],
+    ["Débourbage","décantation du moût"],
+    ["Fermentation alcoolique","à basse température pour préserver les arômes"],
+    ["Élevage court","sur lies fines, en cuve"],
+    ["Filtration et mise en bouteille","embouteillage précoce, vin à boire jeune"],
+  ]},
+  { produit:'vin liquoreux de pourriture noble (type Sauternes)', article:"d'un", steps:[
+    ["Vendanges en tries successives","manuelles, grain par grain, sur raisins botrytisés (pourriture noble)"],
+    ["Pressurage lent","plusieurs pressées pour extraire un jus très concentré en sucre"],
+    ["Débourbage","décantation du moût"],
+    ["Fermentation alcoolique lente","souvent en barriques ; elle s'arrête d'elle-même ou est stoppée, ce qui laisse des sucres résiduels"],
+    ["Élevage en barriques","18 à 24 mois, avec soutirages"],
+    ["Assemblage des tries, collage, filtration",""],
+    ["Mise en bouteille",""],
+  ]},
+  { produit:'vin doux naturel (type Banyuls, Rivesaltes)', article:"d'un", steps:[
+    ["Vendanges","à très haute maturité (252 g/l de sucres mini)"],
+    ["Macération","pelliculaire ou sur grains, pour extraire couleur, tanins et arômes"],
+    ["Début de fermentation alcoolique","les levures commencent à transformer le sucre"],
+    ["Mutage","ajout d'alcool vinique neutre (96 %, 5 à 10 % du volume) : la fermentation s'arrête, sucres naturels conservés, 15 à 18 % d'alcool"],
+    ["Élevage","réducteur (cuve, rimage) ou oxydatif (foudres, bonbonnes, 2 à 20 ans : ambré, tuilé, rancio)"],
+    ["Assemblage et mise en bouteille",""],
+  ]},
+];
+
+/* Accords : [plat, type de vin attendu, 6+ AOC de régions différentes] */
+const PLATS_ACCORDS = [
+  { famille:'blanc', plat:"Tartare de dorade royale, citron yuzu et dés de mangue", type:"blanc sec, fin et frais, avec de l'acidité et une aromatique complexe (fruits et agrumes)", aocs:["Riesling (Alsace)","Chablis (Bourgogne)","Sancerre (Centre-Loire)","Crozes-Hermitage blanc (Rhône)","Coteaux Champenois blanc (Champagne)","Côtes de Bourg blanc (Bordeaux)","Picpoul de Pinet (Languedoc)","Cassis blanc (Provence)"] },
+  { famille:'rouge', plat:"Onglet de bœuf aux échalotes et sa poêlée de champignons", type:"rouge avec de la matière et une charpente légère, notes épicées et de sous-bois", aocs:["Saint-Émilion (Bordeaux)","Bourgueil (Loire)","Châteauneuf-du-Pape (Rhône)","Bandol rouge (Provence)","Ajaccio (Corse)","Moulin-à-Vent (Beaujolais)","Gevrey-Chambertin (Bourgogne)","Cahors (Sud-Ouest)","Corbières (Languedoc)"] },
+  { famille:'blanc', plat:"Saint-Jacques snackées, purée de panais et beurre noisette", type:"blanc sec ample et rond, léger boisé, notes beurrées", aocs:["Meursault (Bourgogne)","Pessac-Léognan blanc (Bordeaux)","Condrieu (Rhône)","Savennières (Loire)","Pinot Gris (Alsace)","Côtes du Jura Chardonnay (Jura)","Chignin-Bergeron (Savoie)","Bandol blanc (Provence)"] },
+  { famille:'rouge', plat:"Magret de canard, sauce aux cerises", type:"rouge fruité, souple et soyeux, avec de la fraîcheur", aocs:["Volnay (Bourgogne)","Fronsac (Bordeaux)","Crozes-Hermitage (Rhône)","Chinon (Loire)","Cahors (Sud-Ouest)","Fleurie (Beaujolais)","Faugères (Languedoc)","Bandol (Provence)","Pinot Noir (Alsace)","Arbois Poulsard (Jura)"] },
+  { famille:'blanc', plat:"Foie gras poêlé aux figues", type:"blanc moelleux ou liquoreux (sucrosité, acidité pour équilibrer le gras)", aocs:["Sauternes (Bordeaux)","Coteaux du Layon (Loire)","Gewurztraminer Vendanges Tardives (Alsace)","Jurançon (Sud-Ouest)","Vin de paille (Jura)","Muscat de Beaumes-de-Venise (Rhône)","Muscat de Frontignan (Languedoc)","Muscat du Cap Corse (Corse)"] },
+  { famille:'blanc', plat:"Poulet de Bresse à la crème et aux morilles", type:"blanc ample et structuré, belle acidité (ou vin jaune), notes de noix", aocs:["Château-Chalon (Jura)","Chassagne-Montrachet (Bourgogne)","Hermitage blanc (Rhône)","Pessac-Léognan blanc (Bordeaux)","Vouvray sec (Loire)","Pinot Gris grand cru (Alsace)","Chignin-Bergeron (Savoie)","Bandol blanc (Provence)"] },
+  { famille:'rouge', plat:"Gigot d'agneau de sept heures et haricots blancs", type:"rouge puissant et charpenté, avec du fruit mûr et des tanins fondus", aocs:["Pauillac (Bordeaux)","Gigondas (Rhône)","Bandol (Provence)","Corbières-Boutenac (Languedoc)","Madiran (Sud-Ouest)","Pommard (Bourgogne)","Patrimonio (Corse)","Chinon (Loire)"] },
+  { famille:'blanc', plat:"Crottin de Chavignol et salade de chèvre chaud", type:"blanc sec, vif et frais, sur le Sauvignon ou une acidité marquée", aocs:["Sancerre (Loire)","Entre-Deux-Mers (Bordeaux)","Chablis (Bourgogne)","Riesling (Alsace)","Apremont (Savoie)","Picpoul de Pinet (Languedoc)","Cassis blanc (Provence)","Côtes du Jura blanc (Jura)"] },
+  { famille:'blanc', plat:"Bouillabaisse", type:"blanc sec sur le fruit et la fraîcheur, ou rosé de Provence", aocs:["Cassis blanc (Provence)","Picpoul de Pinet (Languedoc)","Châteauneuf-du-Pape blanc (Rhône)","Vermentino de Corse (Corse)","Muscadet Sèvre et Maine (Loire)","Entre-Deux-Mers (Bordeaux)","Chablis (Bourgogne)","Pinot Blanc (Alsace)"] },
+  { famille:'rouge', plat:"Cassoulet de Castelnaudary", type:"rouge rustique et généreux, tanins souples, fruit mûr", aocs:["Minervois (Languedoc)","Madiran (Sud-Ouest)","Côtes du Rhône Villages (Rhône)","Bourgueil (Loire)","Fronsac (Bordeaux)","Brouilly (Beaujolais)","Bandol (Provence)","Mondeuse (Savoie)"] },
+  { famille:'blanc', plat:"Fondue savoyarde", type:"blanc sec, vif et acidulé, légèrement perlant, pour trancher le fromage fondu", aocs:["Apremont (Savoie)","Riesling (Alsace)","Chablis (Bourgogne)","Muscadet (Loire)","Picpoul de Pinet (Languedoc)","Côtes du Jura blanc (Jura)","Entre-Deux-Mers (Bordeaux)","Cassis blanc (Provence)"] },
+];
+
+/* Normalisation locale : sans accents, ponctuation, pluriel simple */
+function partielNorm(str) {
+  return stripAccents(str).replace(/[^a-z0-9]+/g,' ').trim().split(' ').map(w => (w.length > 3 && w.endsWith('s')) ? w.slice(0,-1) : w).join(' ');
+}
+function partielTextMatch(user, ref) {
+  const u = partielNorm(user), r = partielNorm(ref);
+  return u.length > 2 && r.length > 2 && (r.includes(u) || u.includes(r));
+}
+/* Vignoble : accepté si l'un des morceaux du vignoble attendu correspond, ou si la région est la bonne */
+function partielVignobleMatch(user, expected) {
+  if (!user) return false;
+  const parts = String(expected).split(/—|\/|,|\(|\)/).map(x => x.trim()).filter(Boolean);
+  if (parts.some(pt => partielTextMatch(user, pt))) return true;
+  const rk = regionKeyFromText(user);
+  return !!rk && rk === regionKeyFromText(expected);
+}
+
+/* Nom court d'une DGC : "Touraine Amboise" -> "Amboise", "Blaye Côtes de Bordeaux" -> "Blaye" */
+function dgcShortName(d) {
+  let n = d.nom;
+  const aoc = d.aoc;
+  if (n.toLowerCase().startsWith(aoc.toLowerCase())) n = n.slice(aoc.length).replace(/^[\s-]+/, '');
+  else if (n.toLowerCase().endsWith(aoc.toLowerCase())) n = n.slice(0, n.length - aoc.length).trim();
+  return n || d.nom;
+}
+
+function dgcGenerateItems(selectedRegions) {
+  const filterActive = selectedRegions && selectedRegions.size > 0 && selectedRegions.size < REGION_FILTER_LIST.length;
+  let pool = [];
+  Object.keys(DGC_DATA).forEach(key => {
+    if (filterActive && !selectedRegions.has(key)) return;
+    DGC_DATA[key].forEach(d => pool.push({ ...dgcResolve(d), regionKey: key }));
+  });
+  // On privilégie les DGC bien établies (pas celles marquées "à vérifier")
+  const sure = pool.filter(d => d.src !== 'ref');
+  if (sure.length >= 5) pool = sure;
+  if (pool.length < 5) { // filtre trop restrictif : on élargit
+    pool = [];
+    Object.keys(DGC_DATA).forEach(key => DGC_DATA[key].filter(d => d.src !== 'ref').forEach(d => pool.push({ ...dgcResolve(d), regionKey: key })));
+  }
+  // Tirage en tourniquet entre régions : évite 5 DGC du Languedoc d'affilée
+  const byRegion = {};
+  shuffleArray(pool).forEach(d => (byRegion[d.regionKey] = byRegion[d.regionKey] || []).push(d));
+  const queues = shuffleArray(Object.keys(byRegion)).map(k => byRegion[k]);
+  const seen = new Set(), items = [];
+  while (items.length < 5 && queues.some(q => q.length)) {
+    for (const q of queues) {
+      if (items.length >= 5) break;
+      while (q.length) {
+        const d = q.shift(), short = dgcShortName(d);
+        if (!seen.has(short)) { seen.add(short); items.push({ ...d, short }); break; }
+      }
+    }
+  }
+  return items;
+}
+
+function renderDgcAoc(items) {
+  const inp = (id, ph) => `<input id="${id}" placeholder="${ph}" style="width:100%;padding:6px 10px;border:1px solid #ddd;border-radius:6px;font-size:13px;">`;
+  return `
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      ${items.map((it,i) => `
+        <div style="background:#f8f7f4;border-radius:10px;padding:10px 12px;">
+          <div style="font-size:13px;font-weight:700;margin-bottom:6px;">DGC : ${it.short}</div>
+          <div style="display:grid;grid-template-columns:1fr;gap:6px;">
+            <div><div style="font-size:10px;color:#999;text-transform:uppercase;font-weight:600;margin-bottom:3px;">AOC</div>${inp('dgc_aoc_'+i,'…')}</div>
+            <div><div style="font-size:10px;color:#999;text-transform:uppercase;font-weight:600;margin-bottom:3px;">Vignoble</div>${inp('dgc_vig_'+i,'…')}</div>
+            <div><div style="font-size:10px;color:#999;text-transform:uppercase;font-weight:600;margin-bottom:3px;">Cépage dominant</div>${inp('dgc_cep_'+i,'…')}</div>
+          </div>
+        </div>`).join('')}
+    </div>
+    <button onclick="submitDgcAoc()" class="btn btn-purple" style="margin-top:12px;width:100%;">Valider →</button>`;
+}
+
+function submitDgcAoc() {
+  const q = partielState.questions[partielState.currentQ];
+  const items = q.params;
+  let correct = 0, html = '';
+  items.forEach((it,i) => {
+    const uAoc = document.getElementById(`dgc_aoc_${i}`)?.value.trim() || '';
+    const uVig = document.getElementById(`dgc_vig_${i}`)?.value.trim() || '';
+    const uCep = document.getElementById(`dgc_cep_${i}`)?.value.trim() || '';
+    const okAoc = partielTextMatch(uAoc, it.aoc);
+    const okVig = partielVignobleMatch(uVig, it.vig || '') || partielVignobleMatch(uVig, DATA[it.regionKey].name);
+    const cepNorm = partielNorm(it.cepages || '');
+    const cepAlias = { cot:'malbec', malbec:'cot' };
+    const uc = partielNorm(uCep);
+    const okCep = uc.length > 3 && (cepNorm.includes(uc) || (cepAlias[uc] && cepNorm.includes(cepAlias[uc])));
+    if (okAoc) correct++; if (okVig) correct++; if (okCep) correct++;
+    const col = ok => ok ? '#3B6D11' : '#993C1D';
+    html += `
+      <div style="background:#fff;border:1px solid #e5e5e2;border-radius:10px;padding:10px 12px;margin-bottom:8px;">
+        <div style="font-size:12.5px;font-weight:700;margin-bottom:4px;">DGC : ${it.short}</div>
+        <div style="font-size:11px;color:#888;margin-bottom:4px;">📝 Ma réponse — AOC : <em>${escapeHtml(uAoc)||'(vide)'}</em> · Vignoble : <em>${escapeHtml(uVig)||'(vide)'}</em> · Cépage : <em>${escapeHtml(uCep)||'(vide)'}</em></div>
+        <div style="font-size:12px;line-height:1.55;">
+          AOC : <strong style="color:${col(okAoc)}">${it.aoc}</strong><br>
+          Vignoble : <strong style="color:${col(okVig)}">${it.vig || DATA[it.regionKey].name}</strong> (${DATA[it.regionKey].name})<br>
+          Cépage(s) : <strong style="color:${col(okCep)}">${it.cepages || '—'}</strong>
+        </div>
+      </div>`;
+  });
+  const total = items.length * 3;
+  const earned = Math.round((correct / total) * q.pts);
+  document.getElementById('partielBody').innerHTML = `
+    <div style="font-size:14px;font-weight:500;margin-bottom:1rem;">Q${q.idx+1} — ${q.label_rendered}</div>
+    ${html}
+    <div style="background:${earned>=q.pts*.7?'#EAF3DE':'#FFF4E6'};border-radius:10px;padding:10px;margin-bottom:12px;" id="scoreBox">
+      <strong>${correct}/${total} éléments corrects → <span id="scoreEarned">${earned}</span>/${q.pts} pts</strong>
+    </div>
+    <button id="flagBtn" onclick="flagCorrectionErrorInline(${q.pts})" class="btn" style="width:100%;font-size:11.5px;color:#993C1D;border-color:#f0d0c8;margin-bottom:8px;">⚠️ Signaler une erreur de correction (+1 pt)</button>
+    <button id="nextBtn" data-earned="${earned}" data-pts="${q.pts}" onclick="nextPartielQuestion(parseInt(document.getElementById('nextBtn').dataset.pts),parseInt(document.getElementById('nextBtn').dataset.earned))" class="btn btn-purple" style="width:100%;">Question suivante →</button>`;
+}
 
 /* ══ ÉTAT DU PARTIEL ══ */
 let partielState = {
@@ -4619,6 +5211,15 @@ function buildPartielsMenu() {
           </div>
           <span class="quiz-type-arrow">›</span>
         </div>
+        <div class="quiz-type-card" ${partielState.selectedRegions.size === 0 ? 'style="opacity:.5;pointer-events:none;"' : ''} onclick="startPartiel('partiel2')">
+          <div class="quiz-type-icon">🎓</div>
+          <div class="quiz-type-body">
+            <div class="quiz-type-title">Partiel 2 — format réel</div>
+            <div class="quiz-type-desc">AOC de remplacement · étapes d'élaboration · DGC · accords sur 2 plats · cépages méconnus</div>
+            <span class="quiz-type-badge">60 pts · 5 questions</span>
+          </div>
+          <span class="quiz-type-arrow">›</span>
+        </div>
       </div>
     </div>`;
 }
@@ -4646,10 +5247,43 @@ function startPartiel(mode) {
   // tous à chaque partiel, pas de tirage partiel qui pourrait en exclure un
   // (ex : vocabulaire ou styles de vin qui n'apparaissaient pas assez souvent).
   // L'ordre reste mélangé pour varier la progression d'une session à l'autre.
-  const selected = shuffleArray(PARTIEL_TEMPLATES);
+  partielState.mode = mode;
+  let selected;
+  if (mode === 'partiel2') {
+    // Format réel du Partiel 2 : même ordre et même barème que l'examen (60 pts)
+    const PARTIEL2_SET = [
+      {id:'substitution', pts:20}, {id:'etapes_elaboration', pts:8}, {id:'dgc_aoc', pts:10},
+      {id:'accords_plats', pts:10}, {id:'cepage_aoc', pts:12},
+    ];
+    selected = PARTIEL2_SET.map(o => ({ ...PARTIEL_TEMPLATES.find(t => t.id === o.id), pts: o.pts }));
+  } else if (mode === 'examen') {
+    // Mélange des deux partiels : 2 questions propres au Partiel 1, 2 propres au Partiel 2,
+    // + les 2 questions communes (AOC de remplacement, cépages méconnus). Barème ramené à 60 pts.
+    const pick = (ids, n) => shuffleArray(PARTIEL_TEMPLATES.filter(t => ids.includes(t.id))).slice(0, n);
+    const chosen = shuffleArray([
+      ...pick(['termes_techniques','degustation_cepage','degustation_style','aoc_communales'], 2),
+      ...pick(['etapes_elaboration','dgc_aoc','accords_plats'], 2),
+      ...PARTIEL_TEMPLATES.filter(t => ['substitution','cepage_aoc'].includes(t.id)),
+    ]);
+    const base = chosen.reduce((a, t) => a + t.pts, 0);
+    let acc = 0;
+    selected = chosen.map((t, i) => {
+      const pts = i === chosen.length - 1 ? 60 - acc : Math.round(t.pts * 60 / base);
+      acc += pts;
+      return { ...t, pts };
+    });
+  } else {
+    const STANDARD_IDS = ['substitution','termes_techniques','degustation_cepage','degustation_style','aoc_communales','cepage_aoc'];
+    selected = shuffleArray(PARTIEL_TEMPLATES.filter(t => STANDARD_IDS.includes(t.id)));
+  }
 
   partielState.questions = selected.map((tpl, idx) => {
-    const params = tpl.generate(partielState.selectedRegions);
+    let params = tpl.generate(partielState.selectedRegions);
+    // Partiel 2 : même nombre de lignes qu'à l'examen (10 AOC de remplacement, 8 cépages méconnus)
+    if (mode === 'partiel2' && Array.isArray(params)) {
+      if (tpl.id === 'substitution') params = params.slice(0, 10);
+      if (tpl.id === 'cepage_aoc') params = params.slice(0, 8);
+    }
     return { ...tpl, idx, params, label_rendered: typeof tpl.label === 'function' ? tpl.label(params) : tpl.label };
   });
 
@@ -4706,6 +5340,9 @@ function renderPartielQuestion(q) {
     case 'matching':
       html += renderCepageAoc(q.params);
       break;
+    case 'dgc':
+      html += renderDgcAoc(q.params);
+      break;
     case 'mixte':
       html += renderAocCommunales(q.params);
       break;
@@ -4758,10 +5395,6 @@ function renderSubstitution(aocs) {
               <div style="font-size:10px;color:#999;text-transform:uppercase;font-weight:600;margin-bottom:3px;">Vignoble</div>
               <input id="subst_vignoble_${i}" placeholder="…" style="width:100%;padding:6px 10px;border:1px solid #ddd;border-radius:6px;font-size:13px;">
             </div>
-            <div>
-              <div style="font-size:10px;color:#999;text-transform:uppercase;font-weight:600;margin-bottom:3px;">Accord régional</div>
-              <input id="subst_accord_${i}" placeholder="…" style="width:100%;padding:6px 10px;border:1px solid #ddd;border-radius:6px;font-size:13px;">
-            </div>
           </div>
         </div>`).join('')}
     </div>
@@ -4795,28 +5428,30 @@ function submitSubstitution() {
       return rNorm === userCepageNorm || rNorm.includes(userCepageNorm) || userCepageNorm.includes(rNorm);
     });
 
+    const userVigRaw = document.getElementById(`subst_vignoble_${i}`)?.value.trim() || '';
+    const okVig = partielVignobleMatch(userVigRaw, item.vignoble);
     if (okAutre) correct++;
     if (okCepage) correct++;
+    if (okVig) correct++;
     resultHtml += `
       <div style="background:#fff;border:1px solid #e5e5e2;border-radius:10px;padding:10px;margin-bottom:8px;">
         <div style="font-size:12px;font-weight:700;margin-bottom:6px;">AOC : ${item.aoc}</div>
-        <div style="font-size:11px;color:#888;margin-bottom:6px;">📝 Ma réponse — Autre AOC : <em>${escapeHtml(userAutreRaw)||'(vide)'}</em> · Cépage : <em>${escapeHtml(userCepageRaw)||'(vide)'}</em></div>
+        <div style="font-size:11px;color:#888;margin-bottom:6px;">📝 Ma réponse — Autre AOC : <em>${escapeHtml(userAutreRaw)||'(vide)'}</em> · Cépage : <em>${escapeHtml(userCepageRaw)||'(vide)'}</em> · Vignoble : <em>${escapeHtml(userVigRaw)||'(vide)'}</em></div>
         <div style="font-size:12px;display:grid;grid-template-columns:1fr 1fr;gap:4px;">
           <div>Autre AOC : <strong style="color:${okAutre?'#3B6D11':'#993C1D'}">${item.autre}</strong></div>
           <div>Cépage : <strong style="color:${okCepage?'#3B6D11':'#993C1D'}">${item.cepage}</strong></div>
-          <div>Vignoble : <strong>${item.vignoble}</strong></div>
-          <div>Accord : <strong>${item.accord}</strong></div>
+          <div>Vignoble : <strong style="color:${okVig?'#3B6D11':'#993C1D'}">${item.vignoble}</strong></div>
         </div>
       </div>`;
   });
 
   const maxPts = q.pts;
-  const earned = Math.round((correct / (aocs.length * 2)) * maxPts);
+  const earned = Math.round((correct / (aocs.length * 3)) * maxPts);
   document.getElementById('partielBody').innerHTML = `
     <div style="font-size:14px;font-weight:500;margin-bottom:1rem;">Q${q.idx+1} — ${q.label_rendered}</div>
     ${resultHtml}
     <div style="background:${earned>=maxPts*.7?'#EAF3DE':'#FFF4E6'};border-radius:10px;padding:10px;margin-bottom:12px;" id="scoreBox">
-      <strong>${correct}/${aocs.length*2} éléments corrects → <span id="scoreEarned">${earned}</span>/${maxPts} pts</strong>
+      <strong>${correct}/${aocs.length*3} éléments corrects → <span id="scoreEarned">${earned}</span>/${maxPts} pts</strong>
     </div>
     <button id="flagBtn" onclick="flagCorrectionErrorInline(${maxPts})" class="btn" style="width:100%;font-size:11.5px;color:#993C1D;border-color:#f0d0c8;margin-bottom:8px;">⚠️ Signaler une erreur de correction (+1 pt)</button>
     <button id="nextBtn" data-earned="${earned}" data-pts="${maxPts}" onclick="nextPartielQuestion(parseInt(document.getElementById('nextBtn').dataset.pts),parseInt(document.getElementById('nextBtn').dataset.earned))" class="btn btn-purple" style="width:100%;">Question suivante →</button>`;
@@ -5117,11 +5752,13 @@ async function submitPartielAPI() {
     : q.id === 'hierarchie_classification' ? `Niveaux attendus : ${q.params.niveaux}. Exemple : ${q.params.exemple}`
     : q.id === 'degustation_cepage' ? q.params.parts.map(p => `${p.vignoble} (${p.region}) — exemples : ${p.aocs.join(', ')}`).join(' | ') + (q.params.exception ? ` | Exception ${q.params.exception.region} : ${q.params.exception.aoc}` : '')
     : q.id === 'degustation_style' ? q.params.corrige
+    : (q.params && typeof q.params.corrige === 'string') ? q.params.corrige
     : '';
   const hierarchieGuard = q.id === 'hierarchie_classification'
     ? `\n- Cette question porte UNIQUEMENT sur la pyramide de précision géographique (régionale → village/communale → cru...). Ne pénalise PAS l'absence de catégories parallèles (Crémant/effervescent, liquoreux, VDN, VDL...) qui ne sont pas des échelons de cette hiérarchie mais des catégories de produit différentes — et ne les compte pas non plus comme des bonus, elles sont simplement hors-sujet ici.`
     : q.id === 'degustation_style'
     ? `\n- Pour le style "effervescent" : AUCUN Crémant (de Bourgogne, d'Alsace, de Loire, de Limoux, etc.) ne doit être compté comme valide — l'énoncé les exclut explicitement, trop génériques puisqu'il en existe dans presque toutes les régions. Seules des dénominations effervescentes plus spécifiques comptent (Champagne, Blanquette de Limoux, Clairette de Die, Vouvray Pétillant, Saumur Mousseux, Gaillac Mousseux, Bugey-Cerdon...).`
+    : (q.params && q.params.guard) ? `\n- ${q.params.guard}`
     : '';
   const systemPrompt = `Tu es un correcteur bienveillant mais rigoureux de l'école SCAG. Tu corriges une question de partiel sur les vignobles de France. Note sur ${q.pts} points.
 ${corrige ? `Éléments de corrigé (INDICATIFS, non exhaustifs — de nombreuses autres réponses correctes existent) : ${corrige}` : ''}
@@ -5257,8 +5894,8 @@ function showPartielResults() {
         }).join('')}
       </div>
       <div style="display:flex;gap:8px;">
-        <button onclick="startPartiel('standard')" class="btn btn-purple" style="flex:1;">🔄 Nouvel examen</button>
-        <button onclick="buildPartielsMenu()" class="btn" style="flex:1;">← Menu</button>
+        <button onclick="startPartiel(partielState.mode || 'standard')" class="btn btn-purple" style="flex:1;">🔄 Nouvel examen</button>
+        <button onclick="partielBackToMenu()" class="btn" style="flex:1;">← Menu</button>
       </div>
     </div>`;
 }
@@ -9715,15 +10352,248 @@ function showAMVQuizEnd() {
 }
 
 
-/* ──────────── WIP — AUTRES BOISSONS & VINS DU MONDE ──────────── */
-function buildAutresBoissonsScreen() {
-  document.getElementById('screen-autres-boissons').innerHTML = `
-    <div class="placeholder">
-      <div class="placeholder-icon">🥃</div>
-      <div class="placeholder-title">Autres boissons</div>
-      <div class="placeholder-desc">Bières, spiritueux (whisky, cognac, armagnac, rhum...), thés, cafés — le contenu arrivera au fil des prochains cours. Structure prête à être alimentée.</div>
-      <span class="placeholder-badge">En préparation</span>
+/* ──────────── AUTRES BOISSONS (saké) & VINS DU MONDE ──────────── */
+
+/* ══════════════════════════════════════════════════════
+   SAKÉ — fiches + exercices (cours) + quiz
+   ══════════════════════════════════════════════════════ */
+const SAKE_CLASSES = [
+  { nom:'Junmai daiginjō', kanji:'純米大吟醸', poli:'50 % ou moins', alcool:false, pol:'50' },
+  { nom:'Daiginjō',        kanji:'大吟醸',     poli:'50 % ou moins', alcool:true,  pol:'50' },
+  { nom:'Junmai ginjō',    kanji:'純米吟醸',   poli:'60 % ou moins', alcool:false, pol:'60' },
+  { nom:'Ginjō',           kanji:'吟醸',       poli:'60 % ou moins', alcool:true,  pol:'60' },
+  { nom:'Junmai',          kanji:'純米',       poli:'pas de minimum imposé', alcool:false, pol:'free' },
+  { nom:'Honjōzō',         kanji:'本醸造',     poli:'70 % ou moins', alcool:true,  pol:'70' },
+];
+const SAKE_KANJIS = [
+  {k:'純',romaji:'jun',sens:'pur'}, {k:'米',romaji:'mai',sens:'riz'}, {k:'大',romaji:'dai',sens:'grand'},
+  {k:'吟',romaji:'gin',sens:'raffiné'}, {k:'醸',romaji:'jō',sens:'brasser'}, {k:'造',romaji:'zō',sens:'fabriquer'}, {k:'本',romaji:'hon',sens:'vrai, principal'},
+];
+
+const SAKE_FICHES = [
+  { icon:'🍶', titre:"Qu'est-ce que le saké ?", html:`Boisson alcoolisée issue de la fermentation du <strong>riz</strong> (<em>nihonshu</em>). Elle se rapproche de la <strong>bière</strong> par son mode d'élaboration (une céréale : l'amidon doit d'abord devenir sucre) mais se déguste comme un vin. Environ 15 % vol. après ajout d'eau (18 à 20 % non dilué : <em>genshu</em>).` },
+  { icon:'🌾', titre:"Les 4 ingrédients", html:`<strong>Eau</strong> (la base du produit fini) · <strong>riz</strong> (variétés de saké au cœur blanc : Yamada Nishiki, Gohyakumangoku, Omachi...) · <strong>kōji</strong> (moisissure <em>Aspergillus oryzae</em> cultivée sur du riz étuvé, qui produit les <strong>enzymes</strong>) · <strong>levures</strong> (transforment les sucres en alcool).<br>Le riz est une source d'<strong>amidon</strong> ; les enzymes du kōji le transforment en sucres.` },
+  { icon:'⚙️', titre:"Les étapes d'élaboration", html:`<ol style="margin:0;padding-left:18px;line-height:1.7;">
+    <li><strong>Préparation du riz</strong> : polissage, lavage, trempage, cuisson à la vapeur (riz blanc cuit à la vapeur).</li>
+    <li><strong>Culture du kōji</strong> : on sème la moisissure sur du riz étuvé (environ 2 jours) pour obtenir le kōji.</li>
+    <li><strong>Shubo (moto)</strong> : pied de cuve, levain de levures (eau, riz étuvé, kōji, levures).</li>
+    <li><strong>Moromi</strong> : moût principal, le shubo est transféré dans la cuve et on ajoute riz, kōji et eau en <strong>3 étapes</strong>.</li>
+    <li><strong>Fermentation parallèle multiple</strong> : dans la même cuve, le kōji fabrique le sucre pendant que la levure le transforme en alcool.</li>
+    <li><strong>Pressage</strong> : le saké fermenté passe à travers une presse pour séparer les lies (résidus).</li>
+    <li>Filtration, pasteurisation, maturation, dilution, mise en bouteille.</li></ol>` },
+  { icon:'🏅', titre:"Les 6 classes de saké premium", html:`<div style="overflow-x:auto;"><table style="width:100%;border-collapse:collapse;font-size:12px;">
+    <tr style="background:#f8f7f4;"><th style="padding:6px;border:1px solid #e5e5e2;text-align:left;">Classe</th><th style="padding:6px;border:1px solid #e5e5e2;">Kanji</th><th style="padding:6px;border:1px solid #e5e5e2;">Polissage (riz restant)</th><th style="padding:6px;border:1px solid #e5e5e2;">Alcool distillé ajouté</th></tr>
+    ${SAKE_CLASSES.map(c => `<tr><td style="padding:6px;border:1px solid #e5e5e2;font-weight:600;">${c.nom}</td><td style="padding:6px;border:1px solid #e5e5e2;text-align:center;font-size:15px;">${c.kanji}</td><td style="padding:6px;border:1px solid #e5e5e2;text-align:center;">${c.poli}</td><td style="padding:6px;border:1px solid #e5e5e2;text-align:center;">${c.alcool ? 'Oui' : 'Non'}</td></tr>`).join('')}
+    </table></div>
+    <div style="margin-top:8px;font-size:12.5px;line-height:1.6;">Le préfixe <strong>junmai</strong> (純米, « riz pur ») signifie <strong>sans alcool ajouté</strong>. Plus le polissage est poussé, plus le saké est fin et aromatique (<strong>ginjō</strong> et <strong>daiginjō</strong> : fermentation à basse température, arômes fruités et floraux).</div>` },
+  { icon:'🈶', titre:"Les 7 kanjis à reconnaître", html:`<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;text-align:center;">
+    ${SAKE_KANJIS.map(k => `<div style="background:#f8f7f4;border-radius:8px;padding:8px 4px;"><div style="font-size:26px;">${k.k}</div><div style="font-size:11px;font-weight:700;">${k.romaji}</div><div style="font-size:10px;color:#777;">${k.sens}</div></div>`).join('')}</div>` },
+  { icon:'🏷️', titre:"Vocabulaire d'étiquetage", html:`<strong>Nama</strong> : non pasteurisé · <strong>Nigori</strong> : trouble (filtration grossière, reste de riz) · <strong>Genshu</strong> : non dilué · <strong>Koshu</strong> : vieilli · <strong>Futsūshu</strong> : saké ordinaire.` },
+  { icon:'🌡️', titre:"Umami et service", html:`L'<strong>umami</strong> vient des acides aminés : il est davantage perçu dans les sakés <strong>peu polis</strong> (junmai, honjōzō) que dans les sakés très polis (le polissage élimine protéines et acides aminés).<br>Service : les <strong>ginjō / daiginjō</strong> se servent <strong>frais</strong> pour préserver leurs arômes fruités ; les sakés plus riches (junmai, honjōzō) supportent température ambiante, voire tiède.` },
+];
+
+/* QCM — Exercice 5 du cours + compléments */
+const SAKE_QCM = [
+  { q:"De quelle boisson alcoolisée le saké se rapproche-t-il le plus ?", opts:["Le vin","Le whisky","Le gin","La bière"], a:[3], expl:"Le saké est brassé à partir d'une céréale (le riz), comme la bière : l'amidon doit d'abord être converti en sucres." },
+  { q:"Quels sont les principaux ingrédients nécessaires à l'élaboration du saké ?", opts:["L'eau","Le riz","Le kōji","Les levures"], a:[0,1,2,3], multi:true, expl:"Les quatre : eau, riz, kōji (qui fournit les enzymes) et levures (qui font l'alcool)." },
+  { q:"Le riz est une source de :", opts:["Enzymes","Amidon","Alcool"], a:[1], expl:"Le riz apporte l'amidon ; les enzymes viennent du kōji et l'alcool des levures." },
+  { q:"Comment se nomme l'étape de la fermentation principale ?", opts:["Kōji","Shubo","Moromi"], a:[2], expl:"Le moromi est le moût principal (le shubo est le pied de cuve, le kōji le riz à moisissure)." },
+  { q:"La fermentation à basse température favorise les arômes fruités.", opts:["Vrai","Faux"], a:[0], expl:"C'est le principe des ginjō et daiginjō : fermentation lente et froide, arômes fruités et floraux." },
+  { q:"Que signifie 純米 ?", opts:["Ginjō","Honjōzō","Junmai"], a:[2], expl:"純 (jun, pur) + 米 (mai, riz) : junmai, saké sans alcool ajouté." },
+  { q:"Quel est le taux de polissage d'un saké daiginjō ?", opts:["Moins de 70 %","Moins de 60 %","Moins de 50 %"], a:[2], expl:"Le daiginjō est poli à 50 % ou moins : il ne reste que la moitié du grain." },
+  { q:"L'umami — qui indique la présence d'acides aminés — est davantage perçu dans les sakés issus d'un fort polissage.", opts:["Vrai","Faux"], a:[1], expl:"Faux : un fort polissage élimine protéines et acides aminés, l'umami est plus marqué dans les sakés peu polis (junmai, honjōzō)." },
+  { q:"Lequel de ces termes d'étiquetage désigne un saké non pasteurisé ?", opts:["Koshu","Nama","Nigori"], a:[1], expl:"Nama = non pasteurisé. Koshu = vieilli, nigori = trouble." },
+  { q:"Quelle est la température de service recommandée pour un saké de style ginjō ?", opts:["Frais","Température ambiante","Chaud"], a:[0], expl:"Le frais préserve les arômes fruités et floraux délicats." },
+  { q:"Quel micro-organisme est utilisé pour fabriquer le kōji ?", opts:["Saccharomyces cerevisiae","Aspergillus oryzae","Botrytis cinerea"], a:[1], expl:"Aspergillus oryzae, moisissure « noble » qui recouvre le riz étuvé et produit les enzymes." },
+  { q:"Comment s'appelle la fermentation où le sucre est produit et transformé en alcool dans la même cuve ?", opts:["Fermentation malolactique","Fermentation parallèle multiple","Macération carbonique"], a:[1], expl:"Le kōji transforme l'amidon en sucres pendant que la levure transforme ces sucres en alcool." },
+  { q:"Que signifie le préfixe « junmai » devant un nom de classe ?", opts:["Sans alcool distillé ajouté","Non pasteurisé","Vieilli plus de 3 ans"], a:[0], expl:"Junmai = riz pur : uniquement riz, eau, kōji, levures." },
+  { q:"Quel saké est poli à 70 % ou moins, avec ajout d'une petite quantité d'alcool distillé ?", opts:["Honjōzō","Junmai daiginjō","Nigori"], a:[0], expl:"Le honjōzō (本醸造) est la classe d'entrée de gamme du saké premium, avec alcool distillé ajouté." },
+  { q:"Que désigne « genshu » ?", opts:["Un saké non dilué","Un saké trouble","Un saké vieilli"], a:[0], expl:"Genshu : saké non dilué avec de l'eau avant mise en bouteille (18 à 20 % vol.)." },
+];
+
+let sakeState = { view:'menu', order:null, quiz:null };
+
+function sakeShell(title, body, backTo) {
+  return `
+    <div class="quiz-hub">
+      <button class="btn" style="margin-bottom:12px;padding:6px 12px;font-size:12px;" onclick="sakeGo('${backTo || 'sake'}')">← ${backTo === 'menu' ? 'Autres boissons' : 'Saké'}</button>
+      <div class="quiz-hub-title">${title}</div>
+      <div style="margin-top:12px;">${body}</div>
     </div>`;
+}
+function sakeGo(view) { sakeState.view = view; renderAutresBoissons(); }
+
+function buildAutresBoissonsScreen() { sakeState.view = 'menu'; renderAutresBoissons(); }
+
+function renderAutresBoissons() {
+  const el = document.getElementById('screen-autres-boissons');
+  const v = sakeState.view;
+  if (v === 'menu') {
+    el.innerHTML = `
+      <div class="quiz-hub">
+        <div class="quiz-hub-title">🥃 Autres boissons</div>
+        <div class="quiz-hub-sub">Fiches de cours et exercices</div>
+        <div class="quiz-type-list">
+          <div class="quiz-type-card" onclick="sakeGo('sake')">
+            <div class="quiz-type-icon">🍶</div>
+            <div class="quiz-type-body"><div class="quiz-type-title">Saké</div><div class="quiz-type-desc">Fiches, 5 exercices du cours, quiz</div></div>
+            <span class="quiz-type-arrow">›</span>
+          </div>
+          <div class="quiz-type-card" style="opacity:.55;pointer-events:none;">
+            <div class="quiz-type-icon">🍺</div>
+            <div class="quiz-type-body"><div class="quiz-type-title">Bières, spiritueux, thés, cafés</div><div class="quiz-type-desc">Contenu à venir au fil des cours</div><span class="quiz-type-badge">Bientôt</span></div>
+          </div>
+        </div>
+      </div>`;
+  } else if (v === 'sake') {
+    const card = (go, icon, t, d) => `<div class="quiz-type-card" onclick="${go}"><div class="quiz-type-icon">${icon}</div><div class="quiz-type-body"><div class="quiz-type-title">${t}</div><div class="quiz-type-desc">${d}</div></div><span class="quiz-type-arrow">›</span></div>`;
+    el.innerHTML = sakeShell('🍶 Saké', `<div class="quiz-type-list">
+      ${card("sakeGo('fiche')", '📖', 'Fiches de cours', 'Ingrédients, étapes, classes, kanjis, vocabulaire')}
+      ${card("sakeStartOrder('ex1')", '🍚', 'Exercice 1 — Préparation du riz', 'Remettre les étapes dans l\'ordre')}
+      ${card("sakeStartOrder('ex2')", '🧫', 'Exercice 2 — Kōji et fermentation', 'Replacer les 6 étapes dans le bon ordre')}
+      ${card("sakeGo('ex3')", '🈶', 'Exercice 3 — Kanjis', 'Lire le nom des classes de saké')}
+      ${card("sakeGo('ex4')", '🏅', 'Exercice 4 — Classes haut de gamme', 'Polissage et alcool ajouté')}
+      ${card("sakeStartQuiz('sake')", '❓', 'Exercice 5 — Questions diverses', 'QCM de 15 questions')}
+    </div>`, 'menu');
+  } else if (v === 'fiche') {
+    el.innerHTML = sakeShell('📖 Fiches de cours — Saké', SAKE_FICHES.map(f => `
+      <div style="background:#fff;border:1px solid #e5e5e2;border-radius:12px;padding:12px 14px;margin-bottom:10px;font-size:13px;line-height:1.6;">
+        <div style="font-size:13.5px;font-weight:700;margin-bottom:6px;">${f.icon} ${f.titre}</div>${f.html}
+      </div>`).join(''));
+  } else if (v === 'ex1' || v === 'ex2') {
+    sakeRenderOrder();
+  } else if (v === 'ex3') {
+    const kanjiLegend = SAKE_KANJIS.map(k => `<span style="display:inline-block;margin:0 8px 4px 0;"><span style="font-size:18px;">${k.k}</span> <span style="font-size:11px;color:#666;">${k.romaji}</span></span>`).join('');
+    const names = shuffleArray(SAKE_CLASSES);
+    sakeState.ex3 = names;
+    el.innerHTML = sakeShell('🈶 Exercice 3 — Kanjis', `
+      <div style="font-size:13px;line-height:1.6;margin-bottom:10px;">Associez chaque écriture japonaise à la classe de saké correspondante.<div style="margin-top:6px;">${kanjiLegend}</div></div>
+      ${names.map((c,i) => `<div style="display:flex;align-items:center;gap:10px;background:#f8f7f4;border-radius:10px;padding:10px 12px;margin-bottom:8px;">
+        <div style="font-size:24px;min-width:110px;">${c.kanji}</div>
+        <select id="sk3_${i}" style="flex:1;padding:7px;border:1px solid #ddd;border-radius:6px;font-size:13px;"><option value="">—</option>${SAKE_CLASSES.map(o => `<option>${o.nom}</option>`).join('')}</select>
+      </div>`).join('')}
+      <button class="btn btn-purple" style="width:100%;" onclick="sakeCheckEx3()">Valider →</button><div id="sk3res"></div>`);
+  } else if (v === 'ex4') {
+    el.innerHTML = sakeShell('🏅 Exercice 4 — Classes haut de gamme', `
+      <div style="font-size:13px;line-height:1.6;margin-bottom:10px;">Pour chaque classe de saké, indiquez le <strong>taux de polissage</strong> (part du grain restante) et si de l'<strong>alcool distillé</strong> est ajouté.</div>
+      ${SAKE_CLASSES.map((c,i) => `<div style="background:#f8f7f4;border-radius:10px;padding:10px 12px;margin-bottom:8px;">
+        <div style="font-size:13px;font-weight:700;margin-bottom:6px;">${c.nom} <span style="font-weight:400;">${c.kanji}</span></div>
+        <div style="display:flex;gap:8px;">
+          <select id="sk4p_${i}" style="flex:1;padding:7px;border:1px solid #ddd;border-radius:6px;font-size:12.5px;"><option value="">Polissage…</option><option value="50">50 % ou moins</option><option value="60">60 % ou moins</option><option value="70">70 % ou moins</option><option value="free">Pas de minimum imposé</option></select>
+          <select id="sk4a_${i}" style="flex:1;padding:7px;border:1px solid #ddd;border-radius:6px;font-size:12.5px;"><option value="">Alcool ajouté…</option><option value="oui">Oui</option><option value="non">Non</option></select>
+        </div></div>`).join('')}
+      <button class="btn btn-purple" style="width:100%;" onclick="sakeCheckEx4()">Valider →</button><div id="sk4res"></div>`);
+  } else if (v === 'quiz') {
+    sakeQuizRender('screen-autres-boissons', 'sake');
+  }
+}
+
+/* — Exercices d'ordre (1 et 2) : on touche les étapes dans l'ordre — */
+const SAKE_ORDERS = {
+  ex1: { titre:'🍚 Exercice 1 — Préparation du riz', consigne:"Remettez dans l'ordre les étapes qui transforment le riz en <strong>riz blanc cuit à la vapeur</strong>.", ordre:["Polissage","Lavage","Trempage","Cuisson à la vapeur"], leurres:["Pressage","Pasteurisation"] },
+  ex2: { titre:'🧫 Exercice 2 — Kōji et fermentation', consigne:"Replacez les 6 étapes de l'élaboration du saké dans le bon ordre.", ordre:["Moisissure de kōji sur le riz étuvé","Le kōji (riz recouvert de moisissure)","Fabrication du shubo (levain)","Fabrication du moromi","Fermentation parallèle multiple","Pressage"], leurres:[] },
+};
+function sakeStartOrder(id) {
+  const cfg = SAKE_ORDERS[id];
+  sakeState.order = { id, picked: [], pool: shuffleArray([...cfg.ordre, ...cfg.leurres]), done:false };
+  sakeState.view = id; renderAutresBoissons();
+}
+function sakeRenderOrder() {
+  const o = sakeState.order, cfg = SAKE_ORDERS[o.id];
+  document.getElementById('screen-autres-boissons').innerHTML = sakeShell(cfg.titre, `
+    <div style="font-size:13px;line-height:1.6;margin-bottom:10px;">${cfg.consigne}</div>
+    <div style="background:#f8f7f4;border-radius:10px;padding:10px;min-height:48px;margin-bottom:10px;">
+      ${o.picked.length ? o.picked.map((t,i) => `<div style="font-size:13px;padding:3px 0;"><strong>${i+1}.</strong> ${t}</div>`).join('') : '<span style="font-size:12px;color:#999;">Touchez les étapes ci-dessous dans l\'ordre…</span>'}
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;">
+      ${o.pool.map((t,i) => o.picked.includes(t) ? '' : `<button class="btn" style="font-size:12.5px;" ${o.done ? 'disabled' : ''} onclick="sakePick(${i})">${t}</button>`).join('')}
+    </div>
+    <div style="display:flex;gap:8px;">
+      <button class="btn" style="flex:1;" ${o.done ? 'disabled' : ''} onclick="sakeUndo()">↩ Annuler</button>
+      <button class="btn btn-purple" style="flex:2;" ${o.done ? 'disabled' : ''} onclick="sakeCheckOrder()">Valider →</button>
+    </div>
+    <div id="skOrdRes"></div>`);
+}
+function sakePick(i) { const o = sakeState.order; o.picked.push(o.pool[i]); sakeRenderOrder(); }
+function sakeUndo() { sakeState.order.picked.pop(); sakeRenderOrder(); }
+function sakeCheckOrder() {
+  const o = sakeState.order, cfg = SAKE_ORDERS[o.id];
+  o.done = true; sakeRenderOrder();
+  const ok = o.picked.length === cfg.ordre.length && cfg.ordre.every((t,i) => o.picked[i] === t);
+  const good = cfg.ordre.filter((t,i) => o.picked[i] === t).length;
+  document.getElementById('skOrdRes').innerHTML = `
+    <div style="background:${ok?'#EAF3DE':'#FFF4E6'};border-radius:10px;padding:12px;margin-top:12px;font-size:13px;line-height:1.6;">
+      <strong>${ok ? '✅ Parfait !' : `${good}/${cfg.ordre.length} étapes bien placées`}</strong><br>
+      Ordre attendu : ${cfg.ordre.map((t,i) => `${i+1}. ${t}`).join(' → ')}
+    </div>
+    <button class="btn btn-purple" style="width:100%;margin-top:10px;" onclick="sakeStartOrder('${o.id}')">Recommencer</button>`;
+}
+function sakeCheckEx3() {
+  let good = 0;
+  const rows = sakeState.ex3.map((c,i) => {
+    const v = document.getElementById('sk3_'+i).value, ok = v === c.nom; if (ok) good++;
+    return `<div style="font-size:13px;padding:4px 0;"><span style="font-size:18px;">${c.kanji}</span> → <strong style="color:${ok?'#3B6D11':'#993C1D'}">${c.nom}</strong>${ok ? '' : ` <span style="color:#888;">(vous : ${v || '—'})</span>`}</div>`;
+  }).join('');
+  document.getElementById('sk3res').innerHTML = `<div style="background:${good===6?'#EAF3DE':'#FFF4E6'};border-radius:10px;padding:12px;margin-top:12px;"><strong>${good}/6</strong>${rows}</div>
+    <button class="btn btn-purple" style="width:100%;margin-top:10px;" onclick="sakeGo('ex3')">Recommencer</button>`;
+}
+function sakeCheckEx4() {
+  let good = 0;
+  const rows = SAKE_CLASSES.map((c,i) => {
+    const p = document.getElementById('sk4p_'+i).value, a = document.getElementById('sk4a_'+i).value;
+    const okP = p === c.pol, okA = a === (c.alcool ? 'oui' : 'non'); if (okP) good++; if (okA) good++;
+    return `<div style="font-size:12.5px;padding:4px 0;"><strong>${c.nom}</strong> : polissage <strong style="color:${okP?'#3B6D11':'#993C1D'}">${c.poli}</strong> · alcool ajouté <strong style="color:${okA?'#3B6D11':'#993C1D'}">${c.alcool ? 'oui' : 'non'}</strong></div>`;
+  }).join('');
+  document.getElementById('sk4res').innerHTML = `<div style="background:${good===12?'#EAF3DE':'#FFF4E6'};border-radius:10px;padding:12px;margin-top:12px;"><strong>${good}/12 éléments corrects</strong>${rows}</div>
+    <button class="btn btn-purple" style="width:100%;margin-top:10px;" onclick="sakeGo('ex4')">Recommencer</button>`;
+}
+
+/* — Quiz QCM saké (écran Autres boissons et onglet Quiz) — */
+function sakeStartQuiz(topic) {
+  sakeState.quiz = { topic, qs: shuffleArray(SAKE_QCM), i: 0, score: 0, answered: false, picks: [] };
+  sakeState.view = 'quiz'; renderAutresBoissons();
+}
+function buildSakeQuiz() {
+  sakeState.quiz = { topic:'sake', qs: shuffleArray(SAKE_QCM), i: 0, score: 0, answered: false, picks: [] };
+  sakeQuizRender('screen-quiz-autres-boissons', 'sake');
+}
+function sakeQuizRender(containerId, topic) {
+  const z = sakeState.quiz, el = document.getElementById(containerId);
+  const back = containerId === 'screen-autres-boissons' ? `<button class="btn" style="margin-bottom:12px;padding:6px 12px;font-size:12px;" onclick="sakeGo('sake')">← Saké</button>` : '';
+  if (z.i >= z.qs.length) {
+    el.innerHTML = `<div class="quiz-hub">${back}<div style="text-align:center;padding:20px 0;"><div style="font-size:42px;">🍶</div><div style="font-size:22px;font-weight:700;">${z.score} / ${z.qs.length}</div></div>
+      <button class="btn btn-purple" style="width:100%;" onclick="${containerId === 'screen-autres-boissons' ? "sakeStartQuiz('sake')" : 'buildSakeQuiz()'}">🔄 Recommencer</button></div>`;
+    return;
+  }
+  const q = z.qs[z.i];
+  const optsHtml = q.opts.map((o, k) => {
+    let st = 'width:100%;text-align:left;margin-bottom:6px;';
+    if (z.answered) st += q.a.includes(k) ? 'background:#EAF3DE;border-color:#3B6D11;' : (z.picks.includes(k) ? 'background:#FAECE7;border-color:#993C1D;' : '');
+    else if (z.picks.includes(k)) st += 'background:#faf5ff;border-color:#9333ea;';
+    return `<button class="btn" style="${st}" ${z.answered ? 'disabled' : ''} onclick="sakeQuizPick('${containerId}',${k})">${q.multi ? (z.picks.includes(k) ? '☑ ' : '☐ ') : ''}${o}</button>`;
+  }).join('');
+  el.innerHTML = `<div class="quiz-hub">${back}
+    <div style="font-size:11px;color:#888;margin-bottom:6px;">Question ${z.i+1}/${z.qs.length} · Score ${z.score}</div>
+    <div style="font-size:14.5px;font-weight:600;line-height:1.5;margin-bottom:12px;">${q.q}${q.multi ? ' <span style="font-size:11px;color:#9333ea;">(plusieurs réponses)</span>' : ''}</div>
+    ${optsHtml}
+    ${z.answered ? `<div style="background:#f8f7f4;border-radius:10px;padding:10px 12px;margin:8px 0;font-size:12.5px;line-height:1.6;">${q.expl}</div>
+      <button class="btn btn-purple" style="width:100%;" onclick="sakeQuizNext('${containerId}')">Suivante →</button>`
+      : (q.multi ? `<button class="btn btn-purple" style="width:100%;margin-top:6px;" onclick="sakeQuizValidate('${containerId}')">Valider →</button>` : '')}
+  </div>`;
+}
+function sakeQuizPick(containerId, k) {
+  const z = sakeState.quiz, q = z.qs[z.i];
+  if (q.multi) { const ix = z.picks.indexOf(k); ix >= 0 ? z.picks.splice(ix,1) : z.picks.push(k); sakeQuizRender(containerId); }
+  else { z.picks = [k]; sakeQuizValidate(containerId); }
+}
+function sakeQuizValidate(containerId) {
+  const z = sakeState.quiz, q = z.qs[z.i];
+  const ok = z.picks.length === q.a.length && q.a.every(k => z.picks.includes(k));
+  if (ok) z.score++;
+  z.answered = true; sakeQuizRender(containerId);
+}
+function sakeQuizNext(containerId) {
+  const z = sakeState.quiz; z.i++; z.answered = false; z.picks = []; sakeQuizRender(containerId);
 }
 
 function buildVinsMondeScreen() {
@@ -10739,6 +11609,12 @@ const SCREEN_META = {
   'revisions-hub':        {title:'📚 Révisions', sub:'', back:'hub', home:true},
   'cave-hub':             {title:'🍷 Ma Cave', sub:'', back:'hub', home:true},
   'zytho-hub':            {title:'🍺 Zytho', sub:'', back:'hub', home:true},
+  'zytho-cours':          {title:'Cours', sub:'Zytho', back:'zytho-hub', home:true},
+  'zytho-biblio':         {title:'Bibliothèque', sub:'Zytho', back:'zytho-hub', home:true},
+  'zytho-styles':         {title:'Styles', sub:'Zytho', back:'zytho-hub', home:true},
+  'zytho-quiz':           {title:'Quiz', sub:'Zytho', back:'zytho-hub', home:true},
+  'zytho-accords':        {title:'Accords mets-bière', sub:'Zytho', back:'zytho-hub', home:true},
+  'zytho-aromes':         {title:'Arbre des arômes', sub:'Zytho', back:'zytho-hub', home:true},
   'ma-collection':        {title:'Ma Collection', sub:'', back:'cave-hub', home:true},
   'collection-vins':      {title:'Vins', sub:'Ma Collection', back:'ma-collection', home:true},
   'collection-vins-form': {title:'Ajouter un vin', sub:'', back:'collection-vins', home:true},
@@ -10795,6 +11671,7 @@ const SCREEN_META = {
   'quiz-partiels':        {title:'Partiels', sub:'', back:'quiz-hub', home:true},
   'quiz-partiels-active': {title:'Partiel en cours', sub:'', back:'quiz-partiels', home:true},
   'quiz-exercices':       {title:'Exercices', sub:'', back:'quiz-hub', home:true},
+  'quiz-examen':          {title:'Examen', sub:'', back:'quiz-hub', home:true},
   'quiz-oral':            {title:'Oral', sub:'', back:'quiz-hub', home:true},
   'simu-client':          {title:'Simulation Client', sub:'', back:'quiz-hub', home:true},
   'sommelia':             {title:'Sommel.IA', sub:'', back:'revisions-hub', home:true},
@@ -10809,6 +11686,340 @@ let navHistory = [];
 let currentQuizRegion = null;
 let score = 0, total = 0, quizAnswered = false;
 let quizPool = [], quizMode = 'random';
+
+// ── Zytho : mind map des styles ──
+// Pour compléter : ajouter des enfants dans `children`, et un objet `spec` (clés de ZS_SPEC_FIELDS) sur la bulle voulue.
+const ZS_SPEC_FIELDS = [
+  ['origine','Origine'], ['fermentation','Fermentation'], ['robe','Robe'], ['nez','Nez'], ['bouche','Bouche'],
+  ['og','Densité initiale (OG)'], ['fg','Densité finale (FG)'], ['abv','Degré (% vol.)'], ['srm','Couleur (SRM)'], ['ibu','Amertume (IBU)'], ['ebc','Couleur (EBC)'], ['accords','Accords']
+];
+// Source : BJCP 2021 Beer Style Guidelines (bjcp.org). Familles = regroupement maison.
+const ZYTHO_STYLES = [{"id":"ale","name":"Ale","color":"#d97706","children":[{"id":"ale-cat1","name":"1. Standard American Beer","url":"https://www.bjcp.org/style/2021/1/standard-american-beer/","children":[{"id":"ale-1C-cream-ale","name":"1C. Cream Ale","url":"https://www.bjcp.org/style/2021/1/1C/cream-ale/"},{"id":"ale-1D-american-wheat-beer","name":"1D. American Wheat Beer","url":"https://www.bjcp.org/style/2021/1/1D/american-wheat-beer/"}]},{"id":"ale-cat5","name":"5. Pale Bitter European Beer","url":"https://www.bjcp.org/style/2021/5/pale-bitter-european-beer/","children":[{"id":"ale-5B-kolsch","name":"5B. Kölsch","url":"https://www.bjcp.org/style/2021/5/5B/kolsch/"}]},{"id":"ale-cat7","name":"7. Amber Bitter European Beer","url":"https://www.bjcp.org/style/2021/7/amber-bitter-european-beer/","children":[{"id":"ale-7B-altbier","name":"7B. Altbier","url":"https://www.bjcp.org/style/2021/7/7B/altbier/"}]},{"id":"ale-cat10","name":"10. German Wheat Beer","url":"https://www.bjcp.org/style/2021/10/german-wheat-beer/","children":[{"id":"ale-10A-weissbier","name":"10A. Weissbier","url":"https://www.bjcp.org/style/2021/10/10A/weissbier/"},{"id":"ale-10B-dunkles-weissbier","name":"10B. Dunkles Weissbier","url":"https://www.bjcp.org/style/2021/10/10B/dunkles-weissbier/"},{"id":"ale-10C-weizenbock","name":"10C. Weizenbock","url":"https://www.bjcp.org/style/2021/10/10C/weizenbock/"}]},{"id":"ale-cat11","name":"11. British Bitter","url":"https://www.bjcp.org/style/2021/11/british-bitter/","children":[{"id":"ale-11A-ordinary-bitter","name":"11A. Ordinary Bitter","url":"https://www.bjcp.org/style/2021/11/11A/ordinary-bitter/"},{"id":"ale-11B-best-bitter","name":"11B. Best Bitter","url":"https://www.bjcp.org/style/2021/11/11B/best-bitter/"},{"id":"ale-11C-strong-bitter","name":"11C. Strong Bitter","url":"https://www.bjcp.org/style/2021/11/11C/strong-bitter/"}]},{"id":"ale-cat12","name":"12. Pale Commonwealth Beer","url":"https://www.bjcp.org/style/2021/12/pale-commonwealth-beer/","children":[{"id":"ale-12A-british-golden-ale","name":"12A. British Golden Ale","url":"https://www.bjcp.org/style/2021/12/12A/british-golden-ale/"},{"id":"ale-12B-australian-sparkling-ale","name":"12B. Australian Sparkling Ale","url":"https://www.bjcp.org/style/2021/12/12B/australian-sparkling-ale/"},{"id":"ale-12C-english-ipa","name":"12C. English IPA","url":"https://www.bjcp.org/style/2021/12/12C/english-ipa/"}]},{"id":"ale-cat13","name":"13. Brown British Beer","url":"https://www.bjcp.org/style/2021/13/brown-british-beer/","children":[{"id":"ale-13A-dark-mild","name":"13A. Dark Mild","url":"https://www.bjcp.org/style/2021/13/13A/dark-mild/"},{"id":"ale-13B-british-brown-ale","name":"13B. British Brown Ale","url":"https://www.bjcp.org/style/2021/13/13B/british-brown-ale/"},{"id":"ale-13C-english-porter","name":"13C. English Porter","url":"https://www.bjcp.org/style/2021/13/13C/english-porter/"}]},{"id":"ale-cat14","name":"14. Scottish Ale","url":"https://www.bjcp.org/style/2021/14/scottish-ale/","children":[{"id":"ale-14A-scottish-light","name":"14A. Scottish Light","url":"https://www.bjcp.org/style/2021/14/14A/scottish-light/"},{"id":"ale-14B-scottish-heavy","name":"14B. Scottish Heavy","url":"https://www.bjcp.org/style/2021/14/14B/scottish-heavy/"},{"id":"ale-14C-scottish-export","name":"14C. Scottish Export","url":"https://www.bjcp.org/style/2021/14/14C/scottish-export/"}]},{"id":"ale-cat15","name":"15. Irish Beer","url":"https://www.bjcp.org/style/2021/15/irish-beer/","children":[{"id":"ale-15A-irish-red-ale","name":"15A. Irish Red Ale","url":"https://www.bjcp.org/style/2021/15/15A/irish-red-ale/"},{"id":"ale-15B-irish-stout","name":"15B. Irish Stout","url":"https://www.bjcp.org/style/2021/15/15B/irish-stout/"},{"id":"ale-15C-irish-extra-stout","name":"15C. Irish Extra Stout","url":"https://www.bjcp.org/style/2021/15/15C/irish-extra-stout/"}]},{"id":"ale-cat16","name":"16. Dark British Beer","url":"https://www.bjcp.org/style/2021/16/dark-british-beer/","children":[{"id":"ale-16A-sweet-stout","name":"16A. Sweet Stout","url":"https://www.bjcp.org/style/2021/16/16A/sweet-stout/"},{"id":"ale-16B-oatmeal-stout","name":"16B. Oatmeal Stout","url":"https://www.bjcp.org/style/2021/16/16B/oatmeal-stout/"},{"id":"ale-16C-tropical-stout","name":"16C. Tropical Stout","url":"https://www.bjcp.org/style/2021/16/16C/tropical-stout/"},{"id":"ale-16D-foreign-extra-stout","name":"16D. Foreign Extra Stout","url":"https://www.bjcp.org/style/2021/16/16D/foreign-extra-stout/"}]},{"id":"ale-cat17","name":"17. Strong British Ale","url":"https://www.bjcp.org/style/2021/17/strong-british-ale/","children":[{"id":"ale-17A-british-strong-ale","name":"17A. British Strong Ale","url":"https://www.bjcp.org/style/2021/17/17A/british-strong-ale/"},{"id":"ale-17B-old-ale","name":"17B. Old Ale","url":"https://www.bjcp.org/style/2021/17/17B/old-ale/"},{"id":"ale-17C-wee-heavy","name":"17C. Wee Heavy","url":"https://www.bjcp.org/style/2021/17/17C/wee-heavy/"},{"id":"ale-17D-english-barleywine","name":"17D. English Barleywine","url":"https://www.bjcp.org/style/2021/17/17D/english-barleywine/"}]},{"id":"ale-cat18","name":"18. Pale American Ale","url":"https://www.bjcp.org/style/2021/18/pale-american-ale/","children":[{"id":"ale-18A-blonde-ale","name":"18A. Blonde Ale","url":"https://www.bjcp.org/style/2021/18/18A/blonde-ale/"},{"id":"ale-18B-american-pale-ale","name":"18B. American Pale Ale","url":"https://www.bjcp.org/style/2021/18/18B/american-pale-ale/"}]},{"id":"ale-cat19","name":"19. Amber and Brown American Beer","url":"https://www.bjcp.org/style/2021/19/amber-and-brown-american-beer/","children":[{"id":"ale-19A-american-amber-ale","name":"19A. American Amber Ale","url":"https://www.bjcp.org/style/2021/19/19A/american-amber-ale/"},{"id":"ale-19C-american-brown-ale","name":"19C. American Brown Ale","url":"https://www.bjcp.org/style/2021/19/19C/american-brown-ale/"}]},{"id":"ale-cat20","name":"20. American Porter and Stout","url":"https://www.bjcp.org/style/2021/20/american-porter-and-stout/","children":[{"id":"ale-20A-american-porter","name":"20A. American Porter","url":"https://www.bjcp.org/style/2021/20/20A/american-porter/"},{"id":"ale-20B-american-stout","name":"20B. American Stout","url":"https://www.bjcp.org/style/2021/20/20B/american-stout/"},{"id":"ale-20C-imperial-stout","name":"20C. Imperial Stout","url":"https://www.bjcp.org/style/2021/20/20C/imperial-stout/"}]},{"id":"ale-cat21","name":"21. IPA","url":"https://www.bjcp.org/style/2021/21/ipa/","children":[{"id":"ale-21A-american-ipa","name":"21A. American IPA","url":"https://www.bjcp.org/style/2021/21/21A/american-ipa/"},{"id":"ale-21B-specialty-ipa","name":"21B. Specialty IPA","url":"https://www.bjcp.org/style/2021/21/21B/specialty-ipa/","children":[{"id":"ale-21B-belgian-ipa","name":"Belgian IPA","url":"https://www.bjcp.org/style/2021/21/21B/specialty-ipa-belgian-ipa/"},{"id":"ale-21B-black-ipa","name":"Black IPA","url":"https://www.bjcp.org/style/2021/21/21B/specialty-ipa-black-ipa/"},{"id":"ale-21B-brown-ipa","name":"Brown IPA","url":"https://www.bjcp.org/style/2021/21/21B/specialty-ipa-brown-ipa/"},{"id":"ale-21B-brut-ipa","name":"Brut IPA","url":"https://www.bjcp.org/style/2021/21/21B/specialty-ipa-brut-ipa/"},{"id":"ale-21B-red-ipa","name":"Red IPA","url":"https://www.bjcp.org/style/2021/21/21B/specialty-ipa-red-ipa/"},{"id":"ale-21B-rye-ipa","name":"Rye IPA","url":"https://www.bjcp.org/style/2021/21/21B/specialty-ipa-rye-ipa/"},{"id":"ale-21B-white-ipa","name":"White IPA","url":"https://www.bjcp.org/style/2021/21/21B/specialty-ipa-white-ipa/"}]},{"id":"ale-21C-hazy-ipa","name":"21C. Hazy IPA","url":"https://www.bjcp.org/style/2021/21/21C/hazy-ipa/"}]},{"id":"ale-cat22","name":"22. Strong American Ale","url":"https://www.bjcp.org/style/2021/22/strong-american-ale/","children":[{"id":"ale-22A-double-ipa","name":"22A. Double IPA","url":"https://www.bjcp.org/style/2021/22/22A/double-ipa/"},{"id":"ale-22B-american-strong-ale","name":"22B. American Strong Ale","url":"https://www.bjcp.org/style/2021/22/22B/american-strong-ale/"},{"id":"ale-22C-american-barleywine","name":"22C. American Barleywine","url":"https://www.bjcp.org/style/2021/22/22C/american-barleywine/"},{"id":"ale-22D-wheatwine","name":"22D. Wheatwine","url":"https://www.bjcp.org/style/2021/22/22D/wheatwine/"}]},{"id":"ale-cat23","name":"23. European Sour Ale","url":"https://www.bjcp.org/style/2021/23/european-sour-ale/","children":[{"id":"ale-23A-berliner-weisse","name":"23A. Berliner Weisse","url":"https://www.bjcp.org/style/2021/23/23A/berliner-weisse/"},{"id":"ale-23B-flanders-red-ale","name":"23B. Flanders Red Ale","url":"https://www.bjcp.org/style/2021/23/23B/flanders-red-ale/"},{"id":"ale-23C-oud-bruin","name":"23C. Oud Bruin","url":"https://www.bjcp.org/style/2021/23/23C/oud-bruin/"},{"id":"ale-23G-gose","name":"23G. Gose","url":"https://www.bjcp.org/style/2021/23/23G/gose/"}]},{"id":"ale-cat24","name":"24. Belgian Ale","url":"https://www.bjcp.org/style/2021/24/belgian-ale/","children":[{"id":"ale-24A-witbier","name":"24A. Witbier","url":"https://www.bjcp.org/style/2021/24/24A/witbier/"},{"id":"ale-24B-belgian-pale-ale","name":"24B. Belgian Pale Ale","url":"https://www.bjcp.org/style/2021/24/24B/belgian-pale-ale/"},{"id":"ale-24C-biere-de-garde","name":"24C. Bière de Garde","url":"https://www.bjcp.org/style/2021/24/24C/biere-de-garde/"}]},{"id":"ale-cat25","name":"25. Strong Belgian Ale","url":"https://www.bjcp.org/style/2021/25/strong-belgian-ale/","children":[{"id":"ale-25A-belgian-blond-ale","name":"25A. Belgian Blond Ale","url":"https://www.bjcp.org/style/2021/25/25A/belgian-blond-ale/"},{"id":"ale-25B-saison","name":"25B. Saison","url":"https://www.bjcp.org/style/2021/25/25B/saison/"},{"id":"ale-25C-belgian-golden-strong-ale","name":"25C. Belgian Golden Strong Ale","url":"https://www.bjcp.org/style/2021/25/25C/belgian-golden-strong-ale/"}]},{"id":"ale-cat26","name":"26. Monastic Ale","url":"https://www.bjcp.org/style/2021/26/monastic-ale/","children":[{"id":"ale-26A-belgian-single","name":"26A. Belgian Single","url":"https://www.bjcp.org/style/2021/26/26A/belgian-single/"},{"id":"ale-26B-belgian-dubbel","name":"26B. Belgian Dubbel","url":"https://www.bjcp.org/style/2021/26/26B/belgian-dubbel/"},{"id":"ale-26C-belgian-tripel","name":"26C. Belgian Tripel","url":"https://www.bjcp.org/style/2021/26/26C/belgian-tripel/"},{"id":"ale-26D-belgian-dark-strong-ale","name":"26D. Belgian Dark Strong Ale","url":"https://www.bjcp.org/style/2021/26/26D/belgian-dark-strong-ale/"}]}]},{"id":"lager","name":"Lager","color":"#0891b2","children":[{"id":"lager-cat1","name":"1. Standard American Beer","url":"https://www.bjcp.org/style/2021/1/standard-american-beer/","children":[{"id":"lager-1A-american-light-lager","name":"1A. American Light Lager","url":"https://www.bjcp.org/style/2021/1/1A/american-light-lager/"},{"id":"lager-1B-american-lager","name":"1B. American Lager","url":"https://www.bjcp.org/style/2021/1/1B/american-lager/"}]},{"id":"lager-cat2","name":"2. International Lager","url":"https://www.bjcp.org/style/2021/2/international-lager/","children":[{"id":"lager-2A-international-pale-lager","name":"2A. International Pale Lager","url":"https://www.bjcp.org/style/2021/2/2A/international-pale-lager/"},{"id":"lager-2B-international-amber-lager","name":"2B. International Amber Lager","url":"https://www.bjcp.org/style/2021/2/2B/international-amber-lager/"},{"id":"lager-2C-international-dark-lager","name":"2C. International Dark Lager","url":"https://www.bjcp.org/style/2021/2/2C/international-dark-lager/"}]},{"id":"lager-cat3","name":"3. Czech Lager","url":"https://www.bjcp.org/style/2021/3/czech-lager/","children":[{"id":"lager-3A-czech-pale-lager","spec":{"origine":"République tchèque (světlé výčepní pivo)","fermentation":"Basse fermentation, lagering","robe":"Pâle (SRM 3 – 6)","bouche":"Version plus légère, désaltérante et houblonnée de la Czech Premium Pale Lager, moins intense","og":"1.028 – 1.044","fg":"1.008 – 1.014","abv":"3 – 4,1 %","ibu":"20 – 35","srm":"3 – 6"},"name":"3A. Czech Pale Lager","url":"https://www.bjcp.org/style/2021/3/3A/czech-pale-lager/"},{"id":"lager-3B-czech-premium-pale-lager","spec":{"origine":"République tchèque (type Pilsner)","fermentation":"Basse fermentation, lagering","robe":"Pâle","bouche":"Malt et houblon marqués, amertume forte mais nette, finale longue et ronde","og":"1.044 – 1.060","fg":"1.013 – 1.017","abv":"4,2 – 5,8 %"},"name":"3B. Czech Premium Pale Lager","url":"https://www.bjcp.org/style/2021/3/3B/czech-premium-pale-lager/"},{"id":"lager-3C-czech-amber-lager","name":"3C. Czech Amber Lager","url":"https://www.bjcp.org/style/2021/3/3C/czech-amber-lager/"},{"id":"lager-3D-czech-dark-lager","name":"3D. Czech Dark Lager","url":"https://www.bjcp.org/style/2021/3/3D/czech-dark-lager/"}]},{"id":"lager-cat4","name":"4. Pale Malty European Lager","url":"https://www.bjcp.org/style/2021/4/pale-malty-european-lager/","children":[{"id":"lager-4A-munich-helles","name":"4A. Munich Helles","url":"https://www.bjcp.org/style/2021/4/4A/munich-helles/"},{"id":"lager-4B-festbier","name":"4B. Festbier","url":"https://www.bjcp.org/style/2021/4/4B/festbier/"},{"id":"lager-4C-helles-bock","name":"4C. Helles Bock","url":"https://www.bjcp.org/style/2021/4/4C/helles-bock/"}]},{"id":"lager-cat5","name":"5. Pale Bitter European Beer","url":"https://www.bjcp.org/style/2021/5/pale-bitter-european-beer/","children":[{"id":"lager-5A-german-leichtbier","name":"5A. German Leichtbier","url":"https://www.bjcp.org/style/2021/5/5A/german-leichtbier/"},{"id":"lager-5C-german-helles-exportbier","name":"5C. German Helles Exportbier","url":"https://www.bjcp.org/style/2021/5/5C/german-helles-exportbier/"},{"id":"lager-5D-german-pils","name":"5D. German Pils","url":"https://www.bjcp.org/style/2021/5/5D/german-pils/"}]},{"id":"lager-cat6","name":"6. Amber Malty European Lager","url":"https://www.bjcp.org/style/2021/6/amber-malty-european-lager/","children":[{"id":"lager-6A-marzen","name":"6A. Märzen","url":"https://www.bjcp.org/style/2021/6/6A/marzen/"},{"id":"lager-6B-rauchbier","name":"6B. Rauchbier","url":"https://www.bjcp.org/style/2021/6/6B/rauchbier/"},{"id":"lager-6C-dunkles-bock","name":"6C. Dunkles Bock","url":"https://www.bjcp.org/style/2021/6/6C/dunkles-bock/"}]},{"id":"lager-cat7","name":"7. Amber Bitter European Beer","url":"https://www.bjcp.org/style/2021/7/amber-bitter-european-beer/","children":[{"id":"lager-7A-vienna-lager","name":"7A. Vienna Lager","url":"https://www.bjcp.org/style/2021/7/7A/vienna-lager/"}]},{"id":"lager-cat8","name":"8. Dark European Lager","url":"https://www.bjcp.org/style/2021/8/dark-european-lager/","children":[{"id":"lager-8A-munich-dunkel","name":"8A. Munich Dunkel","url":"https://www.bjcp.org/style/2021/8/8A/munich-dunkel/"},{"id":"lager-8B-schwarzbier","name":"8B. Schwarzbier","url":"https://www.bjcp.org/style/2021/8/8B/schwarzbier/"}]},{"id":"lager-cat9","name":"9. Strong European Beer","url":"https://www.bjcp.org/style/2021/9/strong-european-beer/","children":[{"id":"lager-9A-doppelbock","name":"9A. Doppelbock","url":"https://www.bjcp.org/style/2021/9/9A/doppelbock/"},{"id":"lager-9B-eisbock","name":"9B. Eisbock","url":"https://www.bjcp.org/style/2021/9/9B/eisbock/"},{"id":"lager-9C-baltic-porter","name":"9C. Baltic Porter","url":"https://www.bjcp.org/style/2021/9/9C/baltic-porter/"}]},{"id":"lager-cat19","name":"19. Amber and Brown American Beer","url":"https://www.bjcp.org/style/2021/19/amber-and-brown-american-beer/","children":[{"id":"lager-19B-california-common","name":"19B. California Common","url":"https://www.bjcp.org/style/2021/19/19B/california-common/"}]}]},{"id":"spontanee","name":"Spontanée","color":"#9333ea","children":[{"id":"spontanee-cat23","name":"23. European Sour Ale","url":"https://www.bjcp.org/style/2021/23/european-sour-ale/","children":[{"id":"spontanee-23D-lambic","name":"23D. Lambic","url":"https://www.bjcp.org/style/2021/23/23D/lambic/"},{"id":"spontanee-23E-gueuze","name":"23E. Gueuze","url":"https://www.bjcp.org/style/2021/23/23E/gueuze/"},{"id":"spontanee-23F-fruit-lambic","name":"23F. Fruit Lambic","url":"https://www.bjcp.org/style/2021/23/23F/fruit-lambic/"}]},{"id":"spontanee-cat28","name":"28. American Wild Ale","url":"https://www.bjcp.org/style/2021/28/american-wild-ale/","children":[{"id":"spontanee-28A-brett-beer","name":"28A. Brett Beer","url":"https://www.bjcp.org/style/2021/28/28A/brett-beer/"},{"id":"spontanee-28B-mixed-fermentation-sour-beer","name":"28B. Mixed-Fermentation Sour Beer","url":"https://www.bjcp.org/style/2021/28/28B/mixed-fermentation-sour-beer/"},{"id":"spontanee-28C-wild-specialty-beer","name":"28C. Wild Specialty Beer","url":"https://www.bjcp.org/style/2021/28/28C/wild-specialty-beer/"},{"id":"spontanee-28D-straight-sour-beer","name":"28D. Straight Sour Beer","url":"https://www.bjcp.org/style/2021/28/28D/straight-sour-beer/"}]}]},{"id":"specialites","name":"Spécialités","color":"#16a34a","children":[{"id":"specialites-cat27","name":"27. Historical Beer","url":"https://www.bjcp.org/style/2021/27/historical-beer/","children":[{"id":"specialites-27-kellerbier","name":"Kellerbier","url":"https://www.bjcp.org/style/2021/27/27A/historical-beer-kellerbier/"},{"id":"specialites-27-kentucky-common","name":"Kentucky Common","url":"https://www.bjcp.org/style/2021/27/27A/historical-beer-kentucky-common/"},{"id":"specialites-27-lichtenhainer","name":"Lichtenhainer","url":"https://www.bjcp.org/style/2021/27/27A/historical-beer-lichtenhainer/"},{"id":"specialites-27-london-brown-ale","name":"London Brown Ale","url":"https://www.bjcp.org/style/2021/27/27A/historical-beer-london-brown-ale/"},{"id":"specialites-27-piwo-grodziskie","name":"Piwo Grodziskie","url":"https://www.bjcp.org/style/2021/27/27A/historical-beer-piwo-grodziskie/"},{"id":"specialites-27-pre-prohibition-lager","name":"Pre-Prohibition Lager","url":"https://www.bjcp.org/style/2021/27/27A/historical-beer-pre-prohibition-lager/"},{"id":"specialites-27-pre-prohibition-porter","name":"Pre-Prohibition Porter","url":"https://www.bjcp.org/style/2021/27/27A/historical-beer-pre-prohibition-porter/"},{"id":"specialites-27-roggenbier","name":"Roggenbier","url":"https://www.bjcp.org/style/2021/27/27A/historical-beer-roggenbier/"},{"id":"specialites-27-sahti","name":"Sahti","url":"https://www.bjcp.org/style/2021/27/27A/historical-beer-sahti/"}]},{"id":"specialites-cat29","name":"29. Fruit Beer","url":"https://www.bjcp.org/style/2021/29/fruit-beer/","children":[{"id":"specialites-29A-fruit-beer","name":"29A. Fruit Beer","url":"https://www.bjcp.org/style/2021/29/29A/fruit-beer/"},{"id":"specialites-29B-fruit-and-spice-beer","name":"29B. Fruit and Spice Beer","url":"https://www.bjcp.org/style/2021/29/29B/fruit-and-spice-beer/"},{"id":"specialites-29C-specialty-fruit-beer","name":"29C. Specialty Fruit Beer","url":"https://www.bjcp.org/style/2021/29/29C/specialty-fruit-beer/"},{"id":"specialites-29D-grape-ale","name":"29D. Grape Ale","url":"https://www.bjcp.org/style/2021/29/29D/grape-ale/"}]},{"id":"specialites-cat30","name":"30. Spiced Beer","url":"https://www.bjcp.org/style/2021/30/spiced-beer/","children":[{"id":"specialites-30A-spice-herb-or-vegetable-beer","name":"30A. Spice, Herb, or Vegetable Beer","url":"https://www.bjcp.org/style/2021/30/30A/spice-herb-or-vegetable-beer/"},{"id":"specialites-30B-autumn-seasonal-beer","name":"30B. Autumn Seasonal Beer","url":"https://www.bjcp.org/style/2021/30/30B/autumn-seasonal-beer/"},{"id":"specialites-30C-winter-seasonal-beer","name":"30C. Winter Seasonal Beer","url":"https://www.bjcp.org/style/2021/30/30C/winter-seasonal-beer/"},{"id":"specialites-30D-specialty-spice-beer","name":"30D. Specialty Spice Beer","url":"https://www.bjcp.org/style/2021/30/30D/specialty-spice-beer/"}]},{"id":"specialites-cat31","name":"31. Alternative Fermentables Beer","url":"https://www.bjcp.org/style/2021/31/alternative-fermentables-beer/","children":[{"id":"specialites-31A-alternative-grain-beer","name":"31A. Alternative Grain Beer","url":"https://www.bjcp.org/style/2021/31/31A/alternative-grain-beer/"},{"id":"specialites-31B-alternative-sugar-beer","name":"31B. Alternative Sugar Beer","url":"https://www.bjcp.org/style/2021/31/31B/alternative-sugar-beer/"}]},{"id":"specialites-cat32","name":"32. Smoked Beer","url":"https://www.bjcp.org/style/2021/32/smoked-beer/","children":[{"id":"specialites-32A-classic-style-smoked-beer","name":"32A. Classic Style Smoked Beer","url":"https://www.bjcp.org/style/2021/32/32A/classic-style-smoked-beer/"},{"id":"specialites-32B-specialty-smoked-beer","name":"32B. Specialty Smoked Beer","url":"https://www.bjcp.org/style/2021/32/32B/specialty-smoked-beer/"}]},{"id":"specialites-cat33","name":"33. Wood Beer","url":"https://www.bjcp.org/style/2021/33/wood-beer/","children":[{"id":"specialites-33A-wood-aged-beer","name":"33A. Wood-Aged Beer","url":"https://www.bjcp.org/style/2021/33/33A/wood-aged-beer/"},{"id":"specialites-33B-specialty-wood-aged-beer","name":"33B. Specialty Wood-Aged Beer","url":"https://www.bjcp.org/style/2021/33/33B/specialty-wood-aged-beer/"}]},{"id":"specialites-cat34","name":"34. Specialty Beer","url":"https://www.bjcp.org/style/2021/34/specialty-beer/","children":[{"id":"specialites-34A-commercial-specialty-beer","name":"34A. Commercial Specialty Beer","url":"https://www.bjcp.org/style/2021/34/34A/commercial-specialty-beer/"},{"id":"specialites-34B-mixed-style-beer","name":"34B. Mixed-Style Beer","url":"https://www.bjcp.org/style/2021/34/34B/mixed-style-beer/"},{"id":"specialites-34C-experimental-beer","name":"34C. Experimental Beer","url":"https://www.bjcp.org/style/2021/34/34C/experimental-beer/"}]}]}];
+
+function zsOpenSheet(node, path) {
+  const bg = document.getElementById('zsSheetBg');
+  const sheet = document.getElementById('zsSheet');
+  sheet.textContent = '';
+  const close = document.createElement('button');
+  close.className = 'zs-close'; close.textContent = '✕';
+  close.addEventListener('click', zsCloseSheet);
+  const h = document.createElement('h3'); h.textContent = node.name;
+  const pth = document.createElement('div'); pth.className = 'zs-path'; pth.textContent = 'Cahier des charges · ' + path.join(' › ');
+  sheet.append(close, h, pth);
+  let n = 0;
+  if (node.spec) {
+    ZS_SPEC_FIELDS.forEach(([k, label]) => {
+      if (!node.spec[k]) return;
+      const f = document.createElement('div'); f.className = 'zs-field';
+      const b = document.createElement('b'); b.textContent = label;
+      const v = document.createElement('span'); v.textContent = node.spec[k];
+      f.append(b, v); sheet.appendChild(f); n++;
+    });
+  }
+  if (node.url) {
+    const a = document.createElement('a'); a.href = node.url; a.target = '_blank'; a.rel = 'noopener';
+    a.className = 'zs-todo'; a.style.display = 'block'; a.textContent = 'Voir la fiche officielle BJCP ↗';
+    sheet.appendChild(a);
+  }
+  if (!n) {
+    const t = document.createElement('div'); t.className = 'zs-todo';
+    t.textContent = 'Cahier des charges à compléter.';
+    sheet.appendChild(t);
+  }
+  bg.classList.add('show');
+}
+function zsCloseSheet() { document.getElementById('zsSheetBg').classList.remove('show'); }
+
+let zsFamily = null;
+let zsPath = [];
+
+function zsRenderPanel() {
+  const panel = document.getElementById('zsPanel');
+  panel.textContent = '';
+  const idx = ZYTHO_STYLES.findIndex(f => f.id === zsFamily);
+  if (idx < 0) {
+    const h = document.createElement('div'); h.className = 'zs-hint';
+    h.textContent = 'Touchez une famille pour explorer ses catégories.';
+    panel.appendChild(h); return;
+  }
+  const f = ZYTHO_STYLES[idx];
+  panel.style.setProperty('--zs-c', f.color);
+  const cur = zsPath.length ? zsPath[zsPath.length - 1] : f;
+  const names = [f.name].concat(zsPath.map(n => n.name));
+  const go = (i) => { zsPath = zsPath.slice(0, i); zsRenderPanel(); panel.scrollIntoView({ behavior: 'smooth', block: 'start' }); };
+
+  const crumbs = document.createElement('div'); crumbs.className = 'zs-crumbs';
+  names.forEach((n, i) => {
+    const c = document.createElement('button');
+    c.className = 'zs-crumb' + (i === names.length - 1 ? ' cur' : '');
+    c.textContent = n;
+    c.addEventListener('click', () => go(i));
+    crumbs.appendChild(c);
+  });
+
+  const stem = () => { const x = document.createElement('div'); x.className = 'zs-stem'; return x; };
+  const hubWrap = document.createElement('div'); hubWrap.className = 'zs-hubwrap';
+  const hub = document.createElement('button'); hub.className = 'zs-hub';
+  hub.appendChild(document.createTextNode(cur.name));
+  const sm = document.createElement('small'); sm.textContent = cur.children.length + (zsPath.length ? ' styles' : ' catégories');
+  hub.appendChild(sm);
+  hubWrap.appendChild(hub);
+  if (zsPath.length) {
+    const ar = document.createElement('button'); ar.className = 'zs-hub-arrow'; ar.textContent = '➜'; ar.title = 'Cahier des charges';
+    ar.addEventListener('click', () => zsOpenSheet(cur, names));
+    hubWrap.appendChild(ar);
+  }
+
+  const grid = document.createElement('div'); grid.className = 'zs-grid';
+  cur.children.forEach((k, i) => {
+    const w = document.createElement('div'); w.className = 'zs-b'; w.style.setProperty('--i', i);
+    const bub = document.createElement('button'); bub.className = 'zs-bub';
+    bub.appendChild(document.createTextNode(k.name));
+    const kids = k.children && k.children.length;
+    if (kids) { const s2 = document.createElement('small'); s2.textContent = kids + ' ▸'; bub.appendChild(s2); }
+    bub.addEventListener('click', () => {
+      if (kids) { zsPath.push(k); zsRenderPanel(); panel.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+      else zsOpenSheet(k, names.concat(k.name));
+    });
+    const ar = document.createElement('button'); ar.className = 'zs-bub-arrow'; ar.textContent = '➜'; ar.title = 'Cahier des charges';
+    ar.addEventListener('click', () => zsOpenSheet(k, names.concat(k.name)));
+    w.append(bub, ar); grid.appendChild(w);
+  });
+  panel.append(crumbs, stem(), hubWrap, stem(), grid);
+}
+
+function buildZythoStylesScreen() {
+  const el = document.getElementById('screen-zytho-styles');
+  el.textContent = '';
+  const wrap = document.createElement('div'); wrap.className = 'zs-wrap';
+  const intro = document.createElement('div'); intro.className = 'zs-intro';
+  intro.textContent = 'Basé sur les BJCP Style Guidelines 2021 · ➜ ouvre le cahier des charges';
+  wrap.appendChild(intro);
+
+  const hero = document.createElement('div'); hero.className = 'zs-hero';
+  const center = document.createElement('div'); center.className = 'zs-center';
+  const ico = document.createElement('div'); ico.className = 'zs-ico'; ico.textContent = '🍺';
+  const b1 = document.createElement('b'); b1.textContent = 'STYLES';
+  const b2 = document.createElement('small'); b2.textContent = 'DE BIÈRE';
+  const dashes = document.createElement('div'); dashes.className = 'zs-dashes';
+  ZYTHO_STYLES.forEach(f => { const i = document.createElement('i'); i.style.setProperty('--zs-c', f.color); dashes.appendChild(i); });
+  center.append(ico, b1, b2, dashes);
+  hero.appendChild(center);
+
+  const angles = [45, 135, 225, 315];
+  const sats = [];
+  ZYTHO_STYLES.forEach((f, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'zs-sat pos' + i + (zsFamily === f.id ? ' active' : '');
+    btn.style.setProperty('--zs-c', f.color);
+    const tw = document.createElement('div'); tw.className = 'zs-tri-wrap'; tw.style.setProperty('--a', angles[i] + 'deg');
+    const tri = document.createElement('div'); tri.className = 'zs-tri'; tw.appendChild(tri);
+    const num = document.createElement('span'); num.className = 'zs-num'; num.textContent = '0' + (i + 1);
+    const nm = document.createElement('span'); nm.className = 'zs-fname'; nm.textContent = f.name;
+    btn.append(tw, num, nm);
+    btn.addEventListener('click', () => {
+      zsFamily = (zsFamily === f.id) ? null : f.id; zsPath = [];
+      sats.forEach((x, j) => x.classList.toggle('active', ZYTHO_STYLES[j].id === zsFamily));
+      hero.classList.toggle('has-sel', !!zsFamily);
+      zsRenderPanel();
+      if (zsFamily) document.getElementById('zsPanel').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+    sats.push(btn); hero.appendChild(btn);
+  });
+  if (zsFamily) hero.classList.add('has-sel');
+  wrap.appendChild(hero);
+
+  const panel = document.createElement('div'); panel.className = 'zs-panel'; panel.id = 'zsPanel';
+  wrap.appendChild(panel);
+
+  const bg = document.createElement('div'); bg.className = 'zs-sheet-bg'; bg.id = 'zsSheetBg';
+  bg.addEventListener('click', e => { if (e.target === bg) zsCloseSheet(); });
+  const sheet = document.createElement('div'); sheet.className = 'zs-sheet'; sheet.id = 'zsSheet';
+  bg.appendChild(sheet);
+  el.append(wrap, bg);
+  zsRenderPanel();
+}
+
+// ── Zytho : arbre des arômes ──
+// Sources : support de cours Zytho (p.14, origine des arômes) + roue des saveurs de Meilgaard (Wiki du Brassage Amateur).
+// Structure : {label, title, cats:[{n, s?, d?, g:[{t, c?, e:[], m?}]}]} — d = défauts possibles, m = "…", c = code Meilgaard.
+const ZA_DATA = {
+    malt:{label:"Malt",title:"Le <b>MALT</b> peut développer des arômes de",cats:[
+      {n:"Céréales",g:[{t:"",e:["Écorce du grain","Pain blanc","Céréales petit-déj."]}]},
+      {n:"Toastés",g:[{t:"",e:["Croûte de pain"]}]},
+      {n:"Rôti",g:[{t:"",e:["Céréale rôtie","Café","Chocolat"]}]},
+      {n:"Végétaux",g:[{t:"",e:["Branches","Feuilles mortes"]}]},
+      {n:"Fruités",g:[
+        {t:"Fruits rouges",e:["Cerise","Framboise","Mûres"],m:1},
+        {t:"Fruits foncés",e:["Raisin","Date","Figue"],m:1},
+        {t:"Compote (fruits cuits)",e:[]}]},
+      {n:"Défauts possibles",d:1,g:[{t:"",e:["DMS"]}]}
+    ]},
+    houblon:{label:"Houblon",title:"Le <b>HOUBLON</b> peut développer des arômes de",cats:[
+      {n:"Fruits",g:[
+        {t:"Agrumes",e:["Citron","Orange","Clémentine"],m:1},
+        {t:"Autres fruits tropicaux",e:["Ananas","Litchi","Mangue","Fruit de la passion"]},
+        {t:"Autres fruits",e:["Abricot","Fraise","Pêche"]}]},
+      {n:"Herbes",g:[{t:"",e:["Gazon fraîchement tondu","Ciboulette","Persil"],m:1}]},
+      {n:"Fleurs",g:[
+        {t:"Parfum",e:["Eau de rose","Lavande","Savon"]},
+        {t:"Fleurs",e:["Lilas","Rose","Violette"],m:1}]},
+      {n:"Épices / Minéraux",g:[{t:"Poivre (noir/blanc)",e:[]}]},
+      {n:"Végétaux",g:[{t:"",e:["Ail","Branche","Écorce","Terre","Thé"],m:1}]},
+      {n:"Conifères / Résine",g:[]},
+      {n:"Défauts possibles",d:1,g:[{t:"MBT (goût de lumière)",e:[]}]}
+    ]},
+    levure:{label:"Levure",title:"La <b>LEVURE</b> (fermentation) peut développer des arômes de",cats:[
+      {n:"Fruités (esters)",g:[{t:"",e:["Banane","Fraise","Mangue","Poire"]}]},
+      {n:"Épices (phénols)",g:[{t:"",e:["Clou de girofle","Poivre","Vanille"]}]},
+      {n:"Alcools",g:[{t:"",e:["Éthanol"]}]},
+      {n:"Pain",g:[{t:"",e:["Levain","Mie de pain"]}]},
+      {n:"Acides",g:[{t:"",e:["Cornichon","Olive","Choucroute","Yaourt nature"],m:1}]},
+      {n:"Défauts possibles",d:1,g:[
+        {t:"Composés soufrés en excès",e:["Allumette brûlée","Œuf pourri"]},
+        {t:"Esters en excès",e:["Acétone","Solvant","Vernis"]},
+        {t:"Phénols en excès",e:["Médicinal","Chimique","Chlore"]},
+        {t:"Alcools supérieurs en excès",e:["Peinture","Solvant"]},
+        {t:"Acétaldéhyde",e:["Pomme verte"]},
+        {t:"Diacétyle",e:["Beurre rance"]}]}
+    ]    },
+    roue:{label:"Roue",unit:"descripteur",foot:"Roue des saveurs de Meilgaard, d'après Le Wiki du Brassage Amateur. Le nombre est le code du descripteur.",
+      title:"La <b>ROUE DES SAVEURS</b> classe les odeurs et les goûts d'une bière en 14 familles",cats:[
+      {n:"Aromatique, parfumé, fruité, floral",s:"Odeur",g:[
+        {t:"Alcoolique",c:"0110",e:[]},
+        {t:"Dissolvant",c:"0120",e:["Plastique", "Sac poubelle", "Laque"]},
+        {t:"Éthéré",c:"0130",e:["Banane", "Pomme"]},
+        {t:"Fruité",c:"0140",e:["Agrumes", "Baies", "Melon", "Autres fruits"]},
+        {t:"Éthanal (acétaldéhyde)",c:"0150",e:[]},
+        {t:"Floral",c:"0160",e:["Fleurs", "Roses", "Parfum", "Vanille"]},
+        {t:"Houblonné",c:"0170",e:[]}]},
+      {n:"Résineux, noix, vert, herbeux",s:"Odeur",g:[
+        {t:"Résineux",c:"0210",e:["Sciure", "Résine", "Pin", "Épicéa", "Cèdre", "Bois sec"]},
+        {t:"Noix",c:"0220",e:["Noix de cajou", "Noix", "Noisette", "Noix de coco", "Madérisé"]},
+        {t:"Herbeux",c:"0230",e:["Herbe fraîchement coupée", "Paille"]}]},
+      {n:"Céréales",s:"Odeur",g:[
+        {t:"Céréales",c:"0310",e:["Céréales crues", "Balle du grain", "Gruau", "Farine"]},
+        {t:"Malts",c:"0320",e:[]},
+        {t:"Moût",c:"0330",e:["Arôme de moût frais"]}]},
+      {n:"Caramélisé, grillé",s:"Odeur",g:[
+        {t:"Caramel",c:"0410",e:["Caramel", "Caramel au beurre (toffee)", "Mélasse", "Candi liquide"]},
+        {t:"Brûlé",c:"0420",e:["Caramel brûlé"]}]},
+      {n:"Phénolique",s:"Odeur",g:[
+        {t:"Phénolique",c:"0500",e:["Roussi", "Hôpital", "Pharmaceutique", "Bakélite"]}]},
+      {n:"Savonneux, gras, diacétyle, huileux, rance",s:"Odeur",g:[
+        {t:"Acides gras",c:"0610",e:["Suif", "Caprin", "Fromage"]},
+        {t:"Diacétyle",c:"0620",e:["Beurre", "Caramel au beurre"]},
+        {t:"Rance",c:"0630",e:["Beurre rance"]},
+        {t:"Huileux",c:"0640",e:["Huile végétale", "Gasoil", "Huile moteur"]}]},
+      {n:"Soufré",s:"Odeur",g:[
+        {t:"Soufre",c:"0700",e:["Œuf pourri"]},
+        {t:"Sulfites",c:"0710",e:["Allumette brûlée", "Caoutchouc brûlé"]},
+        {t:"Sulfides",c:"0720",e:["Eaux usées", "Gaz naturel"]},
+        {t:"Légumes cuits",c:"0730",e:["Haricots verts trop cuits", "Pop-corn"]},
+        {t:"Levures",c:"0740",e:["Levure fraîche", "Odeur de viande"]}]},
+      {n:"Oxydé, éventé, moisi",s:"Odeur",g:[
+        {t:"Éventé",c:"0800",e:["Vieille bière"]},
+        {t:"Aigre",c:"0810",e:["Mouffette"]},
+        {t:"Papier",c:"0820",e:["Carton"]},
+        {t:"Cuir",c:"0830",e:[]},
+        {t:"Moisi",c:"0840",e:["Cave humide", "Sol humide"]}]},
+      {n:"Aigre, acide",s:"Odeur · Goût",g:[
+        {t:"Acide",c:"0900",e:["Piquant", "Tranchant"]},
+        {t:"Acétique",c:"0910",e:["Vinaigre"]},
+        {t:"Aigre",c:"0920",e:["Lactique", "Lait fermenté"]}]},
+      {n:"Sucré",s:"Odeur · Goût",g:[
+        {t:"Sucré",c:"1000",e:[]}]},
+      {n:"Salé",s:"Goût",g:[
+        {t:"Salé",c:"1100",e:[]}]},
+      {n:"Amer",s:"Goût",g:[
+        {t:"Amer",c:"1200",e:[]}]},
+      {n:"Sensations en bouche",s:"Goût",g:[
+        {t:"Alcalin",c:"1310",e:[]},
+        {t:"Sirupeux",c:"1320",e:[]},
+        {t:"Métallique",c:"1330",e:["Monnaie", "Encre", "Fer", "Rouille", "Métal"]},
+        {t:"Astringent",c:"1340",e:["Desséchant", "Tanins", "Tartre"]},
+        {t:"Poudreux",c:"1350",e:["Poussiéreux", "Crayeux", "Particules"]},
+        {t:"Gazeux",c:"1360",e:["Plat et sans gaz", "Gazeux et surcarbonaté"]},
+        {t:"Chaleur",c:"1370",e:["Épicé", "Alcoolique", "Vineux"]}]},
+      {n:"Rondeur",s:"Goût · Odeur",g:[
+        {t:"Corps",c:"1410",e:["Fin", "Fade", "Rond", "Visqueux", "Crémeux"]}]}
+    ]}
+  };
+let zaCurrent = 'malt';
+
+function zaEl(tag, cls, txt) { const x = document.createElement(tag); if (cls) x.className = cls; if (txt != null) x.textContent = txt; return x; }
+
+function buildZythoAromesScreen() {
+  const el = document.getElementById('screen-zytho-aromes');
+  el.textContent = '';
+  const wrap = zaEl('div', 'za-wrap');
+  wrap.dataset.o = zaCurrent;
+  wrap.appendChild(zaEl('div', 'za-intro', "D'où viennent les arômes d'une bière ? Touchez une famille pour la déplier."));
+  const tabs = zaEl('div', 'za-tabs'); tabs.setAttribute('role', 'tablist');
+  const title = zaEl('div', 'za-title');
+  const tools = zaEl('div', 'za-tools');
+  const allBtn = zaEl('button', 'za-all'); allBtn.type = 'button';
+  tools.appendChild(allBtn);
+  const list = zaEl('div');
+  const foot = zaEl('div', 'za-foot');
+  wrap.append(tabs, title, tools, list, foot);
+  el.appendChild(wrap);
+
+  function sync() {
+    const cards = list.querySelectorAll('.za-cat');
+    allBtn.textContent = list.querySelectorAll('.za-cat.open').length === cards.length ? 'Tout replier' : 'Tout déplier';
+  }
+  function render() {
+    wrap.dataset.o = zaCurrent;
+    const D = ZA_DATA[zaCurrent];
+    tabs.textContent = '';
+    Object.keys(ZA_DATA).forEach(k => {
+      const b = zaEl('button', 'za-tab', ZA_DATA[k].label); b.type = 'button';
+      b.setAttribute('role', 'tab'); b.setAttribute('aria-selected', String(k === zaCurrent));
+      b.addEventListener('click', () => { zaCurrent = k; render(); });
+      tabs.appendChild(b);
+    });
+    title.innerHTML = D.title;
+    foot.textContent = D.foot || "Les « … » indiquent d'autres exemples possibles.";
+    list.textContent = '';
+    D.cats.forEach(c => {
+      const card = zaEl('div', 'za-cat' + (c.d ? ' def' : ''));
+      const btn = zaEl('button'); btn.type = 'button'; btn.setAttribute('aria-expanded', 'false');
+      btn.appendChild(zaEl('span', 'za-dot'));
+      btn.appendChild(zaEl('span', null, c.n));
+      let count = 0;
+      if (D.unit) count = c.g.length; else c.g.forEach(g => { count += g.e.length || 1; });
+      const unit = D.unit || 'note';
+      if (c.g.length) btn.appendChild(zaEl('span', 'za-n', (c.s ? c.s + ' · ' : '') + count + ' ' + unit + (count > 1 ? 's' : '')));
+      btn.insertAdjacentHTML('beforeend', '<svg class="za-chev" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 4l6 6-6 6"/></svg>');
+      const body = zaEl('div', 'za-body');
+      if (!c.g.length) body.appendChild(zaEl('p', 'za-lone', 'Pas de détail dans le support de cours.'));
+      c.g.forEach(g => {
+        const grp = zaEl('div', 'za-group');
+        if (g.t) { const h = zaEl('h4', null, g.t); if (g.c) h.appendChild(zaEl('span', 'za-code', g.c)); grp.appendChild(h); }
+        if (g.e.length || g.m) {
+          const chips = zaEl('div', 'za-chips');
+          g.e.forEach(e => chips.appendChild(zaEl('span', 'za-chip', e)));
+          if (g.m) chips.appendChild(zaEl('span', 'za-chip more', '…'));
+          grp.appendChild(chips);
+        }
+        body.appendChild(grp);
+      });
+      btn.addEventListener('click', () => {
+        const o = card.classList.toggle('open'); btn.setAttribute('aria-expanded', String(o)); sync();
+      });
+      card.append(btn, body); list.appendChild(card);
+    });
+    sync();
+  }
+  allBtn.addEventListener('click', () => {
+    const cards = list.querySelectorAll('.za-cat');
+    const openAll = list.querySelectorAll('.za-cat.open').length !== cards.length;
+    cards.forEach(c => { c.classList.toggle('open', openAll); c.firstChild.setAttribute('aria-expanded', String(openAll)); });
+    sync();
+  });
+  render();
+}
 
 function goTo(id) {
   // gérer les écrans "actif" réels
@@ -11022,13 +12233,42 @@ function orgaDotsHTML(types){
   }).join('')}</div>`;
 }
 
+let orgaExpanded = new Set();
+let orgaAocIdxMap = null;
+function orgaAocIdx(a){
+  if (!orgaAocIdxMap) orgaAocIdxMap = new Map(orgaGetAllAocs().map((x, i) => [x, i]));
+  return orgaAocIdxMap.get(a);
+}
+function orgaToggleAoc(idx){
+  orgaExpanded.has(idx) ? orgaExpanded.delete(idx) : orgaExpanded.add(idx);
+  const li = document.getElementById('orgaLeaf-' + idx);
+  if (li) li.classList.toggle('open', orgaExpanded.has(idx));
+}
+
+function orgaDetailRow(label, value){
+  if (!value) return '';
+  return `<div class="orga-detail-row"><div class="orga-detail-label">${label}</div><div>${escapeHtml(value)}</div></div>`;
+}
+
 function orgaLeafHTML(a){
   const anyFilter = (orgaActiveTypes.size + orgaActiveCepages.size) > 0;
   const cls = anyFilter ? (orgaMatches(a) ? 'match' : 'dim') : '';
-  return `<li><div class="orga-node orga-aoc-node ${cls}">
-    <span>${escapeHtml(a.nom)}</span>
-    ${orgaDotsHTML(a.types)}
-  </div></li>`;
+  const idx = orgaAocIdx(a);
+  const open = orgaExpanded.has(idx);
+  return `<li id="orgaLeaf-${idx}" class="orga-leaf ${open ? 'open' : ''}">
+    <div class="orga-node orga-aoc-node ${cls}" onclick="orgaToggleAoc(${idx})">
+      <span>${escapeHtml(a.nom)}</span>
+      ${orgaDotsHTML(a.types)}
+      <span class="orga-leaf-chev">›</span>
+    </div>
+    <span class="orga-hline orga-leaf-hline"></span>
+    <div class="orga-detail">
+      ${orgaDetailRow('🍇 Cépages', a.cepages)}
+      ${orgaDetailRow('📍 Localisation', a.sol)}
+      ${orgaDetailRow('📋 Cahier des charges', a.cahier)}
+      ${orgaDetailRow('🍽️ Accords', a.accords)}
+    </div>
+  </li>`;
 }
 
 function orgaRegionSubgroupsHTML(predicate){
@@ -11475,10 +12715,217 @@ function cardHTML(a, i) {
   </div>`;
 }
 
+
+/* ══════════════════════════════════════════════════════
+   DGC — Dénominations Géographiques Complémentaires, par région
+   src:'cours' = polys / fiches du cours ; src:'web' = vérifié sur les cahiers des charges INAO ; src:'ref' = non confirmé, à vérifier
+   fiche:'…' = reprend cépages/sol de la fiche AOC du même nom si elle existe
+   ══════════════════════════════════════════════════════ */
+const DGC_DATA = {
+  languedoc: [
+    {nom:"Pézenas", aoc:"Languedoc", vig:"Languedoc", types:["rouge"], cepages:"Grenache, Mourvèdre, Syrah + Carignan, Cinsault", loc:"Rive droite de l'Hérault. Terrasses caillouteuses, argilo-calcaires, schistes.", src:"cours"},
+    {nom:"Sommières", aoc:"Languedoc", vig:"Languedoc", types:["rouge"], cepages:"Grenache, Mourvèdre, Syrah + Carignan, Cinsault", loc:"Vignoble adossé aux Cévennes, soumis au mistral.", src:"cours"},
+    {nom:"Quatourze", aoc:"Languedoc", vig:"Languedoc", types:["rouge"], cepages:"Mourvèdre (bien présent), Grenache, Syrah + Carignan, Cinsault, Lledoner Pelut", loc:"Commune de Narbonne. Galets roulés.", src:"cours"},
+    {nom:"Cabrières", aoc:"Languedoc", vig:"Languedoc", types:["rouge","rosé"], cepages:"Rouge : Syrah, Grenache + Cinsault, Mourvèdre, Morrastel, Carignan. Rosé : Cinsault, Grenache + autres cépages rouges et blancs", loc:"Commune de Cabrières, dominée par le Pic du Vissou. Éboulis schisteux (prolongement de Faugères).", src:"cours"},
+    {nom:"Saint-Saturnin", aoc:"Languedoc", vig:"Languedoc", types:["rouge"], cepages:"Grenache, Mourvèdre, Syrah + Carignan, Cinsault", loc:"4 communes sur les contreforts du Larzac. Demande d'AOC « cru » en cours.", src:"cours"},
+    {nom:"Montpeyroux", aoc:"Languedoc", vig:"Languedoc", types:["rouge"], cepages:"Grenache, Mourvèdre, Syrah + Carignan, Cinsault", loc:"2 communes au pied du Pic Baudile (Causse du Larzac). Rouges souvent charpentés.", src:"cours"},
+    {nom:"Saint-Georges-d'Orques", aoc:"Languedoc", vig:"Languedoc", types:["rouge"], cepages:"Grenache, Mourvèdre, Syrah + Carignan, Cinsault", loc:"5 communes, 10 km à l'ouest de Montpellier. Cailloutis calcaires, marnes, silex, oxyde de fer.", src:"cours"},
+    {nom:"La Méjanelle", aoc:"Languedoc", vig:"Languedoc", types:["rouge"], cepages:"Grenache, Mourvèdre, Syrah + Carignan, Cinsault, Morrastel noir", loc:"4 communes aux portes de Montpellier (est). Galets roulés. Rouges charnus et épicés.", src:"cours"},
+    {nom:"Saint-Christol", aoc:"Languedoc", vig:"Languedoc", types:["rouge"], cepages:"Grenache, Mourvèdre, Syrah + Carignan, Cinsault, Counoise, Morrastel noir, Picpoul noir", loc:"1 commune au nord-est de Montpellier. Galets roulés.", src:"cours"},
+    {nom:"Saint-Drézery", aoc:"Languedoc", vig:"Languedoc", types:["rouge"], cepages:"Grenache, Mourvèdre, Syrah + Carignan, Cinsault", loc:"1 commune au nord-est de Montpellier. Sols calcaires.", src:"cours"},
+    {nom:"Saint-Chinian Berlou", aoc:"Saint-Chinian", vig:"Languedoc", types:["rouge"], cepages:"Grenache, Mourvèdre, Syrah 40% mini + Carignan 10% mini", loc:"5 communes de l'Hérault. Schistes. Rdt 40 hl/ha.", src:"cours"},
+    {nom:"Saint-Chinian Roquebrun", aoc:"Saint-Chinian", vig:"Languedoc", types:["rouge"], cepages:"Grenache, Syrah 50% mini + Carignan, Mourvèdre", loc:"4 communes de l'Hérault. Schistes. Rdt 40 hl/ha.", src:"cours"},
+    {nom:"Latour de France", aoc:"Côtes du Roussillon-Villages", vig:"Roussillon", types:["rouge"], cepages:"Syrah et Mourvèdre 30% mini (2 cépages mini) + Grenache, Carignan, Lledoner Pelut. Pas de Cinsault", loc:"Vallée de l'Agly (nord des P-O). Schistes.", src:"cours"},
+    {nom:"Caramany", aoc:"Côtes du Roussillon-Villages", vig:"Roussillon", types:["rouge"], cepages:"Syrah et Mourvèdre 30% mini (2 cépages mini) + Grenache, Carignan, Lledoner Pelut. Pas de Cinsault", loc:"Vallée de l'Agly (nord des P-O). Gneiss.", src:"cours"},
+    {nom:"Lesquerde", aoc:"Côtes du Roussillon-Villages", vig:"Roussillon", types:["rouge"], cepages:"Syrah et Mourvèdre 30% mini (2 cépages mini) + Grenache, Carignan, Lledoner Pelut. Pas de Cinsault", loc:"Vallée de l'Agly (nord des P-O). Arènes granitiques.", src:"cours"},
+    {nom:"Tautavel", aoc:"Côtes du Roussillon-Villages", vig:"Roussillon", types:["rouge"], cepages:"Syrah et Mourvèdre 30% mini (2 cépages mini) + Grenache, Carignan, Lledoner Pelut. Pas de Cinsault", loc:"Vallée de l'Agly (nord des P-O). Calcaire.", src:"cours"},
+    {nom:"Les Aspres", aoc:"Côtes du Roussillon-Villages", vig:"Roussillon", types:["rouge"], cepages:"Syrah et Mourvèdre 30% mini (2 cépages mini) + Grenache, Carignan, Lledoner Pelut. Pas de Cinsault", loc:"Piémont des Aspres (P-O). Galets roulés.", src:"cours"},
+  ],
+  sudouest: [
+    {nom:"Gaillac Premières Côtes", aoc:"Gaillac", vig:"Haut-Pays (Tarn)", types:["blanc"], cepages:"Blancs secs : Mauzac, Len de l'El, Muscadelle, Ondenc, Sauvignon", loc:"Secteur exposé plein sud, autour d'Albi (Tarn).", src:"cours"},
+    {nom:"Béarn-Bellocq", aoc:"Béarn", vig:"Piémont Pyrénéen", types:["rouge","rosé","blanc"], cepages:"Rouge/Rosé : Tannat, CF, CS 50% mini + Fer Servadou, Courbu noir, Manseng noir. Blanc : Raffiat de Moncade, Gros et Petit Manseng 50% mini + Camaralet, Courbu, Lauzet, Petit Courbu, Sauvignon", loc:"Près d'Orthez (Pyrénées-Atlantiques). ~80 ha.", src:"cours"},
+    {nom:"Côtes de Montravel", aoc:"Montravel", vig:"Bergeracois", types:["moelleux"], cepages:"Sémillon 30% mini + Sauvignon, Muscadelle, Ondenc", loc:"Ouest du Bergeracois (Dordogne). Molasses et calcaires en coteaux. Sucres résiduels 25 à 54 g/l.", src:"cours"},
+    {nom:"Haut-Montravel", aoc:"Montravel", vig:"Bergeracois", types:["moelleux","liquoreux"], cepages:"Sémillon 50% mini + Sauvignon, Muscadelle, Ondenc", loc:"Ouest du Bergeracois (Dordogne). Rdt 25 hl/ha, sucres résiduels 85 g/l mini.", src:"cours"},
+  ],
+  bordeaux: [
+    {nom:"Blaye Côtes de Bordeaux", aoc:"Côtes de Bordeaux", vig:"Blayais (Côtes de Bordeaux)", fiche:"Blaye Côtes de Bordeaux", types:["rouge","blanc"], src:"cours"},
+    {nom:"Cadillac Côtes de Bordeaux", aoc:"Côtes de Bordeaux", vig:"Côtes de Bordeaux (Entre-Deux-Mers)", fiche:"Cadillac Côtes de Bordeaux", types:["rouge"], src:"cours"},
+    {nom:"Castillon Côtes de Bordeaux", aoc:"Côtes de Bordeaux", vig:"Libournais (Côtes de Bordeaux)", fiche:"Castillon Côtes de Bordeaux", types:["rouge"], src:"cours"},
+    {nom:"Francs Côtes de Bordeaux", aoc:"Côtes de Bordeaux", vig:"Libournais (Côtes de Bordeaux)", fiche:"Francs Côtes de Bordeaux", types:["rouge","blanc"], src:"cours"},
+    {nom:"Sainte-Foy Côtes de Bordeaux", aoc:"Côtes de Bordeaux", vig:"Côtes de Bordeaux (Sainte-Foy)", fiche:"Sainte-Foy Côtes de Bordeaux", types:["rouge","blanc","moelleux"], src:"cours"},
+    {nom:"Bordeaux Haut-Benauge", aoc:"Bordeaux", vig:"Entre-Deux-Mers", fiche:"Bordeaux Haut-Benauge", types:["blanc","moelleux"], src:"cours"},
+    {nom:"Entre-Deux-Mers Haut-Benauge", aoc:"Entre-Deux-Mers", vig:"Entre-Deux-Mers", fiche:"Entre-Deux-Mers Haut-Benauge", types:["blanc"], src:"cours"},
+  ],
+  loire: [
+    {nom:"Touraine Amboise", aoc:"Touraine", vig:"Touraine", types:["blanc","rouge","rosé"], cepages:"Blanc : Chenin 100%. Rouge/Rosé : Côt (principal), Gamay (accessoire)", loc:"9 communes d'Indre-et-Loire, en amont de Tours (rive gauche de la Loire).", src:"web"},
+    {nom:"Touraine Azay-le-Rideau", aoc:"Touraine", vig:"Touraine", types:["blanc","rosé"], cepages:"Blanc : Chenin 100%. Rosé : Grolleau 60% mini + Côt, Gamay", loc:"Entre Tours et Chinon (Indre-et-Loire), vallée de l'Indre : Azay-le-Rideau, Saché, Cheillé, Rivarennes, Artannes-sur-Indre...", src:"web"},
+    {nom:"Touraine Chenonceaux", aoc:"Touraine", vig:"Touraine", types:["blanc","rouge"], cepages:"Blanc : Sauvignon 100%. Rouge : Côt 50 à 65% + Cabernet Franc 35 à 50% (+ Gamay)", loc:"Vallée du Cher, autour de Chenonceaux (Indre-et-Loire).", src:"web"},
+    {nom:"Touraine Mesland", aoc:"Touraine", vig:"Touraine", types:["blanc","rouge","rosé"], cepages:"Blanc : Chenin 60% mini. Rouge : Gamay 60% mini + Côt 10-30%, Cabernet Franc 10-30%. Rosé : Gamay majoritaire", loc:"Rive droite de la Loire, 6 communes du Loir-et-Cher (Mesland, Onzain, Chouzy-sur-Cisse...).", src:"web"},
+    {nom:"Touraine Oisly", aoc:"Touraine", vig:"Touraine", types:["blanc"], cepages:"Sauvignon 100%", loc:"Commune d'Oisly (Loir-et-Cher), Sologne viticole, vallée du Cher. Sables, argiles et tuffeau. Berceau du Sauvignon en Touraine.", src:"web"},
+    {nom:"Touraine Noble-Joué", aoc:"Touraine", vig:"Touraine", types:["rosé"], cepages:"Pinot Meunier, Pinot Gris, Pinot Noir (vin gris)", loc:"Commune de Joué-lès-Tours (Indre-et-Loire).", src:"cours",note:"Selon le CDC INAO, Touraine Noble-Joué est une appellation sous-régionale distincte, pas une DGC : le CDC de Touraine ne liste que 5 DGC (Amboise, Azay-le-Rideau, Chenonceaux, Mesland, Oisly). Ton cours en compte 6."},
+    {nom:"Coteaux du Layon Beaulieu-sur-Layon", aoc:"Coteaux du Layon", vig:"Anjou-Saumur", types:["moelleux","liquoreux"], cepages:"Chenin 100%", loc:"Maine-et-Loire, vallée du Layon : commune de Beaulieu-sur-Layon. Schistes. Chenin botrytisé, passerillé.", src:"web"},
+    {nom:"Coteaux du Layon Faye-d'Anjou", aoc:"Coteaux du Layon", vig:"Anjou-Saumur", types:["moelleux","liquoreux"], cepages:"Chenin 100%", loc:"Maine-et-Loire, vallée du Layon : commune de Faye-d'Anjou. Schistes. Chenin botrytisé, passerillé.", src:"web"},
+    {nom:"Coteaux du Layon Rablay-sur-Layon", aoc:"Coteaux du Layon", vig:"Anjou-Saumur", types:["moelleux","liquoreux"], cepages:"Chenin 100%", loc:"Maine-et-Loire, vallée du Layon : commune de Rablay-sur-Layon. Schistes. Chenin botrytisé, passerillé.", src:"web"},
+    {nom:"Coteaux du Layon Rochefort-sur-Loire", aoc:"Coteaux du Layon", vig:"Anjou-Saumur", types:["moelleux","liquoreux"], cepages:"Chenin 100%", loc:"Maine-et-Loire, vallée du Layon : commune de Rochefort-sur-Loire. Schistes. Chenin botrytisé, passerillé.", src:"web"},
+    {nom:"Coteaux du Layon Saint-Aubin-de-Luigné", aoc:"Coteaux du Layon", vig:"Anjou-Saumur", types:["moelleux","liquoreux"], cepages:"Chenin 100%", loc:"Maine-et-Loire, vallée du Layon : commune de Saint-Aubin-de-Luigné. Schistes. Chenin botrytisé, passerillé.", src:"web"},
+    {nom:"Coteaux du Layon Saint-Lambert-du-Lattay", aoc:"Coteaux du Layon", vig:"Anjou-Saumur", types:["moelleux","liquoreux"], cepages:"Chenin 100%", loc:"Maine-et-Loire, vallée du Layon : commune de Saint-Lambert-du-Lattay. Schistes. Chenin botrytisé, passerillé.", src:"web"},
+    {nom:"Côtes d'Auvergne Boudes", aoc:"Côtes d'Auvergne", vig:"Auvergne", types:["rouge","rosé","blanc"], cepages:"Gamay, Pinot Noir (rouges/rosés) ; Chardonnay (blancs)", loc:"Puy-de-Dôme (Auvergne). Sols volcaniques.", src:"cours"},
+    {nom:"Côtes d'Auvergne Chanturgue", aoc:"Côtes d'Auvergne", vig:"Auvergne", types:["rouge","rosé","blanc"], cepages:"Gamay, Pinot Noir (rouges/rosés) ; Chardonnay (blancs)", loc:"Puy-de-Dôme, près de Clermont-Ferrand. Sols volcaniques.", src:"cours"},
+    {nom:"Côtes d'Auvergne Châteaugay", aoc:"Côtes d'Auvergne", vig:"Auvergne", types:["rouge","rosé","blanc"], cepages:"Gamay, Pinot Noir (rouges/rosés) ; Chardonnay (blancs)", loc:"Puy-de-Dôme. Sols volcaniques.", src:"cours"},
+    {nom:"Côtes d'Auvergne Corent", aoc:"Côtes d'Auvergne", vig:"Auvergne", types:["rouge","rosé","blanc"], cepages:"Gamay, Pinot Noir (rouges/rosés) ; Chardonnay (blancs)", loc:"Puy-de-Dôme. Sols volcaniques.", src:"cours"},
+    {nom:"Côtes d'Auvergne Madargue", aoc:"Côtes d'Auvergne", vig:"Auvergne", types:["rouge","rosé","blanc"], cepages:"Gamay, Pinot Noir (rouges/rosés) ; Chardonnay (blancs)", loc:"Puy-de-Dôme. Sols volcaniques.", src:"cours"},
+  ],
+  provence: [
+    {nom:"Sainte-Victoire", aoc:"Côtes de Provence", vig:"Provence", types:["rosé","rouge"], cepages:"Principaux : Grenache, Syrah, Cinsault (Mourvèdre en complément)", loc:"Au pied de la montagne Sainte-Victoire, est d'Aix-en-Provence. Calcaires et grès argileux. ~2 700 ha. DGC en 2005.", src:"web",note:"Reconnue « cru » Côtes de Provence Sainte-Victoire par l'INAO en 2025 (millésime 2025). Rouges et rosés uniquement."},
+    {nom:"Fréjus", aoc:"Côtes de Provence", vig:"Provence", types:["rosé","rouge"], cepages:"Rouge : Grenache, Mourvèdre, Syrah (Syrah 50% mini). Rosé : Grenache et/ou Tibouren", loc:"Secteur de Fréjus (Var). DGC en 2005. Rouges et rosés uniquement.", src:"web"},
+    {nom:"La Londe", aoc:"Côtes de Provence", vig:"Provence", types:["rosé","rouge","blanc"], cepages:"Rouge : Grenache, Mourvèdre, Syrah. Rosé : Cinsault et Grenache. Blanc : Rolle (Vermentino)", loc:"Hyères et La Londe-les-Maures (en totalité), Bormes-les-Mimosas et La Crau (en partie). Littoral du massif des Maures. DGC en 2008.", src:"web"},
+    {nom:"Pierrefeu", aoc:"Côtes de Provence", vig:"Provence", types:["rosé","rouge"], cepages:"Grenache, Syrah, Cinsault (+ Tibouren)", loc:"Pierrefeu-du-Var et communes voisines (Var). DGC en 2012-2013. Rouges et rosés uniquement.", src:"web"},
+    {nom:"Notre-Dame des Anges", aoc:"Côtes de Provence", vig:"Provence", types:["rosé","rouge"], cepages:"Principaux : Grenache, Cinsault, Syrah. Accessoires : Mourvèdre, Tibouren, Cabernet-Sauvignon, Carignan...", loc:"Massif des Maures (Var) : Le Luc, Les Mayons, Gonfaron, Pignans. Grès, pélites, sables, terrasses alluviales, calcaires, schistes. DGC en 2019 (la plus récente). Rouges et rosés uniquement.", src:"web"},
+  ],
+  corse: [
+    {nom:"Corse Calvi", aoc:"Corse", vig:"Corse", types:["rouge","rosé","blanc"], cepages:"Rouge : Nielluccio, Sciaccarello (+ Grenache, Syrah). Rosé : Grenache, Nielluccio, Sciaccarello. Blanc : Vermentino 75% mini", loc:"Balagne, nord-ouest de l'île (Haute-Corse). Formations cristallines (granite).", src:"web"},
+    {nom:"Corse Coteaux du Cap Corse", aoc:"Corse", vig:"Corse", types:["rouge","rosé","blanc"], cepages:"Rouge : Nielluccio, Sciaccarello (+ Grenache, Syrah). Rosé : Grenache, Nielluccio, Sciaccarello. Blanc : Vermentino 75% mini", loc:"Presqu'île du Cap Corse, nord de l'île (Haute-Corse). Formations schisteuses.", src:"web"},
+    {nom:"Corse Figari", aoc:"Corse", vig:"Corse", types:["rouge","rosé","blanc"], cepages:"Rouge : Nielluccio, Sciaccarello (+ Grenache, Syrah). Rosé : Grenache, Nielluccio, Sciaccarello. Blanc : Vermentino 75% mini", loc:"Extrême sud de l'île (Corse-du-Sud), avec Bonifacio la terre la plus méridionale de France. Formations cristallines.", src:"web"},
+    {nom:"Corse Porto-Vecchio", aoc:"Corse", vig:"Corse", types:["rouge","rosé","blanc"], cepages:"Rouge : Nielluccio, Sciaccarello (+ Grenache, Syrah). Rosé : Grenache, Nielluccio, Sciaccarello. Blanc : Vermentino 75% mini", loc:"Sud-est de l'île (Corse-du-Sud) : Porto-Vecchio, Bonifacio, Conca, Lecci... Côte orientale face au soleil levant.", src:"web"},
+    {nom:"Corse Sartène", aoc:"Corse", vig:"Corse", types:["rouge","rosé","blanc"], cepages:"Rouge : Nielluccio, Sciaccarello (+ Grenache, Syrah). Rosé : Grenache, Nielluccio, Sciaccarello. Blanc : Vermentino 75% mini", loc:"Sud-ouest de l'île (Corse-du-Sud) : Sartène, Sollacaro, Viggianello... Formations cristallines.", src:"web"},
+  ],
+  jura: [
+    {nom:"Arbois-Pupillin", aoc:"Arbois", vig:"Jura", fiche:"Arbois-Pupillin", types:["rouge","blanc","rosé"], src:"cours"},
+  ],
+  savoie: [
+    {nom:"Abymes", aoc:"Vin de Savoie", vig:"Savoie", types:["blanc"], cepages:"Jacquère (principal, 80% mini) + Aligoté, Altesse, Chardonnay, Mondeuse blanche...", loc:"Cluse de Chambéry, au pied du Mont Granier : Chapareillan, Myans, Les Marches, Apremont (en partie). Éboulement du Mont Granier (1248) : marnes et calcaires crétacés.", src:"web"},
+    {nom:"Apremont", aoc:"Vin de Savoie", vig:"Savoie", types:["blanc"], cepages:"Jacquère (principal, 80% mini) + Aligoté, Altesse, Chardonnay, Mondeuse blanche...", loc:"Cluse de Chambéry : Apremont, Les Marches, Saint-Baldoph (en partie).", src:"web"},
+    {nom:"Arbin", aoc:"Vin de Savoie", vig:"Savoie", types:["rouge"], cepages:"Mondeuse 100%", loc:"Combe de Savoie : Arbin, Cruet et Montmélian (en partie). Marnes et calcaires du Jurassique supérieur.", src:"web"},
+    {nom:"Ayze", aoc:"Vin de Savoie", vig:"Savoie", types:["blanc","effervescent"], cepages:"Gringet (principal, 50% mini) + Altesse, Roussette d'Ayze. Mousseux : Gringet 70% mini, Altesse 20% maxi", loc:"Vallée de l'Arve (Haute-Savoie) : Ayze, Bonneville, Marignier. Éboulis post-glaciaires, molasses.", src:"web"},
+    {nom:"Chautagne", aoc:"Vin de Savoie", vig:"Savoie", types:["blanc","rouge"], cepages:"Blanc : Jacquère. Rouge : Gamay, Mondeuse, Pinot Noir", loc:"Rive droite du Rhône, nord du lac du Bourget : Chindrieux, Motz, Ruffieux, Serrières-en-Chautagne. Moraines et molasses.", src:"web"},
+    {nom:"Chignin", aoc:"Vin de Savoie", vig:"Savoie", types:["blanc","rouge"], cepages:"Blanc : Jacquère. Rouge : Gamay, Mondeuse, Pinot Noir", loc:"Commune de Chignin, cluse de Chambéry / Combe de Savoie. Éboulis post-glaciaires.", src:"web"},
+    {nom:"Chignin-Bergeron", aoc:"Vin de Savoie", vig:"Savoie", types:["blanc"], cepages:"Roussanne (appelée Bergeron) 100%", loc:"Chignin, Francin, Montmélian. Coteaux plein sud. Blanc riche, de garde.", src:"web"},
+    {nom:"Crépy", aoc:"Vin de Savoie", vig:"Savoie", types:["blanc"], cepages:"Chasselas (principal, 80% mini) + Aligoté, Altesse, Chardonnay, Gringet...", loc:"Rives du Léman (Haute-Savoie) : Ballaison, Douvaine, Loisin. Moraines glaciaires.", src:"web",note:"Figure parmi les DGC de Vin de Savoie dans le CDC consulté (version 2014). Vérifie son statut dans ton poly (AOC Crépy historique)."},
+    {nom:"Cruet", aoc:"Vin de Savoie", vig:"Savoie", types:["blanc"], cepages:"Jacquère (principal, 80% mini) + Aligoté, Altesse, Chardonnay, Mondeuse blanche...", loc:"Commune de Cruet, Combe de Savoie.", src:"web"},
+    {nom:"Jongieux", aoc:"Vin de Savoie", vig:"Savoie", types:["blanc","rouge"], cepages:"Blanc : Jacquère. Rouge : Gamay, Mondeuse, Pinot Noir", loc:"Ouest du lac du Bourget : Billième, Jongieux, Lucey, Saint-Jean-de-Chevelu, Yenne. Marnes et calcaires du Jurassique supérieur.", src:"web"},
+    {nom:"Marignan", aoc:"Vin de Savoie", vig:"Savoie", types:["blanc"], cepages:"Chasselas (principal, 80% mini) + Aligoté, Altesse, Chardonnay, Gringet...", loc:"Sciez, rives du Léman (Haute-Savoie). Moraines glaciaires.", src:"web"},
+    {nom:"Marin", aoc:"Vin de Savoie", vig:"Savoie", types:["blanc"], cepages:"Chasselas (principal, 80% mini) + Aligoté, Altesse, Chardonnay, Gringet...", loc:"Marin et Publier, rives du Léman (Haute-Savoie). Alluvions sablo-graveleuses.", src:"web"},
+    {nom:"Montmélian", aoc:"Vin de Savoie", vig:"Savoie", types:["blanc"], cepages:"Jacquère (principal, 80% mini) + Aligoté, Altesse, Chardonnay, Mondeuse blanche...", loc:"Francin et Montmélian, Combe de Savoie.", src:"web"},
+    {nom:"Ripaille", aoc:"Vin de Savoie", vig:"Savoie", types:["blanc"], cepages:"Chasselas (principal, 80% mini) + Aligoté, Altesse, Chardonnay, Gringet...", loc:"Thonon-les-Bains, rives du Léman (Haute-Savoie). Alluvions sablo-graveleuses.", src:"web"},
+    {nom:"Saint-Jean-de-la-Porte", aoc:"Vin de Savoie", vig:"Savoie", types:["rouge"], cepages:"Mondeuse 100%", loc:"Commune de Saint-Jean-de-la-Porte (Savoie).", src:"web"},
+    {nom:"Saint-Jeoire-Prieuré", aoc:"Vin de Savoie", vig:"Savoie", types:["blanc"], cepages:"Jacquère (principal, 80% mini) + Aligoté, Altesse, Chardonnay, Mondeuse blanche...", loc:"Commune de Saint-Jeoire-Prieuré, cluse de Chambéry (Savoie).", src:"web"},
+    {nom:"Frangy", aoc:"Roussette de Savoie", vig:"Savoie", types:["blanc"], cepages:"Altesse (Roussette) 100%", loc:"Chaumont, Desingy, Frangy (Haute-Savoie).", src:"web"},
+    {nom:"Marestel", aoc:"Roussette de Savoie", vig:"Savoie", types:["blanc"], cepages:"Altesse (Roussette) 100%", loc:"Jongieux et Lucey (Savoie), ouest du lac du Bourget. Amplitude gustative plus marquée.", src:"web"},
+    {nom:"Monterminod", aoc:"Roussette de Savoie", vig:"Savoie", types:["blanc"], cepages:"Altesse (Roussette) 100%", loc:"Saint-Alban-Leysse (Savoie), revers nord-est de la cluse de Chambéry.", src:"web"},
+    {nom:"Monthoux", aoc:"Roussette de Savoie", vig:"Savoie", types:["blanc"], cepages:"Altesse (Roussette) 100%", loc:"Saint-Jean-de-Chevelu (Savoie), entre le Rhône et le lac du Bourget.", src:"web"},
+  ],
+  rhone: [
+    {nom:"Chusclan", aoc:"Côtes du Rhône Villages", vig:"Rhône Sud", types:["rouge","rosé","blanc"], cepages:"Rouge : Grenache (50% mini) + Syrah, Mourvèdre (20% mini à eux deux) ; accessoires : Carignan, Cinsault, Muscardin, Terret noir... Blanc : Bourboulenc, Clairette, Grenache blanc, Marsanne, Roussanne, Viognier", loc:"Gard, rive droite du Rhône : Bagnols-sur-Cèze, Chusclan, Codolet, Orsan...", src:"web"},
+    {nom:"Gadagne", aoc:"Côtes du Rhône Villages", vig:"Rhône Sud", types:["rouge"], cepages:"Rouge : Grenache (50% mini) + Syrah, Mourvèdre (20% mini à eux deux) ; accessoires : Carignan, Cinsault, Muscardin, Terret noir...", loc:"Vaucluse, près d'Avignon.", src:"web"},
+    {nom:"Massif d'Uchaux", aoc:"Côtes du Rhône Villages", vig:"Rhône Sud", types:["rouge"], cepages:"Rouge : Grenache (50% mini) + Syrah, Mourvèdre (20% mini à eux deux) ; accessoires : Carignan, Cinsault, Muscardin, Terret noir...", loc:"Vaucluse, nord d'Orange (Uchaux et communes voisines).", src:"web"},
+    {nom:"Nyons", aoc:"Côtes du Rhône Villages", vig:"Rhône Sud", types:["rouge"], cepages:"Rouge : Grenache (50% mini) + Syrah, Mourvèdre (20% mini à eux deux) ; accessoires : Carignan, Cinsault, Muscardin, Terret noir...", loc:"Drôme (Nyons).", src:"web"},
+    {nom:"Plan de Dieu", aoc:"Côtes du Rhône Villages", vig:"Rhône Sud", types:["rouge"], cepages:"Rouge : Grenache (50% mini) + Syrah, Mourvèdre (20% mini à eux deux) ; accessoires : Carignan, Cinsault, Muscardin, Terret noir...", loc:"Vaucluse. Plateau de galets roulés.", src:"web"},
+    {nom:"Puyméras", aoc:"Côtes du Rhône Villages", vig:"Rhône Sud", types:["rouge"], cepages:"Rouge : Grenache (50% mini) + Syrah, Mourvèdre (20% mini à eux deux) ; accessoires : Carignan, Cinsault, Muscardin, Terret noir...", loc:"Vaucluse : Faucon, Puyméras...", src:"web"},
+    {nom:"Roaix", aoc:"Côtes du Rhône Villages", vig:"Rhône Sud", types:["rouge","rosé","blanc"], cepages:"Rouge : Grenache (50% mini) + Syrah, Mourvèdre (20% mini à eux deux) ; accessoires : Carignan, Cinsault, Muscardin, Terret noir... Blanc : Bourboulenc, Clairette, Grenache blanc, Marsanne, Roussanne, Viognier", loc:"Vaucluse.", src:"web"},
+    {nom:"Rochegude", aoc:"Côtes du Rhône Villages", vig:"Rhône Sud", types:["rouge","rosé","blanc"], cepages:"Rouge : Grenache (50% mini) + Syrah, Mourvèdre (20% mini à eux deux) ; accessoires : Carignan, Cinsault, Muscardin, Terret noir... Blanc : Bourboulenc, Clairette, Grenache blanc, Marsanne, Roussanne, Viognier", loc:"Drôme.", src:"web"},
+    {nom:"Rousset-les-Vignes", aoc:"Côtes du Rhône Villages", vig:"Rhône Sud", types:["rouge","rosé","blanc"], cepages:"Rouge : Grenache (50% mini) + Syrah, Mourvèdre (20% mini à eux deux) ; accessoires : Carignan, Cinsault, Muscardin, Terret noir... Blanc : Bourboulenc, Clairette, Grenache blanc, Marsanne, Roussanne, Viognier", loc:"Drôme.", src:"web"},
+    {nom:"Sablet", aoc:"Côtes du Rhône Villages", vig:"Rhône Sud", types:["rouge","rosé","blanc"], cepages:"Rouge : Grenache (50% mini) + Syrah, Mourvèdre (20% mini à eux deux) ; accessoires : Carignan, Cinsault, Muscardin, Terret noir... Blanc : Bourboulenc, Clairette, Grenache blanc, Marsanne, Roussanne, Viognier", loc:"Vaucluse, au pied des Dentelles de Montmirail.", src:"web"},
+    {nom:"Saint-Andéol", aoc:"Côtes du Rhône Villages", vig:"Rhône Sud", types:["rouge"], cepages:"Rouge : Grenache (50% mini) + Syrah, Mourvèdre (20% mini à eux deux) ; accessoires : Carignan, Cinsault, Muscardin, Terret noir...", loc:"Côtes du Rhône Villages (secteur sud de la vallée du Rhône) — commune à vérifier dans le CDC.", src:"web"},
+    {nom:"Saint-Gervais", aoc:"Côtes du Rhône Villages", vig:"Rhône Sud", types:["rouge","rosé","blanc"], cepages:"Rouge : Grenache (50% mini) + Syrah, Mourvèdre (20% mini à eux deux) ; accessoires : Carignan, Cinsault, Muscardin, Terret noir... Blanc : Bourboulenc, Clairette, Grenache blanc, Marsanne, Roussanne, Viognier", loc:"Gard.", src:"web"},
+    {nom:"Saint-Maurice", aoc:"Côtes du Rhône Villages", vig:"Rhône Sud", types:["rouge","rosé","blanc"], cepages:"Rouge : Grenache (50% mini) + Syrah, Mourvèdre (20% mini à eux deux) ; accessoires : Carignan, Cinsault, Muscardin, Terret noir... Blanc : Bourboulenc, Clairette, Grenache blanc, Marsanne, Roussanne, Viognier", loc:"Drôme.", src:"web"},
+    {nom:"Saint-Pantaléon-les-Vignes", aoc:"Côtes du Rhône Villages", vig:"Rhône Sud", types:["rouge","rosé","blanc"], cepages:"Rouge : Grenache (50% mini) + Syrah, Mourvèdre (20% mini à eux deux) ; accessoires : Carignan, Cinsault, Muscardin, Terret noir... Blanc : Bourboulenc, Clairette, Grenache blanc, Marsanne, Roussanne, Viognier", loc:"Drôme.", src:"web"},
+    {nom:"Sainte-Cécile", aoc:"Côtes du Rhône Villages", vig:"Rhône Sud", types:["rouge"], cepages:"Rouge : Grenache (50% mini) + Syrah, Mourvèdre (20% mini à eux deux) ; accessoires : Carignan, Cinsault, Muscardin, Terret noir...", loc:"Vaucluse (Sainte-Cécile-les-Vignes).", src:"web"},
+    {nom:"Séguret", aoc:"Côtes du Rhône Villages", vig:"Rhône Sud", types:["rouge","rosé","blanc"], cepages:"Rouge : Grenache (50% mini) + Syrah, Mourvèdre (20% mini à eux deux) ; accessoires : Carignan, Cinsault, Muscardin, Terret noir... Blanc : Bourboulenc, Clairette, Grenache blanc, Marsanne, Roussanne, Viognier", loc:"Vaucluse, au pied des Dentelles de Montmirail.", src:"web"},
+    {nom:"Signargues", aoc:"Côtes du Rhône Villages", vig:"Rhône Sud", types:["rouge"], cepages:"Rouge : Grenache (50% mini) + Syrah, Mourvèdre (20% mini à eux deux) ; accessoires : Carignan, Cinsault, Muscardin, Terret noir...", loc:"Gard : Domazan, Estézargues, Rochefort-du-Gard, Saze.", src:"web"},
+    {nom:"Suze-la-Rousse", aoc:"Côtes du Rhône Villages", vig:"Rhône Sud", types:["rouge"], cepages:"Rouge : Grenache (50% mini) + Syrah, Mourvèdre (20% mini à eux deux) ; accessoires : Carignan, Cinsault, Muscardin, Terret noir...", loc:"Drôme.", src:"web"},
+    {nom:"Vaison-la-Romaine", aoc:"Côtes du Rhône Villages", vig:"Rhône Sud", types:["rouge"], cepages:"Rouge : Grenache (50% mini) + Syrah, Mourvèdre (20% mini à eux deux) ; accessoires : Carignan, Cinsault, Muscardin, Terret noir...", loc:"Vaucluse.", src:"web"},
+    {nom:"Valréas", aoc:"Côtes du Rhône Villages", vig:"Rhône Sud", types:["rouge","rosé","blanc"], cepages:"Rouge : Grenache (50% mini) + Syrah, Mourvèdre (20% mini à eux deux) ; accessoires : Carignan, Cinsault, Muscardin, Terret noir... Blanc : Bourboulenc, Clairette, Grenache blanc, Marsanne, Roussanne, Viognier", loc:"Enclave des Papes (Vaucluse).", src:"web"},
+    {nom:"Visan", aoc:"Côtes du Rhône Villages", vig:"Rhône Sud", types:["rouge","rosé","blanc"], cepages:"Rouge : Grenache (50% mini) + Syrah, Mourvèdre (20% mini à eux deux) ; accessoires : Carignan, Cinsault, Muscardin, Terret noir... Blanc : Bourboulenc, Clairette, Grenache blanc, Marsanne, Roussanne, Viognier", loc:"Vaucluse.", src:"web"},
+  ],
+  bourgogne: [
+    {nom:"Bourgogne Chitry", aoc:"Bourgogne", vig:"Chablis & Yonne (Auxerrois)", types:["blanc","rouge","rosé"], cepages:"Rouge/Rosé : Pinot Noir. Blanc : Chardonnay", loc:"Commune de Chitry (Yonne), près de Chablis.", src:"web"},
+    {nom:"Bourgogne Côte Chalonnaise", aoc:"Bourgogne", vig:"Côte Chalonnaise", types:["blanc","rouge","rosé"], cepages:"Rouge/Rosé : Pinot Noir. Blanc : Chardonnay", loc:"Saône-et-Loire, secteur de Chalon-sur-Saône.", src:"web"},
+    {nom:"Bourgogne Côte d'Or", aoc:"Bourgogne", vig:"Côte d'Or (Nuits et Beaune)", types:["blanc","rouge"], cepages:"Rouge/Rosé : Pinot Noir. Blanc : Chardonnay", loc:"Côte-d'Or (Côte de Nuits et Côte de Beaune).", src:"web"},
+    {nom:"Bourgogne Côte Saint-Jacques", aoc:"Bourgogne", vig:"Chablis & Yonne (Auxerrois)", types:["blanc","rouge","rosé"], cepages:"Rouge/Rosé : Pinot Noir. Blanc : Chardonnay", loc:"Secteur de Joigny (Yonne).", src:"web"},
+    {nom:"Bourgogne Côtes d'Auxerre", aoc:"Bourgogne", vig:"Chablis & Yonne (Auxerrois)", types:["blanc","rouge","rosé"], cepages:"Rouge/Rosé : Pinot Noir. Blanc : Chardonnay", loc:"Yonne : Auxerre, Vaux, Quenne, Saint-Bris-le-Vineux...", src:"web"},
+    {nom:"Bourgogne Côtes du Couchois", aoc:"Bourgogne", vig:"Côte Chalonnaise", types:["rouge"], cepages:"Pinot Noir", loc:"Secteur de Couches (Saône-et-Loire).", src:"web"},
+    {nom:"Bourgogne Coulanges-la-Vineuse", aoc:"Bourgogne", vig:"Chablis & Yonne (Auxerrois)", types:["blanc","rouge","rosé"], cepages:"Rouge/Rosé : Pinot Noir. Blanc : Chardonnay", loc:"Yonne, au sud d'Auxerre.", src:"web"},
+    {nom:"Bourgogne Épineuil", aoc:"Bourgogne", vig:"Chablis & Yonne (Auxerrois)", types:["rouge","rosé"], cepages:"Pinot Noir", loc:"Yonne, près de Tonnerre (commune d'Épineuil).", src:"web"},
+    {nom:"Bourgogne Hautes Côtes de Beaune", aoc:"Bourgogne", vig:"Côte de Beaune", types:["rouge","blanc"], cepages:"Rouge/Rosé : Pinot Noir. Blanc : Chardonnay", loc:"Côte-d'Or, arrière-côte de Beaune.", src:"web"},
+    {nom:"Bourgogne Hautes Côtes de Nuits", aoc:"Bourgogne", vig:"Côte de Nuits", types:["rouge","blanc"], cepages:"Rouge/Rosé : Pinot Noir. Blanc : Chardonnay", loc:"Côte-d'Or, arrière-côte de Nuits.", src:"web"},
+    {nom:"Bourgogne La Chapelle Notre-Dame", aoc:"Bourgogne", vig:"Côte de Beaune", types:["blanc","rouge","rosé"], cepages:"Rouge/Rosé : Pinot Noir. Blanc : Chardonnay", loc:"Ladoix-Serrigny (Côte-d'Or).", src:"web"},
+    {nom:"Bourgogne Le Chapitre", aoc:"Bourgogne", vig:"Côte de Nuits (Dijon)", types:["blanc","rouge","rosé"], cepages:"Rouge/Rosé : Pinot Noir. Blanc : Chardonnay", loc:"Chenôve (Côte-d'Or).", src:"web"},
+    {nom:"Bourgogne Montrecul", aoc:"Bourgogne", vig:"Côte de Nuits (Dijon)", types:["blanc","rouge","rosé"], cepages:"Rouge/Rosé : Pinot Noir. Blanc : Chardonnay", loc:"Côte-d'Or (secteur dijonnais). Aussi écrit Montre-Cul ou En Montre-Cul.", src:"ref"},
+    {nom:"Bourgogne Tonnerre", aoc:"Bourgogne", vig:"Chablis & Yonne (Auxerrois)", types:["blanc"], cepages:"Chardonnay", loc:"Yonne, autour de Tonnerre.", src:"web",note:"D'après un support pédagogique, Tonnerre est surtout blanc ; le CDC liste « blancs, rouges ou rosés » pour plusieurs DGC : vérifie dans ton poly."},
+  ],
+  alsace: [
+    {nom:"Bergheim", aoc:"Alsace", vig:"Alsace", types:["blanc"], cepages:"Gewurztraminer (surtout) — vins tranquilles blancs", loc:"Bergheim et Ribeauvillé (Haut-Rhin).", src:"web"},
+    {nom:"Côte de Rouffach", aoc:"Alsace", vig:"Alsace", types:["blanc","rouge"], cepages:"Riesling, Gewurztraminer (blancs) ; Pinot Noir (rouges)", loc:"Pfaffenheim, Rouffach, Westhalten (Haut-Rhin).", src:"web"},
+    {nom:"Klevener de Heiligenstein", aoc:"Alsace", vig:"Alsace", types:["blanc"], cepages:"Savagnin rose (Klevener) exclusivement", loc:"Heiligenstein et communes voisines (Bas-Rhin).", src:"web"},
+    {nom:"Ottrott", aoc:"Alsace", vig:"Alsace", types:["rouge"], cepages:"Pinot Noir", loc:"Ottrott et Obernai (Bas-Rhin). Rouge d'Ottrott historique.", src:"web"},
+    {nom:"Rodern", aoc:"Alsace", vig:"Alsace", types:["rouge"], cepages:"Pinot Noir", loc:"Rodern et Saint-Hippolyte (Haut-Rhin).", src:"web"},
+    {nom:"Saint-Hippolyte", aoc:"Alsace", vig:"Alsace", types:["rouge"], cepages:"Pinot Noir", loc:"Saint-Hippolyte (Haut-Rhin).", src:"web"},
+    {nom:"Scherwiller", aoc:"Alsace", vig:"Alsace", types:["blanc"], cepages:"Riesling", loc:"Scherwiller (Bas-Rhin).", src:"web"},
+    {nom:"Vallée Noble", aoc:"Alsace", vig:"Alsace", types:["blanc"], cepages:"Cépage non confirmé par mes sources — vins tranquilles blancs", loc:"Westhalten et Soultzmatt (Haut-Rhin).", src:"ref"},
+    {nom:"Wolxheim", aoc:"Alsace", vig:"Alsace", types:["blanc"], cepages:"Riesling", loc:"Wolxheim et Dahlenheim (Bas-Rhin).", src:"web"},
+  ],
+};
+
+/* Retourne la DGC complétée par sa fiche AOC si 'fiche' est renseigné */
+function dgcResolve(d) {
+  if (!d.fiche) return d;
+  const f = getAllAocsFlat().find(a => a.nom === d.fiche);
+  return f ? { ...d, cepages: d.cepages || f.cepages, loc: d.loc || f.sol, cahier: f.cahier, accords: f.accords } : d;
+}
+
+let aocTab = 'aoc'; // 'aoc' | 'dgc'
+function setAocTab(t) { aocTab = t; buildAOC(); }
+
+function dgcCardHTML(d0, i) {
+  const d = dgcResolve(d0);
+  const srcTag = d.src === 'ref' ? '<span class="dgc-src-tag" title="Non confirmé : à vérifier avec le poly">à vérifier</span>'
+    : d.src === 'web' ? '<span class="dgc-src-tag dgc-src-web" title="Vérifié sur le cahier des charges INAO (recherche web)">INAO</span>' : '';
+  return `<div class="aoc-card">
+    <div class="aoc-header" onclick="toggle('dgb${i}','dgc${i}')">
+      <div>
+        <div class="aoc-title">${d.nom}${srcTag}</div>
+        <div class="aoc-sub dgc-parent">DGC de l'AOC ${d.aoc}</div>
+      </div>
+      <div style="display:flex;align-items:center;flex-wrap:wrap;gap:3px;justify-content:flex-end;max-width:160px">
+        ${badgeHTML(d.types || [])}<span class="chevron" id="dgc${i}">▾</span>
+      </div>
+    </div>
+    <div class="aoc-body" id="dgb${i}">
+      <div class="info-grid">
+        <div class="info-block"><div class="info-label">AOC parente</div><div class="info-val">${d.aoc}</div></div>
+        <div class="info-block"><div class="info-label">Région</div><div class="info-val">${DATA[currentRegion].name}</div></div>
+        ${d.vig ? `<div class="info-block full"><div class="info-label">Vignoble</div><div class="info-val">${d.vig}</div></div>` : ''}
+        <div class="info-block full"><div class="info-label">Cépages</div><div class="info-val">${d.cepages || '—'}</div></div>
+        <div class="info-block full"><div class="info-label">📍 Localisation</div><div class="info-val">${d.loc || '—'}</div></div>
+        ${d.cahier ? `<div class="info-block full"><div class="info-label">Cahier des charges</div><div class="info-val">${d.cahier}</div></div>` : ''}
+        ${d.accords ? `<div class="info-block full"><div class="info-label">🍽️ Accords mets-vins</div><div class="info-val">${d.accords}</div></div>` : ''}
+        ${d.note ? `<div class="info-block full"><div class="info-label">⚠️ Remarque</div><div class="info-val">${d.note}</div></div>` : ''}
+      </div>
+    </div>
+  </div>`;
+}
+
+function buildAocTabs() {
+  const n = (DGC_DATA[currentRegion] || []).length;
+  document.getElementById('aocTabs').innerHTML = `
+    <button class="aoc-tab ${aocTab === 'aoc' ? 'active' : ''}" onclick="setAocTab('aoc')">AOC</button>
+    <button class="aoc-tab ${aocTab === 'dgc' ? 'active' : ''}" onclick="setAocTab('dgc')">DGC (${n})</button>`;
+}
+
 function buildAOC(flat = null) {
   const list = document.getElementById('aocList');
   let i = 0;
   if (flat) { list.innerHTML = flat.map(a => cardHTML(a, i++)).join(''); return; }
+  buildAocTabs();
+  if (aocTab === 'dgc') {
+    const dgcs = DGC_DATA[currentRegion] || [];
+    if (!dgcs.length) { list.innerHTML = `<div class="dgc-empty">Aucune DGC référencée pour ${DATA[currentRegion].name}.</div>`; return; }
+    // regroupe par AOC parente, dans l'ordre d'apparition
+    const groups = [];
+    dgcs.forEach(d => { let g = groups.find(x => x.aoc === d.aoc); if (!g) groups.push(g = { aoc: d.aoc, items: [] }); g.items.push(d); });
+    list.innerHTML = groups.map(g => `<div class="subcat-header">AOC ${g.aoc}</div>${g.items.map(d => dgcCardHTML(d, i++)).join('')}`).join('');
+    return;
+  }
   const r = DATA[currentRegion];
   list.innerHTML = r.subcats.map(sc =>
     `<div class="subcat-header">${sc.label}</div>${sc.aocs.map(a => cardHTML(a, i++)).join('')}`
@@ -11657,7 +13104,7 @@ const APP_FEATURES_SEARCH = [
   { label:'Accords M&V',      desc:'Mets & vins, fromages, recettes',     icon:'🍽️', go:() => { goTo('amv'); buildAMVScreen(); } },
   { label:'Carte de France',  desc:'Vignobles sur la carte',              icon:'📍', go:() => { goTo('carte'); buildCarteScreen(); } },
   { label:'Ma Cave',          desc:'Vins, bières, spiritueux',            icon:'🍷', go:() => { goTo('cave-hub'); } },
-  { label:'Zytho',            desc:'Bientôt disponible',                  icon:'🍺', go:() => { goTo('zytho-hub'); } },
+  { label:'Zytho',            desc:'Cours, bibliothèque, styles, quiz',                  icon:'🍺', go:() => { goTo('zytho-hub'); } },
   { label:'Stats',            desc:'Ma progression',                      icon:'📊', go:() => { goTo('stats'); buildStatsScreen(); } },
   { label:'Personnalisation', desc:'Skins & structure des menus',         icon:'🎨', go:() => { goTo('personnalisation'); buildPersonnalisationScreen(); } },
 ];
